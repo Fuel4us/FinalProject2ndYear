@@ -1,0 +1,26 @@
+<settings>
+    <servers>
+        <server>
+            <id>maven.oracle.com </id>
+            <username>1161028@isep.ipp.pt</username>
+            <password>{Jp/pmmEz2dMHcRJITllJexOI8/q12cmXXNZ9XJmMcZI=}</password>
+            <configuration>
+                <basicAuthScope>
+                    <host>ANY </host>
+                    <port>ANY </port>
+                    <realm>OAM 11g </realm>
+                </basicAuthScope>
+                <httpConfiguration>
+                    <all>
+                        <params>
+                            <property>
+                                <name>http.protocol.allow-circular-redirects </name>
+                                <value>%b,true </value>
+                            </property>
+                        </params>
+                    </all>
+                </httpConfiguration>
+            </configuration>
+        </server>
+    </servers>
+</settings>
