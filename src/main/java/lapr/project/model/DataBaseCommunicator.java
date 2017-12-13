@@ -1,9 +1,13 @@
 package lapr.project.model;
 
+import lapr.project.model.RoadNetwork.Road;
 import oracle.jdbc.pool.OracleDataSource;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 
 /**
  * <p>
@@ -36,7 +40,31 @@ public class DataBaseCommunicator {
      * @param analysis The network analysis to be stored
      * @return true if storing operation succeeded
      */
-    public boolean storeNetworkAnalysis(Project project, Analysis analysis) {
+    public boolean storeNetworkAnalysis(Project project, Analysis<Road> analysis) throws SQLException {
+
+        Connection connection = oracleDataSource.getConnection();
+
+        Statement statement = connection.createStatement();
+
+        String projectID = project.getName();
+        String analysisID = String.valueOf(analysis.exposeID());
+
+        List<Road> roads = analysis.showResults();
+
+        for (Road road : roads) {
+            //insert roads into AnalysedRoad with this analysis ID
+            statement.executeUpdate("" +
+                    "INSERT INTO ANALYSEDROAD (ID, ANALYSISID) VALUES (?,?);");
+        }
+
+        //Insert analysis
+        String analysisInsertionCommand =
+                "--INSERT INTO";
+
+        statement.executeUpdate(analysisInsertionCommand);
+
+        connection.close();
+
         return false;
     }
 
