@@ -1,5 +1,7 @@
 package lapr.project.model;
 
+import lapr.project.model.RoadNetwork.RoadNetwork;
+
 /**
  * <p>
  * A project is a container of road networks
