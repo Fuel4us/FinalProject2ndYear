@@ -9,12 +9,14 @@ package lapr.project.ui;
  *
  * @author anily
  */
-public class P01 extends javax.swing.JPanel {
+public class P01UI extends javax.swing.JPanel {
+
+    private static final long serialVersionUID = 5320779898271202645L;
 
     /**
      * Creates new form P00
      */
-    public P01() {
+    public P01UI() {
         initComponents();
     }
 
@@ -67,22 +69,14 @@ public class P01 extends javax.swing.JPanel {
         jButtonCreate.setForeground(new java.awt.Color(45, 46, 45));
         jButtonCreate.setText("Create project");
         jButtonCreate.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonCreate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCreateActionPerformed(evt);
-            }
-        });
+        jButtonCreate.addActionListener(evt -> jButtonCreateActionPerformed(evt));
 
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
         jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack.setText("«");
         jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBackActionPerformed(evt);
-            }
-        });
+        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
 
         jTextFieldName.setBackground(new java.awt.Color(87, 89, 87));
         jTextFieldName.setForeground(new java.awt.Color(45, 46, 45));
@@ -111,22 +105,14 @@ public class P01 extends javax.swing.JPanel {
         jButtonRoad.setForeground(new java.awt.Color(72, 89, 97));
         jButtonRoad.setText("Import roads configuration file");
         jButtonRoad.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
-        jButtonRoad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRoadActionPerformed(evt);
-            }
-        });
+        jButtonRoad.addActionListener(evt -> jButtonRoadActionPerformed(evt));
 
         jButtonVehicle.setBackground(new java.awt.Color(45, 46, 45));
         jButtonVehicle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jButtonVehicle.setForeground(new java.awt.Color(72, 89, 97));
         jButtonVehicle.setText("Import vehicles configuration file");
         jButtonVehicle.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
-        jButtonVehicle.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonVehicleActionPerformed(evt);
-            }
-        });
+        jButtonVehicle.addActionListener(evt -> jButtonVehicleActionPerformed(evt));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

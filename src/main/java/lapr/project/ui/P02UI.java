@@ -9,12 +9,14 @@ package lapr.project.ui;
  *
  * @author anily
  */
-public class P02 extends javax.swing.JPanel {
+public class P02UI extends javax.swing.JPanel {
+
+    private static final long serialVersionUID = -2957014037550750501L;
 
     /**
      * Creates new form P00
      */
-    public P02() {
+    public P02UI() {
         initComponents();
     }
 
@@ -69,38 +71,27 @@ public class P02 extends javax.swing.JPanel {
         jButtonCompForm.setForeground(new java.awt.Color(45, 46, 45));
         jButtonCompForm.setText("Road Network Comparison Form");
         jButtonCompForm.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonCompForm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCompFormActionPerformed(evt);
-            }
-        });
+        jButtonCompForm.addActionListener(evt -> jButtonCompFormActionPerformed(evt));
 
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
         jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack.setText("«");
         jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBackActionPerformed(evt);
-            }
-        });
+        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
 
         jButtonPathForm.setBackground(new java.awt.Color(45, 46, 45));
         jButtonPathForm.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jButtonPathForm.setForeground(new java.awt.Color(45, 46, 45));
         jButtonPathForm.setText("Road Network Path Form");
         jButtonPathForm.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonPathForm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonPathFormActionPerformed(evt);
-            }
-        });
+        jButtonPathForm.addActionListener(evt -> jButtonPathFormActionPerformed(evt));
 
         jList1.setBackground(new java.awt.Color(97, 122, 133));
         jList1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jList1.setForeground(new java.awt.Color(255, 255, 255));
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            private static final long serialVersionUID = -4655778802545677676L;
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
