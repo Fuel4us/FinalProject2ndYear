@@ -12,12 +12,14 @@ import java.awt.*;
  *
  * @author anily
  */
-public class P00 extends javax.swing.JPanel {
+public class P00UI extends javax.swing.JPanel {
+
+    private static final long serialVersionUID = -5281256186026171095L;
 
     /**
      * Creates new form P00
      */
-    public P00() {
+    public P00UI() {
         initComponents();
     }
 
@@ -29,16 +31,6 @@ public class P00 extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
-        InitializeUIElements initializer = new InitializeUIElements();
-        Color darkGrey = new java.awt.Color(45, 46, 45);
-        Color lightGrey = new java.awt.Color(87, 89, 87);
-        Color darkBlue = new java.awt.Color(97, 122, 133);
-        Color lightBlue = new java.awt.Color(155, 177, 189);
-        Color darkOrange = new java.awt.Color(250, 152, 60);
-        String segoeFont = "Segoe UI Semibold";
-        Font fontSegoe18 = new java.awt.Font(segoeFont, 0, 18);
-
 
         jPanel1 = new javax.swing.JPanel();
         imgLateral = new javax.swing.JLabel();
@@ -57,12 +49,7 @@ public class P00 extends javax.swing.JPanel {
         jButtonCreate.setForeground(new java.awt.Color(45, 46, 45));
         jButtonCreate.setText("Create project");
         jButtonCreate.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonCreate.setDisabledIcon(null);
-        jButtonCreate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCreateActionPerformed(evt);
-            }
-        });
+        jButtonCreate.addActionListener(evt -> jButtonCreateActionPerformed(evt));
 
         orangeBorder.setBackground(new java.awt.Color(250, 152, 60));
 
@@ -82,11 +69,7 @@ public class P00 extends javax.swing.JPanel {
         jButtonCopy.setForeground(new java.awt.Color(45, 46, 45));
         jButtonCopy.setText("Copy project");
         jButtonCopy.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonCopy.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCopyActionPerformed(evt);
-            }
-        });
+        jButtonCopy.addActionListener(evt -> jButtonCopyActionPerformed(evt));
 
         jButtonSetProject.setBackground(new java.awt.Color(45, 46, 45));
         jButtonSetProject.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
@@ -94,11 +77,7 @@ public class P00 extends javax.swing.JPanel {
         jButtonSetProject.setText("I already have an existing project");
         jButtonSetProject.setToolTipText("");
         jButtonSetProject.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonSetProject.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSetProjectActionPerformed(evt);
-            }
-        });
+        jButtonSetProject.addActionListener(evt -> jButtonSetProjectActionPerformed(evt));
 
         jLabel1.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(155, 177, 189));

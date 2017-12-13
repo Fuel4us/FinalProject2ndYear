@@ -11,6 +11,8 @@ package lapr.project.ui;
  */
 public class PopUp1 extends javax.swing.JFrame {
 
+    private static final long serialVersionUID = 8060730009198569465L;
+
     /**
      * Creates new form PopUp1
      */
@@ -44,22 +46,14 @@ public class PopUp1 extends javax.swing.JFrame {
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack.setText("Change project data");
         jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBackActionPerformed(evt);
-            }
-        });
+        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
 
         jButtonBack1.setBackground(new java.awt.Color(45, 46, 45));
         jButtonBack1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jButtonBack1.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack1.setText("Set active");
         jButtonBack1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBack1ActionPerformed(evt);
-            }
-        });
+        jButtonBack1.addActionListener(evt -> jButtonBack1ActionPerformed(evt));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

@@ -9,12 +9,14 @@ package lapr.project.ui;
  *
  * @author anily
  */
-public class N01 extends javax.swing.JPanel {
+public class N01UI extends javax.swing.JPanel {
+
+    private static final long serialVersionUID = -2019222233077546309L;
 
     /**
      * Creates new form P00
      */
-    public N01() {
+    public N01UI() {
         initComponents();
     }
 
@@ -81,27 +83,20 @@ public class N01 extends javax.swing.JPanel {
         jButtonResults.setForeground(new java.awt.Color(45, 46, 45));
         jButtonResults.setText("Generate results");
         jButtonResults.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonResults.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonResultsActionPerformed(evt);
-            }
-        });
+        jButtonResults.addActionListener(evt -> jButtonResultsActionPerformed(evt));
 
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
         jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack.setText("«");
         jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBackActionPerformed(evt);
-            }
-        });
+        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
 
         jListAlgorithms.setBackground(new java.awt.Color(97, 122, 133));
         jListAlgorithms.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListAlgorithms.setForeground(new java.awt.Color(255, 255, 255));
         jListAlgorithms.setModel(new javax.swing.AbstractListModel<String>() {
+            private static final long serialVersionUID = -1838275448366033423L;
             String[] strings = { "Algorithm1", "Algorithm2", "Algorithm3", "Algorithm4", "Algorithm5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -113,6 +108,7 @@ public class N01 extends javax.swing.JPanel {
         jListNodes2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListNodes2.setForeground(new java.awt.Color(255, 255, 255));
         jListNodes2.setModel(new javax.swing.AbstractListModel<String>() {
+            private static final long serialVersionUID = 4145788995632934324L;
             String[] strings = { "Node 1", "Node 2" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -124,6 +120,7 @@ public class N01 extends javax.swing.JPanel {
         jListNodes1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListNodes1.setForeground(new java.awt.Color(255, 255, 255));
         jListNodes1.setModel(new javax.swing.AbstractListModel<String>() {
+            private static final long serialVersionUID = 3717091452798619803L;
             String[] strings = { "Node 1", "Node 2" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -147,6 +144,7 @@ public class N01 extends javax.swing.JPanel {
         jListAlgorithms1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListAlgorithms1.setForeground(new java.awt.Color(255, 255, 255));
         jListAlgorithms1.setModel(new javax.swing.AbstractListModel<String>() {
+            private static final long serialVersionUID = 2968626688603226487L;
             String[] strings = { "V1", "V2", "V3" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }

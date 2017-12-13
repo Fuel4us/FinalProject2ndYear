@@ -9,12 +9,14 @@ package lapr.project.ui;
  *
  * @author anily
  */
-public class StoreNetworkAnalysis extends javax.swing.JPanel {
+public class StoreNetworkAnalysisUI extends javax.swing.JPanel {
+
+    private static final long serialVersionUID = -8965477186930734905L;
 
     /**
      * Creates new form P00
      */
-    public StoreNetworkAnalysis() {
+    public StoreNetworkAnalysisUI() {
         initComponents();
     }
 
@@ -65,22 +67,14 @@ public class StoreNetworkAnalysis extends javax.swing.JPanel {
         jButtonGenerateFile.setForeground(new java.awt.Color(45, 46, 45));
         jButtonGenerateFile.setText("Generate HTML files");
         jButtonGenerateFile.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonGenerateFile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonGenerateFileActionPerformed(evt);
-            }
-        });
+        jButtonGenerateFile.addActionListener(evt -> jButtonGenerateFileActionPerformed(evt));
 
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
         jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack.setText("«");
         jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBackActionPerformed(evt);
-            }
-        });
+        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
 
         jTextField1.setBackground(new java.awt.Color(97, 122, 133));
         jTextField1.setForeground(new java.awt.Color(204, 204, 204));
