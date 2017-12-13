@@ -15,6 +15,6 @@ public class Section {
 
     private Typology typology;
 
-    private Collection segments;
+    private Collection<Segment> segments;
 
 }
