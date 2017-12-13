@@ -5,6 +5,9 @@
  */
 package lapr.project.ui;
 
+import javax.swing.*;
+import java.awt.*;
+
 /**
  *
  * @author anily
@@ -26,6 +29,16 @@ public class P00 extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+
+        InitializeUIElements initializer = new InitializeUIElements();
+        Color darkGrey = new java.awt.Color(45, 46, 45);
+        Color lightGrey = new java.awt.Color(87, 89, 87);
+        Color darkBlue = new java.awt.Color(97, 122, 133);
+        Color lightBlue = new java.awt.Color(155, 177, 189);
+        Color darkOrange = new java.awt.Color(250, 152, 60);
+        String segoeFont = "Segoe UI Semibold";
+        Font fontSegoe18 = new java.awt.Font(segoeFont, 0, 18);
+
 
         jPanel1 = new javax.swing.JPanel();
         imgLateral = new javax.swing.JLabel();

@@ -36,6 +36,10 @@ public class P01 extends javax.swing.JPanel {
         jTextFieldName = new javax.swing.JTextField();
         jLabelPageTitle = new javax.swing.JLabel();
         jLabelPName = new javax.swing.JLabel();
+        jTextFieldDescription = new javax.swing.JTextField();
+        jLabelPDesc = new javax.swing.JLabel();
+        jButtonRoad = new javax.swing.JButton();
+        jButtonVehicle = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(155, 177, 189));
@@ -93,6 +97,37 @@ public class P01 extends javax.swing.JPanel {
         jLabelPName.setForeground(new java.awt.Color(97, 122, 133));
         jLabelPName.setText("PROJECT NAME:");
 
+        jTextFieldDescription.setBackground(new java.awt.Color(87, 89, 87));
+        jTextFieldDescription.setForeground(new java.awt.Color(45, 46, 45));
+        jTextFieldDescription.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        jTextFieldDescription.setText("<sample DESCRIPTION>");
+
+        jLabelPDesc.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
+        jLabelPDesc.setForeground(new java.awt.Color(97, 122, 133));
+        jLabelPDesc.setText("DESCRIPTION:");
+
+        jButtonRoad.setBackground(new java.awt.Color(45, 46, 45));
+        jButtonRoad.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        jButtonRoad.setForeground(new java.awt.Color(72, 89, 97));
+        jButtonRoad.setText("Import roads configuration file");
+        jButtonRoad.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
+        jButtonRoad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRoadActionPerformed(evt);
+            }
+        });
+
+        jButtonVehicle.setBackground(new java.awt.Color(45, 46, 45));
+        jButtonVehicle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        jButtonVehicle.setForeground(new java.awt.Color(72, 89, 97));
+        jButtonVehicle.setText("Import vehicles configuration file");
+        jButtonVehicle.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
+        jButtonVehicle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVehicleActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -104,15 +139,27 @@ public class P01 extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(67, 67, 67)
+                        .addComponent(jButtonVehicle, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonRoad, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(67, 67, 67)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28)
-                                .addComponent(jButtonCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabelPName)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jTextFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(28, 28, 28))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabelPDesc)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextFieldDescription, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jButtonCreate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(100, 100, 100)
                         .addComponent(jLabelPageTitle)))
@@ -131,7 +178,15 @@ public class P01 extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelPName))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextFieldDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelPDesc))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonRoad)
+                    .addComponent(jButtonVehicle))
+                .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -162,15 +217,27 @@ public class P01 extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonBackActionPerformed
 
+    private void jButtonRoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRoadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonRoadActionPerformed
+
+    private void jButtonVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVehicleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonVehicleActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
     private javax.swing.JButton jButtonBack;
     private javax.swing.JButton jButtonCreate;
+    private javax.swing.JButton jButtonRoad;
+    private javax.swing.JButton jButtonVehicle;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabelPDesc;
     private javax.swing.JLabel jLabelPName;
     private javax.swing.JLabel jLabelPageTitle;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField jTextFieldDescription;
     private javax.swing.JTextField jTextFieldName;
     private javax.swing.JPanel orangeBorder;
     // End of variables declaration//GEN-END:variables
