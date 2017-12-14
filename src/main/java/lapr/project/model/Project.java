@@ -65,4 +65,30 @@ public class Project {
     public List<Vehicle> getVehicles() {
         return vehicles;
     }
+
+    /**
+     * Implementation of the equals for objects of the type Project
+     * Only the name is considered
+     * @param o other object
+     * @return true if the objects are equal
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Project project = (Project) o;
+
+        return name != null ? name.equals(project.name) : project.name == null;
+    }
+
+    /**
+     * Implementation of the hashCode for objects of the type Project
+     * Only the name is considered
+     * @return
+     */
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
+    }
 }
