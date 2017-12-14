@@ -6,5 +6,13 @@ package lapr.project.model.RoadNetwork;
 public class Road {
 
     private String name;
+    private String id;
+
+    /**
+     * @return the ID of this road
+     */
+    public String getID() {
+        return id;
+    }
 
 }
