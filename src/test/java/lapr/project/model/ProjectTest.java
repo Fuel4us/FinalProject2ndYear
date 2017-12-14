@@ -12,6 +12,21 @@ import static org.junit.Assert.*;
 public class ProjectTest {
 
     /**
+     * Ensures hashCode() returns the correct number of its calculation
+     * @throws Exception
+     */
+    @Test
+    public void ensureHashCodeCalculatesSuccessfully() throws Exception {
+        Project p1 = new Project("Name 1", "Description 1",
+                new RoadNetwork<>(false, new Graph<>(false)), new ArrayList<>());
+
+        int expected = p1.getName().hashCode();
+        int result = p1.hashCode();
+
+        assertEquals(expected, result);
+    }
+
+    /**
      * Ensures equals() returns true:
      * - in the first condition
      * - in the final return
