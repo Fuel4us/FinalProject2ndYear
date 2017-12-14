@@ -1,6 +1,8 @@
 package lapr.project.model;
 
+import lapr.project.model.RoadNetwork.Road;
 import lapr.project.model.RoadNetwork.RoadNetwork;
+import lapr.project.model.RoadNetwork.Section;
 import lapr.project.model.Vehicle.Vehicle;
 
 import java.util.List;
@@ -15,7 +17,7 @@ public class Project {
 
     private String name;
     private String description;
-    private RoadNetwork roadNetwork;
+    private RoadNetwork<Road,Section> roadNetwork;
     private List<Vehicle> vehicles;
 
     /**
@@ -25,7 +27,7 @@ public class Project {
      * @param roadNetwork the road network of the project
      * @param vehicles the list of vehicles in the project
      */
-    public Project(String name, String description, RoadNetwork roadNetwork, List<Vehicle> vehicles) {
+    public Project(String name, String description, RoadNetwork<Road,Section> roadNetwork, List<Vehicle> vehicles) {
         this.name = name;
         this.description = description;
         this.roadNetwork = roadNetwork;
@@ -52,7 +54,7 @@ public class Project {
      * Getter for the road network
      * @return the road network of the project
      */
-    public RoadNetwork getRoadNetwork() {
+    public RoadNetwork<Road,Section> getRoadNetwork() {
         return roadNetwork;
     }
 

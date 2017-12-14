@@ -1,6 +1,7 @@
 package lapr.project.model.RoadNetwork;
 
 import javax.xml.bind.annotation.*;
+import java.util.List;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -12,5 +13,9 @@ public class Road {
     private String name;
     @XmlElement
     private Typology typology;
+    @XmlElementWrapper(name = "toll_fare")
+    private List<Float> tollFare;
+
+
 
 }

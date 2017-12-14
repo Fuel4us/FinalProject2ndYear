@@ -15,7 +15,7 @@ public class CreateProjectController {
     private Project project;
 
     private List<Vehicle> vehicles;
-    private RoadNetwork roadNetwork;
+    private RoadNetwork<Road, Section> roadNetwork;
 
     /**
      * Full constructor for the class CreateProjectController
