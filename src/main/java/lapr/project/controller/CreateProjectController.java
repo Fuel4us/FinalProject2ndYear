@@ -14,7 +14,7 @@ public class CreateProjectController {
     private DataBaseCommunicator dbCom;
     private Project project;
 
-    private List<AbstractVehicle> vehicles;
+    private List<Vehicle> vehicles;
     private RoadNetwork roadNetwork;
 
     /**

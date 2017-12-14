@@ -1,7 +1,7 @@
 package lapr.project.model;
 
 import lapr.project.model.RoadNetwork.RoadNetwork;
-import lapr.project.model.Vehicle.AbstractVehicle;
+import lapr.project.model.Vehicle.Vehicle;
 
 import java.util.List;
 
@@ -16,9 +16,9 @@ public class Project {
     private String name;
     private String description;
     private RoadNetwork roadNetwork;
-    private List<AbstractVehicle> vehicles;
+    private List<Vehicle> vehicles;
 
-    public Project(String name, String description, RoadNetwork roadNetwork, List<AbstractVehicle> vehicles) {
+    public Project(String name, String description, RoadNetwork roadNetwork, List<Vehicle> vehicles) {
         this.name = name;
         this.description = description;
         this.roadNetwork = roadNetwork;
