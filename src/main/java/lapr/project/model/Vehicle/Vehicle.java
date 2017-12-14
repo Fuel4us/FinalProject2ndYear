@@ -8,7 +8,7 @@ import java.util.Optional;
  * to various vehicle implementations
  * </p>
  */
-public abstract class AbstractVehicle {
+public abstract class Vehicle {
 
     private String name;
     
@@ -36,10 +36,5 @@ public abstract class AbstractVehicle {
     private double rollingReleaseCoefficient;
 
     private double wheelSize;
-
-    /**
-     * Determines the energy expenditure of a vehicle
-     */
-    public abstract double determineEnergyExpenditure();
 
 }
