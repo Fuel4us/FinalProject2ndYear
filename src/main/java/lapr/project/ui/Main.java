@@ -2,7 +2,6 @@ package lapr.project.ui;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-//import lapr.project.model.CalculatorExample;
 
 /**
  * @author Nuno Bettencourt <nmb@isep.ipp.pt> on 24/05/16.
