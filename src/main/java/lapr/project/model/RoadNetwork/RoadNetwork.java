@@ -1,16 +1,23 @@
 package lapr.project.model.RoadNetwork;
 
-import lapr.project.utils.Graph.AbstractGraph;
+import lapr.project.utils.Graph.Graph;
 
 /**
  * Graph view of a network of roads
  */
-public class RoadNetwork extends AbstractGraph {
+public class RoadNetwork<Road,Section> extends Graph<Road,Section> {
 
-    /**
-     * Forbid default no-arg instantiation
-     */
-    private RoadNetwork() {
+
+    Graph<Road, Section> roadNetwork;
+
+
+    public RoadNetwork(boolean directed, Graph<Road, Section> roadNetwork) {
+        super(directed);
+        this.roadNetwork = roadNetwork;
+    }
+
+    public Graph<Road, Section> getRoadNetwork() {
+        return roadNetwork;
     }
 
 }

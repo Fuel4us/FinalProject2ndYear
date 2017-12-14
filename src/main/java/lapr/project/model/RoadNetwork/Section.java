@@ -18,7 +18,7 @@ public class Section {
     @XmlElement(name = "segment")
     private Collection<Segment> segments;
 
-    public Section(Node beginningNode, Node endingNode, Direction direction, Collection segments) {
+    public Section(Node beginningNode, Node endingNode, Direction direction, Collection<Segment> segments) {
         this.beginningNode = beginningNode;
         this.endingNode = endingNode;
         this.direction = direction;
