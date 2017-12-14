@@ -49,17 +49,18 @@ public class DataBaseCommunicator {
         String projectID = project.getName();
         String analysisID = String.valueOf(analysis.exposeID());
 
-        List<Road> roads = analysis.showResults();
+        List<Road> path = analysis.showResults();
 
-        for (Road road : roads) {
-            //insert roads into AnalysedRoad with this analysis ID
-            statement.executeUpdate("" +
-                    "INSERT INTO ANALYSEDROAD (ID, ANALYSISID) VALUES (?,?);");
+        //Associate every road of the path of the analysis with the analysis and store them
+        for (Road road : path) {
+            //associate roads (Analysed Roads) with this Analysis via its ID and the corresponding road ID
+            statement.executeUpdate(
+                    "INSERT INTO ANALYSEDROAD (ANALYSISID,ROADID) VALUES (" + analysisID + "," + road.getID() + ");");
         }
 
-        //Insert analysis
+        //Insert analysis associating it with the project via its ID
         String analysisInsertionCommand =
-                "--INSERT INTO";
+                "INSERT INTO ANALYSIS (ID, PROJECTNAME) VALUES (" + analysisID + "," + projectID + ");";
 
         statement.executeUpdate(analysisInsertionCommand);
 
@@ -67,7 +68,6 @@ public class DataBaseCommunicator {
 
         return false;
     }
-
 
 }
 
