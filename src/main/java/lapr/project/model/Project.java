@@ -32,4 +32,35 @@ public class Project {
         this.vehicles = vehicles;
     }
 
+    /**
+     * Getter for the name
+     * @return the name of the project
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Getter for the description
+     * @return the description of the project
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Getter for the road network
+     * @return the road network of the project
+     */
+    public RoadNetwork getRoadNetwork() {
+        return roadNetwork;
+    }
+
+    /**
+     * Getter for the vehicles
+     * @return the list of vehicles of the project
+     */
+    public List<Vehicle> getVehicles() {
+        return vehicles;
+    }
 }
