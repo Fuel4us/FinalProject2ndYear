@@ -1,15 +1,42 @@
 package lapr.project.model;
 
+import lapr.project.model.RoadNetwork.Road;
 import lapr.project.model.RoadNetwork.RoadNetwork;
+import lapr.project.model.RoadNetwork.Section;
+import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.Graph.Graph;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static org.junit.Assert.*;
 
 public class ProjectTest {
+
+    /**
+     * Ensures the getters for the attributes name, description, roadNetwork and vehicles are
+     * returning successfully
+     *
+     * @throws Exception
+     */
+    @Test
+    public void ensureGettersReturnSuccessfully() throws Exception {
+
+        String nameTest = "Name 1";
+        String descriptionTest = "Description 1";
+        RoadNetwork<Road, Section> roadNetworkTest = new RoadNetwork<>(false, new Graph<>(false));
+        List<Vehicle> vehiclesTest = new ArrayList<>();
+
+        Project p1 = new Project(nameTest, descriptionTest, roadNetworkTest, vehiclesTest);
+
+        assertEquals(p1.getName(), nameTest);
+        assertEquals(p1.getDescription(), descriptionTest);
+        assertEquals(p1.getRoadNetwork(), roadNetworkTest);
+        assertEquals(p1.getVehicles(), vehiclesTest);
+    }
+
 
     /**
      * Ensures hashCode() returns the correct number of its calculation
