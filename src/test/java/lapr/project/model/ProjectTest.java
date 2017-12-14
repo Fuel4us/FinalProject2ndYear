@@ -35,6 +35,17 @@ public class ProjectTest {
         result = Objects.equals(p1, p2);
 
         assertEquals(true, result);
+
+        //objects with both names null
+        Project p3 = new Project(null, "Description 3",
+                new RoadNetwork<>(false, new Graph<>(false)), new ArrayList<>());
+
+        Project p4 = new Project(null, "Description 4",
+                new RoadNetwork<>(false, new Graph<>(false)), new ArrayList<>());
+
+        result = Objects.equals(p3, p4);
+
+        assertEquals(true, result);
     }
 
     /**
