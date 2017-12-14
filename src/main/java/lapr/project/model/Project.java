@@ -18,6 +18,13 @@ public class Project {
     private RoadNetwork roadNetwork;
     private List<Vehicle> vehicles;
 
+    /**
+     * Full constructor for the class Project
+     * @param name the name of the project
+     * @param description the description of the project
+     * @param roadNetwork the road network of the project
+     * @param vehicles the list of vehicles in the project
+     */
     public Project(String name, String description, RoadNetwork roadNetwork, List<Vehicle> vehicles) {
         this.name = name;
         this.description = description;
