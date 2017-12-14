@@ -44,11 +44,22 @@ public class ProjectTest {
      */
     @Test
     public void ensureHashCodeCalculatesSuccessfully() throws Exception {
+
+        //name not null
         Project p1 = new Project("Name 1", "Description 1",
                 new RoadNetwork<>(false, new Graph<>(false)), new ArrayList<>());
 
         int expected = p1.getName().hashCode();
         int result = p1.hashCode();
+
+        assertEquals(expected, result);
+
+        //name null
+        Project p2 = new Project(null, "Descritpion 2",
+                new RoadNetwork<>(false, new Graph<>(false)), new ArrayList<>());
+
+        expected = 0;
+        result = p2.hashCode();
 
         assertEquals(expected, result);
     }
