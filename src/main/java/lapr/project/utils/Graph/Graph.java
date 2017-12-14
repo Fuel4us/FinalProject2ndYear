@@ -1,9 +1,6 @@
 package lapr.project.utils.Graph;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -13,7 +10,7 @@ import java.util.Map;
  * @param <E>
  * @author DEI-ESINF
  */
-public class AbstractGraph<V, E> implements Graphable<V, E> {
+public class Graph<V, E> implements Graphable<V, E> {
 
     private int numVert;
     private int numEdge;
@@ -21,7 +18,7 @@ public class AbstractGraph<V, E> implements Graphable<V, E> {
     private Map<V, Vertex<V, E>> vertices;  //all Vertices of the graph
 
     // Constructs an empty graph (either undirected or directed)
-    public AbstractGraph(boolean directed) {
+    public Graph(boolean directed) {
         numVert = 0;
         numEdge = 0;
         isDirected = directed;
@@ -48,17 +45,17 @@ public class AbstractGraph<V, E> implements Graphable<V, E> {
         return vertices.get(vert).getKey();
     }
 
-    public V[] allkeyVerts() {
+    public List<V> allkeyVerts() {
 
-        //V[] keyverts = (V[]) new Object[numVert];
         V vertElem = null;
-        for (Vertex<V, E> vert : vertices.values())
-            vertElem = vert.getElement();            // To get type
+//        for (Vertex<V, E> vert : vertices.values())
+//            vertElem = vert.getElement();            // To get type
 
-        V[] keyverts = (V[]) Array.newInstance(vertElem.getClass(), numVert);
+        List<V> keyverts = new LinkedList<>();
+        //(V[]) Array.newInstance(vertElem.getClass(), numVert);
 
         for (Vertex<V, E> vert : vertices.values())
-            keyverts[vert.getKey()] = vert.getElement();
+            keyverts.add(vert.getKey(), vert.getElement());
 
         return keyverts;
     }
@@ -98,7 +95,7 @@ public class AbstractGraph<V, E> implements Graphable<V, E> {
         return vorig.getEdge(vDest);
     }
 
-    public V[] endVertices(Edge<V, E> edge) {
+    public List<V> endVertices(Edge<V, E> edge) {
 
         if (edge == null)
             return null;
@@ -273,9 +270,9 @@ public class AbstractGraph<V, E> implements Graphable<V, E> {
 
 
     //Returns a clone of the graph
-    public AbstractGraph<V, E> clone() {
+    public Graph<V, E> clone() {
 
-        AbstractGraph<V, E> newObject = new AbstractGraph<>(this.isDirected);
+        Graph<V, E> newObject = new Graph<>(this.isDirected);
 
         //insert all vertices
         for (V vert : vertices.keySet())
@@ -304,22 +301,29 @@ public class AbstractGraph<V, E> implements Graphable<V, E> {
         if (otherObj == null || this.getClass() != otherObj.getClass())
             return false;
 
-        AbstractGraph<V, E> otherGraph = (AbstractGraph<V, E>) otherObj;
+        if (otherObj instanceof Graph) {
+            @SuppressWarnings("unchecked")
+            Graph<V,E> otherGraph = (Graph<V,E>) otherObj;
 
-        if (numVert != otherGraph.numVertices() || numEdge != otherGraph.numEdges())
-            return false;
-
-        //graph must have same vertices
-        boolean eqvertex;
-        for (V v1 : this.vertices()) {
-            eqvertex = false;
-            for (V v2 : otherGraph.vertices())
-                if (v1.equals(v2))
-                    eqvertex = true;
-
-            if (!eqvertex)
+            if (numVert != otherGraph.numVertices() || numEdge != otherGraph.numEdges()) {
                 return false;
+            }
+
+            //graph must have same vertices
+            boolean eqvertex;
+            for (V v1 : this.vertices()) {
+                eqvertex = false;
+                for (V v2 : otherGraph.vertices())
+                    if (v1.equals(v2)) {
+                        eqvertex = true;
+                    }
+
+                if (!eqvertex) {
+                    return false;
+                }
+            }
         }
+
         return true;
     }
 
