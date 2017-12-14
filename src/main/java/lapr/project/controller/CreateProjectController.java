@@ -32,6 +32,11 @@ public class CreateProjectController {
 //
 //    }
 
+    /**
+     * Creates the project
+     * @param name the name of the project
+     * @param description the description of the project
+     */
     public void createProject(String name, String description) {
         project = new Project(name, description, roadNetwork, vehicles);
     }
