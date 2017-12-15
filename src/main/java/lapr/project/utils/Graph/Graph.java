@@ -1,20 +1,21 @@
 package lapr.project.utils.Graph;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+
+/**
+ * An abstract graph provided to ease implementation of different graphs
+ *
+ * @param <V>
+ * @param <E>
+ * @author DEI-ESINF
+ */
 public class Graph<V, E> implements Graphable<V, E> {
 
     private int numVert;
     private int numEdge;
     private boolean isDirected;
-    private Map<V, Vertex<V, E>> vertices;  //all Vertices of the graph 
+    private Map<V, Vertex<V, E>> vertices;  //all Vertices of the graph
 
     // Constructs an empty graph (either undirected or directed)
     public Graph(boolean directed) {
@@ -34,9 +35,8 @@ public class Graph<V, E> implements Graphable<V, E> {
 
     public boolean validVertex(V vert) {
 
-        if (vertices.get(vert) == null) {
+        if (vertices.get(vert) == null)
             return false;
-        }
 
         return true;
     }
@@ -45,27 +45,25 @@ public class Graph<V, E> implements Graphable<V, E> {
         return vertices.get(vert).getKey();
     }
 
-    public V[] allkeyVerts() {
+    public List<V> allkeyVerts() {
 
-        //V[] keyverts = (V[]) new Object[numVert];
         V vertElem = null;
-        for (Vertex<V, E> vert : vertices.values()) {
-            vertElem = vert.getElement();            // To get type
-        }
-        V[] keyverts = (V[]) Array.newInstance(vertElem.getClass(), numVert);
+//        for (Vertex<V, E> vert : vertices.values())
+//            vertElem = vert.getElement();            // To get type
 
-        for (Vertex<V, E> vert : vertices.values()) {
-            keyverts[vert.getKey()] = vert.getElement();
-        }
+        List<V> keyverts = new LinkedList<>();
+        //(V[]) Array.newInstance(vertElem.getClass(), numVert);
+
+        for (Vertex<V, E> vert : vertices.values())
+            keyverts.add(vert.getKey(), vert.getElement());
 
         return keyverts;
     }
 
     public Iterable<V> adjVertices(V vert) {
 
-        if (!validVertex(vert)) {
+        if (!validVertex(vert))
             return null;
-        }
 
         Vertex<V, E> vertex = vertices.get(vert);
 
@@ -87,41 +85,47 @@ public class Graph<V, E> implements Graphable<V, E> {
         return edges;
     }
 
+    public List<Edge<V, E>> getEdges() {
+
+        List<Edge<V, E>> edges = new LinkedList<>();
+        for (Vertex<V, E> vert : vertices.values()) {
+            for (Edge<V, E> e : vert.getAllOutEdges()) {
+                edges.add(e);
+            }
+        }
+        return edges;
+    }
+
     public Edge<V, E> getEdge(V vOrig, V vDest) {
 
-        if (!validVertex(vOrig) || !validVertex(vDest)) {
+        if (!validVertex(vOrig) || !validVertex(vDest))
             return null;
-        }
 
         Vertex<V, E> vorig = vertices.get(vOrig);
 
         return vorig.getEdge(vDest);
     }
 
-    public V[] endVertices(Edge<V, E> edge) {
+    public List<V> endVertices(Edge<V, E> edge) {
 
-        if (edge == null) {
+        if (edge == null)
             return null;
-        }
 
-        if (!validVertex(edge.getVOrig()) || !validVertex(edge.getVDest())) {
+        if (!validVertex(edge.getVOrig()) || !validVertex(edge.getVDest()))
             return null;
-        }
 
         Vertex<V, E> vorig = vertices.get(edge.getVOrig());
 
-        if (!edge.equals(vorig.getEdge(edge.getVDest()))) {
+        if (!edge.equals(vorig.getEdge(edge.getVDest())))
             return null;
-        }
 
         return edge.getEndpoints();
     }
 
     public V opposite(V vert, Edge<V, E> edge) {
 
-        if (!validVertex(vert)) {
+        if (!validVertex(vert))
             return null;
-        }
 
         Vertex<V, E> vertex = vertices.get(vert);
 
@@ -130,9 +134,8 @@ public class Graph<V, E> implements Graphable<V, E> {
 
     public int outDegree(V vert) {
 
-        if (!validVertex(vert)) {
+        if (!validVertex(vert))
             return -1;
-        }
 
         Vertex<V, E> vertex = vertices.get(vert);
 
@@ -141,25 +144,21 @@ public class Graph<V, E> implements Graphable<V, E> {
 
     public int inDegree(V vert) {
 
-        if (!validVertex(vert)) {
+        if (!validVertex(vert))
             return -1;
-        }
 
         int degree = 0;
-        for (V otherVert : vertices.keySet()) {
-            if (getEdge(otherVert, vert) != null) {
+        for (V otherVert : vertices.keySet())
+            if (getEdge(otherVert, vert) != null)
                 degree++;
-            }
-        }
 
         return degree;
     }
 
     public Iterable<Edge<V, E>> outgoingEdges(V vert) {
 
-        if (!validVertex(vert)) {
+        if (!validVertex(vert))
             return null;
-        }
 
         Vertex<V, E> vertex = vertices.get(vert);
 
@@ -167,9 +166,8 @@ public class Graph<V, E> implements Graphable<V, E> {
     }
 
     public Iterable<Edge<V, E>> incomingEdges(V vert) {
-        if (!validVertex(vert)) {
+        if (!validVertex(vert))
             return null;
-        }
 
         ArrayList<Edge<V, E>> edges = new ArrayList<>();
 
@@ -185,9 +183,8 @@ public class Graph<V, E> implements Graphable<V, E> {
 
     public boolean insertVertex(V vert) {
 
-        if (validVertex(vert)) {
+        if (validVertex(vert))
             return false;
-        }
 
         Vertex<V, E> vertex = new Vertex<>(numVert, vert);
         vertices.put(vert, vertex);
@@ -198,17 +195,14 @@ public class Graph<V, E> implements Graphable<V, E> {
 
     public boolean insertEdge(V vOrig, V vDest, E eInf, double eWeight) {
 
-        if (getEdge(vOrig, vDest) != null) {
+        if (getEdge(vOrig, vDest) != null)
             return false;
-        }
 
-        if (!validVertex(vOrig)) {
+        if (!validVertex(vOrig))
             insertVertex(vOrig);
-        }
 
-        if (!validVertex(vDest)) {
+        if (!validVertex(vDest))
             insertVertex(vDest);
-        }
 
         Vertex<V, E> vorig = vertices.get(vOrig);
         Vertex<V, E> vdest = vertices.get(vDest);
@@ -217,24 +211,22 @@ public class Graph<V, E> implements Graphable<V, E> {
         vorig.addAdjVert(vDest, newEdge);
         numEdge++;
 
-        //if graph is not direct insert other edge in the opposite direction 
-        if (!isDirected) // if vDest different vOrig
-        {
+        //if graph is not direct insert other edge in the opposite direction
+        if (!isDirected)
+            // if vDest different vOrig
             if (getEdge(vDest, vOrig) == null) {
                 Edge<V, E> otherEdge = new Edge<>(eInf, eWeight, vdest, vorig);
                 vdest.addAdjVert(vOrig, otherEdge);
                 numEdge++;
             }
-        }
 
         return true;
     }
 
     public boolean removeVertex(V vert) {
 
-        if (!validVertex(vert)) {
+        if (!validVertex(vert))
             return false;
-        }
 
         //remove all edges that point to vert
         for (Edge<V, E> edge : incomingEdges(vert)) {
@@ -252,7 +244,7 @@ public class Graph<V, E> implements Graphable<V, E> {
                 v.setKey(keyVert);
             }
         }
-        //The edges that live from vert are removed with the vertex    
+        //The edges that live from vert are removed with the vertex
         vertices.remove(vert);
 
         numVert--;
@@ -262,22 +254,20 @@ public class Graph<V, E> implements Graphable<V, E> {
 
     public boolean removeEdge(V vOrig, V vDest) {
 
-        if (!validVertex(vOrig) || !validVertex(vDest)) {
+        if (!validVertex(vOrig) || !validVertex(vDest))
             return false;
-        }
 
         Edge<V, E> edge = getEdge(vOrig, vDest);
 
-        if (edge == null) {
+        if (edge == null)
             return false;
-        }
 
         Vertex<V, E> vorig = vertices.get(vOrig);
 
         vorig.remAdjVert(vDest);
         numEdge--;
 
-        //if graph is not direct 
+        //if graph is not direct
         if (!isDirected) {
             edge = getEdge(vDest, vOrig);
             if (edge != null) {
@@ -289,25 +279,23 @@ public class Graph<V, E> implements Graphable<V, E> {
         return true;
     }
 
-    //Returns a clone of the graph 
+
+    //Returns a clone of the graph
     public Graph<V, E> clone() {
 
         Graph<V, E> newObject = new Graph<>(this.isDirected);
 
         //insert all vertices
-        for (V vert : vertices.keySet()) {
+        for (V vert : vertices.keySet())
             newObject.insertVertex(vert);
-        }
 
         //insert all edges
-        for (V vert1 : vertices.keySet()) {
-            for (Edge<V, E> e : this.outgoingEdges(vert1)) {
+        for (V vert1 : vertices.keySet())
+            for (Edge<V, E> e : this.outgoingEdges(vert1))
                 if (e != null) {
                     V vert2 = this.opposite(vert1, e);
                     newObject.insertEdge(vert1, vert2, e.getElement(), e.getWeight());
                 }
-            }
-        }
 
         return newObject;
     }
@@ -318,35 +306,45 @@ public class Graph<V, E> implements Graphable<V, E> {
      */
     public boolean equals(Object otherObj) {
 
-        if (this == otherObj) {
+        if (this == otherObj)
             return true;
-        }
 
-        if (otherObj == null || this.getClass() != otherObj.getClass()) {
+        if (otherObj == null || this.getClass() != otherObj.getClass())
             return false;
-        }
 
-        Graph<V, E> otherGraph = (Graph<V, E>) otherObj;
+        if (otherObj instanceof Graph) {
+            @SuppressWarnings("unchecked")
+            Graph<V,E> otherGraph = (Graph<V,E>) otherObj;
 
-        if (numVert != otherGraph.numVertices() || numEdge != otherGraph.numEdges()) {
-            return false;
-        }
-
-        //graph must have same vertices
-        boolean eqvertex;
-        for (V v1 : this.vertices()) {
-            eqvertex = false;
-            for (V v2 : otherGraph.vertices()) {
-                if (v1.equals(v2)) {
-                    eqvertex = true;
-                }
-            }
-
-            if (!eqvertex) {
+            if (numVert != otherGraph.numVertices() || numEdge != otherGraph.numEdges()) {
                 return false;
             }
+
+            //graph must have same vertices
+            boolean eqvertex;
+            for (V v1 : this.vertices()) {
+                eqvertex = false;
+                for (V v2 : otherGraph.vertices())
+                    if (v1.equals(v2)) {
+                        eqvertex = true;
+                    }
+
+                if (!eqvertex) {
+                    return false;
+                }
+            }
         }
+
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = numVert;
+        result = 31 * result + numEdge;
+        result = 31 * result + (isDirected ? 1 : 0);
+        result = 31 * result + (vertices != null ? vertices.hashCode() : 0);
+        return result;
     }
 
     //string representation
@@ -357,9 +355,8 @@ public class Graph<V, E> implements Graphable<V, E> {
             s = "\nGraph not defined!!";
         } else {
             s = "Graph: " + numVert + " vertices, " + numEdge + " edges\n";
-            for (Vertex<V, E> vert : vertices.values()) {
+            for (Vertex<V, E> vert : vertices.values())
                 s += vert + "\n";
-            }
         }
         return s;
     }

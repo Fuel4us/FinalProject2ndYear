@@ -1,31 +1,48 @@
 package lapr.project.model.RoadNetwork;
 
-/**
- * ToDo add JavaDoc
- */
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Segment {
 
+    @XmlElement(name = "id")
     private int index;
-
+    @XmlElement(name = "init_height")
     private double initialHeight;
+    @XmlElement(name = "final_height")
+    private double finalHeight;
 
-    private double slope;
-
-    private double lengh;
-
+    //private double slope;
+    @XmlElement
+    private double length;
+    @XmlElement(name = "wind_direction")
     private double windAngle;
-
+    @XmlElement(name = "wind_speed")
     private double windSpeed;
-
+    @XmlElement(name = "max_velocity")
     private double maxVelocity;
-
+    @XmlElement(name = "min_velocity")
     private double minVelocity;
 
-    private double toll;
 
     /**
      * Forbid default no-arg instantiation
      */
     private Segment() {}
 
+    public Segment(int index, double initialHeight, double finalHeight, double length, double windAngle, double windSpeed, double maxVelocity, double minVelocity) {
+        this.index = index;
+        this.initialHeight = initialHeight;
+        this.finalHeight = finalHeight;
+        this.length = length;
+        this.windAngle = windAngle;
+        this.windSpeed = windSpeed;
+        this.maxVelocity = maxVelocity;
+        this.minVelocity = minVelocity;
+    }
+
+    public double getLength() {
+        return length;
+    }
 }

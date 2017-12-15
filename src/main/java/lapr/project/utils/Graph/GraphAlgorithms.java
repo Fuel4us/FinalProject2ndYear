@@ -2,6 +2,7 @@ package lapr.project.utils.Graph;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class GraphAlgorithms {
 
@@ -148,13 +149,13 @@ public class GraphAlgorithms {
      * @param pathkeys minimum path vertices keys
      * @param dist minimum distances
      */
-    private static <V, E> void shortestPathLength(Graph<V, E> g, V vOrig, V[] vertices,
+    private static <V, E> void shortestPathLength(Graph<V, E> g, V vOrig, List<V> vertices,
             boolean[] visited, int[] pathKeys, double[] dist) {
         int vkey = g.getKey(vOrig);
         dist[vkey] = 0;
 
         while (vkey != -1) {
-            vOrig = vertices[vkey];
+            vOrig = vertices.get(vkey);
             visited[vkey] = true;
 
             for (Edge<V, E> edge : g.outgoingEdges(vOrig)) {
@@ -190,12 +191,12 @@ public class GraphAlgorithms {
      * @param pathkeys minimum path vertices keys
      * @param path stack with the minimum path (correct order)
      */
-    private static <V, E> void getPath(Graph<V, E> g, V vOrig, V vDest, V[] verts, int[] pathKeys, LinkedList<V> path) {
+    private static <V, E> void getPath(Graph<V, E> g, V vOrig, V vDest, List<V> verts, int[] pathKeys, LinkedList<V> path) {
         if (vOrig != vDest) {
             path.push(vDest);
             int vKey = g.getKey(vDest);
             int prevVKey = pathKeys[vKey];
-            vDest = verts[prevVKey];
+            vDest = verts.get(prevVKey);
             getPath(g, vOrig, vDest, verts, pathKeys, path);
         } else {
             path.push(vOrig);
@@ -212,7 +213,7 @@ public class GraphAlgorithms {
         boolean[] visited = new boolean[nverts]; //default value: false
         int[] pathKeys = new int[nverts];
         double[] dist = new double[nverts];
-        V[] vertices = g.allkeyVerts();
+        List<V> vertices = g.allkeyVerts();
 
         for (int i = 0; i < nverts; i++) {
             dist[i] = Double.MAX_VALUE;

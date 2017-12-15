@@ -1,17 +1,23 @@
 package lapr.project.utils.Graph;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
+/**
+ * Created by anily on 14/12/2017.
+ */
 public class EdgeTest {
 
-    Edge<String, String> instance = new Edge<>();
+    Edge<String, String> instance;
 
-    public EdgeTest() {
+    @Before
+    public void setUp() throws Exception {
+        instance = new Edge<>();
     }
 
     /**
@@ -127,16 +133,18 @@ public class EdgeTest {
     public void testGetEndpoints() {
         System.out.println("getEndpoints");
 
-        String[] expResult = null;
-        String[] result = instance.getEndpoints();
-        assertArrayEquals(expResult, result);
+        List<String> expResult = null;
+        List<String> result = instance.getEndpoints();
+        assertEquals(expResult, result);
 
         Vertex<String, String> vertex1 = new Vertex<>(1, "Vertex1");
         instance.setVOrig(vertex1);
         instance.setVDest(vertex1);
 
-        String[] expResult1 = {"Vertex1", "Vertex1"};
-        assertArrayEquals(expResult1, instance.getEndpoints());
+        List<String> expResult1 = new LinkedList<>();
+        expResult1.add("Vertex1");
+        expResult1.add("Vertex1");
+        assertEquals(expResult1, instance.getEndpoints());
     }
 
     /**
@@ -193,13 +201,13 @@ public class EdgeTest {
         Vertex<String, String> vertex1 = new Vertex<>(1, "Vertex1");
         Edge<String, String> otherEdge = new Edge<>("edge1", 1.0, vertex1, vertex1);
 
-        Edge instClone = otherEdge.clone();
+        Edge<String,String> instClone = otherEdge.clone();
 
         assertTrue("element should be equal", otherEdge.getElement() == instClone.getElement());
         assertTrue("weight should be equal", otherEdge.getWeight() == instClone.getWeight());
 
-        String[] expResult = otherEdge.getEndpoints();
-        assertArrayEquals(expResult, instClone.getEndpoints());
+        List<String> expResult = otherEdge.getEndpoints();
+        assertEquals(expResult, instClone.getEndpoints());
     }
 
     /**
@@ -222,5 +230,5 @@ public class EdgeTest {
         System.out.println(instance);
     }
 
-}
 
+}
