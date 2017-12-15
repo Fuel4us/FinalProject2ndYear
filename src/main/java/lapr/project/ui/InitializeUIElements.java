@@ -26,7 +26,7 @@ public class InitializeUIElements {
     void initializeJList(JList list, ListSelectionModel selectionModel, Color background, Color foreground, BorderFactory border, Font font, String text){
         list.setBackground(background);
         list.setForeground(foreground);
-        list.setBorder(border);
+        list.setBorder((Border)border);
         list.setFont(font);
         list.setSelectionModel(selectionModel);
     }
