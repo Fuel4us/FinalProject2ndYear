@@ -1,6 +1,9 @@
 package lapr.project.model;
 
 import lapr.project.model.RoadNetwork.RoadNetwork;
+import lapr.project.model.Vehicle.AbstractVehicle;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,6 +16,7 @@ public class Project {
     private String name;
     private String description;
     private RoadNetwork roadNetwork;
+    private List<AbstractVehicle> vehicles;
 
     /**
      * Creates a new Project, with a name, description and a roadNetwork
@@ -20,7 +24,7 @@ public class Project {
      * @param description This project's description
      * @param roadNetwork The graph view of the network of roads associated with this project
      */
-    public Project(String name, String description, RoadNetwork roadNetwork) {
+    public Project(String name, String description, RoadNetwork roadNetwork, List<AbstractVehicle> vehicles) {
         this.name = name;
         this.description = description;
         this.roadNetwork = roadNetwork;

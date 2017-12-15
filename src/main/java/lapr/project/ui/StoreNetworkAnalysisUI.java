@@ -5,18 +5,31 @@
  */
 package lapr.project.ui;
 
+import lapr.project.controller.NetworkAnalysisController;
+import lapr.project.model.DataBaseCommunicator;
+import lapr.project.model.Project;
+
+import javax.swing.*;
+import java.awt.*;
+
 /**
  *
  * @author anily
  */
-public class StoreNetworkAnalysisUI extends javax.swing.JPanel {
+public class NetworkAnalysisUI extends JFrame {
 
     private static final long serialVersionUID = -8965477186930734905L;
 
     /**
      * Creates new form P00
      */
-    public StoreNetworkAnalysisUI() {
+    public NetworkAnalysisUI(Project project, DataBaseCommunicator dbCom) {
+        initComponents();
+        NetworkAnalysisController networkAnalysisController =
+                new NetworkAnalysisController(project,dbCom);
+    }
+
+    public NetworkAnalysisUI() {
         initComponents();
     }
 
@@ -145,6 +158,9 @@ public class StoreNetworkAnalysisUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonBackActionPerformed
 
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> new NetworkAnalysisUI().setVisible(true));
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;

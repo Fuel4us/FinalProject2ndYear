@@ -11,6 +11,12 @@ import java.util.Optional;
 public abstract class AbstractVehicle {
 
     private String name;
+    
+    private String description;
+    
+    private Motorization motorization;
+    
+    private Fuel fuel;
 
     private VehicleType type;
 

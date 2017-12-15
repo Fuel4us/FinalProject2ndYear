@@ -1,12 +1,19 @@
 package lapr.project.model.RoadNetwork;
 
-/**
- * //ToDo add Javadoc
- */
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Road {
 
-    private String name;
+    @XmlElement(name = "id")
     private String id;
+
+    @XmlElement(name = "road_name")
+    private String name;
+
+    @XmlElement
+    private Typology typology;
 
     /**
      * @return the ID of this road
