@@ -22,21 +22,21 @@ public class CreateProjectControllerTest {
      * Method createProject()
      * @throws Exception
      */
-    @Test
-    public void ensureCreationProject() throws Exception {
-
-        CreateProjectController controller = new CreateProjectController(new DataBaseCommunicator());
-
-        String nameTest = "Project 1";
-        String descriptionTest = "Description 1";
-        RoadNetwork<Road, Section> roadNetworkTest = new RoadNetwork<>(false, new Graph<>(false));
-        List<Vehicle> vehicleListTest = new ArrayList<>();
-
-        Project projectExpected = new Project(nameTest, descriptionTest, roadNetworkTest, vehicleListTest);
-
-        Project projectResult = controller.createProject(nameTest, descriptionTest);
-
-        assertEquals(projectExpected, projectResult);
-    }
+//    @Test
+//    public void ensureCreationProject() throws Exception {
+//
+//        CreateProjectController controller = new CreateProjectController(new DataBaseCommunicator());
+//
+//        String nameTest = "Project 1";
+//        String descriptionTest = "Description 1";
+//        RoadNetwork<Road, Section> roadNetworkTest = new RoadNetwork<>(false, new Graph<>(false));
+//        List<Vehicle> vehicleListTest = new ArrayList<>();
+//
+//        Project projectExpected = new Project(nameTest, descriptionTest, roadNetworkTest, vehicleListTest);
+//
+//        Project projectResult = controller.createProject(nameTest, descriptionTest);
+//
+//        assertEquals(projectExpected, projectResult);
+//    }
 
 }
