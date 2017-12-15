@@ -17,6 +17,7 @@ public class Project {
     private String description;
     private RoadNetwork<Node,Section> roadNetwork;
     private List<Vehicle> vehicles;
+    private boolean active;
 
     /**
      * Full constructor for the class Project
@@ -30,6 +31,7 @@ public class Project {
         this.description = description;
         this.roadNetwork = roadNetwork;
         this.vehicles = vehicles;
+        this.active = false;
     }
 
     /**
@@ -88,5 +90,13 @@ public class Project {
     @Override
     public int hashCode() {
         return name != null ? name.hashCode() : 0;
+    }
+    
+    public void setActive(){
+        this.active = true;
+    }
+    
+    public void setDesactive(){
+        this.active = false;
     }
 }
