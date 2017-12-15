@@ -1,5 +1,6 @@
 package lapr.project.model;
 
+import lapr.project.model.RoadNetwork.Node;
 import lapr.project.model.RoadNetwork.Road;
 import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.RoadNetwork.Section;
@@ -26,7 +27,7 @@ public class ProjectTest {
 
         String nameTest = "Name 1";
         String descriptionTest = "Description 1";
-        RoadNetwork<Road, Section> roadNetworkTest = new RoadNetwork<>(false, new Graph<>(false));
+        RoadNetwork<Node, Section> roadNetworkTest = new RoadNetwork<>(false);
         List<Vehicle> vehiclesTest = new ArrayList<>();
 
         Project p1 = new Project(nameTest, descriptionTest, roadNetworkTest, vehiclesTest);
@@ -47,7 +48,7 @@ public class ProjectTest {
 
         //name not null
         Project p1 = new Project("Name 1", "Description 1",
-                new RoadNetwork<>(false, new Graph<>(false)), new ArrayList<>());
+                new RoadNetwork<>(false), new ArrayList<>());
 
         int expected = p1.getName().hashCode();
         int result = p1.hashCode();
@@ -55,8 +56,8 @@ public class ProjectTest {
         assertEquals(expected, result);
 
         //name null
-        Project p2 = new Project(null, "Descritpion 2",
-                new RoadNetwork<>(false, new Graph<>(false)), new ArrayList<>());
+        Project p2 = new Project(null, "Description 2",
+                new RoadNetwork<>(false), new ArrayList<>());
 
         expected = 0;
         result = p2.hashCode();
@@ -75,7 +76,7 @@ public class ProjectTest {
 
         //same objects
         Project p1 = new Project("Name 1", "Description 1",
-                new RoadNetwork<>(false, new Graph<>(false)), new ArrayList<>());
+                new RoadNetwork<>(false), new ArrayList<>());
 
         boolean result = Objects.equals(p1, p1);
 
@@ -83,7 +84,7 @@ public class ProjectTest {
 
         //objects with the same name but different descriptions
         Project p2 = new Project("Name 1", "Description 2",
-                new RoadNetwork<>(false, new Graph<>(false)), new ArrayList<>());
+                new RoadNetwork<>(false), new ArrayList<>());
 
         result = Objects.equals(p1, p2);
 
@@ -91,10 +92,10 @@ public class ProjectTest {
 
         //objects with both names null
         Project p3 = new Project(null, "Description 3",
-                new RoadNetwork<>(false, new Graph<>(false)), new ArrayList<>());
+                new RoadNetwork<>(false), new ArrayList<>());
 
         Project p4 = new Project(null, "Description 4",
-                new RoadNetwork<>(false, new Graph<>(false)), new ArrayList<>());
+                new RoadNetwork<>(false), new ArrayList<>());
 
         result = Objects.equals(p3, p4);
 
@@ -112,7 +113,7 @@ public class ProjectTest {
 
         //object p2 is null
         Project p1 = new Project("Name 1", "Description 1",
-                new RoadNetwork<>(false, new Graph<>(false)), new ArrayList<>());
+                new RoadNetwork<>(false), new ArrayList<>());
 
         Project p2 = null;
 
@@ -122,10 +123,10 @@ public class ProjectTest {
 
         //object p3 has the name null but the p4 doesn't
         Project p3 = new Project(null, "Description 3",
-                new RoadNetwork<>(false, new Graph<>(false)), new ArrayList<>());
+                new RoadNetwork<>(false), new ArrayList<>());
 
         Project p4 = new Project("Name 4", "Description 4",
-                new RoadNetwork<>(false, new Graph<>(false)), new ArrayList<>());
+                new RoadNetwork<>(false), new ArrayList<>());
 
         result = Objects.equals(p3, p4);
 
