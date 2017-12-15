@@ -7,5 +7,4 @@ package lapr.project.model.Vehicle;
  * </p>
  */
 public enum TollClass {
-
 }

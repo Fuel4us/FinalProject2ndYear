@@ -25,7 +25,6 @@ public class Segment {
     @XmlElement(name = "min_velocity")
     private double minVelocity;
 
-    private double toll;
 
     /**
      * Forbid default no-arg instantiation

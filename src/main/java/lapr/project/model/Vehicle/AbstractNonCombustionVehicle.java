@@ -3,7 +3,7 @@ package lapr.project.model.Vehicle;
 /**
  * Defines properties and behaviour of vehicles not using combustion
  */
-public abstract class AbstractNonCombustionVehicle extends AbstractVehicle {
+public abstract class AbstractNonCombustionVehicle extends Vehicle {
 
     /**
      *  Defines abstract behaviour for vehicle
