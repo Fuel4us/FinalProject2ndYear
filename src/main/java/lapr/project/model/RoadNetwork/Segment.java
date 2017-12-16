@@ -13,7 +13,7 @@ public class Segment {
     @XmlElement(name = "final_height")
     private double finalHeight;
 
-    private double slope;
+    //private double slope;
     @XmlElement
     private double length;
     @XmlElement(name = "wind_direction")
@@ -31,4 +31,18 @@ public class Segment {
      */
     private Segment() {}
 
+    public Segment(int index, double initialHeight, double finalHeight, double length, double windAngle, double windSpeed, double maxVelocity, double minVelocity) {
+        this.index = index;
+        this.initialHeight = initialHeight;
+        this.finalHeight = finalHeight;
+        this.length = length;
+        this.windAngle = windAngle;
+        this.windSpeed = windSpeed;
+        this.maxVelocity = maxVelocity;
+        this.minVelocity = minVelocity;
+    }
+
+    public double getLength() {
+        return length;
+    }
 }

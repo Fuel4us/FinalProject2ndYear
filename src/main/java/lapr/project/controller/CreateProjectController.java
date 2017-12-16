@@ -17,7 +17,7 @@ public class CreateProjectController {
     private Project project;
 
     private List<Vehicle> vehicles;
-    private RoadNetwork<Road, Section> roadNetwork;
+    private RoadNetwork<Node,Section> roadNetwork;
 
     /**
      * Full constructor for the class CreateProjectController
@@ -25,7 +25,7 @@ public class CreateProjectController {
     public CreateProjectController(DataBaseCommunicator dbCom) {
         this.dbCom = dbCom;
         this.vehicles = new ArrayList<>();
-        this.roadNetwork = new RoadNetwork<>(false, new Graph<Road, Section>(false));
+        this.roadNetwork = new RoadNetwork<>(false);
     }
 
 //    public void importVehicles() {

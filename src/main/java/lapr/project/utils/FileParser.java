@@ -1,19 +1,19 @@
 package lapr.project.utils;
 
 import lapr.project.model.RoadNetwork.Road;
+import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.RoadNetwork.Section;
 import lapr.project.model.RoadNetwork.Segment;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+
+import javax.xml.bind.Element;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by anily on 13/12/2017.
@@ -21,86 +21,101 @@ import java.io.IOException;
 public class FileParser {
 
     private final File file;
+    private RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> roadNetwork;
     private Road road;
     private Section section;
     private Segment segment;
     private lapr.project.model.RoadNetwork.Node node;
 
 
-    public FileParser(File file) throws Exception{
+    //ToDo
+
+    /**
+     * Constructor of class
+     *
+     * @param file xmlFile
+     * @throws Exception
+     */
+    public FileParser(File file) throws Exception {
         this.file = file;
     }
 
     /**
-     * Counts number of children nodes
-     * Based on <a href="https://stackoverflow.com/questions/24759710/xml-child-node-count-java">stackoverflow.com</a>
-     * @param element An Element corresponding to the parent Node
-     * @return Number of children nodes
+     * Reads RoadNetwork from file
+     *
+     * @return
+     * @throws Exception
      */
-    private int countNodesChildren(Element element) {
+    public RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> importNetwork() throws Exception {
 
-        int nodeNumber = 0;
-        NodeList parentNode = element.getChildNodes();
-
-        for (int j = 0; j < parentNode.getLength(); j++) {
-            if (parentNode.item(j).getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
-                nodeNumber++;
-            }
-        }
-
-        return nodeNumber;
-    }
-
-    public lapr.project.model.RoadNetwork.Node importNode() throws Exception {
-
-        JAXBContext context = JAXBContext.newInstance(lapr.project.model.RoadNetwork.Node.class);
+        JAXBContext context = JAXBContext.newInstance(RoadNetwork.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
-        node = (lapr.project.model.RoadNetwork.Node) unmarshaller.unmarshal(file);
+        roadNetwork = ClassCast.uncheckedCast(unmarshaller.unmarshal(file));
+                completeNetworkInformationDOMParsing(roadNetwork, file);
 
-        return node;
+        return roadNetwork;
     }
 
-    public Road importRoad() throws Exception {
+    /**
+     * Creates document in order to complete information in the RoadNetwork
+     *
+     * @param roadNetwork
+     * @param file
+     * @throws Exception
+     */
+    public void completeNetworkInformationDOMParsing(RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> roadNetwork, File file) throws Exception {
 
-        JAXBContext context = JAXBContext.newInstance(Road.class);
-        Unmarshaller unmarshaller = context.createUnmarshaller();
-        road = (Road) unmarshaller.unmarshal(file);
-
-        return road;
-    }
-
-    public Section importSection() throws Exception {
-
-        JAXBContext context = JAXBContext.newInstance(Section.class);
-        Unmarshaller unmarshaller = context.createUnmarshaller();
-        section = (Section) unmarshaller.unmarshal(file);
-
-
-        return section;
-    }
-
-    public Segment importSegment() throws Exception {
-
-        JAXBContext context = JAXBContext.newInstance(Segment.class);
-        Unmarshaller unmarshaller = context.createUnmarshaller();
-        segment = (Segment) unmarshaller.unmarshal(file);
-
-        return segment;
-    }
-
-    public void completeRoadInformationDOMParsing(Road road, File file) throws Exception{
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(file);
 
-        addSections(road, file);
-
+//        addNodes(roadNetwork, doc);
+        addSections(roadNetwork, doc);
     }
 
-    public void addSections(Road road, File file) throws Exception{
 
-        //something
+    /**
+     * Adds sections from file in the RoadNetwork graph
+     *
+     * @param roadNetwork
+     * @param doc
+     * @throws Exception
+     */
+    public void addSections(RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> roadNetwork, Document doc) throws Exception {
+
+        NodeList sections = doc.getElementsByTagName("road_section");
+        for (int i = 0; i < sections.getLength(); i++) {
+            org.w3c.dom.Node node = sections.item(i);
+            if (node.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
+//                Element element = (Element) node;
+//                String str = node.getTextContent();
+//                Class cls = Class.forName(str);
+//                Section section = (Section) cls.newInstance();
+//                //roadNetwork.addSection(section);
+            }
+        }
+    }
+
+    /**
+     * Adds roads from file in the RoadNetwork graph
+     *
+     * @param roadNetwork
+     * @param doc
+     * @throws Exception
+     */
+    public void addNodes(RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> roadNetwork, Document doc) throws Exception {
+
+        NodeList nodes = doc.getElementsByTagName("node");
+        for (int i = 0; i < nodes.getLength(); i++) {
+            org.w3c.dom.Node node = nodes.item(i);
+            if (node.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
+//                String str = node.getTextContent();
+//                Class cls = Class.forName(str);
+//                lapr.project.model.RoadNetwork.Node junction = (lapr.project.model.RoadNetwork.Node) cls.newInstance();
+//                roadNetwork.addNode(junction);
+            }
+        }
     }
 
 }

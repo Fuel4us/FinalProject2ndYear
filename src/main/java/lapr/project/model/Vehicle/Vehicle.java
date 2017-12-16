@@ -1,7 +1,9 @@
 package lapr.project.model.Vehicle;
 
+import java.util.List;
 import java.util.Optional;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 /**
  * <p>
@@ -52,6 +54,10 @@ public abstract class Vehicle {
     @XmlElement(name = "wheel_size")
     private double wheelSize;
     
+    @XmlElementWrapper(name = "velocity_limit_list")
+    private List<VelocityLimitList> velocityLimitsList;
     
+    @XmlElement(name = "energy")
+    private Energy energy;
     
 }
