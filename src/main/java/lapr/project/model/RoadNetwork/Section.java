@@ -5,7 +5,8 @@ import lapr.project.utils.Graph.Edge;
 import javax.xml.bind.annotation.*;
 import java.util.Collection;
 
-@XmlRootElement
+
+@XmlRootElement(name = "road_section")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Section extends Edge<Node, Direction> {
 
@@ -22,6 +23,8 @@ public class Section extends Edge<Node, Direction> {
     @XmlElement(name = "segment")
     private Collection<Segment> segments;
 
+    private Road owningRoad;
+
     /**
      * Constructor
      * @param beginningNode
@@ -29,13 +32,14 @@ public class Section extends Edge<Node, Direction> {
      * @param direction
      * @param segments
      */
-    public Section(lapr.project.model.RoadNetwork.Node beginningNode, lapr.project.model.RoadNetwork.Node endingNode, Direction direction, Collection<Segment> segments) {
+    public Section(lapr.project.model.RoadNetwork.Node beginningNode, lapr.project.model.RoadNetwork.Node endingNode, Direction direction, Collection<Segment> segments, Road road) {
 
         super(direction, calculateTotalLength(segments), beginningNode, endingNode);
         this.segments = segments;
         this.beginningNode = beginningNode;
         this.endingNode = endingNode;
         this.direction = direction;
+        this.owningRoad = road;
     }
 
     /**

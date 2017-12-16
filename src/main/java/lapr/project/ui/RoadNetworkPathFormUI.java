@@ -9,14 +9,34 @@ package lapr.project.ui;
  *
  * @author anily
  */
-public class N01UI extends javax.swing.JPanel {
+public class RoadNetworkPathFormUI extends javax.swing.JFrame {
 
-    private static final long serialVersionUID = -2019222233077546309L;
+    private static final long serialVersionUID = -8320152827152597623L;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel imgLateral;
+    private javax.swing.JButton jButtonBack;
+    private javax.swing.JButton jButtonResults;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabelAlgorithm;
+    private javax.swing.JLabel jLabelAlgorithm1;
+    private javax.swing.JLabel jLabelNode1;
+    private javax.swing.JLabel jLabelNode2;
+    private javax.swing.JList<String> jListAlgorithms;
+    private javax.swing.JList<String> jListAlgorithms1;
+    private javax.swing.JList<String> jListNodes1;
+    private javax.swing.JList<String> jListNodes2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JPanel orangeBorder;
+    // End of variables declaration//GEN-END:variables
 
     /**
-     * Creates new form P00
+     * Creates new form RoadNetworkPathFormUI
      */
-    public N01UI() {
+    public RoadNetworkPathFormUI() {
         initComponents();
     }
 
@@ -29,9 +49,6 @@ public class N01UI extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jLabelPName = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         imgLateral = new javax.swing.JLabel();
         orangeBorder = new javax.swing.JPanel();
@@ -51,15 +68,7 @@ public class N01UI extends javax.swing.JPanel {
         jLabelAlgorithm1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
-        jLabel1.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(155, 177, 189));
-        jLabel1.setText("Please select what you wish to do");
-
-        jButton1.setText("jButton1");
-
-        jLabelPName.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelPName.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelPName.setText("PROJECT NAME:");
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(45, 46, 45));
 
@@ -96,7 +105,7 @@ public class N01UI extends javax.swing.JPanel {
         jListAlgorithms.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListAlgorithms.setForeground(new java.awt.Color(255, 255, 255));
         jListAlgorithms.setModel(new javax.swing.AbstractListModel<String>() {
-            private static final long serialVersionUID = -1838275448366033423L;
+            private static final long serialVersionUID = -8622006060539640897L;
             String[] strings = { "Algorithm1", "Algorithm2", "Algorithm3", "Algorithm4", "Algorithm5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -108,7 +117,7 @@ public class N01UI extends javax.swing.JPanel {
         jListNodes2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListNodes2.setForeground(new java.awt.Color(255, 255, 255));
         jListNodes2.setModel(new javax.swing.AbstractListModel<String>() {
-            private static final long serialVersionUID = 4145788995632934324L;
+            private static final long serialVersionUID = 7677237802953125828L;
             String[] strings = { "Node 1", "Node 2" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -120,7 +129,7 @@ public class N01UI extends javax.swing.JPanel {
         jListNodes1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListNodes1.setForeground(new java.awt.Color(255, 255, 255));
         jListNodes1.setModel(new javax.swing.AbstractListModel<String>() {
-            private static final long serialVersionUID = 3717091452798619803L;
+            private static final long serialVersionUID = 8529090840580161377L;
             String[] strings = { "Node 1", "Node 2" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -144,7 +153,7 @@ public class N01UI extends javax.swing.JPanel {
         jListAlgorithms1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListAlgorithms1.setForeground(new java.awt.Color(255, 255, 255));
         jListAlgorithms1.setModel(new javax.swing.AbstractListModel<String>() {
-            private static final long serialVersionUID = 2968626688603226487L;
+            private static final long serialVersionUID = -3103465723489841064L;
             String[] strings = { "V1", "V2", "V3" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -199,7 +208,7 @@ public class N01UI extends javax.swing.JPanel {
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 147, Short.MAX_VALUE)
                         .addComponent(jLabel2)
                         .addGap(124, 124, 124))))
         );
@@ -234,8 +243,8 @@ public class N01UI extends javax.swing.JPanel {
                 .addGap(59, 59, 59))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -246,38 +255,47 @@ public class N01UI extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
-    }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonBackActionPerformed
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonResultsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonResultsActionPerformed
 
+    private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonBackActionPerformed
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel imgLateral;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButtonBack;
-    private javax.swing.JButton jButtonResults;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabelAlgorithm;
-    private javax.swing.JLabel jLabelAlgorithm1;
-    private javax.swing.JLabel jLabelNode1;
-    private javax.swing.JLabel jLabelNode2;
-    private javax.swing.JLabel jLabelPName;
-    private javax.swing.JList<String> jListAlgorithms;
-    private javax.swing.JList<String> jListAlgorithms1;
-    private javax.swing.JList<String> jListNodes1;
-    private javax.swing.JList<String> jListNodes2;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JPanel orangeBorder;
-    // End of variables declaration//GEN-END:variables
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(RoadNetworkPathFormUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(RoadNetworkPathFormUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(RoadNetworkPathFormUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(RoadNetworkPathFormUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> new RoadNetworkPathFormUI().setVisible(true));
+    }
+
 }

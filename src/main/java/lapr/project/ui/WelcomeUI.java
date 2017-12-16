@@ -5,6 +5,8 @@
  */
 package lapr.project.ui;
 
+import javax.swing.*;
+
 /**
  *
  * @author anily
@@ -38,6 +40,8 @@ public class WelcomeUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        InitializeUIElements initializer = new InitializeUIElements();
+
         jPanel3 = new javax.swing.JPanel();
         imgLateral = new javax.swing.JLabel();
         jButtonCreate = new javax.swing.JButton();
@@ -52,11 +56,8 @@ public class WelcomeUI extends javax.swing.JFrame {
 
         imgLateral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fundo.png"))); // NOI18N
 
-        jButtonCreate.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonCreate.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jButtonCreate.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonCreate.setText("Create project");
-        jButtonCreate.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        initializer.initializeJButton(jButtonCreate, Main.EIGHTEEN_SEGOE_FONT, "Create project", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonCreate.addActionListener(evt -> jButtonCreateActionPerformed(evt));
 
         orangeBorder2.setBackground(new java.awt.Color(250, 152, 60));
@@ -87,9 +88,7 @@ public class WelcomeUI extends javax.swing.JFrame {
         jButtonSetProject.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonSetProject.addActionListener(evt -> jButtonSetProjectActionPerformed(evt));
 
-        jLabel1.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(155, 177, 189));
-        jLabel1.setText("Please select what you wish to do");
+        initializer.initializeLabels(jLabel1, Main.TV_POSTER_FONT,"Please select what you wish to do", SwingConstants.CENTER, Main.LIGHT_BLUE);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
