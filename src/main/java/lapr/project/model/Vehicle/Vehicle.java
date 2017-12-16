@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import lapr.project.utils.Measurable;
 
 /**
  * <p>
@@ -32,15 +33,10 @@ public abstract class Vehicle {
     private Fuel fuel;
     
     @XmlElement
-    private int mass;
+    private Measurable mass;
     
-    /**
-     * Not all vehicles transport load.
-     * {@link Optional} is used to force unwrap,
-     * reminding the programmer that load may be null
-     */
     @XmlElement
-    private Optional<Load> load;
+    private Measurable load;
 
     @XmlElement(name = "drag")
     private double dragCoefficient;
@@ -55,9 +51,10 @@ public abstract class Vehicle {
     private double wheelSize;
     
     @XmlElementWrapper(name = "velocity_limit_list")
-    private List<VelocityLimitList> velocityLimitsList;
+    private List<VelocityLimitList> velocityLimitList;
     
     @XmlElement(name = "energy")
     private Energy energy;
+    
     
 }

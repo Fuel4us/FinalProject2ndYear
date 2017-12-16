@@ -1,6 +1,6 @@
 package lapr.project.model.Vehicle;
 
-public class Gears {
+    public class Gears {
     
     private final String id;
     private final Double ratio;

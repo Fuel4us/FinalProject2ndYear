@@ -1,6 +1,6 @@
 package lapr.project.controller;
 
 
-public class AddVehicles {
+public class AddVehiclesController {
     
 }
