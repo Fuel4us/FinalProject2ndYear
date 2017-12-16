@@ -29,8 +29,15 @@ public class DataBaseCommunicator {
      * @return true if storing operation succeeded
      */
     public void storeNetworkAnalysis(Project project, Analysis analysis) {
-        //ToDo Store analyzed roads (generated report) into respective table
-        analysisStorage.storeAnalysis(analysis);
+        //ToDo Start Transaction
+        try {
+            //ToDo Store analyzed roads (generated report) into respective table
+            analysisStorage.storeAnalysis(analysis);
+        } catch (SQLException e) {
+            if () {
+            }
+        }
+        //ToDo Commit transaction
     }
 
 
