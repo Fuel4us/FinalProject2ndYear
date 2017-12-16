@@ -16,17 +16,17 @@ public class InitializeUIElements {
         label.setHorizontalAlignment(hAlignment);
     }
 
-    void initializeJButton(JButton button, Font font, String text, Color color, BorderFactory border){
+    void initializeJButton(JButton button, Font font, String text, Color color, Border border){
         button.setBackground(color);
         button.setFont(font);
         button.setText(text);
-        //button.setBorder((Border) border);
+        button.setBorder(border);
     }
 
-    <E> void initializeJList(JList<E> list, ListSelectionModel selectionModel, Color background, Color foreground, BorderFactory border, Font font, String text){
+    <E> void initializeJList(JList<E> list, ListSelectionModel selectionModel, Color background, Color foreground, Border border, Font font, String text){
         list.setBackground(background);
         list.setForeground(foreground);
-        //list.setBorder(border);
+        list.setBorder(border);
         list.setFont(font);
         list.setSelectionModel(selectionModel);
     }
