@@ -20,6 +20,7 @@ public class Energy {
     private List<Gears> gears;
     
     @XmlElementWrapper(name = "throttle_list")
+    @XmlElement(name = "throttle")
     private List<Throttle> throttles;
 
     

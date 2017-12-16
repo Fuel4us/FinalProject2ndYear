@@ -2,6 +2,8 @@ package lapr.project.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -14,6 +16,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import lapr.project.model.Vehicle.*;
 
 /**
  * XML Importer of vehicles
@@ -33,45 +36,30 @@ public class XMLImporter {
         Unmarshaller unmarshaller = context.createUnmarshaller();
 
         vehicle = (Vehicle) unmarshaller.unmarshal(file);
-        completeVehiclesDOMParsing(vehicle, file);
+//        completeVehiclesDOMParsing(vehicle, file);
 
         return vehicle;
 
     }
 
-    private void completeVehiclesDOMParsing(Vehicle vehicle, File file) throws ParserConfigurationException, SAXException, IOException {
-
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        dbf.setNamespaceAware(true);
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        Document doc = db.parse(file);
-
-        // missing adds
-    }
-
-    private void add() {
-
-    }
-
-    /**
-     * Counts the number of children nodes (nested nodes of an Element) Based on
-     * : See
-     * <a href="https://stackoverflow.com/questions/24759710/xml-child-node-count-java">stackoverflow.com</a>
-     *
-     * @param element An Element corresponding to the parent Node
-     * @return Number of children nodes
-     */
-    private int countNodeChildren(Element element) {
-
-        int nodeNum = 0;
-        NodeList parent = element.getChildNodes();
-        for (int j = 0; j < parent.getLength(); j++) {
-            if (parent.item(j).getNodeType() == Node.ELEMENT_NODE) {
-                nodeNum++;
-            }
-        }
-
-        return nodeNum;
-    }
-
+//    private void completeVehiclesDOMParsing(Vehicle vehicle, File file) throws Exception {
+//
+//        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+//        dbf.setNamespaceAware(true);
+//        DocumentBuilder db = dbf.newDocumentBuilder();
+//        Document doc = db.parse(file);
+//
+//        // ToDo missing adds
+//        addVehicles(vehicle, doc);
+//    }
+//    
+//    private void addVehicles(Vehicle vehicle, Document doc) throws Exception {
+//        
+//        List<Vehicle> vehicles = new ArrayList<>();
+//        
+//        String name;
+//        String description;
+//        VehicleType type;
+//    }
+//    
 }
