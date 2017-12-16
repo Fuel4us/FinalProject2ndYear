@@ -67,6 +67,8 @@ public class bestPathController {
         return getNodesList();
     }
     
+//    public void pickMethod(){}
+    
     /**
      * Method that returns a list with all the nodes in the project
      * 
