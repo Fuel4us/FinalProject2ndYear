@@ -1,10 +1,15 @@
-package lapr.project.model;
+package lapr.project.utils.DataAccessLayer;
 
+import lapr.project.model.Analysis;
+import lapr.project.model.Project;
 import lapr.project.utils.DataAccessLayer.Abstraction.AnalysisDAO;
+import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.Oracle.OracleAnalysisDAO;
+import lapr.project.utils.DataAccessLayer.Oracle.OracleDBAccessor;
 import oracle.jdbc.pool.OracleDataSource;
 
-import java.sql.DriverManager;
+import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -15,11 +20,15 @@ import java.util.List;
  */
 public class DataBaseCommunicator {
 
+    private DBAccessor dbAccessor;
     private AnalysisDAO analysisStorage;
     //ToDo Create ProjectDAO (Data Access Object)
 
-    public DataBaseCommunicator() {
-        this.analysisStorage = new OracleAnalysisDAO();
+    public DataBaseCommunicator(DataSource dataSource) {
+        if (dataSource instanceof OracleDataSource) {
+            this.dbAccessor = new OracleDBAccessor();
+            this.analysisStorage = new OracleAnalysisDAO((OracleDataSource) dataSource);
+        }
     }
 
     /**
@@ -34,8 +43,8 @@ public class DataBaseCommunicator {
             //ToDo Store analyzed roads (generated report) into respective table
             analysisStorage.storeAnalysis(analysis);
         } catch (SQLException e) {
-            if () {
-            }
+//            if () {
+//            }
         }
         //ToDo Commit transaction
     }
@@ -51,7 +60,7 @@ public class DataBaseCommunicator {
         //ToDo Store project through ProjectDAO
         return true;
     }
-    
+
 }
 
 
