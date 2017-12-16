@@ -17,7 +17,6 @@ public class Project {
     private String description;
     private RoadNetwork<Node,Section> roadNetwork;
     private List<Vehicle> vehicles;
-    private boolean active;
 
     /**
      * Creates a new Project, with a name, description and a roadNetwork
@@ -31,40 +30,8 @@ public class Project {
         this.description = description;
         this.roadNetwork = roadNetwork;
         this.vehicles = vehicles;
-        this.active = false;
     }
 
-    /**
-     * Getter for the name
-     * @return the name of the project
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Getter for the description
-     * @return the description of the project
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * Getter for the road network
-     * @return the road network of the project
-     */
-    public RoadNetwork<Node,Section> getRoadNetwork() {
-        return roadNetwork;
-    }
-
-    /**
-     * Getter for the vehicles
-     * @return the list of vehicles of the project
-     */
-    public List<Vehicle> getVehicles() {
-        return vehicles;
-    }
 
     /**
      * Implementation of the equals for objects of the type Project
@@ -91,12 +58,12 @@ public class Project {
     public int hashCode() {
         return name != null ? name.hashCode() : 0;
     }
-    
-    public void setActive(){
-        this.active = true;
-    }
-    
-    public void setDesactive(){
-        this.active = false;
+
+    /**
+     * Getter for the name
+     * @return the name of the project
+     */
+    public String getName() {
+        return name;
     }
 }
