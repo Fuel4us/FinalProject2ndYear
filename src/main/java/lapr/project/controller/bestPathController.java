@@ -5,7 +5,6 @@ import java.util.List;
 import lapr.project.model.Project;
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.model.RoadNetwork.*;
-import lapr.project.utils.Graph.*;
 
 
 
@@ -37,7 +36,7 @@ public class bestPathController {
      * Method called by the UI that returns a list with all 
      * the vehicles in the project
      * 
-     * @return List<Vehicle> list of all vehicles in the project
+     * @return list of all vehicles in the project
      */
     public List<Vehicle> getAllVehicles(){
         List<Vehicle> list = new ArrayList<>();
@@ -60,18 +59,18 @@ public class bestPathController {
     
    
     public List<Node> getAllNodes(){
-        List<Node> list = new ArrayList<>();
-        for(Edge<Road,Section> edge : getProject().getRoadNetwork().edges()){
-            
+        List<Node> nodeList = new ArrayList<>();
+        for(Node node : getProject().getRoadNetwork().vertices()){
+            nodeList.add(node);
         }
-        setNodesList(list);
+        setNodesList(nodeList);
         return getNodesList();
     }
     
     /**
      * Method that returns a list with all the nodes in the project
      * 
-     * @return List<Node> list of all nodes in the project
+     * @return  list of all nodes in the project
      */
     public List<Node> getNodesList() {
         return nodesList;
@@ -80,7 +79,7 @@ public class bestPathController {
     /**
      * Method that sets a list with all the nodes in the project
      * 
-     * @param List<Node> list of all nodes in the project
+     * @param nodesList list of all nodes in the project
      */
     public void setNodesList(List<Node> nodesList) {
         this.nodesList = nodesList;
@@ -89,7 +88,7 @@ public class bestPathController {
     /**
      * Method that returns a list with all the vehicles in the project
      * 
-     * @return List<Vehicle> list of all vehicles in the project
+     * @return list of all vehicles in the project
      */
     public List<Vehicle> getListVehicles() {
         return listVehicles;
@@ -98,7 +97,7 @@ public class bestPathController {
     /**
      * Method that sets a list with all the vehicles in the project
      * 
-     * @param List<Vehicle> list of all vehicles in the project
+     * @param listVehicles list of all vehicles in the project
      */
     public void setListVehicles(List<Vehicle> listVehicles) {
         this.listVehicles = listVehicles;
@@ -116,7 +115,7 @@ public class bestPathController {
     /**
      * Method that sets a vehicle picked by the user in the UI
      * 
-     * @param Vehicle Vehicle picked by the user in the UI
+     * @param vehicle Vehicle picked by the user in the UI
      */
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
@@ -131,14 +130,14 @@ public class bestPathController {
         return origin;
     }
 
-    /**
-     * Method that sets the origin node picked by the user in the UI
-     * 
-     * @param origin Origin node picked by the user in the UI
-     */
-    public void setOrigin(Node origin) {
-        this.origin = origin;
-    }
+//    /**
+//     * Method that sets the origin node picked by the user in the UI
+//     * 
+//     * @param origin Origin node picked by the user in the UI
+//     */
+//    public void setOrigin(Node origin) {
+//        this.origin = origin;
+//    }
 
     /**
      * Method that returns the destiny node picked by the user in the UI
@@ -149,14 +148,14 @@ public class bestPathController {
         return destiny;
     }
 
-    /**
-     * Method that sets the destiny node picked by the user in the UI
-     * 
-     * @param destiny Destiny node picked by the user in the UI
-     */
-    public void setDestiny(Node destiny) {
-        this.destiny = destiny;
-    }
+//    /**
+//     * Method that sets the destiny node picked by the user in the UI
+//     * 
+//     * @param destiny Destiny node picked by the user in the UI
+//     */
+//    public void setDestiny(Node destiny) {
+//        this.destiny = destiny;
+//    }
 
     /**
      * Method that returns the current instance of project
