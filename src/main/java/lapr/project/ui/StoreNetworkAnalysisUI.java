@@ -5,16 +5,28 @@
  */
 package lapr.project.ui;
 
+import javax.swing.*;
+import java.awt.*;
+
 /**
  *
  * @author anily
  */
-public class StoreNetworkAnalysisUI extends javax.swing.JPanel {
+public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
 
-    private static final long serialVersionUID = -8965477186930734905L;
+    private static final long serialVersionUID = 606009290497975171L;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel imgLateral;
+    private javax.swing.JButton jButtonBack;
+    private javax.swing.JButton jButtonGenerateFile;
+    private javax.swing.JLabel jLabelTitle;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPanel orangeBorder;
+    // End of variables declaration//GEN-END:variables
 
     /**
-     * Creates new form P00
+     * Creates new form StoreNetworkAnalysisUI
      */
     public StoreNetworkAnalysisUI() {
         initComponents();
@@ -29,8 +41,8 @@ public class StoreNetworkAnalysisUI extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        InitializeUIElements initializer = new InitializeUIElements();
+
         jPanel1 = new javax.swing.JPanel();
         imgLateral = new javax.swing.JLabel();
         orangeBorder = new javax.swing.JPanel();
@@ -39,11 +51,7 @@ public class StoreNetworkAnalysisUI extends javax.swing.JPanel {
         jTextField1 = new javax.swing.JTextField();
         jLabelTitle = new javax.swing.JLabel();
 
-        jLabel1.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(155, 177, 189));
-        jLabel1.setText("Please select what you wish to do");
-
-        jButton1.setText("jButton1");
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(45, 46, 45));
 
@@ -62,29 +70,24 @@ public class StoreNetworkAnalysisUI extends javax.swing.JPanel {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jButtonGenerateFile.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonGenerateFile.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jButtonGenerateFile.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonGenerateFile.setText("Generate HTML files");
-        jButtonGenerateFile.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        initializer.initializeJButton(jButtonGenerateFile, Main.EIGHTEEN_SEGOE_FONT, "Generate HTML file", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonGenerateFile.addActionListener(evt -> jButtonGenerateFileActionPerformed(evt));
 
-        jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setText("«");
-        jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        initializer.initializeJButton(jButtonGenerateFile, new Font("Segoe UI Semibold", 0, 48), "«", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
 
         jTextField1.setBackground(new java.awt.Color(97, 122, 133));
         jTextField1.setForeground(new java.awt.Color(204, 204, 204));
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField1.setText("<sample path>");
         jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
 
         jLabelTitle.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
         jLabelTitle.setForeground(new java.awt.Color(155, 177, 189));
         jLabelTitle.setText("Network analysis result");
+        initializer.initializeLabels(jLabelTitle, Main.TV_POSTER_FONT, "Network analysis result", SwingConstants.LEFT, Main.LIGHT_BLUE);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -123,8 +126,8 @@ public class StoreNetworkAnalysisUI extends javax.swing.JPanel {
                 .addGap(59, 59, 59))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -135,6 +138,8 @@ public class StoreNetworkAnalysisUI extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonGenerateFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerateFileActionPerformed
@@ -145,16 +150,35 @@ public class StoreNetworkAnalysisUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonBackActionPerformed
 
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(StoreNetworkAnalysisUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(StoreNetworkAnalysisUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(StoreNetworkAnalysisUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(StoreNetworkAnalysisUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel imgLateral;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButtonBack;
-    private javax.swing.JButton jButtonGenerateFile;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabelTitle;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JPanel orangeBorder;
-    // End of variables declaration//GEN-END:variables
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> new StoreNetworkAnalysisUI().setVisible(true));
+    }
+
 }

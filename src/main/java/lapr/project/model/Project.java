@@ -20,10 +20,10 @@ public class Project {
     private boolean active;
 
     /**
-     * Full constructor for the class Project
-     * @param name the name of the project
-     * @param description the description of the project
-     * @param roadNetwork the road network of the project
+     * Creates a new Project, with a name, description and a roadNetwork
+     * @param name This project's name
+     * @param description This project's description
+     * @param roadNetwork The graph view of the network of roads associated with this project
      * @param vehicles the list of vehicles in the project
      */
     public Project(String name, String description, RoadNetwork<Node,Section> roadNetwork, List<Vehicle> vehicles) {

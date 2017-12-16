@@ -9,14 +9,28 @@ package lapr.project.ui;
  *
  * @author anily
  */
-public class P01UI extends javax.swing.JPanel {
+public class CreateProjectUI extends javax.swing.JFrame {
 
-    private static final long serialVersionUID = 5320779898271202645L;
+    private static final long serialVersionUID = -1818083907306250629L;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel imgLateral;
+    private javax.swing.JButton jButtonBack;
+    private javax.swing.JButton jButtonCreate;
+    private javax.swing.JButton jButtonRoad;
+    private javax.swing.JButton jButtonVehicle;
+    private javax.swing.JLabel jLabelPDesc;
+    private javax.swing.JLabel jLabelPName;
+    private javax.swing.JLabel jLabelPageTitle;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField jTextFieldDescription;
+    private javax.swing.JTextField jTextFieldName;
+    private javax.swing.JPanel orangeBorder;
+    // End of variables declaration//GEN-END:variables
 
     /**
-     * Creates new form P00
+     * Creates new form CreateProjectUI
      */
-    public P01UI() {
+    public CreateProjectUI() {
         initComponents();
     }
 
@@ -29,7 +43,6 @@ public class P01UI extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         imgLateral = new javax.swing.JLabel();
         orangeBorder = new javax.swing.JPanel();
@@ -43,9 +56,7 @@ public class P01UI extends javax.swing.JPanel {
         jButtonRoad = new javax.swing.JButton();
         jButtonVehicle = new javax.swing.JButton();
 
-        jLabel1.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(155, 177, 189));
-        jLabel1.setText("Please select what you wish to do");
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(45, 46, 45));
 
@@ -179,8 +190,8 @@ public class P01UI extends javax.swing.JPanel {
                 .addGap(59, 59, 59))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -193,6 +204,8 @@ public class P01UI extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateActionPerformed
@@ -211,20 +224,35 @@ public class P01UI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonVehicleActionPerformed
 
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(CreateProjectUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(CreateProjectUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(CreateProjectUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(CreateProjectUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel imgLateral;
-    private javax.swing.JButton jButtonBack;
-    private javax.swing.JButton jButtonCreate;
-    private javax.swing.JButton jButtonRoad;
-    private javax.swing.JButton jButtonVehicle;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabelPDesc;
-    private javax.swing.JLabel jLabelPName;
-    private javax.swing.JLabel jLabelPageTitle;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextFieldDescription;
-    private javax.swing.JTextField jTextFieldName;
-    private javax.swing.JPanel orangeBorder;
-    // End of variables declaration//GEN-END:variables
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> new CreateProjectUI().setVisible(true));
+    }
+
 }

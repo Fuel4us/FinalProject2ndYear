@@ -1,4 +1,4 @@
-package lapr.project.utils;
+package lapr.project.utils.FileParser;
 
 import lapr.project.model.RoadNetwork.Road;
 import lapr.project.model.RoadNetwork.RoadNetwork;
@@ -10,15 +10,21 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.bind.Element;
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.IOException;
+
+import lapr.project.utils.ClassCast;
+import org.xml.sax.SAXException;
 
 /**
- * Created by anily on 13/12/2017.
+ * Handles importation of a RoadNetwork through a XML file
  */
-public class FileParser {
+public class XMLImporterRoads {
 
     private final File file;
     private RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> roadNetwork;
@@ -27,16 +33,12 @@ public class FileParser {
     private Segment segment;
     private lapr.project.model.RoadNetwork.Node node;
 
-
-    //ToDo
-
     /**
      * Constructor of class
      *
      * @param file xmlFile
-     * @throws Exception
      */
-    public FileParser(File file) throws Exception {
+    public XMLImporterRoads(File file) {
         this.file = file;
     }
 
@@ -46,12 +48,12 @@ public class FileParser {
      * @return
      * @throws Exception
      */
-    public RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> importNetwork() throws Exception {
+    public RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> importNetwork() throws JAXBException, IOException, SAXException, ParserConfigurationException {
 
         JAXBContext context = JAXBContext.newInstance(RoadNetwork.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
         roadNetwork = ClassCast.uncheckedCast(unmarshaller.unmarshal(file));
-                completeNetworkInformationDOMParsing(roadNetwork, file);
+        completeNetworkInformationDOMParsing(roadNetwork, file);
 
         return roadNetwork;
     }
@@ -63,15 +65,15 @@ public class FileParser {
      * @param file
      * @throws Exception
      */
-    public void completeNetworkInformationDOMParsing(RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> roadNetwork, File file) throws Exception {
+    public void completeNetworkInformationDOMParsing(RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> roadNetwork, File file) throws ParserConfigurationException, IOException, SAXException {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(file);
 
-//        addNodes(roadNetwork, doc);
-        addSections(roadNetwork, doc);
+        addNodes(roadNetwork, doc);
+//        addSections(roadNetwork, doc);
     }
 
 
@@ -82,7 +84,7 @@ public class FileParser {
      * @param doc
      * @throws Exception
      */
-    public void addSections(RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> roadNetwork, Document doc) throws Exception {
+    public void addSections(RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> roadNetwork, Document doc) {
 
         NodeList sections = doc.getElementsByTagName("road_section");
         for (int i = 0; i < sections.getLength(); i++) {
@@ -104,12 +106,15 @@ public class FileParser {
      * @param doc
      * @throws Exception
      */
-    public void addNodes(RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> roadNetwork, Document doc) throws Exception {
+    public void addNodes(RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> roadNetwork, Document doc) {
 
         NodeList nodes = doc.getElementsByTagName("node");
         for (int i = 0; i < nodes.getLength(); i++) {
             org.w3c.dom.Node node = nodes.item(i);
             if (node.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
+                lapr.project.model.RoadNetwork.Node junction = new lapr.project.model.RoadNetwork.Node();
+                Element element = (Element) node;
+
 //                String str = node.getTextContent();
 //                Class cls = Class.forName(str);
 //                lapr.project.model.RoadNetwork.Node junction = (lapr.project.model.RoadNetwork.Node) cls.newInstance();

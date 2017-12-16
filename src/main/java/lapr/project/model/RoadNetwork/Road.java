@@ -11,8 +11,10 @@ public class Road {
 
     @XmlElement(name = "id")
     private String id;
+
     @XmlElement(name = "road_name")
     private String name;
+
     @XmlElement
     private String typology;
     @XmlElementWrapper(name = "toll_fare")
@@ -21,5 +23,12 @@ public class Road {
     @XmlElementWrapper(name = "section_list")
     @XmlElement(name = "road_section")
     private List<Section> sectionList;
+
+    /**
+     * @return the ID of this road
+     */
+    public String getID() {
+        return id;
+    }
 
 }
