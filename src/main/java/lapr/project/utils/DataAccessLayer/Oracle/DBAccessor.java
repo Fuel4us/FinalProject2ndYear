@@ -1,6 +1,7 @@
 package lapr.project.utils.DataAccessLayer.Oracle;
 
 import java.sql.SQLException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -32,5 +33,20 @@ public interface DBAccessor {
      */
     void rollback() throws SQLException;
 
+    /**
+     * Logs a SQL Exception
+     * @param e an instance of {@link SQLException}
+     */
+    default void logSQLException(SQLException e) {
+        DB_ACCESS_LOG.log(Level.WARNING, e.getSQLState());
+        DB_ACCESS_LOG.log(Level.WARNING, () -> {
+            StringBuilder errorBuffer = new StringBuilder();
+            while (e.getNextException() != null) {
+                errorBuffer.append(e.getNextException());
+            }
+            return errorBuffer.toString();
+        });
+        DB_ACCESS_LOG.log(Level.WARNING, "Error Code: " + String.valueOf(e.getErrorCode()));
+    }
 
 }
