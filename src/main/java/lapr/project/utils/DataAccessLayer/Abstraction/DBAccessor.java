@@ -1,11 +1,11 @@
-package lapr.project.utils.DataAccessLayer.Oracle;
+package lapr.project.utils.DataAccessLayer.Abstraction;
 
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Establishes basic access behaviour to a DataBase
+ * Establishes basic access behaviour to a DataBase and logging utility
  */
 public interface DBAccessor {
 
@@ -37,7 +37,7 @@ public interface DBAccessor {
      * Logs a SQL Exception
      * @param e an instance of {@link SQLException}
      */
-    default void logSQLException(SQLException e) {
+    static void logSQLException(SQLException e) {
         DB_ACCESS_LOG.log(Level.WARNING, e.getSQLState());
         DB_ACCESS_LOG.log(Level.WARNING, () -> {
             StringBuilder errorBuffer = new StringBuilder();
