@@ -1,8 +1,6 @@
 package lapr.project.model;
 
-import lapr.project.model.RoadNetwork.Road;
-import lapr.project.model.RoadNetwork.RoadNetwork;
-import lapr.project.model.RoadNetwork.Section;
+import lapr.project.model.RoadNetwork.*;
 import lapr.project.model.Vehicle.Vehicle;
 
 import java.util.List;
@@ -17,8 +15,9 @@ public class Project {
 
     private String name;
     private String description;
-    private RoadNetwork<Road,Section> roadNetwork;
+    private RoadNetwork<Node,Section> roadNetwork;
     private List<Vehicle> vehicles;
+    private boolean active;
 
     /**
      * Creates a new Project, with a name, description and a roadNetwork
@@ -27,11 +26,12 @@ public class Project {
      * @param roadNetwork The graph view of the network of roads associated with this project
      * @param vehicles the list of vehicles in the project
      */
-    public Project(String name, String description, RoadNetwork<Road,Section> roadNetwork, List<Vehicle> vehicles) {
+    public Project(String name, String description, RoadNetwork<Node,Section> roadNetwork, List<Vehicle> vehicles) {
         this.name = name;
         this.description = description;
         this.roadNetwork = roadNetwork;
         this.vehicles = vehicles;
+        this.active = false;
     }
 
     /**
@@ -54,7 +54,7 @@ public class Project {
      * Getter for the road network
      * @return the road network of the project
      */
-    public RoadNetwork<Road,Section> getRoadNetwork() {
+    public RoadNetwork<Node,Section> getRoadNetwork() {
         return roadNetwork;
     }
 
@@ -90,5 +90,13 @@ public class Project {
     @Override
     public int hashCode() {
         return name != null ? name.hashCode() : 0;
+    }
+    
+    public void setActive(){
+        this.active = true;
+    }
+    
+    public void setDesactive(){
+        this.active = false;
     }
 }

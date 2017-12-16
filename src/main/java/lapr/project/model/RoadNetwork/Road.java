@@ -1,5 +1,7 @@
 package lapr.project.model.RoadNetwork;
 
+import lapr.project.utils.Graph.Vertex;
+
 import javax.xml.bind.annotation.*;
 import java.util.List;
 
@@ -14,11 +16,13 @@ public class Road {
     private String name;
 
     @XmlElement
-    private Typology typology;
+    private String typology;
     @XmlElementWrapper(name = "toll_fare")
+    @XmlElement(name = "class")
     private List<Float> tollFare;
-
-
+    @XmlElementWrapper(name = "section_list")
+    @XmlElement(name = "road_section")
+    private List<Section> sectionList;
 
     /**
      * @return the ID of this road

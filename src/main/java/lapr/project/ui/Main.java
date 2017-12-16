@@ -1,6 +1,5 @@
 package lapr.project.ui;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -26,9 +25,7 @@ class Main {
 	 * @param args the command line arguments
 	 */
 	public static void main(String[] args) {
-//		CalculatorExample calculatorExample = new CalculatorExample();
-//		int value = calculatorExample.sum(3, 5);
-//		LOGGER.log(Level.INFO, String.valueOf(value));
-
+		WelcomeUI.main(null);
 	}
+	
 }

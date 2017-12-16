@@ -29,7 +29,7 @@ public class CreateProjectControllerTest {
 
         String nameTest = "Project 1";
         String descriptionTest = "Description 1";
-        RoadNetwork<Road, Section> roadNetworkTest = new RoadNetwork<>(false, new Graph<>(false));
+        RoadNetwork<Node, Section> roadNetworkTest = new RoadNetwork<>(false);
         List<Vehicle> vehicleListTest = new ArrayList<>();
 
         Project projectExpected = new Project(nameTest, descriptionTest, roadNetworkTest, vehicleListTest);

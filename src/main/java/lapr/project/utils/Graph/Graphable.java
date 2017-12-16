@@ -90,7 +90,6 @@ public interface Graphable<V,E> {
      */
     boolean insertEdge(V vOrig, V vDest, E edge, double eWeight);
 
-
     /* Removes a vertex and all its incident edges from the graph
     * @param vInf Information of vertex source
     */

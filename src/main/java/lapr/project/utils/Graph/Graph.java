@@ -85,6 +85,17 @@ public class Graph<V, E> implements Graphable<V, E> {
         return edges;
     }
 
+    public List<Edge<V, E>> getEdges() {
+
+        List<Edge<V, E>> edges = new LinkedList<>();
+        for (Vertex<V, E> vert : vertices.values()) {
+            for (Edge<V, E> e : vert.getAllOutEdges()) {
+                edges.add(e);
+            }
+        }
+        return edges;
+    }
+
     public Edge<V, E> getEdge(V vOrig, V vDest) {
 
         if (!validVertex(vOrig) || !validVertex(vDest))
