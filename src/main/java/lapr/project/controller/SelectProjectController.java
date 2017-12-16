@@ -25,7 +25,7 @@ public class SelectProjectController {
     }
     
     public List<Project> fetchProjectsList(){
-        List<Project> listProjects = dbc.fetchProjectsList();
+        List<Project> listProjects = dbc.fetchProjectList();
         return listProjects;
     }
     
