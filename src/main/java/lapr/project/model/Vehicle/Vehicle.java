@@ -57,18 +57,7 @@ public abstract class Vehicle {
     @XmlElementWrapper(name = "velocity_limit_list")
     private List<VelocityLimitList> velocityLimitsList;
     
-    @XmlElement(name = "min_rpm")
-    private int minRPM;
+    @XmlElement(name = "energy")
+    private Energy energy;
     
-    @XmlElement(name = "max_rpm")
-    private int maxRPM;
-    
-    @XmlElement(name = "final_drive_ratio")
-    private int drive_ratio;
-    
-    @XmlElementWrapper(name = "gear_list")
-    private List<Gear> gearsList;
-    
-    @XmlElementWrapper(name = "throttle_list")
-    private List<Throttle> throttleList;
 }
