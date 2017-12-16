@@ -1,5 +1,6 @@
 package lapr.project.utils.DataAccessLayer.Abstraction;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,7 +16,7 @@ public interface DBAccessor {
      * Connects to a database
      * @throws SQLException
      */
-    void openConnexion() throws SQLException;
+    Connection openConnexion() throws SQLException;
 
     /**
      * Verifies if the state of the connection is active (i.e not null)
