@@ -38,13 +38,14 @@ public class OracleDBAccessor implements DBAccessor {
      * Connects to an OracleDB
      * @throws SQLException
      */
-    public void openConnexion() throws SQLException {
+    public Connection openConnexion() throws SQLException {
         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 
         oracleDataSource = new OracleDataSource();
         oracleDataSource.setURL(SERVER_URL);
         oracleDataSource.setUser(INITIAL_SESSION_SCHEMA);
         oracleDataSource.setPassword(SCHEMA_PASSWORD);
+        return oracleConnection;
     }
 
     /**
