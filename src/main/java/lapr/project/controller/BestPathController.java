@@ -8,7 +8,7 @@ import lapr.project.model.RoadNetwork.*;
 
 
 
-public class bestPathController {
+public class BestPathController {
 
     private List<Node> nodesList;
     private List<Vehicle> listVehicles;
@@ -23,13 +23,8 @@ public class bestPathController {
      * 
      * @param project The current instance of project
      */
-    public bestPathController(Project project) {
+    public BestPathController(Project project) {
         this.project = project;
-        this.nodesList = null;
-        this.listVehicles = null;
-        this.vehicle = null;
-        this.origin = null;
-        this.destiny = null;
     }
 
     /**
@@ -57,7 +52,11 @@ public class bestPathController {
         this.destiny=destiny;
     }
     
-   
+   /**
+    * Method called by the UI that returns the list with all the nodes
+    * 
+    * @return List that contains all nodes 
+    */
     public List<Node> getAllNodes(){
         List<Node> nodeList = new ArrayList<>();
         for(Node node : getProject().getRoadNetwork().vertices()){
@@ -66,6 +65,8 @@ public class bestPathController {
         setNodesList(nodeList);
         return getNodesList();
     }
+    
+//    public void pickMethod(){}
     
     /**
      * Method that returns a list with all the nodes in the project
@@ -130,14 +131,6 @@ public class bestPathController {
         return origin;
     }
 
-//    /**
-//     * Method that sets the origin node picked by the user in the UI
-//     * 
-//     * @param origin Origin node picked by the user in the UI
-//     */
-//    public void setOrigin(Node origin) {
-//        this.origin = origin;
-//    }
 
     /**
      * Method that returns the destiny node picked by the user in the UI
@@ -148,14 +141,6 @@ public class bestPathController {
         return destiny;
     }
 
-//    /**
-//     * Method that sets the destiny node picked by the user in the UI
-//     * 
-//     * @param destiny Destiny node picked by the user in the UI
-//     */
-//    public void setDestiny(Node destiny) {
-//        this.destiny = destiny;
-//    }
 
     /**
      * Method that returns the current instance of project
