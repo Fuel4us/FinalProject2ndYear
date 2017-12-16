@@ -58,16 +58,15 @@ public class bestPathController {
         this.destiny=destiny;
     }
     
-   /*
+   
     public List<Node> getAllNodes(){
         List<Node> list = new ArrayList<>();
-        for(Edge<Road,Section> edge : getProject().getRoadNetwork().edges().iterator()){
-
+        for(Edge<Road,Section> edge : getProject().getRoadNetwork().edges()){
+            
         }
         setNodesList(list);
         return getNodesList();
     }
-    */
     
     /**
      * Method that returns a list with all the nodes in the project
