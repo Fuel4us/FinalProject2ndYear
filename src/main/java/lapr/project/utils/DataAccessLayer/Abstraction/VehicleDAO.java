@@ -7,14 +7,17 @@ package lapr.project.utils.DataAccessLayer.Abstraction;
 
 import lapr.project.model.Vehicle.*;
 
-/**
- *
- * @author goncalo
- */
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+
 public interface VehicleDAO {
-    
-    void storeVehicle(Vehicle vehicle);
-        
-    
-    
+
+    /**
+     * Creates an instance of Vehicle from a ResultSet
+     * @param resultSet list of entities Vehicle
+     * @return Vehicle instance
+     */
+    Vehicle createVehicle(ResultSet resultSet) throws SQLException;
+
 }

@@ -22,19 +22,19 @@ public class XMLImporterTest {
     
     private XMLImporter xmlImporter;
 
-    /**
-     * Test of importVehicle method, of class XMLImporter.
-     */
-    @Test
-    public void testImportVehicle() throws Exception {
-        
-        String file = "TestSet01_vehicles.XMLs";
-        
-        xmlImporter = new XMLImporter(new File(file));
-        
-        Vehicle vehicle = xmlImporter.importVehicle();
-        
-        assertTrue(vehicle != null);
-    }
+//    /**
+//     * Test of importVehicle method, of class XMLImporter.
+//     */
+//    @Test
+//    public void testImportVehicle() throws Exception {
+//
+//        String file = "TestSet01_vehicles.XMLs";
+//
+//        xmlImporter = new XMLImporter(new File(file));
+//
+//        Vehicle vehicle = xmlImporter.importVehicle();
+//
+//        assertTrue(vehicle != null);
+//    }
     
 }

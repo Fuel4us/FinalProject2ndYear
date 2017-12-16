@@ -60,10 +60,34 @@ public class Project {
     }
 
     /**
-     * Getter for the name
+     * Getter of the name
      * @return the name of the project
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Getter of description
+     * @return the description of the project
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Getter of roadNetwork
+     * @return the instance of RoadNetwork of the project
+     */
+    public RoadNetwork<Node, Section> getRoadNetwork() {
+        return roadNetwork;
+    }
+
+    /**
+     * Getter of vehicles
+     * @return list of instance Vehicle of the project
+     */
+    public List<Vehicle> getVehicles() {
+        return vehicles;
     }
 }

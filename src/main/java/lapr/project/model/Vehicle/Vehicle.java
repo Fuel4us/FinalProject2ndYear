@@ -56,37 +56,37 @@ public abstract class Vehicle {
     @XmlElement(name = "energy")
     private Energy energy;
 
-    /**
-     * Constructor
-     * @param name
-     * @param description
-     * @param type
-     * @param vehicleClass
-     * @param motorization
-     * @param fuel
-     * @param mass
-     * @param load
-     * @param dragCoefficient
-     * @param frontalRear
-     * @param rollingReleaseCoefficient
-     * @param wheelSize
-     * @param velocityLimitList
-     * @param energy
-     */
-    public Vehicle(String name, String description, VehicleType type, TollClass vehicleClass, Motorization motorization, Fuel fuel, Measurable mass, Measurable load, double dragCoefficient, double frontalRear, double rollingReleaseCoefficient, double wheelSize, List<VelocityLimitList> velocityLimitList, Energy energy) {
-        this.name = name;
-        this.description = description;
-        this.type = type;
-        this.vehicleClass = vehicleClass;
-        this.motorization = motorization;
-        this.fuel = fuel;
-        this.mass = mass;
-        this.load = load;
-        this.dragCoefficient = dragCoefficient;
-        this.frontalRear = frontalRear;
-        this.rollingReleaseCoefficient = rollingReleaseCoefficient;
-        this.wheelSize = wheelSize;
-        this.velocityLimitList = velocityLimitList;
-        this.energy = energy;
-    }
+//    /**
+//     * Constructor
+//     * @param name
+//     * @param description
+//     * @param type
+//     * @param vehicleClass
+//     * @param motorization
+//     * @param fuel
+//     * @param mass
+//     * @param load
+//     * @param dragCoefficient
+//     * @param frontalRear
+//     * @param rollingReleaseCoefficient
+//     * @param wheelSize
+//     * @param velocityLimitList
+//     * @param energy
+//     */
+//    public Vehicle(String name, String description, VehicleType type, TollClass vehicleClass, Motorization motorization, Fuel fuel, Measurable mass, Measurable load, double dragCoefficient, double frontalRear, double rollingReleaseCoefficient, double wheelSize, List<VelocityLimitList> velocityLimitList, Energy energy) {
+//        this.name = name;
+//        this.description = description;
+//        this.type = type;
+//        this.vehicleClass = vehicleClass;
+//        this.motorization = motorization;
+//        this.fuel = fuel;
+//        this.mass = mass;
+//        this.load = load;
+//        this.dragCoefficient = dragCoefficient;
+//        this.frontalRear = frontalRear;
+//        this.rollingReleaseCoefficient = rollingReleaseCoefficient;
+//        this.wheelSize = wheelSize;
+//        this.velocityLimitList = velocityLimitList;
+//        this.energy = energy;
+//    }
 }
