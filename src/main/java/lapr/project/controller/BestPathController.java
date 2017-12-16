@@ -52,7 +52,11 @@ public class BestPathController {
         this.destiny=destiny;
     }
     
-   
+   /**
+    * Method called by the UI that returns the list with all the nodes
+    * 
+    * @return List that contains all nodes 
+    */
     public List<Node> getAllNodes(){
         List<Node> nodeList = new ArrayList<>();
         for(Node node : getProject().getRoadNetwork().vertices()){
