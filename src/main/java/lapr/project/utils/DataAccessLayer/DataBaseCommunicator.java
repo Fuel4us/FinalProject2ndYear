@@ -38,15 +38,23 @@ public class DataBaseCommunicator {
      * @return true if storing operation succeeded
      */
     public void storeNetworkAnalysis(Project project, Analysis analysis) {
-        //ToDo Start Transaction
         try {
+            //Start Transaction
+            Connection connection = dbAccessor.openConnexion();
+            connection.setAutoCommit(false);
             //ToDo Store analyzed roads (generated report) into respective table
             analysisStorage.storeAnalysis(analysis);
+            dbAccessor.commit();
         } catch (SQLException e) {
-//            if () {
-//            }
+            if (dbAccessor.hasActiveConnection()) {
+                try {
+                    dbAccessor.rollback();
+                } catch (SQLException ex) {
+                    DBAccessor.logSQLException(ex);
+                }
+            }
         }
-        //ToDo Commit transaction
+
     }
 
 
