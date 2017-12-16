@@ -1,23 +1,35 @@
 package lapr.project.model;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Defines general behaviour for different types of analysis
  * in order to better accommodate future requirement changes
  */
-public interface Analysis<E> {
+public abstract class Analysis {
+
+    private int id;
+    private Project requestingInstance;
 
     /**
-     * Displays the results of an analysis
-     * @return Such Results as aforementioned
+     * @return the entity that issued the analysis
      */
-    List<E> showResults();
+    public Project issueRequestingEntity() {
+        return requestingInstance;
+    }
 
     /**
-     * Returns value for the instance that should be unique
+     * Returns a value that should be unique for the instance
      * @return the id of this analysis
      */
-    int exposeID();
+    public int identify() {
+        return id;
+    }
+
+    /**
+     * Provides the results of an analysis
+     * @return Such Results as aforementioned
+     */
+    abstract <E extends Collection<?>> E generateReport();
 
 }
