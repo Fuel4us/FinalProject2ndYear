@@ -1,12 +1,11 @@
 package lapr.project.utils.DataAccessLayer.Oracle;
 
+import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import oracle.jdbc.pool.OracleDataSource;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Handles access to an Oracle Database
@@ -23,17 +22,15 @@ public class OracleDBAccessor implements DBAccessor {
     private static final String INITIAL_SESSION_SCHEMA = "LAPR3_G38";
     private static final String SCHEMA_PASSWORD = "cygnus";
 
-    private static final Logger ORACLE_ACCESS_LOG = Logger.getLogger("OracleAccessLog");
-
     /**
      * Restrict instantiation to current package
      */
-    OracleDBAccessor() {
+    public OracleDBAccessor() {
         try {
             openConnexion();
             oracleConnection = oracleDataSource.getConnection();
         } catch (SQLException e) {
-            logSQLException(e);
+            DBAccessor.logSQLException(e);
         }
     }
 
@@ -51,19 +48,27 @@ public class OracleDBAccessor implements DBAccessor {
     }
 
     /**
-     * Logs a SQL Exception
-     * @param e an instance of {@link SQLException}
-     */
-    static void logSQLException(SQLException e) {
-        ORACLE_ACCESS_LOG.log(Level.WARNING, e.getSQLState());
-    }
-
-    /**
      * Verifies if the state of the connection is not null
      * @return true if connection is active
      */
     public boolean hasActiveConnection() {
         return oracleConnection != null;
+    }
+
+    /**
+     * Finishes a transaction by committing changes
+     */
+    @Override
+    public void commit() throws SQLException {
+        oracleConnection.commit();
+    }
+
+    /**
+     * Rolls a transaction back
+     */
+    @Override
+    public void rollback() throws SQLException {
+        oracleConnection.rollback();
     }
 
 }
