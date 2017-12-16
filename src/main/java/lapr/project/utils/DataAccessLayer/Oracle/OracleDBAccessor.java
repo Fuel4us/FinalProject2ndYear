@@ -11,10 +11,10 @@ import java.util.logging.Logger;
 /**
  * Handles access to an Oracle Database
  */
-class OracleDBAccessor {
+public class OracleDBAccessor implements DBAccessor {
 
     private OracleDataSource oracleDataSource;
-    Connection oracleConnection;
+    private Connection oracleConnection;
 
     /*
      * Connection access specifications
@@ -38,9 +38,10 @@ class OracleDBAccessor {
     }
 
     /**
-     * Opens a connection for this instance
+     * Connects to an OracleDB
+     * @throws SQLException
      */
-    private void openConnexion() throws SQLException {
+    public void openConnexion() throws SQLException {
         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 
         oracleDataSource = new OracleDataSource();
@@ -53,8 +54,16 @@ class OracleDBAccessor {
      * Logs a SQL Exception
      * @param e an instance of {@link SQLException}
      */
-    void logSQLException(SQLException e) {
+    static void logSQLException(SQLException e) {
         ORACLE_ACCESS_LOG.log(Level.WARNING, e.getSQLState());
+    }
+
+    /**
+     * Verifies if the state of the connection is not null
+     * @return true if connection is active
+     */
+    public boolean hasActiveConnection() {
+        return oracleConnection != null;
     }
 
 }
