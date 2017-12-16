@@ -27,7 +27,8 @@ public abstract class Analysis {
     }
 
     /**
-     * Provides the results of an analysis
+     * Provides the results of an analysis,
+     * encapsulating them in a Collection subclass
      * @return Such Results as aforementioned
      */
     abstract <E extends Collection<?>> E generateReport();
