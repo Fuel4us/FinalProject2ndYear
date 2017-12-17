@@ -85,7 +85,7 @@ public class XMLImporterRoads {
 
             org.w3c.dom.Node node = nodes.item(i);
 
-            if (node.getNodeType() == node.ELEMENT_NODE) {
+            if (node instanceof Element) {
 
                 Element element = (Element) node;
 
