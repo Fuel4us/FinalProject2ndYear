@@ -20,7 +20,7 @@ import lapr.project.model.RoadNetwork.Segment;
 
 /**
  *
- * @author 1160950
+ * ToDo
  */
 public class OracleRoadNetworkDAO extends OracleDBAccessor{
 
@@ -36,46 +36,61 @@ public class OracleRoadNetworkDAO extends OracleDBAccessor{
     }
 
 
-
-    private RoadNetwork createRoadNetwork(ResultSet resultSet) throws SQLException {
-        //parametros das RoadNetwork
-        RoadNetwork roadNetwork = new RoadNetwork(true);
-        while(resultSet.next()){
-            //select para ir buscar os nodes
-            String nodeName;
-            Node node;
-            nodeName = resultSet.getString("id");
-            node = new Node(nodeName);
-            roadNetwork.addNode(node);
-
-        //select pra ir buscar as sections
-        //section precisa dos dois nodes origem e destino
-        Node begginningNode;
-        Node endingNode;
-//ir buscar nodes
-        Direction direction;
-        Collection<Segment> segments = new ArrayList<>();
-        Road road;
-//ir buscar direction da mesma forma que eu faço com os enums do veiculo
-//select que dá um result set dos segments pertencentes a esta section
-//while que itera sobre o result set dos segments, e cria um segment, adicionando-o à section
-//select que determina qual a road desta section
-//adicionar section
-        //resultSet dos segments
-        while(resultSet.next()){
-            int index = resultSet.getInt("index");
-            double initialHeight = resultSet.getDouble("initialHeight");
-            double finalHeight = resultSet.getDouble("finalheight");
-            double length = resultSet.getDouble("length");
-            double windAngle = resultSet.getDouble("windAngle");
-            double windSpeed = resultSet.getDouble("windSpeed");
-            double maxVelocity = resultSet.getDouble("maxVelocity");
-            double minVelocity = resultSet.getDouble("minVelocity");
-            segments.add(new Segment(index,initialHeight,finalHeight,length,windAngle,windSpeed,maxVelocity,minVelocity));
-        }
-        }
-        return roadNetwork;
-    }
+//    /**
+//     * Creates an instance of {@link RoadNetwork} from a given ResultSet of project entities
+//     * @param resultSet
+//     * @return
+//     * @throws SQLException
+//     */
+//    private RoadNetwork createRoadNetwork(ResultSet resultSet) throws SQLException {
+//        String networkID = resultSet.getString("ID");
+//        RoadNetwork roadNetwork = new RoadNetwork(true);
+//        roadNetwork.setId(networkID);
+//
+//        //selects nodes
+//        ResultSet nodeSet = statement.executeQuery(
+//                "SELECT * FROM NODE WHERE NODE.ID = NETWORKNODE.NODEID AND NETWORKNODE.NETWORKID = ROADNETWORK.ID AND ROADNETWORK.ID = networkID;"
+//        );
+//        while (nodeSet.next()) {
+//            String nodeName;
+//            Node node;
+//            nodeName = resultSet.getString("id");
+//            node = new Node(nodeName);
+//            roadNetwork.addNode(node);
+//        }
+//
+//        //select pra ir buscar as sections
+//        ResultSet sectionSet = statement.executeQuery(
+//                "SELECT * FROM THROTTLE WHERE SECTION.ID = NETWORKSECTION.SECTIONID AND NETWORKSECTION.NETWORKID = ROADNETWORK.ID AND ROADNETWORK.ID = networkID;"
+//        );
+//        while(sectionSet.next()){
+//            int sectionId = sectionSet.getInt("ID");
+//            //section precisa dos dois nodes origem e destino
+//            Node begginningNode;
+//            Node endingNode;
+//            Direction direction;
+//            Collection<Segment> segments = new ArrayList<>();
+//            Road road;
+//            //ir buscar direction da mesma forma que eu faço com os enums do veiculo
+//            // select que determina qual a road desta section
+//                ResultSet segmentSet = statement.executeQuery(
+//                        "SELECT * FROM SEGMENT WHERE SECTION.ID = sectionId AND SEGMENT.SECTIONID = SECTION.ID"
+//                );
+//                while(segmentSet.next()) {
+//                    int index = resultSet.getInt("index");
+//                    double initialHeight = segmentSet.getDouble("initialHeight");
+//                    double finalHeight = segmentSet.getDouble("finalheight");
+//                    double length = segmentSet.getDouble("length");
+//                    double windAngle = segmentSet.getDouble("windAngle");
+//                    double windSpeed = segmentSet.getDouble("windSpeed");
+//                    double maxVelocity = segmentSet.getDouble("maxVelocity");
+//                    double minVelocity = segmentSet.getDouble("minVelocity");
+//                    segments.add(new Segment(index, initialHeight, finalHeight, length, windAngle, windSpeed, maxVelocity, minVelocity));
+//                }
+//                //adicionar section
+//        }
+//        return roadNetwork;
+//    }
 
 }
 

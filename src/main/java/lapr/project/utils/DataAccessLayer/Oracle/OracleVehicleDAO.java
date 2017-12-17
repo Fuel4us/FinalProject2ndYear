@@ -17,8 +17,7 @@ import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 
 /**
- *
- * @author goncalo
+ * ToDo
  */
 public class OracleVehicleDAO extends OracleDBAccessor {
 
@@ -33,7 +32,7 @@ public class OracleVehicleDAO extends OracleDBAccessor {
         }
     }
 
-
+//
 //    public Vehicle createVehicle(ResultSet resultSet) throws SQLException {
 //        Vehicle vehicle;
 //        String name = resultSet.getString("name");

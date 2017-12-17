@@ -10,6 +10,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ToDo
+ */
 public class OracleProjectDAO extends OracleDBAccessor implements ProjectDAO {
 
     private PreparedStatement statement;
