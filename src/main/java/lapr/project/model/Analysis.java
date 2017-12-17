@@ -31,6 +31,6 @@ public abstract class Analysis {
      * encapsulating them in a Collection subclass
      * @return Such Results as aforementioned
      */
-    abstract <E extends Collection<?>> E generateReport();
+    public abstract Collection<?> generateReport();
 
 }
