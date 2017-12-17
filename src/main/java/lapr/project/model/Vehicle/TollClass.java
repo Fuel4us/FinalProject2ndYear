@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
  * the toll class of a vehicle
  * </p>
  */
+
 public class TollClass {
 
     @XmlElement

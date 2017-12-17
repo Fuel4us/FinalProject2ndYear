@@ -36,7 +36,7 @@ public class XMLImporter {
         Unmarshaller unmarshaller = context.createUnmarshaller();
 
         vehicle = (Vehicle) unmarshaller.unmarshal(file);
-//        completeVehiclesDOMParsing(vehicle, file);
+//       completeVehiclesDOMParsing(vehicle, file);
 
         return vehicle;
 
@@ -61,5 +61,5 @@ public class XMLImporter {
 //        String description;
 //        VehicleType type;
 //    }
-//    
+    
 }
