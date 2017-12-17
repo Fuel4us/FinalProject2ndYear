@@ -23,5 +23,19 @@ public class Energy {
     @XmlElement(name = "throttle")
     private List<Throttle> throttles;
 
-    
+    /**
+     * Constructor
+     * @param min_rpm
+     * @param max_rpm
+     * @param final_drive_ratio
+     * @param gears
+     * @param throttles
+     */
+    public Energy(int min_rpm, int max_rpm, float final_drive_ratio, List<Gears> gears, List<Throttle> throttles) {
+        this.min_rpm = min_rpm;
+        this.max_rpm = max_rpm;
+        this.final_drive_ratio = final_drive_ratio;
+        this.gears = gears;
+        this.throttles = throttles;
+    }
 }
