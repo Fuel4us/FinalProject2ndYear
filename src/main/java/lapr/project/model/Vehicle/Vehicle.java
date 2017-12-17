@@ -29,7 +29,7 @@ public abstract class Vehicle {
     @XmlElement
     private Motorization motorization;
    
-    @XmlElement
+    @XmlElement(name = "fuel")
     private Fuel fuel;
     
     @XmlElement
@@ -42,7 +42,7 @@ public abstract class Vehicle {
     private double dragCoefficient;
     
     @XmlElement(name = "frontal_area")
-    private double frontalRear;
+    private double frontalArea;
     
     @XmlElement(name = "rrc")
     private double rollingReleaseCoefficient;
@@ -51,7 +51,7 @@ public abstract class Vehicle {
     private double wheelSize;
     
     @XmlElementWrapper(name = "velocity_limit_list")
-    private List<VelocityLimitList> velocityLimitList;
+    private List<VelocityLimit> velocityLimitList;
     
     @XmlElement(name = "energy")
     private Energy energy;
@@ -67,13 +67,13 @@ public abstract class Vehicle {
      * @param mass
      * @param load
      * @param dragCoefficient
-     * @param frontalRear
+     * @param frontalArea
      * @param rollingReleaseCoefficient
      * @param wheelSize
      * @param velocityLimitList
      * @param energy
      */
-    public Vehicle(String name, String description, VehicleType type, TollClass vehicleClass, Motorization motorization, Fuel fuel, Measurable mass, Measurable load, double dragCoefficient, double frontalRear, double rollingReleaseCoefficient, double wheelSize, List<VelocityLimitList> velocityLimitList, Energy energy) {
+    public Vehicle(String name, String description, VehicleType type, TollClass vehicleClass, Motorization motorization, Fuel fuel, Measurable mass, Measurable load, double dragCoefficient, double frontalArea, double rollingReleaseCoefficient, double wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
         this.name = name;
         this.description = description;
         this.type = type;
@@ -83,7 +83,7 @@ public abstract class Vehicle {
         this.mass = mass;
         this.load = load;
         this.dragCoefficient = dragCoefficient;
-        this.frontalRear = frontalRear;
+        this.frontalArea = frontalArea;
         this.rollingReleaseCoefficient = rollingReleaseCoefficient;
         this.wheelSize = wheelSize;
         this.velocityLimitList = velocityLimitList;

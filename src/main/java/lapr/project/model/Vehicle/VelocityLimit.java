@@ -1,9 +1,10 @@
 package lapr.project.model.Vehicle;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-
-public class VelocityLimitList {
+@XmlRootElement(name = "velocity_limit")
+public class VelocityLimit {
     
     @XmlElement(name ="segment_type")
     private String TypeSegment;
@@ -11,7 +12,7 @@ public class VelocityLimitList {
     @XmlElement(name ="limit")
     private int velocityLimit;
 
-    public VelocityLimitList(String TypeSegment, int velocityLimit) {
+    public VelocityLimit(String TypeSegment, int velocityLimit) {
         this.TypeSegment = TypeSegment;
         this.velocityLimit = velocityLimit;
     }

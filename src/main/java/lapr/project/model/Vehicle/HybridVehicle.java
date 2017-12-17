@@ -27,7 +27,7 @@ public abstract class HybridVehicle extends AbstractNonCombustionVehicle {
      * @param velocityLimitList
      * @param energy
      */
-    public HybridVehicle(String name, String description, VehicleType type, TollClass vehicleClass, Motorization motorization, Fuel fuel, Measurable mass, Measurable load, double dragCoefficient, double frontalRear, double rollingReleaseCoefficient, double wheelSize, List<VelocityLimitList> velocityLimitList, Energy energy) {
+    public HybridVehicle(String name, String description, VehicleType type, TollClass vehicleClass, Motorization motorization, Fuel fuel, Measurable mass, Measurable load, double dragCoefficient, double frontalRear, double rollingReleaseCoefficient, double wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
         super(name, description, type, vehicleClass, motorization, fuel, mass, load, dragCoefficient, frontalRear, rollingReleaseCoefficient, wheelSize, velocityLimitList, energy);
     }
 
