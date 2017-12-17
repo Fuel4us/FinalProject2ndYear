@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Graph view of a network of roads
  */
 @XmlRootElement(name = "Network")
-public class RoadNetwork<Node,Section> extends Graph<Node,Section> {
+public class RoadNetwork extends Graph<Node,Section> {
 
     /**
      * Constructor
@@ -42,11 +42,11 @@ public class RoadNetwork<Node,Section> extends Graph<Node,Section> {
      */
     public boolean addSection(Node n1, Node n2, Section section) {
         boolean flag = false;
-//        if (insertEdge(n1, n2, section, section.getWeight())) {
-//            n1.addAdjVert(n2, section);
-//            n2.addAdjVert(n1, section);
-//            flag = true;
-//        }
+        if (insertEdge(n1, n2, section, section.getWeight())) {
+            n1.addAdjVert(n2, section);
+            n2.addAdjVert(n1, section);
+            flag = true;
+        }
         return flag;
     }
 

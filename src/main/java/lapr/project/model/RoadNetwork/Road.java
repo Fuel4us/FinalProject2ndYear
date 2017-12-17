@@ -9,7 +9,7 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Road {
 
-    @XmlElement(name = "id")
+    @XmlAttribute
     private String id;
 
     @XmlElement(name = "road_name")
