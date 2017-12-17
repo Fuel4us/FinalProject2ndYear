@@ -10,10 +10,10 @@ import java.util.Collection;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Section extends Edge<Node, Direction> {
 
-    @XmlElement(name = "begin")
+    @XmlAttribute(name = "begin")
     private Node beginningNode;
 
-    @XmlElement(name = "end")
+    @XmlAttribute(name = "end")
     private Node endingNode;
 
     @XmlElement

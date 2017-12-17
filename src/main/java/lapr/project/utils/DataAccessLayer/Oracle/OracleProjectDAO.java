@@ -10,6 +10,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ToDo
+ */
 public class OracleProjectDAO extends OracleDBAccessor implements ProjectDAO {
 
     private PreparedStatement statement;
@@ -43,7 +46,7 @@ public class OracleProjectDAO extends OracleDBAccessor implements ProjectDAO {
                 projectName = resultSet.getString("name");
                 projectDescription = resultSet.getString("description");
                 ResultSet vehicleSet = statement.executeQuery(
-                        "SELECT * FROM VEHICLE, PROJECT WHERE VEHICLE.PROJECTNAME = PROJECT.NAME;"
+                        "SELECT * FROM VEHICLE, PROJECT WHERE VEHICLE.PROJECTNAME = PROJECT.NAME AND PROJECT.NAME = projectName;"
                 );
                 ArrayList<Vehicle> vehicles = new ArrayList<>();
                 while(vehicleSet.next()) {
@@ -52,7 +55,7 @@ public class OracleProjectDAO extends OracleDBAccessor implements ProjectDAO {
                 }
 
                 ResultSet networkSet = statement.executeQuery(
-                        "SELECT * FROM ROADNETWORK, PROJECT WHERE ROADNETWORK.PROJECTNAME = PROJECT.NAME;"
+                        "SELECT * FROM ROADNETWORK, PROJECT WHERE ROADNETWORK.PROJECTNAME = PROJECT.NAME AND PROJECT.NAME = projectName;"
                 );
                 //chamar metodo da entidade roadNetwork, que recebe um result set, para criar uma roadnetwork
 

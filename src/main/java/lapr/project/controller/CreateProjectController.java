@@ -3,7 +3,6 @@ package lapr.project.controller;
 import lapr.project.model.*;
 import lapr.project.model.RoadNetwork.*;
 import lapr.project.model.Vehicle.*;
-import lapr.project.utils.Graph.Graph;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ public class CreateProjectController {
     private Project project;
 
     private List<Vehicle> vehicles;
-    private RoadNetwork<Node,Section> roadNetwork;
+    private RoadNetwork roadNetwork;
 
     /**
      * Full constructor for the class CreateProjectController
@@ -25,7 +24,7 @@ public class CreateProjectController {
     public CreateProjectController(DataBaseCommunicator dbCom) {
         this.dbCom = dbCom;
         this.vehicles = new ArrayList<>();
-        this.roadNetwork = new RoadNetwork<>(false);
+        this.roadNetwork = new RoadNetwork(false);
     }
 
 //    public void importVehicles() {

@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
 public class XMLImporterRoads {
 
     private final File file;
-    private RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> roadNetwork;
+    private RoadNetwork roadNetwork;
     private Road road;
     private Section section;
     private Segment segment;
@@ -48,7 +48,7 @@ public class XMLImporterRoads {
      * @return
      * @throws Exception
      */
-    public RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> importNetwork() throws JAXBException, IOException, SAXException, ParserConfigurationException {
+    public RoadNetwork importNetwork() throws JAXBException, IOException, SAXException, ParserConfigurationException {
 
         JAXBContext context = JAXBContext.newInstance(RoadNetwork.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
@@ -65,7 +65,7 @@ public class XMLImporterRoads {
      * @param file
      * @throws Exception
      */
-    public void completeNetworkInformationDOMParsing(RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> roadNetwork, File file) throws ParserConfigurationException, IOException, SAXException {
+    public void completeNetworkInformationDOMParsing(RoadNetwork roadNetwork, File file) throws ParserConfigurationException, IOException, SAXException {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
@@ -84,7 +84,7 @@ public class XMLImporterRoads {
      * @param doc
      * @throws Exception
      */
-    public void addSections(RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> roadNetwork, Document doc) {
+    public void addSections(RoadNetwork roadNetwork, Document doc) {
 
         NodeList sections = doc.getElementsByTagName("road_section");
         for (int i = 0; i < sections.getLength(); i++) {
@@ -106,7 +106,7 @@ public class XMLImporterRoads {
      * @param doc
      * @throws Exception
      */
-    public void addNodes(RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> roadNetwork, Document doc) {
+    public void addNodes(RoadNetwork roadNetwork, Document doc) {
 
 //        NodeList nodes = doc.getElementsByTagName("node_list");
 //
