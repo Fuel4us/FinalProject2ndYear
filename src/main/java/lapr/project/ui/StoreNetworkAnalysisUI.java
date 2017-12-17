@@ -5,8 +5,9 @@
  */
 package lapr.project.ui;
 
-import javax.swing.*;
-import java.awt.*;
+import lapr.project.controller.NetworkAnalysisController;
+import lapr.project.model.Project;
+import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 
 /**
  *
@@ -26,12 +27,23 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
     private javax.swing.JPanel orangeBorder;
     // End of variables declaration//GEN-END:variables
 
+    private NetworkAnalysisController networkAnalysisController;
+
     /**
      * Creates new form StoreNetworkAnalysisUI
      */
     public StoreNetworkAnalysisUI() {
         initComponents();
     }
+
+    /**
+     * Creates new form StoreNetworkAnalysisUI
+     */
+    public StoreNetworkAnalysisUI(Project currentProject, DataBaseCommunicator dbCom) {
+        initComponents();
+        networkAnalysisController = new NetworkAnalysisController(currentProject, dbCom);
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -76,7 +88,7 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         jButtonGenerateFile.addActionListener(evt -> jButtonGenerateFileActionPerformed(evt));
 
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
-        initializer.initializeJButton(jButtonBack, Main.FORTHYEIGHT_SEGOE_FONT, "«", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        initializer.initializeJButton(jButtonBack, Main.FORTY_EIGHT_SEGOE_FONT, "«", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
 
         jTextField1.setBackground(new java.awt.Color(97, 122, 133));
@@ -162,36 +174,5 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonSaveActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(StoreNetworkAnalysisUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(StoreNetworkAnalysisUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(StoreNetworkAnalysisUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(StoreNetworkAnalysisUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new StoreNetworkAnalysisUI().setVisible(true));
-    }
 
 }
