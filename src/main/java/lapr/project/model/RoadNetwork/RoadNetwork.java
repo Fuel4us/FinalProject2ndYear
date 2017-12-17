@@ -2,6 +2,7 @@ package lapr.project.model.RoadNetwork;
 
 import lapr.project.utils.Graph.Graph;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -10,18 +11,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Network")
 public class RoadNetwork<Node,Section> extends Graph<Node,Section> {
 
+    @XmlElement(name = "id")
+    private String id;
     /**
      * Constructor
      * @param directed
      */
-    public RoadNetwork(boolean directed) {
+    public RoadNetwork(boolean directed, String id) {
         super(directed);
+        this.id = id;
     }
 
     /**
      * Empty constructor
      */
-    public RoadNetwork() { super(false);}
+    public RoadNetwork() {
+        super(false);
+        id = ""; //ToDo
+    }
 
     /**
      * Inserts a Node into the graph
