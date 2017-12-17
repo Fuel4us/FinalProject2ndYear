@@ -13,4 +13,13 @@ public class Node extends Vertex<Node,Direction> {
 
     @XmlAttribute
     private String id;
+
+    /**
+     * Constructor.
+     * @param id
+     */
+    public Node(String id){
+        super();
+        this.id=id;
+    }
 }
