@@ -19,6 +19,7 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
     private javax.swing.JLabel imgLateral;
     private javax.swing.JButton jButtonBack;
     private javax.swing.JButton jButtonGenerateFile;
+    private javax.swing.JButton jButtonSave;
     private javax.swing.JLabel jLabelTitle;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
@@ -42,7 +43,6 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
     private void initComponents() {
 
         InitializeUIElements initializer = new InitializeUIElements();
-
         jPanel1 = new javax.swing.JPanel();
         imgLateral = new javax.swing.JLabel();
         orangeBorder = new javax.swing.JPanel();
@@ -50,6 +50,7 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         jButtonBack = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jLabelTitle = new javax.swing.JLabel();
+        jButtonSave = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -75,7 +76,7 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         jButtonGenerateFile.addActionListener(evt -> jButtonGenerateFileActionPerformed(evt));
 
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
-        initializer.initializeJButton(jButtonGenerateFile, new Font("Segoe UI Semibold", 0, 48), "«", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        initializer.initializeJButton(jButtonBack, Main.FORTHYEIGHT_SEGOE_FONT, "«", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
 
         jTextField1.setBackground(new java.awt.Color(97, 122, 133));
@@ -87,7 +88,10 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         jLabelTitle.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
         jLabelTitle.setForeground(new java.awt.Color(155, 177, 189));
         jLabelTitle.setText("Network analysis result");
-        initializer.initializeLabels(jLabelTitle, Main.TV_POSTER_FONT, "Network analysis result", SwingConstants.LEFT, Main.LIGHT_BLUE);
+
+        jButtonSave.setForeground(new java.awt.Color(45, 46, 45));
+        initializer.initializeJButton(jButtonSave, Main.EIGHTEEN_SEGOE_FONT, "Save results", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        jButtonSave.addActionListener(evt -> jButtonSaveActionPerformed(evt));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -100,12 +104,16 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
                 .addGap(66, 66, 66)
                 .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButtonGenerateFile, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
-                    .addComponent(jTextField1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(36, 36, 36)
-                        .addComponent(jLabelTitle)))
+                        .addComponent(jLabelTitle))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(jButtonGenerateFile, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -122,7 +130,8 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonGenerateFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonGenerateFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(59, 59, 59))
         );
 
@@ -149,6 +158,10 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonBackActionPerformed
+
+    private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonSaveActionPerformed
 
     /**
      * @param args the command line arguments
