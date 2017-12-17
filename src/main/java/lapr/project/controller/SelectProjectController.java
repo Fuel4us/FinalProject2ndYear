@@ -32,9 +32,5 @@ public class SelectProjectController {
     public boolean storeProject(Project p){
         return dbc.storeProject(p);
     }
-    
-    public void activateProject(Project p){
-        p.setActive();
-    }
 
 }

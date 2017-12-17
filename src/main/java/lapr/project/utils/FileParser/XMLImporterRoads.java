@@ -108,19 +108,24 @@ public class XMLImporterRoads {
      */
     public void addNodes(RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> roadNetwork, Document doc) {
 
-        NodeList nodes = doc.getElementsByTagName("node");
-        for (int i = 0; i < nodes.getLength(); i++) {
-            org.w3c.dom.Node node = nodes.item(i);
-            if (node.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
-                lapr.project.model.RoadNetwork.Node junction = new lapr.project.model.RoadNetwork.Node();
-                Element element = (Element) node;
-
-//                String str = node.getTextContent();
-//                Class cls = Class.forName(str);
-//                lapr.project.model.RoadNetwork.Node junction = (lapr.project.model.RoadNetwork.Node) cls.newInstance();
-//                roadNetwork.addNode(junction);
-            }
-        }
+//        NodeList nodes = doc.getElementsByTagName("node_list");
+//
+//        for (int i = 0; i < nodes.getLength(); i++) {
+//            org.w3c.dom.Node node = nodes.item(i);
+//                if (node.hasChildNodes()
+//                        && node instanceof Element) {
+//                    Node child = node.getFirstChild();
+//                    lapr.project.model.RoadNetwork.Node junction = new lapr.project.model.RoadNetwork.Node();
+//                    Element element = (Element) node;
+//
+//
+//
+////                String str = node.getTextContent();
+////                Class cls = Class.forName(str);
+////                lapr.project.model.RoadNetwork.Node junction = (lapr.project.model.RoadNetwork.Node) cls.newInstance();
+////                roadNetwork.addNode(junction);
+//                }
+//        }
     }
 
 }

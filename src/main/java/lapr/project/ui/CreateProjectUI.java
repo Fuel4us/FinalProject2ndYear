@@ -5,6 +5,8 @@
  */
 package lapr.project.ui;
 
+import javax.swing.*;
+
 /**
  *
  * @author anily
@@ -43,6 +45,8 @@ public class CreateProjectUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+
+        InitializeUIElements initializer = new InitializeUIElements();
         jPanel1 = new javax.swing.JPanel();
         imgLateral = new javax.swing.JLabel();
         orangeBorder = new javax.swing.JPanel();
@@ -75,18 +79,12 @@ public class CreateProjectUI extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jButtonCreate.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonCreate.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jButtonCreate.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonCreate.setText("Create project");
-        jButtonCreate.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        initializer.initializeJButton(jButtonCreate, Main.EIGHTEEN_SEGOE_FONT, "Create Project", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonCreate.addActionListener(evt -> jButtonCreateActionPerformed(evt));
 
-        jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setText("«");
-        jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        initializer.initializeJButton(jButtonBack, Main.FORTHYEIGHT_SEGOE_FONT, "«", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
 
         jTextFieldName.setBackground(new java.awt.Color(87, 89, 87));
@@ -94,22 +92,16 @@ public class CreateProjectUI extends javax.swing.JFrame {
         jTextFieldName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         jTextFieldName.setText("<sample name>");
 
-        jLabelPageTitle.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
-        jLabelPageTitle.setForeground(new java.awt.Color(155, 177, 189));
-        jLabelPageTitle.setText("Insert the data of your project");
+        initializer.initializeLabels(jLabelPageTitle, Main.TV_POSTER_FONT,"Insert the data of your project", SwingConstants.CENTER, Main.LIGHT_BLUE);
 
-        jLabelPName.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelPName.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelPName.setText("PROJECT NAME:");
+        initializer.initializeLabels(jLabelPName, Main.TWELVE_SEGOE_FONT, "PROJECT NAME", SwingConstants.LEADING, Main.DARK_BLUE);
 
         jTextFieldDescription.setBackground(new java.awt.Color(87, 89, 87));
         jTextFieldDescription.setForeground(new java.awt.Color(45, 46, 45));
         jTextFieldDescription.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         jTextFieldDescription.setText("<sample DESCRIPTION>");
 
-        jLabelPDesc.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelPDesc.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelPDesc.setText("DESCRIPTION:");
+        initializer.initializeLabels(jLabelPDesc, Main.TWELVE_SEGOE_FONT, "DESCRIPTION", SwingConstants.LEADING, Main.DARK_BLUE);
 
         jButtonRoad.setBackground(new java.awt.Color(45, 46, 45));
         jButtonRoad.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
