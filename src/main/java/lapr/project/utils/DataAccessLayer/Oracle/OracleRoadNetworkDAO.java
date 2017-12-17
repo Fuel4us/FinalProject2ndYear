@@ -37,9 +37,9 @@ public class OracleRoadNetworkDAO extends OracleDBAccessor{
 
 
 
-    private RoadNetwork<Node, Section> createRoadNetwork(ResultSet resultSet) throws SQLException {
+    private RoadNetwork createRoadNetwork(ResultSet resultSet) throws SQLException {
         //parametros das RoadNetwork
-        RoadNetwork<Node, Section> roadNetwork = new RoadNetwork<>(true);
+        RoadNetwork roadNetwork = new RoadNetwork(true);
         while(resultSet.next()){
             //select para ir buscar os nodes
             String nodeName;
