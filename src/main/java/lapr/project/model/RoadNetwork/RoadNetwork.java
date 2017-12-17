@@ -17,9 +17,8 @@ public class RoadNetwork<Node,Section> extends Graph<Node,Section> {
      * Constructor
      * @param directed
      */
-    public RoadNetwork(boolean directed, String id) {
+    public RoadNetwork(boolean directed) {
         super(directed);
-        this.id = id;
     }
 
     /**
@@ -27,7 +26,14 @@ public class RoadNetwork<Node,Section> extends Graph<Node,Section> {
      */
     public RoadNetwork() {
         super(false);
-        id = ""; //ToDo
+    }
+
+    /**
+     * Defines identifier of roadNetwork, obtained during the importation of data from file
+     * @param id identifier of roadNetwork
+     */
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
