@@ -57,6 +57,11 @@ public class BestPathUI extends javax.swing.JFrame {
     public BestPathUI(Project project) {
         this.controller = new BestPathController(project);
         initComponents();
+        
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setResizable(false);
+        setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -279,7 +284,8 @@ public class BestPathUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        // TODO add your handling code here:
+        SelectProjectUI.main(null);
+        dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
