@@ -160,7 +160,8 @@ public class WelcomeUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCopyActionPerformed
 
     private void jButtonSetProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetProjectActionPerformed
-        // TODO add your handling code here:
+        new SelectProjectUI(dbCom);
+        setVisible(false);
     }//GEN-LAST:event_jButtonSetProjectActionPerformed
 
     /**

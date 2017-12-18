@@ -258,5 +258,10 @@ public class Vehicle {
     public void setEnergy(Energy energy) {
         this.energy = energy;
     }
+    
+    @Override
+    public String toString(){
+        return String.format("%s - %s.", name,description);
+    }
 
 }

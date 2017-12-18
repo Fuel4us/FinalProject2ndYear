@@ -5,12 +5,22 @@
  */
 package lapr.project.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import lapr.project.controller.RoadNetworkPathFormController;
+import lapr.project.model.Project;
+import lapr.project.model.RoadNetwork.Node;
+import lapr.project.model.RoadNetwork.RoadNetwork;
+import lapr.project.model.Vehicle.Vehicle;
+
 /**
  *
  * @author anily
  */
 public class RoadNetworkPathFormUI extends javax.swing.JFrame {
 
+    private RoadNetworkPathFormController controller;
     private static final long serialVersionUID = -8320152827152597623L;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
@@ -22,9 +32,18 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelNode1;
     private javax.swing.JLabel jLabelNode2;
     private javax.swing.JList<String> jListAlgorithms;
-    private javax.swing.JList<String> jListAlgorithms1;
+    /**
     private javax.swing.JList<String> jListNodes1;
+    */
+    private javax.swing.JList<Node> jListNodes1;
+    /**
     private javax.swing.JList<String> jListNodes2;
+    */
+    private javax.swing.JList<Node> jListNodes2;
+    /**
+    private javax.swing.JList<String> jListVehicles;
+    */
+    private javax.swing.JList<Vehicle> jListVehicles;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -36,8 +55,14 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
     /**
      * Creates new form RoadNetworkPathFormUI
      */
-    public RoadNetworkPathFormUI() {
+    public RoadNetworkPathFormUI(Project project) {
+        this.controller = new RoadNetworkPathFormController(project);
         initComponents();
+        
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setResizable(false);
+        setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -59,12 +84,12 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jListNodes2 = new javax.swing.JList<>();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jListNodes1 = new javax.swing.JList<>();
+        jListNodes1 = new javax.swing.JList<Node>();
         jLabelAlgorithm = new javax.swing.JLabel();
         jLabelNode1 = new javax.swing.JLabel();
         jLabelNode2 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jListAlgorithms1 = new javax.swing.JList<>();
+        jListVehicles = new javax.swing.JList<>();
         jLabelAlgorithm1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
@@ -92,20 +117,27 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
         jButtonResults.setForeground(new java.awt.Color(45, 46, 45));
         jButtonResults.setText("Generate results");
         jButtonResults.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonResults.addActionListener(evt -> jButtonResultsActionPerformed(evt));
+        jButtonResults.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonResultsActionPerformed(evt);
+            }
+        });
 
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
         jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack.setText("«");
         jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
+        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBackActionPerformed(evt);
+            }
+        });
 
         jListAlgorithms.setBackground(new java.awt.Color(97, 122, 133));
         jListAlgorithms.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListAlgorithms.setForeground(new java.awt.Color(255, 255, 255));
         jListAlgorithms.setModel(new javax.swing.AbstractListModel<String>() {
-            private static final long serialVersionUID = -8622006060539640897L;
             String[] strings = { "Algorithm1", "Algorithm2", "Algorithm3", "Algorithm4", "Algorithm5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -113,27 +145,38 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
         jListAlgorithms.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jListAlgorithms);
 
+        jListNodes2 = new javax.swing.JList<Node>();
+        List<Node> nodesList2 = controller.getAllNodes();
+        DefaultListModel nodesModel2 = new DefaultListModel<>();
+        for (Node obj : nodesList2) {
+            nodesModel2.addElement(obj);
+        }
+        jListNodes2.setModel(nodesModel2);
         jListNodes2.setBackground(new java.awt.Color(97, 122, 133));
         jListNodes2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListNodes2.setForeground(new java.awt.Color(255, 255, 255));
+        /**
         jListNodes2.setModel(new javax.swing.AbstractListModel<String>() {
-            private static final long serialVersionUID = 7677237802953125828L;
             String[] strings = { "Node 1", "Node 2" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        */
         jListNodes2.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(jListNodes2);
 
+        List<Node> nodesList = controller.getAllNodes();
+        DefaultListModel nodesModel = new DefaultListModel<>();
+        for (Node obj : nodesList) {
+            nodesModel.addElement(obj);
+        }
+        jListNodes1.setModel(nodesModel);
         jListNodes1.setBackground(new java.awt.Color(97, 122, 133));
         jListNodes1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListNodes1.setForeground(new java.awt.Color(255, 255, 255));
-        jListNodes1.setModel(new javax.swing.AbstractListModel<String>() {
-            private static final long serialVersionUID = 8529090840580161377L;
-            String[] strings = { "Node 1", "Node 2" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        /**
+        jListNodes1.setModel(null);
+        */
         jListNodes1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(jListNodes1);
 
@@ -149,17 +192,25 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
         jLabelNode2.setForeground(new java.awt.Color(97, 122, 133));
         jLabelNode2.setText("DESTINY NODE:");
 
-        jListAlgorithms1.setBackground(new java.awt.Color(97, 122, 133));
-        jListAlgorithms1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
-        jListAlgorithms1.setForeground(new java.awt.Color(255, 255, 255));
-        jListAlgorithms1.setModel(new javax.swing.AbstractListModel<String>() {
-            private static final long serialVersionUID = -3103465723489841064L;
+        jListVehicles = new javax.swing.JList<Vehicle>();
+        List<Vehicle> vehicleList = controller.getAllVehicles();
+        DefaultListModel vehicleModel = new DefaultListModel<>();
+        for (Vehicle obj : vehicleList) {
+            vehicleModel.addElement(obj);
+        }
+        jListVehicles.setModel(vehicleModel);
+        jListVehicles.setBackground(new java.awt.Color(97, 122, 133));
+        jListVehicles.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
+        jListVehicles.setForeground(new java.awt.Color(255, 255, 255));
+        /**
+        jListVehicles.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "V1", "V2", "V3" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jListAlgorithms1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane4.setViewportView(jListAlgorithms1);
+        */
+        jListVehicles.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane4.setViewportView(jListVehicles);
 
         jLabelAlgorithm1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         jLabelAlgorithm1.setForeground(new java.awt.Color(97, 122, 133));
@@ -264,9 +315,12 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonResultsActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        // TODO add your handling code here:
+        SelectProjectUI.main(null);
+        dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -295,7 +349,7 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new RoadNetworkPathFormUI().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new RoadNetworkPathFormUI(new Project("","",new RoadNetwork(),new ArrayList<>())).setVisible(true));
     }
 
 }

@@ -216,7 +216,8 @@ public class CreateProjectUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCreateActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        // TODO add your handling code here:
+        WelcomeUI.main(null);
+        dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonRoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRoadActionPerformed
