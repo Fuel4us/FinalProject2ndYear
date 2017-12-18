@@ -1,5 +1,6 @@
 package lapr.project.utils.DataAccessLayer.Abstraction;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -33,6 +34,12 @@ public interface DBAccessor {
      * Rolls a transaction back
      */
     void rollback() throws SQLException;
+
+    /**
+     * Indicates the data source
+     * @return the data source class, by which type may be inferred
+     */
+    DataSource source();
 
     /**
      * Logs a SQL Exception
