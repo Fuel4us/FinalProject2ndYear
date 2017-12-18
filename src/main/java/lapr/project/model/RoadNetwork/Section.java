@@ -43,6 +43,27 @@ public class Section extends Edge<String, Direction> {
     }
 
     /**
+     * Calculates the total minimum time interval spent for the whole section,
+     * taking into account the velocity limit in each segment, its length and
+     * the velocity limit of the vehicle
+     * @param vehicleMaxVelocity the velocity limit of the vehicle
+     * @return the total minimum time interval
+     */
+    public double calculateTotalMinimumTimeInterval(double vehicleMaxVelocity) {
+
+        double totalMinimumTimeInterval = 0;
+
+        for (Segment segment : segments) {
+
+            totalMinimumTimeInterval += segment.calculateMinimumTimeInterval(vehicleMaxVelocity);
+
+        }
+
+        return totalMinimumTimeInterval;
+
+    }
+
+    /**
      * Determines the weight of the edge, equating weight with the sum of the length of each segment
      * @param segments The instances of Segment that belong to this Section
      * @return the total weight of this Section
