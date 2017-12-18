@@ -4,12 +4,12 @@ import java.awt.*;
 import java.util.logging.Logger;
 
 /**
- * @author Nuno Bettencourt <nmb@isep.ipp.pt> on 24/05/16.
+ * Triggers UI events
  */
 class Main {
 
     static final String SEGOE_FONT = "Segoe UI Semibold";
-    static final Font FORTHYEIGHT_SEGOE_FONT = new java.awt.Font(SEGOE_FONT, 0, 48);
+    static final Font FORTY_EIGHT_SEGOE_FONT = new java.awt.Font(SEGOE_FONT, 0, 48);
     static final Font EIGHTEEN_SEGOE_FONT = new java.awt.Font(SEGOE_FONT, 0, 18);
     static final Font FOURTEEN_SEGOE_FONT = new java.awt.Font(SEGOE_FONT, 0, 14);
     static final Font TWELVE_SEGOE_FONT = new java.awt.Font(SEGOE_FONT, 0, 12);
