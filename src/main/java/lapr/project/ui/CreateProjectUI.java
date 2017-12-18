@@ -1,19 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package lapr.project.ui;
 
 import javax.swing.*;
+import lapr.project.controller.CreateProjectController;
+import lapr.project.model.Project;
+import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 
 /**
  *
- * @author anily
+ * Provides user interface components for the creation of a project
  */
 public class CreateProjectUI extends javax.swing.JFrame {
 
     private static final long serialVersionUID = -1818083907306250629L;
+    private DataBaseCommunicator dbCom;
+    private CreateProjectController cpc;
+    private Project p;
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
     private javax.swing.JButton jButtonBack;
@@ -32,8 +34,17 @@ public class CreateProjectUI extends javax.swing.JFrame {
     /**
      * Creates new form CreateProjectUI
      */
-    public CreateProjectUI() {
+    public CreateProjectUI(DataBaseCommunicator dbCom) {
+        super("Create Project");
+        this.dbCom = dbCom;
+        cpc = new CreateProjectController(this.dbCom);
+        //p = cpc.newProject();
         initComponents();
+
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setResizable(false);
+        setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -84,7 +95,7 @@ public class CreateProjectUI extends javax.swing.JFrame {
         jButtonCreate.addActionListener(evt -> jButtonCreateActionPerformed(evt));
 
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
-        initializer.initializeJButton(jButtonBack, Main.FORTHYEIGHT_SEGOE_FONT, "«", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        initializer.initializeJButton(jButtonBack, Main.FORTY_EIGHT_SEGOE_FONT, "«", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
 
         jTextFieldName.setBackground(new java.awt.Color(87, 89, 87));
@@ -244,7 +255,7 @@ public class CreateProjectUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new CreateProjectUI().setVisible(true));
+        //java.awt.EventQueue.invokeLater(() -> new CreateProjectUI().setVisible(true));
     }
 
 }

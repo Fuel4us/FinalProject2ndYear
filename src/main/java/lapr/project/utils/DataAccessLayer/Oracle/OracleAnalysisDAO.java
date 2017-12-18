@@ -2,25 +2,33 @@ package lapr.project.utils.DataAccessLayer.Oracle;
 
 import lapr.project.model.Analysis;
 import lapr.project.utils.DataAccessLayer.Abstraction.AnalysisDAO;
+import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
+import oracle.jdbc.pool.OracleDataSource;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Handles Data Access via OracleDB
  */
-public class OracleAnalysisDAO extends OracleDBAccessor implements AnalysisDAO {
+public class OracleAnalysisDAO implements AnalysisDAO {
 
     private PreparedStatement saveStatement;
+    private Connection oracleConnection;
 
-    public OracleAnalysisDAO() {
-        super();
+    public OracleAnalysisDAO(OracleDataSource oracleDataSource) {
         try {
+            this.oracleConnection = oracleDataSource.getConnection();
             saveStatement = oracleConnection.prepareStatement(
                     "INSERT INTO ANALYSIS(ID, PROJECTNAME) VALUES (?, ?)"
             );
+            if (!oracleConnection.getAutoCommit()) {
+                oracleConnection.commit();
+            }
         } catch (SQLException e) {
-            super.logSQLException(e);
+            DBAccessor.logSQLException(e);
         }
     }
 
@@ -29,20 +37,16 @@ public class OracleAnalysisDAO extends OracleDBAccessor implements AnalysisDAO {
      * @param analysis an instance of {@link Analysis}
      */
     @Override
-    public void storeAnalysis(Analysis analysis) {
+    public void storeAnalysis(Analysis analysis) throws SQLException {
 
-        try {
-            int analysisID = analysis.identify();
-            saveStatement.setInt(1, analysisID);
-            saveStatement.setString(2, analysis.issueRequestingEntity().getName());
+        int analysisID = analysis.identify();
+        String name = analysis.issueRequestingEntity().getName();
 
-            saveStatement.executeUpdate();
+        saveStatement.setInt(1, analysisID);
+        saveStatement.setString(2, name);
 
-        } catch (SQLException e) {
-            super.logSQLException(e);
-        }
-
-
+        saveStatement.executeUpdate();
     }
+
 
 }

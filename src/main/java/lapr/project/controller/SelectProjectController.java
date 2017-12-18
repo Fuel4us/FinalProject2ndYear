@@ -7,7 +7,7 @@
 package lapr.project.controller;
 
 import java.util.List;
-import lapr.project.model.DataBaseCommunicator;
+import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 import lapr.project.model.Project;
 
 /**
@@ -29,8 +29,4 @@ public class SelectProjectController {
         return listProjects;
     }
     
-    public boolean storeProject(Project p){
-        return dbc.storeProject(p);
-    }
-
 }
