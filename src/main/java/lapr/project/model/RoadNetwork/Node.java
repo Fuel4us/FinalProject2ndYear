@@ -22,4 +22,9 @@ public class Node extends Vertex<Node,Direction> {
         super();
         this.id=id;
     }
+    
+    @Override
+    public String toString(){
+        return String.format("%s",id);
+    }
 }
