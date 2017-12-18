@@ -42,7 +42,7 @@ public class XMLImporterRoads {
     /**
      * Reads RoadNetwork from file
      *
-     * @return
+     * @return the road network updated
      * @throws Exception
      */
     public RoadNetwork importNetwork() throws JAXBException, IOException, SAXException, ParserConfigurationException {
@@ -75,7 +75,7 @@ public class XMLImporterRoads {
 
     /**
      * Adds nodes from the file in the RoadNetwork graph
-     * @param doc
+     * @param doc the document
      */
     private void addNodes(Document doc) {
 
