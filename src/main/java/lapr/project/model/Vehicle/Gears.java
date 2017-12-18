@@ -2,10 +2,10 @@ package lapr.project.model.Vehicle;
 
     public class Gears {
     
-    private final String id;
-    private final Double ratio;
+    private final int id;
+    private final float ratio;
 
-    public Gears(String id, Double ratio) {
+    public Gears(int id, Float ratio) {
         this.id = id;
         this.ratio = ratio;
     }

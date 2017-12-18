@@ -15,7 +15,7 @@ public class Project {
 
     private String name;
     private String description;
-    private RoadNetwork<Node,Section> roadNetwork;
+    private RoadNetwork roadNetwork;
     private List<Vehicle> vehicles;
 
     /**
@@ -25,7 +25,7 @@ public class Project {
      * @param roadNetwork The graph view of the network of roads associated with this project
      * @param vehicles the list of vehicles in the project
      */
-    public Project(String name, String description, RoadNetwork<Node,Section> roadNetwork, List<Vehicle> vehicles) {
+    public Project(String name, String description, RoadNetwork roadNetwork, List<Vehicle> vehicles) {
         this.name = name;
         this.description = description;
         this.roadNetwork = roadNetwork;
@@ -79,7 +79,7 @@ public class Project {
      * Getter of roadNetwork
      * @return the instance of RoadNetwork of the project
      */
-    public RoadNetwork<Node, Section> getRoadNetwork() {
+    public RoadNetwork getRoadNetwork() {
         return roadNetwork;
     }
 
@@ -90,4 +90,10 @@ public class Project {
     public List<Vehicle> getVehicles() {
         return vehicles;
     }
+
+    public void setVehicles(List<Vehicle> vehicles) {
+        this.vehicles = vehicles;
+    }
+    
+    
 }

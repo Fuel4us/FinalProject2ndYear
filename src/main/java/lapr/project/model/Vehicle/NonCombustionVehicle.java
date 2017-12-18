@@ -8,6 +8,6 @@ public interface NonCombustionVehicle {
     /**
      * 
      */
-    public void energyRegeneration();
+    void energyRegeneration();
 
 }

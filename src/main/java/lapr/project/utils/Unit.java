@@ -4,7 +4,7 @@ package lapr.project.utils;
  *
  * Provides various unit multiples
  */
-enum Unit {
+public enum Unit {
     
     KILOGRAM("km"), GRAM("g");
     private final String unit;

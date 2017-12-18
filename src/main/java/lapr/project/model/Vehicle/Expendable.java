@@ -10,6 +10,6 @@ public interface Expendable {
     /**
      * Determines the energy expenditure of a vehicle
      */
-    public abstract double determineEnergyExpenditure();
+    double determineEnergyExpenditure();
     
 }

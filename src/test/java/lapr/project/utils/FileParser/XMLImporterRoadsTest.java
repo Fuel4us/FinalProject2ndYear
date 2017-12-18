@@ -1,68 +1,78 @@
-//package lapr.project.utils.FileParser;
+package lapr.project.utils.FileParser;
+
+import lapr.project.model.RoadNetwork.Node;
+import lapr.project.model.RoadNetwork.RoadNetwork;
+import org.junit.Test;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import javax.xml.bind.JAXBException;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
+
+import static org.junit.Assert.*;
+
+public class XMLImporterRoadsTest {
+
+    File file;
+    XMLImporterRoads fileParser;
+    RoadNetwork roadNetworkResult;
+    DocumentBuilderFactory dbf;
+    DocumentBuilder db;
+    Document doc;
+
+    public XMLImporterRoadsTest() throws JAXBException, IOException, SAXException, ParserConfigurationException {
+        file = new File("src/test/resources/TestSet02_Network.xml");
+        fileParser = new XMLImporterRoads(file, true);
+
+        roadNetworkResult = fileParser.importNetwork();
+
+        dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        db = dbf.newDocumentBuilder();
+        doc = db.parse(file);
+    }
+
+    @Test
+    public void importNetwork() throws Exception {
+
+        RoadNetwork roadNetworkExpected = new RoadNetwork(true);
+
+        Node nodeExpected1 = new Node("n0");
+        Node nodeExpected2 = new Node("n1");
+        Node nodeExpected3 = new Node("n2");
+        Node nodeExpected4 = new Node("n3");
+        Node nodeExpected5 = new Node("n4");
+        Node nodeExpected6 = new Node("n5");
+
+        roadNetworkExpected.addNode(nodeExpected1);
+        roadNetworkExpected.addNode(nodeExpected2);
+        roadNetworkExpected.addNode(nodeExpected3);
+        roadNetworkExpected.addNode(nodeExpected4);
+        roadNetworkExpected.addNode(nodeExpected5);
+        roadNetworkExpected.addNode(nodeExpected6);
+
+        assertEquals(roadNetworkExpected, roadNetworkResult);
+
+    }
+
+//    @Test
+//    public void addSectionsTest() throws Exception {
 //
-//import lapr.project.model.RoadNetwork.Node;
-//import lapr.project.model.RoadNetwork.RoadNetwork;
-//import lapr.project.model.RoadNetwork.Section;
-//import lapr.project.utils.ClassCast;
-//import lapr.project.utils.Graph.Edge;
-//import org.junit.Test;
-//import org.w3c.dom.Document;
-//import org.xml.sax.SAXException;
+//        fileParser.addSections(roadNetworkResult, doc);
 //
-//import javax.xml.bind.JAXBContext;
-//import javax.xml.bind.JAXBException;
-//import javax.xml.bind.Unmarshaller;
-//import javax.xml.parsers.DocumentBuilder;
-//import javax.xml.parsers.DocumentBuilderFactory;
-//import javax.xml.parsers.ParserConfigurationException;
-//import java.io.File;
-//import java.io.IOException;
-//import java.util.LinkedList;
-//import java.util.List;
+//        List<Edge<Node, Section>> result = roadNetworkResult.getEdges();
+//        List<Edge<Node, Section>> expected = new LinkedList<>();
 //
-//import static org.junit.Assert.*;
-//
-//public class XMLImporterRoadsTest {
-//
-//    File file;
-//    XMLImporterRoads fileParser;
-//    JAXBContext context;
-//    Unmarshaller unmarshaller;
-//    RoadNetwork<lapr.project.model.RoadNetwork.Node, Section> roadNetwork;
-//    DocumentBuilderFactory dbf;
-//    DocumentBuilder db;
-//    Document doc;
-//
-//    public XMLImporterRoadsTest() throws JAXBException, IOException, SAXException, ParserConfigurationException {
-//        File file = new File("src\\main\\resources\\TestSet02\\TestSet02_Network.xml");
-//        fileParser = new XMLImporterRoads(file);
-//
-//        context = JAXBContext.newInstance(RoadNetwork.class);
-//        unmarshaller = context.createUnmarshaller();
-//        roadNetwork = new RoadNetwork<>(true);
-//        roadNetwork = ClassCast.uncheckedCast(unmarshaller.unmarshal(file));
-//        fileParser.completeNetworkInformationDOMParsing(roadNetwork, file);
-//
-//        dbf = DocumentBuilderFactory.newInstance();
-//        dbf.setNamespaceAware(true);
-//        db = dbf.newDocumentBuilder();
-//        doc = db.parse(file);
 //    }
+
+//    @Test
+//    public void addNodesTest() throws Exception {
 //
-////    @Test
-////    public void addSectionsTest() throws Exception {
-////
-////        fileParser.addSections(roadNetwork, doc);
-////
-////        List<Edge<Node, Section>> result = roadNetwork.getEdges();
-////        List<Edge<Node, Section>> expected = new LinkedList<>();
-////
-////    }
+//        fileParser.addNodes(roadNetworkResult, doc);
 //
-////    @Test
-////    public void addNodesTest() throws Exception {
-////
-////        fileParser.addNodes(roadNetwork, doc);
-////
-////    }
-//}
+//    }
+}
