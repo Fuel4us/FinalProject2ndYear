@@ -1,6 +1,7 @@
 package lapr.project.model.RoadNetwork;
 
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement
@@ -31,6 +32,19 @@ public class Road {
         this.name = name;
         this.typology = typology;
         this.tollFare = tollFare;
+    }
+
+    /**
+     * Constructor with id, name and typology for the class Road
+     * @param id the road's id
+     * @param name the road's name
+     * @param typology the road's typology
+     */
+    public Road(String id, String name, String typology) {
+        this.id = id;
+        this.name = name;
+        this.typology = typology;
+        tollFare = new ArrayList<>();
     }
 
     /**
