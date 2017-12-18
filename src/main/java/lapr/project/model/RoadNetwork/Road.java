@@ -1,7 +1,5 @@
 package lapr.project.model.RoadNetwork;
 
-import lapr.project.utils.Graph.Vertex;
-
 import javax.xml.bind.annotation.*;
 import java.util.List;
 
