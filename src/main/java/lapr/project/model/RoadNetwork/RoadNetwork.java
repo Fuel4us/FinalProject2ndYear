@@ -13,6 +13,21 @@ public class RoadNetwork extends Graph<Node,Section> {
 
     @XmlElement(name = "id")
     private String id;
+
+    private String description;
+
+    /**
+     * Full constructor for the class RoadNetwork
+     * @param directed if the graph is directed or not
+     * @param id the id of the road network
+     * @param description the description of the road network
+     */
+    public RoadNetwork(boolean directed, String id, String description) {
+        super(directed);
+        this.id = id;
+        this.description = description;
+    }
+
     /**
      * Constructor
      * @param directed
