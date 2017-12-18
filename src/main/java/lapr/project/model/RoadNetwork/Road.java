@@ -20,9 +20,6 @@ public class Road {
     @XmlElementWrapper(name = "toll_fare")
     @XmlElement(name = "class")
     private List<Float> tollFare;
-    @XmlElementWrapper(name = "section_list")
-    @XmlElement(name = "road_section")
-    private List<Section> sectionList;
 
     /**
      * @return the ID of this road
