@@ -11,6 +11,11 @@ public abstract class Analysis {
     private int id;
     private Project requestingInstance;
 
+    public Analysis(int id, Project requestingInstance) {
+        this.id = id;
+        this.requestingInstance = requestingInstance;
+    }
+
     /**
      * @return the entity that issued the analysis
      */
