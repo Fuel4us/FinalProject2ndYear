@@ -62,7 +62,7 @@ public class XMLImporterRoads {
      * Creates document in order to complete information in the RoadNetwork
      * @throws Exception
      */
-    public void completeNetworkInformationDOMParsing() throws ParserConfigurationException, IOException, SAXException {
+    private void completeNetworkInformationDOMParsing() throws ParserConfigurationException, IOException, SAXException {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
