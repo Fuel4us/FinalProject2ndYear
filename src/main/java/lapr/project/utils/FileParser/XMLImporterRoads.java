@@ -17,6 +17,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import lapr.project.utils.ClassCast;
 import org.xml.sax.SAXException;
@@ -70,8 +72,11 @@ public class XMLImporterRoads {
         Document doc = db.parse(file);
 
         addNodes(doc);
+//        addRoads(doc);
 //        addSections(roadNetwork, doc);
     }
+
+
 
     /**
      * Adds nodes from the file in the RoadNetwork graph
@@ -79,7 +84,7 @@ public class XMLImporterRoads {
      */
     private void addNodes(Document doc) {
 
-        NodeList nodes = doc.getElementsByTagName("node_list");
+        NodeList nodes = doc.getElementsByTagName("node");
 
         for (int i = 0; i < nodes.getLength(); i++) {
 
@@ -90,7 +95,7 @@ public class XMLImporterRoads {
                 Element element = (Element) node;
 
                 roadNetwork.addNode(new lapr.project.model.RoadNetwork.Node(
-                        element.getElementsByTagName("node").item(0).getTextContent()));
+                        element.getAttribute("id")));
 
             }
 
