@@ -221,7 +221,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonPathFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPathFormActionPerformed
-        new RoadNetworkPathFormUI(project);
+        new BestPathUI(project);
         setVisible(false);
     }//GEN-LAST:event_jButtonPathFormActionPerformed
 
