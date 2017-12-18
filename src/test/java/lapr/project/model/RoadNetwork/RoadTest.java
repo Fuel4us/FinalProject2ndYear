@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.Assert.*;
 
@@ -11,11 +12,27 @@ public class RoadTest {
 
     /**
      * Ensures the method equals() returns true:
-     *
+     * - same objects
+     * - same content
      * @throws Exception
      */
     @Test
     public void ensureEqualsReturnsTrueSuccessfully() throws Exception {
+
+        //same objects
+        Road roadTest1 = new Road("id1", "name1", "typology1", new ArrayList<>());
+
+        boolean result = Objects.equals(roadTest1, roadTest1);
+
+        assert result;
+
+        //same content, different objects
+        Road roadTest2 = new Road("id1", "name1", "typology1", new ArrayList<>());
+
+        result = Objects.equals(roadTest1, roadTest2);
+
+        assert result;
+
     }
 
     /**
@@ -46,7 +63,7 @@ public class RoadTest {
         int result = roadTest.hashCode();
 
         assertEquals(expected, result);
-        
+
     }
 
 }
