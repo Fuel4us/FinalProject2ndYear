@@ -4,6 +4,9 @@ import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the roads
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Road {
