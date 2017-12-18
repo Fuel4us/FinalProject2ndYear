@@ -214,11 +214,13 @@ public class SelectProjectUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCompFormActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
+        WelcomeUI.main(null);
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonPathFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPathFormActionPerformed
-        // TODO add your handling code here:
+        new RoadNetworkPathFormUI();
+        setVisible(false);
     }//GEN-LAST:event_jButtonPathFormActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed

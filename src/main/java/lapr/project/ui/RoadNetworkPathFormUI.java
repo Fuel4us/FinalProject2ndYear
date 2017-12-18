@@ -37,7 +37,14 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
      * Creates new form RoadNetworkPathFormUI
      */
     public RoadNetworkPathFormUI() {
+        super("Road Network Path Form");
+        
         initComponents();
+        
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setResizable(false);
+        setVisible(true);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -264,7 +271,8 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonResultsActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        // TODO add your handling code here:
+        SelectProjectUI.main(null);
+        dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     /**
