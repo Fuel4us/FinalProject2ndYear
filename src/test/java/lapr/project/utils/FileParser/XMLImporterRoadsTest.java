@@ -36,8 +36,12 @@ public class XMLImporterRoadsTest {
         doc = db.parse(file);
     }
 
+    /**
+     * Ensures the method importNetwork() created the correct road network
+     * @throws Exception
+     */
     @Test
-    public void importNetwork() throws Exception {
+    public void ensureImportNetworkCreatesCorrectRoadNetwork() throws Exception {
 
         RoadNetwork roadNetworkExpected = new RoadNetwork(true);
 
