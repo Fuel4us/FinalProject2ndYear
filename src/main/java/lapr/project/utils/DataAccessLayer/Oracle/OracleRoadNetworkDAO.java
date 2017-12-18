@@ -46,7 +46,7 @@ public class OracleRoadNetworkDAO {
      * @return instance of {@link RoadNetwork}
      * @throws SQLException
      */
-    private RoadNetwork createRoadNetwork(String projectName) throws SQLException {
+    public RoadNetwork createRoadNetwork(String projectName) throws SQLException {
         ResultSet networkSet = statement.executeQuery(
                 "SELECT * FROM ROADNETWORK, PROJECT WHERE ROADNETWORK.PROJECTNAME = PROJECT.NAME AND PROJECT.NAME = projectName;"
         );

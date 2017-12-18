@@ -10,6 +10,7 @@ import oracle.jdbc.pool.OracleDataSource;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -18,8 +19,10 @@ import java.util.List;
 public class OracleProjectDAO implements ProjectDAO {
 
     private PreparedStatement statement;
+    private OracleDataSource oracleDataSource;
 
     public OracleProjectDAO(OracleDataSource oracleDataSource) {
+        this.oracleDataSource = oracleDataSource;
         try {
             Connection oracleConnection = oracleDataSource.getConnection();
         } catch (SQLException e) {
@@ -29,44 +32,41 @@ public class OracleProjectDAO implements ProjectDAO {
 
     /**
      * Stores instances of Project from database in a List
+     *
      * @return List<Project> a list of instances {@link Project}
      * @throws SQLException
      */
     @Override
     public List<Project> fetchProjects() throws SQLException {
 
-        ArrayList<Project> projects = new ArrayList<>();
-            ResultSet resultSet = statement.executeQuery(
-                    "SELECT * FROM PROJECT;"
-            );
-            String projectName;
-            String projectDescription;
-            Project project;
-            while(resultSet.next()) {
-                projectName = resultSet.getString("name");
-                projectDescription = resultSet.getString("description");
-                ResultSet vehicleSet = statement.executeQuery(
-                        "SELECT * FROM VEHICLE, PROJECT WHERE VEHICLE.PROJECTNAME = PROJECT.NAME AND PROJECT.NAME = projectName;"
-                );
-                ArrayList<Vehicle> vehicles = new ArrayList<>();
-                while(vehicleSet.next()) {
-                    //chamar metodo da entidade veiculo, que recebe um result set, para criar um veiculo
-                    //vehicles.add(vehicle);
-                }
+        List<Project> projects = new LinkedList<>();
+        ResultSet resultSet = statement.executeQuery(
+                "SELECT * FROM PROJECT;"
+        );
 
-                ResultSet networkSet = statement.executeQuery(
-                        "SELECT * FROM ROADNETWORK, PROJECT WHERE ROADNETWORK.PROJECTNAME = PROJECT.NAME AND PROJECT.NAME = projectName;"
-                );
-                //chamar metodo da entidade roadNetwork, que recebe um result set, para criar uma roadnetwork
+        String projectName;
+        String projectDescription;
+        List<Vehicle> vehicles;
+        RoadNetwork roadNetwork;
+        OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO(oracleDataSource);
+        OracleRoadNetworkDAO oracleRoadNetworkDAO = new OracleRoadNetworkDAO(oracleDataSource);
+        Project project;
+        while (resultSet.next()) {
+            projectName = resultSet.getString("name");
+            projectDescription = resultSet.getString("description");
+            vehicles = oracleVehicleDAO.createVehicle(projectName);
+            roadNetwork = oracleRoadNetworkDAO.createRoadNetwork(projectName);
 
-                //project = new Project(projectName, projectDescription, roadNetwork, vehicles);
-            }
+            project = new Project(projectName, projectDescription, roadNetwork, vehicles);
+            projects.add(project);
+        }
 
         return projects;
     }
 
     /**
      * Stores a project into the data layer
+     *
      * @param project The project to be stored
      */
     @Override
