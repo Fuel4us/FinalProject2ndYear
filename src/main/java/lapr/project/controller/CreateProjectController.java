@@ -28,6 +28,10 @@ public class CreateProjectController {
         this.roadNetwork = new RoadNetwork(false);
     }
 
+//    public Project newProject() {
+//        
+//    }
+    
 //    public void importVehicles() {
 //
 //    }

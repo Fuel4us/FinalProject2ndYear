@@ -17,15 +17,15 @@ import lapr.project.model.Project;
 public class SelectProjectController {
     
     List<Project> listProjects;
-    DataBaseCommunicator dbc;
+    private DataBaseCommunicator dbCom;
     
     
-    public SelectProjectController(){
-    
+    public SelectProjectController(DataBaseCommunicator dbCom){
+        this.dbCom = dbCom;    
     }
     
     public List<Project> fetchProjectsList(){
-        List<Project> listProjects = dbc.fetchProjectList();
+        List<Project> listProjects = dbCom.fetchProjectList();
         return listProjects;
     }
     
