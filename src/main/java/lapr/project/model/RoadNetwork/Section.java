@@ -8,7 +8,7 @@ import java.util.Collection;
 
 @XmlRootElement(name = "road_section")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Section extends Edge<Node, Direction> {
+public class Section extends Edge<String, Direction> {
 
     @XmlAttribute(name = "begin")
     private Node beginningNode;
