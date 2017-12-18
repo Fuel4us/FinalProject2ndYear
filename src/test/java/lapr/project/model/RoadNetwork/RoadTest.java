@@ -2,6 +2,9 @@ package lapr.project.model.RoadNetwork;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class RoadTest {
@@ -30,6 +33,20 @@ public class RoadTest {
      */
     @Test
     public void ensureHashCodeReturnsCorrectValue() throws Exception {
+
+        String id = "id";
+        String name = "name";
+        String typology = "typology";
+        List<Float> tollFare = new ArrayList<>();
+
+        Road roadTest = new Road(id, name, typology, tollFare);
+
+        int expected = -135370504;
+
+        int result = roadTest.hashCode();
+
+        assertEquals(expected, result);
+        
     }
 
 }
