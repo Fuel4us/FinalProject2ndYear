@@ -7,6 +7,7 @@ package lapr.project.ui;
 
 import lapr.project.controller.CreateProjectController;
 import lapr.project.controller.SelectProjectController;
+import lapr.project.model.Project;
 import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 
 /**
@@ -18,6 +19,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
     private static final long serialVersionUID = -5188965937946662366L;
     private DataBaseCommunicator dbCom;
     private SelectProjectController spc;
+    private Project project;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
     private javax.swing.JButton jButtonBack;
@@ -219,7 +221,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonPathFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPathFormActionPerformed
-        new RoadNetworkPathFormUI();
+        new RoadNetworkPathFormUI(project);
         setVisible(false);
     }//GEN-LAST:event_jButtonPathFormActionPerformed
 
