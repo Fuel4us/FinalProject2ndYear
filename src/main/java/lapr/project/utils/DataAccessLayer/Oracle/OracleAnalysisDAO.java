@@ -8,6 +8,7 @@ import oracle.jdbc.pool.OracleDataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Handles Data Access via OracleDB
@@ -15,15 +16,17 @@ import java.sql.SQLException;
 public class OracleAnalysisDAO implements AnalysisDAO {
 
     private PreparedStatement saveStatement;
+    private Connection oracleConnection;
 
     public OracleAnalysisDAO(OracleDataSource oracleDataSource) {
         try {
-            Connection oracleConnection = oracleDataSource.getConnection();
+            this.oracleConnection = oracleDataSource.getConnection();
             saveStatement = oracleConnection.prepareStatement(
                     "INSERT INTO ANALYSIS(ID, PROJECTNAME) VALUES (?, ?)"
             );
-            oracleConnection.commit();
-            oracleConnection.close();
+            if (!oracleConnection.getAutoCommit()) {
+                oracleConnection.commit();
+            }
         } catch (SQLException e) {
             DBAccessor.logSQLException(e);
         }
@@ -35,9 +38,12 @@ public class OracleAnalysisDAO implements AnalysisDAO {
      */
     @Override
     public void storeAnalysis(Analysis analysis) throws SQLException {
+
         int analysisID = analysis.identify();
+        String name = analysis.issueRequestingEntity().getName();
+
         saveStatement.setInt(1, analysisID);
-        saveStatement.setString(2, analysis.issueRequestingEntity().getName());
+        saveStatement.setString(2, name);
 
         saveStatement.executeUpdate();
     }
