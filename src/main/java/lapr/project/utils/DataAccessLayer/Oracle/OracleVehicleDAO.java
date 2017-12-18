@@ -5,6 +5,7 @@
  */
 package lapr.project.utils.DataAccessLayer.Oracle;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,20 +16,21 @@ import lapr.project.model.Vehicle.*;
 import lapr.project.utils.DataAccessLayer.Abstraction.*;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
+import oracle.jdbc.pool.OracleDataSource;
 
 /**
  * ToDo
  */
-public class OracleVehicleDAO extends OracleDBAccessor {
+public class OracleVehicleDAO {
 
     private PreparedStatement statement;
+    private Connection oracleConnection;
 
-    public OracleVehicleDAO() {
-        super();
+    public OracleVehicleDAO(OracleDataSource oracleDataSource) {
         try {
-            statement = oracleConnection.prepareStatement("");
+            Connection connection = oracleDataSource.getConnection();
         } catch (SQLException e) {
-            super.logSQLException(e);
+            DBAccessor.logSQLException(e);
         }
     }
 

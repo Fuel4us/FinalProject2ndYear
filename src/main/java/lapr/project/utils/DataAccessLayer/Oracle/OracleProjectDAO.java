@@ -4,7 +4,9 @@ package lapr.project.utils.DataAccessLayer.Oracle;
 import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.Abstraction.ProjectDAO;
+import oracle.jdbc.pool.OracleDataSource;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,16 +15,15 @@ import java.util.List;
 /**
  * ToDo
  */
-public class OracleProjectDAO extends OracleDBAccessor implements ProjectDAO {
+public class OracleProjectDAO implements ProjectDAO {
 
     private PreparedStatement statement;
 
-    public OracleProjectDAO() {
-        super();
+    public OracleProjectDAO(OracleDataSource oracleDataSource) {
         try {
-            statement = oracleConnection.prepareStatement("");
+            Connection oracleConnection = oracleDataSource.getConnection();
         } catch (SQLException e) {
-            super.logSQLException(e);
+            DBAccessor.logSQLException(e);
         }
     }
 
@@ -32,10 +33,9 @@ public class OracleProjectDAO extends OracleDBAccessor implements ProjectDAO {
      * @throws SQLException
      */
     @Override
-    public List<Project> fetchProjects()  {
+    public List<Project> fetchProjects() throws SQLException {
 
         ArrayList<Project> projects = new ArrayList<>();
-        try {
             ResultSet resultSet = statement.executeQuery(
                     "SELECT * FROM PROJECT;"
             );
@@ -62,10 +62,16 @@ public class OracleProjectDAO extends OracleDBAccessor implements ProjectDAO {
                 //project = new Project(projectName, projectDescription, roadNetwork, vehicles);
             }
 
-        } catch (SQLException e) {
-            super.logSQLException(e);
-        }
         return projects;
+    }
+
+    /**
+     * Stores a project into the data layer
+     * @param project The project to be stored
+     */
+    @Override
+    public void storeProject(Project project) {
+        //ToDo
     }
 
 }
