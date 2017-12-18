@@ -37,11 +37,41 @@ public class RoadTest {
 
     /**
      * Ensures the method equals() returns false:
-     *
+     * - different classes
+     * - difference for each attribute
      * @throws Exception
      */
     @Test
     public void ensureEqualsReturnsFalseSuccessfully() throws Exception {
+
+        Road roadTest1 = new Road("id1", "name1", "typology1", new ArrayList<>());
+
+        Object roadTest2 = new Object();
+
+        boolean result = Objects.equals(roadTest1, roadTest2);
+        assertFalse(result);
+
+        Road roadTest3 = new Road("id2", "name1", "typology1", new ArrayList<>());
+        Road roadTest4 = new Road("id1", "name2", "typology1", new ArrayList<>());
+        Road roadTest5 = new Road("id1", "name1", "typology3", new ArrayList<>());
+
+        List<Float> list = new ArrayList<>();
+        list.add(0f);
+
+        Road roadTest6 = new Road("id1", "name1", "typology1", list);
+
+        result = Objects.equals(roadTest1, roadTest3);
+        assertFalse(result);
+
+        result = Objects.equals(roadTest1, roadTest4);
+        assertFalse(result);
+
+        result = Objects.equals(roadTest1, roadTest5);
+        assertFalse(result);
+
+        result = Objects.equals(roadTest1, roadTest6);
+        assertFalse(result);
+
     }
 
     /**
