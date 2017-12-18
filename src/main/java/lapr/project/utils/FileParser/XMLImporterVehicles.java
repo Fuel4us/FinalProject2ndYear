@@ -1,7 +1,14 @@
 package lapr.project.utils.FileParser;
 
+
+import java.util.List;
+import javax.xml.parsers.ParserConfigurationException;
+import lapr.project.model.*;
+import lapr.project.model.Vehicle.*;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import org.xml.sax.SAXException;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
@@ -9,65 +16,76 @@ import org.w3c.dom.Element;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import javax.xml.parsers.ParserConfigurationException;
-import lapr.project.model.*;
-import org.w3c.dom.DOMException;
-import org.xml.sax.SAXException;
-import lapr.project.model.Vehicle.*;
+import lapr.project.utils.Measurable;
+import lapr.project.utils.Unit;
 
 
 /**
- * 
+ *
  * @author goncalo
  */
 public class XMLImporterVehicles implements FileParser {
 
-    
     public boolean importVehicles(Project object, String filename) {
+        
         try {
-            // Initialize all variables
-            String newName = "N/A";
-            String newDescription = "N/A";
-            String newType = "N/A";
-            int newTollClass = 0;
-            String newMotorization = "N/A";
-            String newFuel = "N/A";
+
+            String name = "Default";
+            String description = "Default";
+
+            VehicleType vehicleType = null;
+            String newType = "Default";
+
+            int newToll = 0;
+
+            Motorization motorization = null;
+            String newMotorization = "Default";
+
+            Fuel fuel = null;
+            String newFuel = "Default";
+
+            Measurable mass = null;
+            Measurable load = null;
+            String massUnit;
+            String loadUnit;
             int newMass = 0;
             int newLoad = 0;
-            float newDrag = 0F;
-            float newFrontalArea = 0F;
-            float newRrc = 0F;
-            float newWheelSize = 0F;
+
+            float newDrag = 0;
+            float newFrontalArea = 0;
+            float newRrc = 0;
+            float newWheelSize = 0;
+
             List<VelocityLimit> newVelocityLimitList = new ArrayList<VelocityLimit>();
             VelocityLimit newVelocityLimit = null;
-            String newSegmentType = "N/A";
+            String newSegmentType = "Default";
             int newLimit = 0;
+
+            Energy newEnergy = null;
             int newMinRpm = 0;
             int newMaxRpm = 0;
-            float newFinalDriveRatio = 0F;
+            float newFinalDriveRatio = 0;
             Gears newGear = null;
-            int newGearId = 0;
-            float newRatio = 0F;
             List<Gears> newGearList = new ArrayList<>();
-            Energy newEnergy = null;
+            int newGearId = 0;
+            float newRatio = 0;
+
+            Regime newRegime = null;
             int newThrottleId = 0;
             int newTorque = 0;
             int newRpmLow = 0;
             int newRpmHigh = 0;
             int newSfc = 0;
-            Regime newRegime = null;
+            
             List<Regime> newRegimeList = new ArrayList<>();
             Throttle newThrottle = null;
             List<Throttle> newThrottleList = new ArrayList<>();
             Vehicle newVehicle = null;
-            
+
             // Get vehicleList
             List<Vehicle> set = new ArrayList<>();
 
-            // Start Parser
+            // Initiate parser
             File fXmlFile = new File(filename);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -75,14 +93,14 @@ public class XMLImporterVehicles implements FileParser {
 
             doc.getDocumentElement().normalize();
 
-            // Get vehicle attributes
+            // Get attributes
             NodeList vehicleList = doc.getElementsByTagName("vehicle");
-
             Node vehicleNode = vehicleList.item(0);
             Element nameElement = (Element) vehicleNode;
 
-            newName = nameElement.getAttribute("name");
-            newDescription = nameElement.getAttribute("description");
+            // Name & Description
+            name = nameElement.getAttribute("name");
+            description = nameElement.getAttribute("description");
 
             // Get vehicle nodes
             for (int temp = 0; temp < vehicleList.getLength(); temp++) {
@@ -98,27 +116,48 @@ public class XMLImporterVehicles implements FileParser {
 
                             if (attribute.getNodeName().equals("type")) {
                                 newType = attribute.getTextContent();
-                                
+                                VehicleType[] typesEnum = VehicleType.values();
+                                for (VehicleType type : typesEnum) {
+                                    String typeStr = newType;
+                                    if (typeStr.equals(type.toString())) {
+                                        vehicleType = type;
+                                    }
+                                }
                             }
                             if (attribute.getNodeName().equals("toll_class")) {
-                                newTollClass = Integer.parseInt(attribute.getTextContent());
+                                newToll = Integer.parseInt(attribute.getTextContent());
                             }
                             if (attribute.getNodeName().equals("motorization")) {
                                 newMotorization = attribute.getTextContent();
+                                if(newMotorization.equalsIgnoreCase("combustion")) {
+                                    motorization = new CombustionMotor();
+                                } else {
+                                    motorization = new NonCombustionMotor();
+                                }
                             }
                             if (attribute.getNodeName().equals("fuel")) {
                                 newFuel = attribute.getTextContent();
+                                Fuel[] fuelEnum = Fuel.values();
+                                for (Fuel fuelType : fuelEnum) {
+                                    String fuelStr = newFuel;
+                                    if (fuelStr.equals(fuelType.toString())) {
+                                        fuel = fuelType;
+                                    }
+                                }
                             }
                             if (attribute.getNodeName().equals("mass")) {
                                 String x = attribute.getTextContent();
                                 String[] splitX = x.split(" ");
                                 newMass = Integer.parseInt(splitX[0]);
-
+                                massUnit = splitX[1];
+                                mass = new Measurable(newMass, Unit.valueOf(massUnit.toLowerCase()));
                             }
                             if (attribute.getNodeName().equals("load")) {
                                 String y = attribute.getTextContent();
                                 String[] splity = y.split(" ");
                                 newLoad = Integer.parseInt(splity[0]);
+                                loadUnit = splity[1];
+                                load = new Measurable(newLoad, Unit.valueOf(loadUnit.toLowerCase()));
                             }
                             if (attribute.getNodeName().equals("drag")) {
                                 newDrag = Float.parseFloat(attribute.getTextContent());
@@ -226,7 +265,7 @@ public class XMLImporterVehicles implements FileParser {
 
                                                 }
                                             }
-                                            newThrottle = new Throttle(newThrottleId,newRegimeList);
+                                            newThrottle = new Throttle(newThrottleId, newRegimeList);
                                             newThrottleList.add(newThrottle);
                                         }
 
@@ -240,7 +279,7 @@ public class XMLImporterVehicles implements FileParser {
                     }
 
                 }
-                newVehicle = new Vehicle(newName, newDescription, newType, newTollClass, newMotorization, newFuel, newMass, newLoad, newDrag, newFrontalArea, newRrc, newWheelSize, newVelocityLimitList, newEnergy);
+                newVehicle = new Vehicle(name, description, vehicleType, newToll, motorization, fuel, mass, load, newDrag, newFrontalArea, newRrc, newWheelSize, newVelocityLimitList, newEnergy);
                 set.add(newVehicle);
             }
 
@@ -250,6 +289,5 @@ public class XMLImporterVehicles implements FileParser {
         }
         return true;
     }
-    
-}
 
+}
