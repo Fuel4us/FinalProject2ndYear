@@ -105,9 +105,6 @@ public class Vertex<V, E> {
         @SuppressWarnings("unchecked")
         Vertex<V, E> otherVertex = (Vertex<V, E>) otherObj;
 
-        if (this.key != otherVertex.key)
-            return false;
-
         if (this.element != null && otherVertex.element != null &&
                 !this.element.equals(otherVertex.element))
             return false;
