@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * <p>
- * Handles database read and write operations
+ * Handles database transaction flow
  * </p>
  */
 public class DataBaseCommunicator {
@@ -27,17 +27,16 @@ public class DataBaseCommunicator {
     public DataBaseCommunicator(DataSource dataSource) {
         if (dataSource instanceof OracleDataSource) {
             this.dbAccessor = new OracleDBAccessor();
-            this.analysisStorage = new OracleAnalysisDAO((OracleDataSource) dataSource);
+            this.analysisStorage = new OracleAnalysisDAO((OracleDataSource) dbAccessor.source());
         }
     }
 
     /**
-     * Stores network analysis to specified project
-     * @param project The project to which the network analysis will be associated in the database
+     * Stores network analysis in a database
      * @param analysis The network analysis to be stored
      * @return true if storing operation succeeded
      */
-    public void storeNetworkAnalysis(Project project, Analysis analysis) {
+    public void storeNetworkAnalysis(Analysis analysis) {
         try {
             //Start Transaction
             Connection connection = dbAccessor.openConnexion();
@@ -49,6 +48,7 @@ public class DataBaseCommunicator {
             if (dbAccessor.hasActiveConnection()) {
                 try {
                     dbAccessor.rollback();
+                    DBAccessor.logSQLException(e);
                 } catch (SQLException ex) {
                     DBAccessor.logSQLException(ex);
                 }
@@ -56,7 +56,6 @@ public class DataBaseCommunicator {
         }
 
     }
-
 
     public List<Project> fetchProjectList() {
         //ToDo return all projects through ProjectDAO
