@@ -8,7 +8,7 @@ import lapr.project.model.RoadNetwork.*;
 
 
 
-public class RoadNetworkPathFormController {
+public class BestPathController {
 
     private List<Node> nodesList;
     private List<Vehicle> listVehicles;
@@ -23,7 +23,7 @@ public class RoadNetworkPathFormController {
      * 
      * @param project The current instance of project
      */
-    public RoadNetworkPathFormController(Project project) {
+    public BestPathController(Project project) {
         this.project = project;
     }
 
