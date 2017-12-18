@@ -1,15 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package lapr.project.ui;
 
 import javax.swing.*;
 
 /**
  *
- * @author anily
+ * Provides user interface components for the creation of a project
  */
 public class CreateProjectUI extends javax.swing.JFrame {
 
@@ -84,7 +79,7 @@ public class CreateProjectUI extends javax.swing.JFrame {
         jButtonCreate.addActionListener(evt -> jButtonCreateActionPerformed(evt));
 
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
-        initializer.initializeJButton(jButtonBack, Main.FORTHYEIGHT_SEGOE_FONT, "«", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        initializer.initializeJButton(jButtonBack, Main.FORTY_EIGHT_SEGOE_FONT, "«", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
 
         jTextFieldName.setBackground(new java.awt.Color(87, 89, 87));
