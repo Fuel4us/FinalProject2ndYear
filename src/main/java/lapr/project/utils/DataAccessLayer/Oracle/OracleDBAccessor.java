@@ -3,6 +3,7 @@ package lapr.project.utils.DataAccessLayer.Oracle;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import oracle.jdbc.pool.OracleDataSource;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -70,6 +71,15 @@ public class OracleDBAccessor implements DBAccessor {
     @Override
     public void rollback() throws SQLException {
         oracleConnection.rollback();
+    }
+
+    /**
+     * Indicates the data source
+     * @return the data source class, by which type may be inferred
+     */
+    @Override
+    public DataSource source() {
+        return oracleDataSource;
     }
 
 }
