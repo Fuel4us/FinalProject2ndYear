@@ -30,7 +30,7 @@ public class RoadNetwork extends Graph<Node,Section> {
 
     /**
      * Constructor
-     * @param directed
+     * @param directed if the graph is directed or not
      */
     public RoadNetwork(boolean directed) {
         super(directed);
@@ -53,8 +53,8 @@ public class RoadNetwork extends Graph<Node,Section> {
 
     /**
      * Inserts a Node into the graph
-     * @param node
-     * @return
+     * @param node the node to be added
+     * @return true if the operation succeeds
      */
     public boolean addNode(Node node) {
         return insertVertex(node);
@@ -63,10 +63,10 @@ public class RoadNetwork extends Graph<Node,Section> {
     /**
      * Inserts a Section into the graph
      *
-     * @param n1
-     * @param n2
-     * @param section
-     * @return
+     * @param n1 the first node of the section
+     * @param n2 the second node of the section
+     * @param section the section to be added
+     * @return true if the operation succeeds
      */
     public boolean addSection(Node n1, Node n2, Section section) {
         boolean flag = false;
