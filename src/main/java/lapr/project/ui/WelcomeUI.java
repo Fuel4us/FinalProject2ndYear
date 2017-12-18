@@ -6,6 +6,7 @@
 package lapr.project.ui;
 
 import javax.swing.*;
+import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 
 /**
  *
@@ -14,6 +15,7 @@ import javax.swing.*;
 public class WelcomeUI extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 8935086433569396442L;
+    private DataBaseCommunicator dbCom;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
     private javax.swing.JButton jButtonCopy;
@@ -149,7 +151,8 @@ public class WelcomeUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateActionPerformed
-        // TODO add your handling code here:
+        new CreateProjectUI(dbCom);
+        setVisible(false);
     }//GEN-LAST:event_jButtonCreateActionPerformed
 
     private void jButtonCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCopyActionPerformed
