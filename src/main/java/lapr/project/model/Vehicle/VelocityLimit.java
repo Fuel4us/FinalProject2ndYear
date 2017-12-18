@@ -10,27 +10,30 @@ public class VelocityLimit {
     private String TypeSegment;
     
     @XmlElement(name ="limit")
-    private int velocityLimit;
+    private int limit;
 
-    public VelocityLimit(String TypeSegment, int velocityLimit) {
+    public VelocityLimit(String TypeSegment, int limit) {
         this.TypeSegment = TypeSegment;
-        this.velocityLimit = velocityLimit;
+        this.limit = limit;
+    }
+
+    public VelocityLimit() {
     }
 
     public String getTypeSegment() {
         return TypeSegment;
     }
 
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
     public void setTypeSegment(String TypeSegment) {
         this.TypeSegment = TypeSegment;
-    }
-
-    public int getVelocityLimit() {
-        return velocityLimit;
-    }
-
-    public void setVelocityLimit(int velocityLimit) {
-        this.velocityLimit = velocityLimit;
     }
     
     

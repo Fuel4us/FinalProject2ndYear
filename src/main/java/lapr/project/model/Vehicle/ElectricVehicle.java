@@ -27,8 +27,8 @@ public abstract class ElectricVehicle extends AbstractNonCombustionVehicle {
      * @param velocityLimitList
      * @param energy
      */
-    public ElectricVehicle(String name, String description, VehicleType type, TollClass vehicleClass, Motorization motorization, Fuel fuel, Measurable mass, Measurable load, double dragCoefficient, double frontalRear, double rollingReleaseCoefficient, double wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
-        super(name, description, type, vehicleClass, motorization, fuel, mass, load, dragCoefficient, frontalRear, rollingReleaseCoefficient, wheelSize, velocityLimitList, energy);
+    public ElectricVehicle(String name, String description, String type, int vehicleClass, String motorization, String fuel, int mass, int load, double dragCoefficient, double frontalArea, double rollingReleaseCoefficient, double wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
+        super(name, description, type, vehicleClass, motorization, fuel, mass, load, dragCoefficient, frontalArea, rollingReleaseCoefficient, wheelSize, velocityLimitList, energy);
     }
 
     /**
