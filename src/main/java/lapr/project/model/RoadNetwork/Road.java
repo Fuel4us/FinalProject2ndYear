@@ -1,8 +1,7 @@
 package lapr.project.model.RoadNetwork;
 
-import lapr.project.utils.Graph.Vertex;
-
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement
@@ -20,9 +19,33 @@ public class Road {
     @XmlElementWrapper(name = "toll_fare")
     @XmlElement(name = "class")
     private List<Float> tollFare;
-    @XmlElementWrapper(name = "section_list")
-    @XmlElement(name = "road_section")
-    private List<Section> sectionList;
+
+    /**
+     * Full constructor for the class Road
+     * @param id the road's id
+     * @param name the road's name
+     * @param typology the road's typology
+     * @param tollFare the road's toll fare
+     */
+    public Road(String id, String name, String typology, List<Float> tollFare) {
+        this.id = id;
+        this.name = name;
+        this.typology = typology;
+        this.tollFare = tollFare;
+    }
+
+    /**
+     * Constructor with id, name and typology for the class Road
+     * @param id the road's id
+     * @param name the road's name
+     * @param typology the road's typology
+     */
+    public Road(String id, String name, String typology) {
+        this.id = id;
+        this.name = name;
+        this.typology = typology;
+        tollFare = new ArrayList<>();
+    }
 
     /**
      * @return the ID of this road

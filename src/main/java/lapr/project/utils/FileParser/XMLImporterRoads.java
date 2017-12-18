@@ -42,7 +42,7 @@ public class XMLImporterRoads {
     /**
      * Reads RoadNetwork from file
      *
-     * @return
+     * @return the road network updated
      * @throws Exception
      */
     public RoadNetwork importNetwork() throws JAXBException, IOException, SAXException, ParserConfigurationException {
@@ -62,7 +62,7 @@ public class XMLImporterRoads {
      * Creates document in order to complete information in the RoadNetwork
      * @throws Exception
      */
-    public void completeNetworkInformationDOMParsing() throws ParserConfigurationException, IOException, SAXException {
+    private void completeNetworkInformationDOMParsing() throws ParserConfigurationException, IOException, SAXException {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
@@ -75,7 +75,7 @@ public class XMLImporterRoads {
 
     /**
      * Adds nodes from the file in the RoadNetwork graph
-     * @param doc
+     * @param doc the document
      */
     private void addNodes(Document doc) {
 
