@@ -48,17 +48,17 @@ public class OracleProjectDAO implements ProjectDAO {
         String projectDescription;
         List<Vehicle> vehicles;
         RoadNetwork roadNetwork;
-        OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO(oracleDataSource);
+//        OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO(oracleDataSource);
         OracleRoadNetworkDAO oracleRoadNetworkDAO = new OracleRoadNetworkDAO(oracleDataSource);
         Project project;
         while (resultSet.next()) {
             projectName = resultSet.getString("name");
             projectDescription = resultSet.getString("description");
-            vehicles = oracleVehicleDAO.createVehicle(projectName);
+//            vehicles = oracleVehicleDAO.createVehicle(projectName);
             roadNetwork = oracleRoadNetworkDAO.createRoadNetwork(projectName);
 
-            project = new Project(projectName, projectDescription, roadNetwork, vehicles);
-            projects.add(project);
+//            project = new Project(projectName, projectDescription, roadNetwork, vehicles);
+//            projects.add(project);
         }
 
         return projects;
