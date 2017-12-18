@@ -17,6 +17,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import lapr.project.utils.ClassCast;
 import org.xml.sax.SAXException;
@@ -42,7 +44,7 @@ public class XMLImporterRoads {
     /**
      * Reads RoadNetwork from file
      *
-     * @return
+     * @return the road network updated
      * @throws Exception
      */
     public RoadNetwork importNetwork() throws JAXBException, IOException, SAXException, ParserConfigurationException {
@@ -62,7 +64,7 @@ public class XMLImporterRoads {
      * Creates document in order to complete information in the RoadNetwork
      * @throws Exception
      */
-    public void completeNetworkInformationDOMParsing() throws ParserConfigurationException, IOException, SAXException {
+    private void completeNetworkInformationDOMParsing() throws ParserConfigurationException, IOException, SAXException {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
@@ -70,16 +72,71 @@ public class XMLImporterRoads {
         Document doc = db.parse(file);
 
         addNodes(doc);
+        List<Road> roadList = addRoads(doc);
 //        addSections(roadNetwork, doc);
     }
 
     /**
+     * Adds roads from the file in the RoadNetwork graph
+     * @param doc the document
+     * @return the list of roads imported from the file
+     */
+    public List<Road> addRoads(Document doc) {
+
+        List<Road> roadList = new ArrayList<>();
+
+        NodeList roads = doc.getElementsByTagName("road");
+
+        for (int i = 0; i < roads.getLength(); i++) {
+
+            Node node = roads.item(i);
+
+            if (node instanceof Element) {
+
+                Element element = (Element) node;
+
+                String id = element.getAttributes().item(0).getTextContent();
+                String name = element.getElementsByTagName("road_name").item(0).getTextContent();
+                String typology = element.getElementsByTagName("typology").item(0).getTextContent();
+                List<Float> tollFaresList = new ArrayList<>();
+
+                if (element.getElementsByTagName("class").getLength() > 0) {
+
+                    NodeList tollFares = element.getElementsByTagName("class");
+
+                    for (int j = 0; j < tollFares.getLength(); j++) {
+
+                        Node tollFaresNode = tollFares.item(j);
+
+                        if (tollFaresNode instanceof Element) {
+
+                            Float tollFare = Float.parseFloat(tollFaresNode.getTextContent());
+
+                            tollFaresList.add(tollFare);
+
+                        }
+
+                    }
+
+                }
+
+                roadList.add(new Road(id, name, typology, tollFaresList));
+
+            }
+
+        }
+
+        return roadList;
+
+    }
+
+    /**
      * Adds nodes from the file in the RoadNetwork graph
-     * @param doc
+     * @param doc the document
      */
     private void addNodes(Document doc) {
 
-        NodeList nodes = doc.getElementsByTagName("node_list");
+        NodeList nodes = doc.getElementsByTagName("node");
 
         for (int i = 0; i < nodes.getLength(); i++) {
 
@@ -90,7 +147,7 @@ public class XMLImporterRoads {
                 Element element = (Element) node;
 
                 roadNetwork.addNode(new lapr.project.model.RoadNetwork.Node(
-                        element.getElementsByTagName("node").item(0).getTextContent()));
+                        element.getAttribute("id")));
 
             }
 

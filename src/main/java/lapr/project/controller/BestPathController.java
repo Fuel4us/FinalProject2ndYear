@@ -18,7 +18,7 @@ public class BestPathController {
     private Project project;
 
     /**
-     * Constructor of the controller class bestPathController instanciated by
+     * Constructor of the controller class RoadNetworkPathFormController instanciated by
      * the UI
      * 
      * @param project The current instance of project

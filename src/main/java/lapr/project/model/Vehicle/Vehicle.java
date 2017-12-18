@@ -60,4 +60,10 @@ public class Vehicle {
         this.velocityLimitList = velocityLimitList;
         this.energy = energy;
     }
+    
+    @Override
+    public String toString(){
+        return String.format("%s - %s.", name,description);
+    }
+
 }

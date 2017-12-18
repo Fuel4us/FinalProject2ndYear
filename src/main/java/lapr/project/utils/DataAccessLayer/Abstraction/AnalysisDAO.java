@@ -2,6 +2,7 @@ package lapr.project.utils.DataAccessLayer.Abstraction;
 
 import lapr.project.model.Analysis;
 
+import java.sql.SQLException;
 import java.util.function.Supplier;
 
 /**
@@ -26,6 +27,6 @@ public interface AnalysisDAO {
      * Store an analysis into data layer
      * @param analysis an instance of {@link Analysis}
      */
-    void storeAnalysis(Analysis analysis);
+    void storeAnalysis(Analysis analysis) throws SQLException;
 
 }

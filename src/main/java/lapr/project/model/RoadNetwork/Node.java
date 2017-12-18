@@ -9,17 +9,24 @@ import javax.xml.bind.annotation.XmlRootElement;
  * ToDo add JavaDoc
  */
 @XmlRootElement
-public class Node extends Vertex<Node,Direction> {
+public class Node extends Vertex<String,Direction> {
 
     @XmlAttribute
     private String id;
+
+    private static int key = 0;
 
     /**
      * Constructor.
      * @param id
      */
     public Node(String id){
-        super();
+        super((++key), id);
         this.id=id;
+    }
+    
+    @Override
+    public String toString(){
+        return String.format("%s",id);
     }
 }

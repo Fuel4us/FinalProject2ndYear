@@ -1,6 +1,7 @@
 package lapr.project.utils.FileParser;
 
 import lapr.project.model.RoadNetwork.Node;
+import lapr.project.model.RoadNetwork.Road;
 import lapr.project.model.RoadNetwork.RoadNetwork;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -12,6 +13,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -36,8 +39,12 @@ public class XMLImporterRoadsTest {
         doc = db.parse(file);
     }
 
+    /**
+     * Ensures the method importNetwork() created the correct road network
+     * @throws Exception
+     */
     @Test
-    public void importNetwork() throws Exception {
+    public void ensureImportNetworkCreatesCorrectRoadNetwork() throws Exception {
 
         RoadNetwork roadNetworkExpected = new RoadNetwork(true);
 
@@ -56,6 +63,33 @@ public class XMLImporterRoadsTest {
         roadNetworkExpected.addNode(nodeExpected6);
 
         assertEquals(roadNetworkExpected, roadNetworkResult);
+
+    }
+
+    /**
+     * Ensures the method addRoads() returns the correct list of Roads
+     * @throws Exception
+     */
+    @Test
+    public void ensureAddsCorrectRoads() throws Exception {
+
+        List<Road> roadsExpected = new ArrayList<>();
+
+        roadsExpected.add(new Road("E01", "E01", "regular road", new ArrayList<>()));
+
+        List<Float> tollFareExpected = new ArrayList<>();
+        tollFareExpected.add(0.15f);
+        tollFareExpected.add(0.25f);
+        tollFareExpected.add(0.35f);
+
+        roadsExpected.add(new Road("A01", "A1", "toll highway", tollFareExpected));
+        roadsExpected.add(new Road("A02", "A2", "gantry toll highway", new ArrayList<>()));
+        roadsExpected.add(new Road("E06", "E06", "regular road", new ArrayList<>()));
+        roadsExpected.add(new Road("N232", "N232", "regular road", new ArrayList<>()));
+
+        List<Road> roadsResult = fileParser.addRoads(doc);
+
+        assertEquals(roadsExpected, roadsResult);
 
     }
 
