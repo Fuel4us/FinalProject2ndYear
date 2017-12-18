@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Allows for different implementation of methods that fetch and store Projects on the database, for different databases
+ */
 public interface ProjectDAO {
 
     /**

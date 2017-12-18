@@ -4,6 +4,9 @@ import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the roads
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Road {
@@ -54,4 +57,34 @@ public class Road {
         return id;
     }
 
+    /**
+     * Equals method for objects of the class Road
+     * @param o other object
+     * @return true if the objects are equal
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Road road = (Road) o;
+
+        if (id != null ? !id.equals(road.id) : road.id != null) return false;
+        if (name != null ? !name.equals(road.name) : road.name != null) return false;
+        if (typology != null ? !typology.equals(road.typology) : road.typology != null) return false;
+        return tollFare != null ? tollFare.equals(road.tollFare) : road.tollFare == null;
+    }
+
+    /**
+     * Hash code for the class Road
+     * @return the value of the hash code
+     */
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (typology != null ? typology.hashCode() : 0);
+        result = 31 * result + (tollFare != null ? tollFare.hashCode() : 0);
+        return result;
+    }
 }

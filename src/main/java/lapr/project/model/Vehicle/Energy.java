@@ -6,21 +6,11 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 
 public class Energy {
     
-    @XmlElement
+
     private int min_rpm;
-    
-    @XmlElement
     private int max_rpm;
-    
-    @XmlElement
     private float final_drive_ratio;
-    
-    @XmlElementWrapper(name = "gear_list")
-    @XmlElement(name = "gear")
     private List<Gears> gears;
-    
-    @XmlElementWrapper(name = "throttle_list")
-    @XmlElement(name = "throttle")
     private List<Throttle> throttles;
 
     /**
@@ -38,4 +28,31 @@ public class Energy {
         this.gears = gears;
         this.throttles = throttles;
     }
+
+    public float getFinal_drive_ratio() {
+        return final_drive_ratio;
+    }
+
+    public List<Gears> getGears() {
+        return gears;
+    }
+
+    public int getMax_rpm() {
+        return max_rpm;
+    }
+
+    public int getMin_rpm() {
+        return min_rpm;
+    }
+
+    public List<Throttle> getThrottles() {
+        return throttles;
+    }
+
+    @Override
+    public String toString() {
+        return "Energy têm de minRPM " +this.min_rpm+ " max RPM " +this.max_rpm+ " Ratio " +this.final_drive_ratio+ " Gears: " +this.gears+ " Throttle: " +this.throttles;
+    }
+    
+    
 }
