@@ -45,4 +45,17 @@ public class Segment {
     public double getLength() {
         return length;
     }
+
+    /**
+     * Calculates the minimum time interval spent for the segment,
+     * taking into account the velocity limit, its length and
+     * the velocity limit of the vehicle
+     * @param vehicleMaxVelocity the velocity limit of the vehicle
+     * @return the minimum time interval
+     */
+    public double calculateMinimumTimeInterval(double vehicleMaxVelocity) {
+
+        return length / Math.min(maxVelocity, vehicleMaxVelocity);
+
+    }
 }
