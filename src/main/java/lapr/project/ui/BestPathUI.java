@@ -8,7 +8,7 @@ package lapr.project.ui;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
-import lapr.project.controller.RoadNetworkPathFormController;
+import lapr.project.controller.BestPathController;
 import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork.Node;
 import lapr.project.model.RoadNetwork.RoadNetwork;
@@ -18,20 +18,20 @@ import lapr.project.model.Vehicle.Vehicle;
  *
  * @author anily
  */
-public class RoadNetworkPathFormUI extends javax.swing.JFrame {
+public class BestPathUI extends javax.swing.JFrame {
 
-    private RoadNetworkPathFormController controller;
+    private BestPathController controller;
     private static final long serialVersionUID = -8320152827152597623L;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButtonBack;
-    private javax.swing.JButton jButtonResults;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabelAlgorithm;
     private javax.swing.JLabel jLabelAlgorithm1;
     private javax.swing.JLabel jLabelNode1;
     private javax.swing.JLabel jLabelNode2;
-    private javax.swing.JList<String> jListAlgorithms;
     /**
     private javax.swing.JList<String> jListNodes1;
     */
@@ -45,7 +45,6 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
     */
     private javax.swing.JList<Vehicle> jListVehicles;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -55,8 +54,8 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
     /**
      * Creates new form RoadNetworkPathFormUI
      */
-    public RoadNetworkPathFormUI(Project project) {
-        this.controller = new RoadNetworkPathFormController(project);
+    public BestPathUI(Project project) {
+        this.controller = new BestPathController(project);
         initComponents();
     }
 
@@ -72,21 +71,20 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         imgLateral = new javax.swing.JLabel();
         orangeBorder = new javax.swing.JPanel();
-        jButtonResults = new javax.swing.JButton();
         jButtonBack = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jListAlgorithms = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jListNodes2 = new javax.swing.JList<>();
+        jListNodes2 = new javax.swing.JList<Node>();
         jScrollPane3 = new javax.swing.JScrollPane();
         jListNodes1 = new javax.swing.JList<Node>();
-        jLabelAlgorithm = new javax.swing.JLabel();
         jLabelNode1 = new javax.swing.JLabel();
         jLabelNode2 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jListVehicles = new javax.swing.JList<>();
+        jListVehicles = new javax.swing.JList<Vehicle>();
         jLabelAlgorithm1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -107,42 +105,18 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jButtonResults.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonResults.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonResults.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonResults.setText("Generate results");
-        jButtonResults.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonResults.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonResultsActionPerformed(evt);
-            }
-        });
-
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
         jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack.setText("«");
-        jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonBackActionPerformed(evt);
             }
         });
 
-        jListAlgorithms.setBackground(new java.awt.Color(97, 122, 133));
-        jListAlgorithms.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
-        jListAlgorithms.setForeground(new java.awt.Color(255, 255, 255));
-        jListAlgorithms.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Algorithm1", "Algorithm2", "Algorithm3", "Algorithm4", "Algorithm5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jListAlgorithms.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(jListAlgorithms);
-
-        jListNodes2 = new javax.swing.JList<Node>();
         List<Node> nodesList2 = controller.getAllNodes();
-        DefaultListModel nodesModel2 = new DefaultListModel<>();
+        DefaultListModel<Node> nodesModel2 = new DefaultListModel<>();
         for (Node obj : nodesList2) {
             nodesModel2.addElement(obj);
         }
@@ -161,7 +135,7 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jListNodes2);
 
         List<Node> nodesList = controller.getAllNodes();
-        DefaultListModel nodesModel = new DefaultListModel<>();
+        DefaultListModel<Node> nodesModel = new DefaultListModel<>();
         for (Node obj : nodesList) {
             nodesModel.addElement(obj);
         }
@@ -175,10 +149,6 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
         jListNodes1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(jListNodes1);
 
-        jLabelAlgorithm.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelAlgorithm.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelAlgorithm.setText("ALGORITHM:");
-
         jLabelNode1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         jLabelNode1.setForeground(new java.awt.Color(97, 122, 133));
         jLabelNode1.setText("ORIGIN NODE:");
@@ -187,9 +157,8 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
         jLabelNode2.setForeground(new java.awt.Color(97, 122, 133));
         jLabelNode2.setText("DESTINY NODE:");
 
-        jListVehicles = new javax.swing.JList<Vehicle>();
         List<Vehicle> vehicleList = controller.getAllVehicles();
-        DefaultListModel vehicleModel = new DefaultListModel<>();
+        DefaultListModel<Vehicle> vehicleModel = new DefaultListModel<>();
         for (Vehicle obj : vehicleList) {
             vehicleModel.addElement(obj);
         }
@@ -209,11 +178,22 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
 
         jLabelAlgorithm1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         jLabelAlgorithm1.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelAlgorithm1.setText("VEHICLE:");
+        jLabelAlgorithm1.setText("VEHICLES:");
 
         jLabel2.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(155, 177, 189));
         jLabel2.setText("Road Network Path Form");
+
+        jButton1.setText("N10 - Fastest Path");
+
+        jButton2.setText("N11 -  Theoretical most energy efficient path");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("N12 - Most efficient path in energy saving mode");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -223,70 +203,63 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
                 .addComponent(imgLateral, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(orangeBorder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(66, 66, 66)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelNode1)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(66, 66, 66)
-                                .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(29, 29, 29))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabelAlgorithm1)
-                                    .addComponent(jLabelNode1))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButtonResults, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                                        .addComponent(jLabelNode2))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jScrollPane4)
-                                        .addGap(50, 50, 50)
-                                        .addComponent(jLabelAlgorithm)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 147, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addGap(124, 124, 124))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabelAlgorithm1)
+                                .addGap(167, 167, 167))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(53, 53, 53)
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelNode2)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(orangeBorder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(imgLateral)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 1, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .addComponent(jLabelNode1)
-                    .addComponent(jLabelNode2))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelNode2)
+                    .addComponent(jLabelAlgorithm1)
+                    .addComponent(jLabelNode1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelAlgorithm1))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonResults, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jLabelAlgorithm))
-                .addGap(59, 59, 59))
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -305,13 +278,13 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonResultsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonResultsActionPerformed
-
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonBackActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     
     
@@ -332,18 +305,21 @@ public class RoadNetworkPathFormUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RoadNetworkPathFormUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BestPathUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RoadNetworkPathFormUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BestPathUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RoadNetworkPathFormUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BestPathUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RoadNetworkPathFormUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BestPathUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new RoadNetworkPathFormUI(new Project("","",new RoadNetwork(),new ArrayList<>())).setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new BestPathUI(new Project("","",new RoadNetwork(),new ArrayList<>())).setVisible(true));
     }
 
 }
