@@ -57,6 +57,11 @@ public class Road {
         return id;
     }
 
+    /**
+     * Equals method for objects of the class Road
+     * @param o other object
+     * @return true if the objects are equal
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -70,6 +75,10 @@ public class Road {
         return tollFare != null ? tollFare.equals(road.tollFare) : road.tollFare == null;
     }
 
+    /**
+     * Hash code for the class Road
+     * @return the value of the hash code
+     */
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
