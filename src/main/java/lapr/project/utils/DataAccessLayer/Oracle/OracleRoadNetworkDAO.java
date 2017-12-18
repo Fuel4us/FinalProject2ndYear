@@ -5,6 +5,7 @@
  */
 package lapr.project.utils.DataAccessLayer.Oracle;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,22 +20,23 @@ import lapr.project.model.RoadNetwork.Node;
 import lapr.project.model.RoadNetwork.Road;
 import lapr.project.model.RoadNetwork.Section;
 import lapr.project.model.RoadNetwork.Segment;
+import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
+import oracle.jdbc.pool.OracleDataSource;
 
 
 /**
  *
  * ToDo
  */
-public class OracleRoadNetworkDAO extends OracleDBAccessor{
+public class OracleRoadNetworkDAO {
 
     private PreparedStatement statement;
 
-    public OracleRoadNetworkDAO() {
-        super();
+    public OracleRoadNetworkDAO(OracleDataSource oracleDataSource) {
         try {
-            statement = oracleConnection.prepareStatement("");
+            Connection oracleConnection = oracleDataSource.getConnection();
         } catch (SQLException e) {
-            super.logSQLException(e);
+            DBAccessor.logSQLException(e);
         }
     }
 

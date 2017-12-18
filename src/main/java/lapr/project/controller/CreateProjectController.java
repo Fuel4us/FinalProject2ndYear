@@ -3,6 +3,7 @@ package lapr.project.controller;
 import lapr.project.model.*;
 import lapr.project.model.RoadNetwork.*;
 import lapr.project.model.Vehicle.*;
+import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 
 import java.util.ArrayList;
 import java.util.List;

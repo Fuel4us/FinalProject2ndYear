@@ -11,6 +11,11 @@ public abstract class Analysis {
     private int id;
     private Project requestingInstance;
 
+    public Analysis(int id, Project requestingInstance) {
+        this.id = id;
+        this.requestingInstance = requestingInstance;
+    }
+
     /**
      * @return the entity that issued the analysis
      */
@@ -31,6 +36,6 @@ public abstract class Analysis {
      * encapsulating them in a Collection subclass
      * @return Such Results as aforementioned
      */
-    abstract <E extends Collection<?>> E generateReport();
+    public abstract Collection<?> generateReport();
 
 }

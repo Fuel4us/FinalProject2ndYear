@@ -1,20 +1,20 @@
 package lapr.project.utils.DataAccessLayer.Oracle;
 
+import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import oracle.jdbc.pool.OracleDataSource;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Handles access to an Oracle Database
  */
-class OracleDBAccessor {
+public class OracleDBAccessor implements DBAccessor {
 
     private OracleDataSource oracleDataSource;
-    Connection oracleConnection;
+    private Connection oracleConnection;
 
     /*
      * Connection access specifications
@@ -23,38 +23,63 @@ class OracleDBAccessor {
     private static final String INITIAL_SESSION_SCHEMA = "LAPR3_G38";
     private static final String SCHEMA_PASSWORD = "cygnus";
 
-    private static final Logger ORACLE_ACCESS_LOG = Logger.getLogger("OracleAccessLog");
-
     /**
      * Restrict instantiation to current package
      */
-    OracleDBAccessor() {
+    public OracleDBAccessor() {
         try {
             openConnexion();
             oracleConnection = oracleDataSource.getConnection();
         } catch (SQLException e) {
-            logSQLException(e);
+            DBAccessor.logSQLException(e);
         }
     }
 
     /**
-     * Opens a connection for this instance
+     * Connects to an OracleDB
+     * @throws SQLException
      */
-    private void openConnexion() throws SQLException {
+    public Connection openConnexion() throws SQLException {
         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 
         oracleDataSource = new OracleDataSource();
         oracleDataSource.setURL(SERVER_URL);
         oracleDataSource.setUser(INITIAL_SESSION_SCHEMA);
         oracleDataSource.setPassword(SCHEMA_PASSWORD);
+        return oracleConnection;
     }
 
     /**
-     * Logs a SQL Exception
-     * @param e an instance of {@link SQLException}
+     * Verifies if the state of the connection is not null
+     * @return true if connection is active
      */
-    void logSQLException(SQLException e) {
-        ORACLE_ACCESS_LOG.log(Level.WARNING, e.getSQLState());
+    public boolean hasActiveConnection() {
+        return oracleConnection != null;
+    }
+
+    /**
+     * Finishes a transaction by committing changes
+     */
+    @Override
+    public void commit() throws SQLException {
+        oracleConnection.commit();
+    }
+
+    /**
+     * Rolls a transaction back
+     */
+    @Override
+    public void rollback() throws SQLException {
+        oracleConnection.rollback();
+    }
+
+    /**
+     * Indicates the data source
+     * @return the data source class, by which type may be inferred
+     */
+    @Override
+    public DataSource source() {
+        return oracleDataSource;
     }
 
 }
