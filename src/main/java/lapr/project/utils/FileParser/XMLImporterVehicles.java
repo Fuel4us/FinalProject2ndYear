@@ -1,6 +1,5 @@
 package lapr.project.utils.FileParser;
 
-
 import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import lapr.project.model.*;
@@ -19,24 +18,26 @@ import java.util.ArrayList;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 
-
 /**
- *
- * @author goncalo
+ * Import of vehicles from XML
  */
 public class XMLImporterVehicles implements FileParser {
 
     public boolean importVehicles(Project object, String filename) {
-        
-        try {
 
+        try {
+            
+            /**
+             * Initiate Variables
+             */
+            
             String name = "Default";
             String description = "Default";
 
             VehicleType vehicleType = null;
-            String newType = "Default";
+            String newVehicleType = "Default";
 
-            int newToll = 0;
+            int newTollClass = 0;
 
             Motorization motorization = null;
             String newMotorization = "Default";
@@ -51,10 +52,10 @@ public class XMLImporterVehicles implements FileParser {
             int newMass = 0;
             int newLoad = 0;
 
-            float newDrag = 0;
+            float dragCoefficient = 0;
             float newFrontalArea = 0;
-            float newRrc = 0;
-            float newWheelSize = 0;
+            float newRRC = 0;
+            float newWheel = 0;
 
             List<VelocityLimit> newVelocityLimitList = new ArrayList<VelocityLimit>();
             VelocityLimit newVelocityLimit = null;
@@ -76,7 +77,7 @@ public class XMLImporterVehicles implements FileParser {
             int newRpmLow = 0;
             int newRpmHigh = 0;
             int newSfc = 0;
-            
+
             List<Regime> newRegimeList = new ArrayList<>();
             Throttle newThrottle = null;
             List<Throttle> newThrottleList = new ArrayList<>();
@@ -106,6 +107,9 @@ public class XMLImporterVehicles implements FileParser {
             for (int temp = 0; temp < vehicleList.getLength(); temp++) {
                 Node vehicle = vehicleList.item(temp);
 
+                /**
+                 * Get vehicle attributes
+                 */
                 if (vehicle.getNodeType() == Node.ELEMENT_NODE) {
                     NodeList vehicleAttributes = vehicle.getChildNodes();
 
@@ -113,28 +117,43 @@ public class XMLImporterVehicles implements FileParser {
                         Node attribute = vehicleAttributes.item(i);
 
                         if (attribute.getNodeType() == Node.ELEMENT_NODE) {
-
+                            
+                            /**
+                             * Type of vehicle
+                             */
                             if (attribute.getNodeName().equals("type")) {
-                                newType = attribute.getTextContent();
-                                VehicleType[] typesEnum = VehicleType.values();
-                                for (VehicleType type : typesEnum) {
-                                    String typeStr = newType;
+                                newVehicleType = attribute.getTextContent();
+                                VehicleType[] typeOfVehicle = VehicleType.values();
+                                for (VehicleType type : typeOfVehicle) {
+                                    String typeStr = newVehicleType;
                                     if (typeStr.equals(type.toString())) {
                                         vehicleType = type;
                                     }
                                 }
                             }
+                            
+                            /**
+                             * Toll_class
+                             */
                             if (attribute.getNodeName().equals("toll_class")) {
-                                newToll = Integer.parseInt(attribute.getTextContent());
+                                newTollClass = Integer.parseInt(attribute.getTextContent());
                             }
+                            
+                            /**
+                             * Motorization type ENUM
+                             */
                             if (attribute.getNodeName().equals("motorization")) {
                                 newMotorization = attribute.getTextContent();
-                                if(newMotorization.equalsIgnoreCase("combustion")) {
+                                if (newMotorization.equalsIgnoreCase("combustion")) {
                                     motorization = new CombustionMotor();
                                 } else {
                                     motorization = new NonCombustionMotor();
                                 }
                             }
+                            
+                            /**
+                             * Fuel
+                             */
                             if (attribute.getNodeName().equals("fuel")) {
                                 newFuel = attribute.getTextContent();
                                 Fuel[] fuelEnum = Fuel.values();
@@ -145,6 +164,10 @@ public class XMLImporterVehicles implements FileParser {
                                     }
                                 }
                             }
+                            
+                            /**
+                             * Mass from Measurable
+                             */
                             if (attribute.getNodeName().equals("mass")) {
                                 String x = attribute.getTextContent();
                                 String[] splitX = x.split(" ");
@@ -152,6 +175,10 @@ public class XMLImporterVehicles implements FileParser {
                                 massUnit = splitX[1];
                                 mass = new Measurable(newMass, Unit.valueOf(massUnit.toLowerCase()));
                             }
+                            
+                            /**
+                             * Load from Measurable
+                             */
                             if (attribute.getNodeName().equals("load")) {
                                 String y = attribute.getTextContent();
                                 String[] splity = y.split(" ");
@@ -159,62 +186,105 @@ public class XMLImporterVehicles implements FileParser {
                                 loadUnit = splity[1];
                                 load = new Measurable(newLoad, Unit.valueOf(loadUnit.toLowerCase()));
                             }
+                            
+                            /**
+                             * Drag
+                             */
                             if (attribute.getNodeName().equals("drag")) {
-                                newDrag = Float.parseFloat(attribute.getTextContent());
+                                dragCoefficient = Float.parseFloat(attribute.getTextContent());
                             }
+                            
+                            /**
+                             * Frontal Area
+                             */
                             if (attribute.getNodeName().equals("frontal_area")) {
                                 newFrontalArea = Float.parseFloat(attribute.getTextContent());
                             }
+                            /**
+                             * RollingReleaseCoefficient
+                             */
                             if (attribute.getNodeName().equals("rrc")) {
-                                newRrc = Float.parseFloat(attribute.getTextContent());
+                                newRRC = Float.parseFloat(attribute.getTextContent());
                             }
+                            
+                            /**
+                             * Wheel size
+                             */
                             if (attribute.getNodeName().equals("whell_size")) {
-                                newWheelSize = Float.parseFloat(attribute.getTextContent());
+                                newWheel = Float.parseFloat(attribute.getTextContent());
                             }
+                            
+                            /**
+                             * VelocityLimitList
+                             */
                             if (attribute.getNodeName().equals("velocity_limit_list")) {
 
-                            }
-                            NodeList velocityLimitList = attribute.getChildNodes();
-                            for (int we = 0; we < velocityLimitList.getLength(); we++) {
-                                Node velocityLimitListNode = velocityLimitList.item(we);
+                                NodeList velocityLimitList = attribute.getChildNodes();
+                                for (int we = 0; we < velocityLimitList.getLength(); we++) {
+                                    Node velocityLimitListNode = velocityLimitList.item(we);
 
-                                NodeList velocityLimit = velocityLimitListNode.getChildNodes();
-                                for (int xu = 0; xu < velocityLimit.getLength(); xu++) {
-                                    Node velocityLimitNode = velocityLimit.item(xu);
-
-                                    if (velocityLimitNode.getNodeType() == Node.ELEMENT_NODE) {
-                                        if (velocityLimitNode.getNodeName().equals("segment_type")) {
-                                            newSegmentType = velocityLimitNode.getTextContent();
+                                    NodeList velocityLimit = velocityLimitListNode.getChildNodes();
+                                    for (int xu = 0; xu < velocityLimit.getLength(); xu++) {
+                                        Node velocityLimitNode = velocityLimit.item(xu);
+                                        /*
+                                        *Segment Type
+                                        */
+                                        if (velocityLimitNode.getNodeType() == Node.ELEMENT_NODE) {
+                                            if (velocityLimitNode.getNodeName().equals("segment_type")) {
+                                                newSegmentType = velocityLimitNode.getTextContent();
+                                            }
+                                            /**
+                                             * Velocity Limit
+                                             */
+                                            if (velocityLimitNode.getNodeName().equals("limit")) {
+                                                newLimit = Integer.parseInt(velocityLimitNode.getTextContent());
+                                            }
                                         }
-                                        if (velocityLimitNode.getNodeName().equals("limit")) {
-                                            newLimit = Integer.parseInt(velocityLimitNode.getTextContent());
-                                        }
+                                        newVelocityLimit.setTypeSegment(newSegmentType);
+                                        newVelocityLimit.setLimit(newLimit);
+                                        newVelocityLimitList.add(newVelocityLimit);
                                     }
-                                    newVelocityLimit.setTypeSegment(newSegmentType);
-                                    newVelocityLimit.setLimit(newLimit);
-                                    newVelocityLimitList.add(newVelocityLimit);
                                 }
                             }
                         }
+                        
+                        /**
+                         * Energy
+                         */
                         if (attribute.getNodeName().equals("energy")) {
 
                             NodeList energyList = attribute.getChildNodes();
                             for (int j = 0; j < energyList.getLength(); j++) {
                                 Node energyNode = energyList.item(j);
                                 if (energyNode.getNodeType() == Node.ELEMENT_NODE) {
+                                    /**
+                                     * Min RPM
+                                     */
                                     if (energyNode.getNodeName().equals("min_rpm")) {
                                         newMinRpm = Integer.parseInt(energyNode.getTextContent());
                                     }
+                                    /**
+                                     * Max RPM
+                                     */
                                     if (energyNode.getNodeName().equals("max_rpm")) {
                                         newMaxRpm = Integer.parseInt(energyNode.getTextContent());
                                     }
+                                    /**
+                                     * Final Drive ratio
+                                     */
                                     if (energyNode.getNodeName().equals("final_drive_ratio")) {
                                         newFinalDriveRatio = Float.parseFloat(energyNode.getTextContent());
                                     }
+                                    /**
+                                     * Gear list
+                                     */
                                     if (energyNode.getNodeName().equals("gear_list")) {
                                         NodeList gearListList = energyNode.getChildNodes();
                                         for (int k = 0; k < gearListList.getLength(); k++) {
                                             Node gearListNode = gearListList.item(k);
+                                            /**
+                                             * ID
+                                             */
                                             if (gearListNode.getNodeType() == Node.ELEMENT_NODE) {
                                                 Element gearElement = (Element) gearListNode;
                                                 newGearId = Integer.parseInt(gearElement.getAttribute("id"));
@@ -222,6 +292,9 @@ public class XMLImporterVehicles implements FileParser {
                                                 NodeList gearList = gearListNode.getChildNodes();
                                                 for (int l = 0; l < gearList.getLength(); l++) {
                                                     Node gearNode = gearList.item(l);
+                                                    /**
+                                                     * Ratio
+                                                     */
                                                     if (gearNode.getNodeType() == Node.ELEMENT_NODE) {
                                                         if (energyNode.getNodeName().equals("ratio")) {
                                                             newRatio = Float.parseFloat(gearNode.getTextContent());
@@ -236,7 +309,9 @@ public class XMLImporterVehicles implements FileParser {
                                         }
 
                                     }
-
+                                    /**
+                                     * Throttle List
+                                     */
                                     if (energyNode.getNodeName().equals("throttle_list")) {
                                         NodeList throttleList = energyNode.getChildNodes();
                                         for (int k = 0; k < throttleList.getLength(); k++) {
@@ -279,7 +354,10 @@ public class XMLImporterVehicles implements FileParser {
                     }
 
                 }
-                newVehicle = new Vehicle(name, description, vehicleType, newToll, motorization, fuel, mass, load, newDrag, newFrontalArea, newRrc, newWheelSize, newVelocityLimitList, newEnergy);
+                /**
+                 * Create Vehicle
+                 */
+                newVehicle = new Vehicle(name, description, vehicleType, newTollClass, motorization, fuel, mass, load, dragCoefficient, newFrontalArea, newRRC, newWheel, newVelocityLimitList, newEnergy);
                 set.add(newVehicle);
             }
 
