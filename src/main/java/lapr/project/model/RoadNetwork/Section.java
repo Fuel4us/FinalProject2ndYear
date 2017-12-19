@@ -44,6 +44,14 @@ public class Section extends Edge<String, Direction> {
     }
 
     /**
+     * Retrieves the road's typology
+     * @return the road's typology
+     */
+    public String retrieveRoadTypology() {
+        return owningRoad.getTypology();
+    }
+
+    /**
      * Calculates the total minimum time interval spent for the whole section,
      * taking into account the velocity limit in each segment, its length and
      * the velocity limit of the vehicle in the typology of the segment
