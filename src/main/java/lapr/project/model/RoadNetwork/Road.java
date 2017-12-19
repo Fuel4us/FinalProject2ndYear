@@ -51,10 +51,11 @@ public class Road {
     }
 
     /**
-     * @return the ID of this road
+     * Getter for the typology of the Road
+     * @return the typology of the Road
      */
-    public String getID() {
-        return id;
+    public String getTypology() {
+        return typology;
     }
 
     /**

@@ -38,7 +38,7 @@ public class Vehicle {
      * @param description
      * @param type
      * @param vehicleClass
-     * @param motorization
+     * @param motorType
      * @param fuel
      * @param mass
      * @param load
@@ -49,12 +49,16 @@ public class Vehicle {
      * @param velocityLimitList
      * @param energy
      */
-    public Vehicle(String name, String description, VehicleType type, int vehicleClass, Motorization motorization, Fuel fuel, Measurable mass, Measurable load, float dragCoefficient, Float frontalArea, float rollingReleaseCoefficient, Float wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
+    public Vehicle(String name, String description, VehicleType type, int vehicleClass, MotorType motorType, Fuel fuel, Measurable mass, Measurable load, float dragCoefficient, Float frontalArea, float rollingReleaseCoefficient, Float wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
         this.name = name;
         this.description = description;
         this.type = type;
         this.vehicleClass = vehicleClass;
-        this.motorization = motorization;
+        if (motorType == MotorType.COMBUSTION) {
+            motorization = new CombustionMotor();
+        } else if (motorType == MotorType.NONCOMBUSTION) {
+            motorization = new NonCombustionMotor();
+        }
         this.fuel = fuel;
         this.mass = mass;
         this.load = load;
@@ -100,4 +104,60 @@ public class Vehicle {
         return String.format("%s - %s.", name,description);
     }
 
+    /**
+     * Retrieves the max velocity of the vehicle according to the road's typology given as a parameter
+     * @param roadTypology the road's typology
+     * @return the max velocity of the vehicle
+     */
+    public Measurable retrieveMaxVelocity(String roadTypology) {
+
+        if (velocityLimitList.isEmpty()) {
+
+            //the max velocity will be the max velocity of the road
+            return null;
+
+        } else {
+
+            if (roadTypology.toLowerCase().contains("highway")) {
+
+                for (VelocityLimit velocityLimit : velocityLimitList) {
+
+                    if (velocityLimit.getSegmentType().equalsIgnoreCase("highway")) {
+
+                        return velocityLimit.getLimit();
+
+                    }
+
+                }
+
+            }
+
+            if (roadTypology.toLowerCase().contains("road")) {
+
+                for (VelocityLimit velocityLimit : velocityLimitList) {
+
+                    if (velocityLimit.getSegmentType().equalsIgnoreCase("road")) {
+
+                        return velocityLimit.getLimit();
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        return null;
+    }
+
+    /**
+     * Indicates motor type
+     * Assists in the instantiation of the correct motorization
+     */
+    private enum MotorType {
+
+        COMBUSTION, NONCOMBUSTION
+
+    }
 }
