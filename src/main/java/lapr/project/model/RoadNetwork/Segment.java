@@ -2,6 +2,7 @@ package lapr.project.model.RoadNetwork;
 
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.Graph.Edge;
+import lapr.project.utils.Measurable;
 
 import javax.xml.bind.annotation.*;
 
@@ -76,15 +77,15 @@ public class Segment {
 
         String roadTypology = section.retrieveRoadTypology();
 
-        double vehicleMaxVelocity = vehicle.retrieveMaxVelocity(roadTypology);
+        Measurable vehicleMaxVelocity = vehicle.retrieveMaxVelocity(roadTypology);
 
-        if (vehicleMaxVelocity == 0) {
+        if (vehicleMaxVelocity == null) {
 
             return length / maxVelocity;
 
         } else {
 
-            return length / Math.min(maxVelocity, vehicleMaxVelocity);
+            return length / Math.min(maxVelocity, vehicleMaxVelocity.getQuantity());
 
         }
 
