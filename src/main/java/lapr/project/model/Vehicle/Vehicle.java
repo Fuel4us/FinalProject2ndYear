@@ -31,22 +31,21 @@ public class Vehicle {
     private Energy energy;
 
     /**
-     * Constructor
-     *
-     * @param name
-     * @param description
-     * @param type
-     * @param vehicleClass
-     * @param motorization
-     * @param fuel
-     * @param mass
-     * @param load
-     * @param dragCoefficient
-     * @param frontalArea
-     * @param rollingReleaseCoefficient
-     * @param wheelSize
-     * @param velocityLimitList
-     * @param energy
+     * Creates a new vehicle
+     * @param name This vehicle's name
+     * @param description This vehicle's description
+     * @param type This vehicle's type
+     * @param vehicleClass This vehicle's class
+     * @param motorization This vehicle's motorization
+     * @param fuel This vehicle's fuel
+     * @param mass This vehicle's mass
+     * @param load This vehicle's load
+     * @param dragCoefficient This vehicle's drag coefficient
+     * @param frontalArea This vehicle's frontal area
+     * @param rollingReleaseCoefficient This vehicle's rolling release coefficient
+     * @param wheelSize This vehicle's wheel size
+     * @param velocityLimitList This vehicle's velocity limit list
+     * @param energy This vehicle's energy
      */
     public Vehicle(String name, String description, VehicleType type, int vehicleClass, Motorization motorization, Fuel fuel, Measurable mass, Measurable load, float dragCoefficient, Float frontalArea, float rollingReleaseCoefficient, Float wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
         this.name = name;
@@ -62,7 +61,7 @@ public class Vehicle {
         this.rollingReleaseCoefficient = rollingReleaseCoefficient;
         this.wheelSize = wheelSize;
         this.velocityLimitList = velocityLimitList;
-        this.energy = energy;
+        this.energy = new Energy(energy);
     }
     
     @Override
