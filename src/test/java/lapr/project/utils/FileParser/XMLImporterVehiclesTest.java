@@ -19,10 +19,9 @@ import static org.junit.Assert.*;
  */
 public class XMLImporterVehiclesTest {
     
-    private final String filename;
+    private final String filename = "src/test/resources/TestSet02_Vehicles.xml";
     
     public XMLImporterVehiclesTest() {
-        this.filename="src/test/resources/TestSet02_Vehicles.xml";
     }
     
     
