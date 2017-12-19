@@ -1,5 +1,6 @@
 package lapr.project.model.RoadNetwork;
 
+import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.Graph.Edge;
 
 import javax.xml.bind.annotation.*;
@@ -43,19 +44,37 @@ public class Section extends Edge<String, Direction> {
     }
 
     /**
+     * Retrieves the road's typology
+     * @return the road's typology
+     */
+    public String retrieveRoadTypology() {
+        return owningRoad.getTypology();
+    }
+
+    /**
+     * Checks if the list of segments contains the segment given as a parameter
+     * @param segment the segment to be considered
+     * @return true if the segment is in the list of segments
+     */
+    public boolean containsSegment(Segment segment) {
+        return segments.contains(segment);
+    }
+
+    /**
      * Calculates the total minimum time interval spent for the whole section,
      * taking into account the velocity limit in each segment, its length and
-     * the velocity limit of the vehicle
-     * @param vehicleMaxVelocity the velocity limit of the vehicle
+     * the velocity limit of the vehicle in the typology of the segment
+     * @param roadNetwork the road network of the current project
+     * @param vehicle the vehicle
      * @return the total minimum time interval
      */
-    public double calculateTotalMinimumTimeInterval(double vehicleMaxVelocity) {
+    public double calculateTotalMinimumTimeInterval(RoadNetwork roadNetwork, Vehicle vehicle) {
 
         double totalMinimumTimeInterval = 0;
 
         for (Segment segment : segments) {
 
-            totalMinimumTimeInterval += segment.calculateMinimumTimeInterval(vehicleMaxVelocity);
+            totalMinimumTimeInterval += segment.calculateMinimumTimeInterval(roadNetwork, vehicle);
 
         }
 

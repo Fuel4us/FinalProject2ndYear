@@ -1,5 +1,9 @@
 package lapr.project.model.RoadNetwork;
 
+import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.utils.Graph.Edge;
+import lapr.project.utils.Measurable;
+
 import org.antlr.stringtemplate.StringTemplate;
 
 import javax.xml.bind.annotation.*;
@@ -77,13 +81,41 @@ public class Segment {
     /**
      * Calculates the minimum time interval spent for the segment,
      * taking into account the velocity limit, its length and
-     * the velocity limit of the vehicle
-     * @param vehicleMaxVelocity the velocity limit of the vehicle
+     * the velocity limit of the vehicle for the typology
+     * @param roadNetwork the road network of the current project
+     * @param vehicle the vehicle
      * @return the minimum time interval
      */
-    public double calculateMinimumTimeInterval(double vehicleMaxVelocity) {
+    public double calculateMinimumTimeInterval(RoadNetwork roadNetwork, Vehicle vehicle) {
 
-        return length / Math.min(maxVelocity, vehicleMaxVelocity);
+        Iterable<Edge<Node, Section>> edges = roadNetwork.edges();
+
+        Section section = null;
+
+        //check which section has this segment
+        for (Edge<Node,Section> edge : edges) {
+
+            section = edge.getElement();
+
+            if (section.containsSegment(this)) break;
+
+        }
+
+        if (section == null) return 0;
+
+        String roadTypology = section.retrieveRoadTypology();
+
+        Measurable vehicleMaxVelocity = vehicle.retrieveMaxVelocity(roadTypology);
+
+        if (vehicleMaxVelocity == null) {
+
+            return length / maxVelocity;
+
+        } else {
+
+            return length / Math.min(maxVelocity, vehicleMaxVelocity.getQuantity());
+
+        }
 
     }
 }
