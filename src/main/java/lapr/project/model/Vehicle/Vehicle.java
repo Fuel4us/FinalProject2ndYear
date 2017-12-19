@@ -92,9 +92,6 @@ public class Vehicle {
 
                         return velocityLimit.getLimit();
 
-                    } else {
-
-                        return 0;
                     }
 
                 }
@@ -109,9 +106,6 @@ public class Vehicle {
 
                         return velocityLimit.getLimit();
 
-                    } else {
-
-                        return 0;
                     }
 
                 }
