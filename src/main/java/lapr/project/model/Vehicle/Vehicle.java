@@ -120,7 +120,6 @@ public class Vehicle {
 
         }
 
-        //something went wrong
         return 0;
     }
 }
