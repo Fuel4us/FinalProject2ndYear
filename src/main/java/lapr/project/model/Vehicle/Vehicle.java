@@ -155,7 +155,7 @@ public class Vehicle {
      * Indicates motor type
      * Assists in the instantiation of the correct motorization
      */
-    private enum MotorType {
+    public enum MotorType {
 
         COMBUSTION, NONCOMBUSTION
 

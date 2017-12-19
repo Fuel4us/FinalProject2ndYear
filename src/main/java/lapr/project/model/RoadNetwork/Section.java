@@ -2,6 +2,9 @@ package lapr.project.model.RoadNetwork;
 
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.Graph.Edge;
+import org.antlr.stringtemplate.StringTemplate;
+import org.antlr.stringtemplate.StringTemplateGroup;
+import org.antlr.stringtemplate.language.DefaultTemplateLexer;
 
 import javax.xml.bind.annotation.*;
 import java.util.Collection;
@@ -95,4 +98,22 @@ public class Section extends Edge<String, Direction> {
         return weight;
     }
 
+    /**
+     * Prints data of each segment included in the section, according to a certain file
+     */
+    public void printSegmentsFromSection() {
+        for (Segment segment : segments) {
+            printDataFromSegment(segment);
+        }
+    }
+
+    /**
+     * Prints data from a given segment filling the information missing in a given file template
+     * @param segment
+     */
+    public void printDataFromSegment(Segment segment) {
+        StringTemplateGroup groupSegment =  new StringTemplateGroup("myGroup", "C:\\Tutorials", DefaultTemplateLexer.class);
+        StringTemplate segmentTemplate = groupSegment.getInstanceOf("html_structure_segment");
+        segment.printDataFromSegment(segmentTemplate);
+    }
 }

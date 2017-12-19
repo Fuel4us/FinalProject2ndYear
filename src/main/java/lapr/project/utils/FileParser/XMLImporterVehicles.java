@@ -15,6 +15,7 @@ import org.w3c.dom.Element;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import lapr.project.model.Vehicle.Vehicle.MotorType;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 
@@ -26,11 +27,10 @@ public class XMLImporterVehicles implements FileParser {
     public boolean importVehicles(Project object, String filename) {
 
         try {
-            
+
             /**
              * Initiate Variables
              */
-            
             String name = "Default";
             String description = "Default";
 
@@ -39,8 +39,8 @@ public class XMLImporterVehicles implements FileParser {
 
             int newTollClass = 0;
 
-            Motorization motorization = null;
             String newMotorization = "Default";
+            MotorType motorTypeValue = null;
 
             Fuel fuel = null;
             String newFuel = "Default";
@@ -58,9 +58,11 @@ public class XMLImporterVehicles implements FileParser {
             float newWheel = 0;
 
             List<VelocityLimit> newVelocityLimitList = new ArrayList<VelocityLimit>();
-            VelocityLimit newVelocityLimit = new VelocityLimit();
+            VelocityLimit newVelocityLimit = null;
             String newSegmentType = "Default";
-            int newLimit = 0;
+            String newVelocity = "Default";
+            Measurable newVelocityLimitValue = null;
+            double newLimit = 0;
 
             Energy newEnergy = null;
             int newMinRpm = 0;
@@ -87,10 +89,10 @@ public class XMLImporterVehicles implements FileParser {
             List<Vehicle> set = new ArrayList<>();
 
             // Initiate parser
-            File fXmlFile = new File(filename);
+            File file = new File(filename);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(fXmlFile);
+            Document doc = dBuilder.parse(file);
 
             doc.getDocumentElement().normalize();
 
@@ -117,7 +119,7 @@ public class XMLImporterVehicles implements FileParser {
                         Node attribute = vehicleAttributes.item(i);
 
                         if (attribute.getNodeType() == Node.ELEMENT_NODE) {
-                            
+
                             /**
                              * Type of vehicle
                              */
@@ -131,26 +133,27 @@ public class XMLImporterVehicles implements FileParser {
                                     }
                                 }
                             }
-                            
+
                             /**
                              * Toll_class
                              */
                             if (attribute.getNodeName().equals("toll_class")) {
                                 newTollClass = Integer.parseInt(attribute.getTextContent());
                             }
-                            
+
                             /**
                              * Motorization type ENUM
                              */
                             if (attribute.getNodeName().equals("motorization")) {
                                 newMotorization = attribute.getTextContent();
-                                if (newMotorization.equalsIgnoreCase("combustion")) {
-                                    motorization = new CombustionMotor();
+                                String newMoto = newMotorization;
+                                if(newMoto.equalsIgnoreCase("combustion")) {
+                                    motorTypeValue = Vehicle.MotorType.COMBUSTION;
                                 } else {
-                                    motorization = new NonCombustionMotor();
+                                    motorTypeValue = Vehicle.MotorType.NONCOMBUSTION;
                                 }
                             }
-                            
+
                             /**
                              * Fuel
                              */
@@ -164,7 +167,7 @@ public class XMLImporterVehicles implements FileParser {
                                     }
                                 }
                             }
-                            
+
                             /**
                              * Mass from Measurable
                              */
@@ -173,14 +176,14 @@ public class XMLImporterVehicles implements FileParser {
                                 String[] splitX = x.split(" ");
                                 newMass = Integer.parseInt(splitX[0]);
                                 massUnit = splitX[1];
-                                if(massUnit.equals("kg")){
+                                if (massUnit.equals("kg")) {
                                     mass = new Measurable(newMass, Unit.KILOGRAM);
-                                }else if(massUnit.equals("g")){
+                                } else if (massUnit.equals("g")) {
                                     mass = new Measurable(newMass, Unit.GRAM);
                                 }
-                                
+
                             }
-                            
+
                             /**
                              * Load from Measurable
                              */
@@ -189,22 +192,21 @@ public class XMLImporterVehicles implements FileParser {
                                 String[] splity = y.split(" ");
                                 newLoad = Integer.parseInt(splity[0]);
                                 loadUnit = splity[1];
-                                if(loadUnit.equals("kg")){
+                                if (loadUnit.equals("kg")) {
                                     load = new Measurable(newLoad, Unit.KILOGRAM);
-                                }else if(loadUnit.equals("g")){
+                                } else if (loadUnit.equals("g")) {
                                     load = new Measurable(newLoad, Unit.GRAM
                                     );
                                 }
-                                
                             }
-                            
+
                             /**
                              * Drag
                              */
                             if (attribute.getNodeName().equals("drag")) {
                                 dragCoefficient = Float.parseFloat(attribute.getTextContent());
                             }
-                            
+
                             /**
                              * Frontal Area
                              */
@@ -217,14 +219,14 @@ public class XMLImporterVehicles implements FileParser {
                             if (attribute.getNodeName().equals("rrc")) {
                                 newRRC = Float.parseFloat(attribute.getTextContent());
                             }
-                            
+
                             /**
                              * Wheel size
                              */
                             if (attribute.getNodeName().equals("whell_size")) {
                                 newWheel = Float.parseFloat(attribute.getTextContent());
                             }
-                            
+
                             /**
                              * VelocityLimitList
                              */
@@ -239,7 +241,7 @@ public class XMLImporterVehicles implements FileParser {
                                         Node velocityLimitNode = velocityLimit.item(xu);
                                         /*
                                         *Segment Type
-                                        */
+                                         */
                                         if (velocityLimitNode.getNodeType() == Node.ELEMENT_NODE) {
                                             if (velocityLimitNode.getNodeName().equals("segment_type")) {
                                                 newSegmentType = velocityLimitNode.getTextContent();
@@ -248,17 +250,29 @@ public class XMLImporterVehicles implements FileParser {
                                              * Velocity Limit
                                              */
                                             if (velocityLimitNode.getNodeName().equals("limit")) {
-                                                newLimit = Integer.parseInt(velocityLimitNode.getTextContent());
+                                                String string = attribute.getTextContent();
+                                                String[] stringSplit = string.split(" ");
+                                                if (stringSplit.length == 2) {
+                                                    newLimit = Double.parseDouble(stringSplit[0]);
+                                                    newVelocity = stringSplit[1];
+                                                    if (newVelocity.equalsIgnoreCase("km/h") || stringSplit.length == 1) {
+                                                        newVelocityLimitValue = new Measurable(newLimit, Unit.KILOMETERSPERHOUR);
+                                                    } else if (newVelocity.equalsIgnoreCase("mp/h")) {
+                                                        newVelocityLimitValue = new Measurable(newLimit, Unit.MILESPERHOUR);
+                                                    } else if (newVelocity.equalsIgnoreCase("m/s")) {
+                                                        newVelocityLimitValue = new Measurable(newLimit, Unit.METERSPERSECOND);
+                                                    }
+                                                }
                                             }
                                         }
                                         newVelocityLimit.setSegmentType(newSegmentType);
-                                        newVelocityLimit.setLimit(newLimit);
+                                        newVelocityLimit.setLimit(newVelocityLimitValue);
                                         newVelocityLimitList.add(newVelocityLimit);
                                     }
                                 }
                             }
                         }
-                        
+
                         /**
                          * Energy
                          */
@@ -368,7 +382,7 @@ public class XMLImporterVehicles implements FileParser {
                 /**
                  * Create Vehicle
                  */
-                newVehicle = new Vehicle(name, description, vehicleType, newTollClass, motorization, fuel, mass, load, dragCoefficient, newFrontalArea, newRRC, newWheel, newVelocityLimitList, newEnergy);
+                newVehicle = new Vehicle(name, description, vehicleType, newTollClass, motorTypeValue, fuel, mass, load, dragCoefficient, newFrontalArea, newRRC, newWheel, newVelocityLimitList, newEnergy);
                 set.add(newVehicle);
             }
 

@@ -1,5 +1,12 @@
 package lapr.project.model;
 
+import lapr.project.model.RoadNetwork.Section;
+import lapr.project.model.RoadNetwork.Segment;
+import lapr.project.utils.Measurable;
+import org.antlr.stringtemplate.StringTemplate;
+import org.antlr.stringtemplate.StringTemplateGroup;
+import org.antlr.stringtemplate.language.DefaultTemplateLexer;
+
 import java.util.Collection;
 
 /**
@@ -10,6 +17,9 @@ public abstract class Analysis {
 
     private int id;
     private Project requestingInstance;
+    private String algorithmName;
+    private Measurable travelTime;
+    private Collection<Section> bestPath;
 
     public Analysis(int id, Project requestingInstance) {
         this.id = id;
@@ -37,5 +47,35 @@ public abstract class Analysis {
      * @return Such Results as aforementioned
      */
     public abstract Collection<?> generateReport();
+
+    /**
+     * Prints data from a given segment filling the information missing in a given file template
+     * @param stringTemplate instance of {@link StringTemplate}
+     */
+    public void printDataFromAnalysis(StringTemplate stringTemplate) {
+        String projectName = requestingInstance.getName();
+        String analysisName = algorithmName;
+//        String travelTimeStr = travelTime.toString;
+//        String recordsNumber = String.valueOf(recordsNumber);
+
+        stringTemplate.setAttribute("projectName", projectName);
+        stringTemplate.setAttribute("sampleName", analysisName);
+//        stringTemplate.setAttribute("sampleTime", travelTimeStr);
+//        stringTemplate.setAttribute("sampleRecords", recordsNumber);
+
+        printPath();
+
+        System.out.println(stringTemplate.toString());
+
+    }
+
+    /**
+     * Prints segment information for each section that composes the best path
+     */
+    private void printPath() {
+        for (Section section: bestPath) {
+            section.printSegmentsFromSection();
+        }
+    }
 
 }
