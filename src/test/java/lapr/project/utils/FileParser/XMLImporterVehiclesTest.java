@@ -5,6 +5,7 @@
  */
 package lapr.project.utils.FileParser;
 
+import java.io.File;
 import java.util.ArrayList;
 import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork.RoadNetwork;
@@ -41,7 +42,8 @@ public class XMLImporterVehiclesTest {
     }
 
     /**
-     * Test of importVehicles method, of class XMLImporterVehicles.
+     * Test of importVehicles method, of class X
+     * MLImporterVehicles.
      */
     @Test
     public void testImportVehicles() {
@@ -50,7 +52,9 @@ public class XMLImporterVehiclesTest {
         Project object = new Project("test","description",new RoadNetwork(),new ArrayList<>());
         XMLImporterVehicles instance = new XMLImporterVehicles();
         boolean expResult = true;
-        boolean result = instance.importVehicles(object, "src/test/resources/TestSet02_Vehicles.xml");
+        String directory = new File("").getAbsolutePath();
+        String filename1 = directory + "\\src\\test\\resources\\TestSet02_Vehicles.xml";
+        boolean result = instance.importVehicles(object, filename1);
         assertEquals(expResult, result);
     }
     
