@@ -16,6 +16,7 @@ import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
  */
 public class SelectProjectUI extends javax.swing.JFrame {
 
+    InitializeUIElements initializer = new InitializeUIElements();
     private static final long serialVersionUID = -5188965937946662366L;
     private DataBaseCommunicator dbCom;
     private SelectProjectController spc;
@@ -93,33 +94,21 @@ public class SelectProjectUI extends javax.swing.JFrame {
         jButtonCompForm.setForeground(new java.awt.Color(45, 46, 45));
         jButtonCompForm.setText("Road Network Comparison Form");
         jButtonCompForm.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonCompForm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCompFormActionPerformed(evt);
-            }
-        });
+        jButtonCompForm.addActionListener(evt -> jButtonCompFormActionPerformed(evt));
 
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
         jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack.setText("«");
         jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBackActionPerformed(evt);
-            }
-        });
+        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
 
         jButtonPathForm.setBackground(new java.awt.Color(45, 46, 45));
         jButtonPathForm.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jButtonPathForm.setForeground(new java.awt.Color(45, 46, 45));
         jButtonPathForm.setText("Road Network Path Form");
         jButtonPathForm.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonPathForm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonPathFormActionPerformed(evt);
-            }
-        });
+        jButtonPathForm.addActionListener(evt -> jButtonPathFormActionPerformed(evt));
 
         jLabel2.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(155, 177, 189));
@@ -135,11 +124,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
 
         jComboBox1.setBackground(new java.awt.Color(204, 204, 204));
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
+        jComboBox1.addActionListener(evt -> jComboBox1ActionPerformed(evt));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -186,8 +171,8 @@ public class SelectProjectUI extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
-                .addGap(69, 69, 69)
-                .addComponent(jButtonPathForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonPathForm, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -221,7 +206,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonPathFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPathFormActionPerformed
-        new RoadNetworkPathFormUI(project);
+        new BestPathUI(project);
         setVisible(false);
     }//GEN-LAST:event_jButtonPathFormActionPerformed
 

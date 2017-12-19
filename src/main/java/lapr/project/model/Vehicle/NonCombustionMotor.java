@@ -3,19 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lapr.project.utils.FileParser;
-
-import lapr.project.model.Project;
+package lapr.project.model.Vehicle;
 
 /**
- *
- * @author goncalo
+ * Provides NonCombustion related operations for energy calculations
  */
-public class ImportCSV implements FileParser {
-    
+public class NonCombustionMotor implements Motorization {
+
     @Override
-    public boolean importVehicles(Project object, String filename) {
+    public void determineEnergyExpenditure() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public void regenerateEnergyViaBraking(){
     }
     
 }

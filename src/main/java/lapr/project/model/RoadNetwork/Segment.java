@@ -1,5 +1,11 @@
 package lapr.project.model.RoadNetwork;
 
+import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.utils.Graph.Edge;
+import lapr.project.utils.Measurable;
+
+import org.antlr.stringtemplate.StringTemplate;
+
 import javax.xml.bind.annotation.*;
 
 @XmlRootElement
@@ -44,5 +50,72 @@ public class Segment {
 
     public double getLength() {
         return length;
+    }
+
+    /**
+     * Fills and prints data of segment in a file
+     * @param segmentTemplate instance of {@link StringTemplate}
+     */
+    public void printDataFromSegment(StringTemplate segmentTemplate) {
+        String segmentId = String.valueOf(index);
+        String segmentIniHeight = String.valueOf(initialHeight);
+        String segmentFinHeight = String.valueOf(finalHeight);
+        String segmentLength = String.valueOf(length);
+        String segmentWindAngle = String.valueOf(windAngle);
+        String segmentWindSpeed = String.valueOf(windSpeed);
+        String segmentMaxVelocity = String.valueOf(maxVelocity);
+        String segmentMinVelocity = String.valueOf(minVelocity);
+
+        segmentTemplate.setAttribute("sampleId", segmentId);
+        segmentTemplate.setAttribute("sampleIniHeight", segmentIniHeight);
+        segmentTemplate.setAttribute("sampleFimHeight", segmentFinHeight);
+        segmentTemplate.setAttribute("sampleLength", segmentLength);
+        segmentTemplate.setAttribute("sampleWindAngle", segmentWindAngle);
+        segmentTemplate.setAttribute("sampleWindSpeed", segmentWindSpeed);
+        segmentTemplate.setAttribute("sampleMaxVel", segmentMaxVelocity);
+        segmentTemplate.setAttribute("sampleMinVel", segmentMinVelocity);
+
+        System.out.println(segmentTemplate.toString());
+    }
+
+    /**
+     * Calculates the minimum time interval spent for the segment,
+     * taking into account the velocity limit, its length and
+     * the velocity limit of the vehicle for the typology
+     * @param roadNetwork the road network of the current project
+     * @param vehicle the vehicle
+     * @return the minimum time interval
+     */
+    public double calculateMinimumTimeInterval(RoadNetwork roadNetwork, Vehicle vehicle) {
+
+        Iterable<Edge<Node, Section>> edges = roadNetwork.edges();
+
+        Section section = null;
+
+        //check which section has this segment
+        for (Edge<Node,Section> edge : edges) {
+
+            section = edge.getElement();
+
+            if (section.containsSegment(this)) break;
+
+        }
+
+        if (section == null) return 0;
+
+        String roadTypology = section.retrieveRoadTypology();
+
+        Measurable vehicleMaxVelocity = vehicle.retrieveMaxVelocity(roadTypology);
+
+        if (vehicleMaxVelocity == null) {
+
+            return length / maxVelocity;
+
+        } else {
+
+            return length / Math.min(maxVelocity, vehicleMaxVelocity.getQuantity());
+
+        }
+
     }
 }
