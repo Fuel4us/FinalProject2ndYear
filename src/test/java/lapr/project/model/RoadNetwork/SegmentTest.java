@@ -15,28 +15,28 @@ import static org.junit.Assert.*;
  */
 public class SegmentTest {
 
-    /**
-     * Test of method printDataFromSegment
-     * @throws IOException
-     */
-    @Test
-    public void ensureExportHtmlCorrectly() throws IOException {
-        int index = 1;
-        double initialHeight = 0.1;
-        double finalHeight = 5;
-        double length = 4;
-        double windAngle = 60;
-        double windSpeed = 1;
-        double maxVelocity = 40;
-        double minVelocity = 20;
-        Segment segment = new Segment(index, initialHeight, finalHeight, length, windAngle, windSpeed, maxVelocity, minVelocity);
-
-        FileWriter fillFile = new FileWriter("C:\\Users\\anily\\Desktop\\Escolar\\RITA isep\\2º ano\\lapr3\\outputTest.html", true);
-        StringTemplateGroup groupSegment = new StringTemplateGroup("src\\main\\resources");
-        StringTemplate segmentTemplate = groupSegment.getInstanceOf("html_structure_segment");
-
-        segment.printDataFromSegment(segmentTemplate, fillFile);
-
-    }
+//    /**
+//     * Test of method printDataFromSegment
+//     * @throws IOException
+//     */
+//    @Test
+//    public void ensureExportHtmlCorrectly() throws IOException {
+//        int index = 1;
+//        double initialHeight = 0.1;
+//        double finalHeight = 5;
+//        double length = 4;
+//        double windAngle = 60;
+//        double windSpeed = 1;
+//        double maxVelocity = 40;
+//        double minVelocity = 20;
+//        Segment segment = new Segment(index, initialHeight, finalHeight, length, windAngle, windSpeed, maxVelocity, minVelocity);
+//
+//        FileWriter fillFile = new FileWriter("src\main\resources\outputSegmentTest.html", true);
+//        StringTemplateGroup groupSegment = new StringTemplateGroup("src\\main\\resources");
+//        StringTemplate segmentTemplate = groupSegment.getInstanceOf("html_structure_segment");
+//
+//        segment.printDataFromSegment(segmentTemplate, fillFile);
+//
+//    }
 
 }

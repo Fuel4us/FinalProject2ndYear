@@ -1,5 +1,6 @@
 package lapr.project.utils.FileParser;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -7,6 +8,6 @@ import java.io.IOException;
  */
 public interface Exporter {
 
-    void printDataFromAnalysis() throws IOException;
+    void printDataFromAnalysis(File file) throws IOException;
 
 }
