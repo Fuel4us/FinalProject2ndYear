@@ -10,11 +10,6 @@ import lapr.project.model.RoadNetwork.*;
 
 public class BestPathController {
 
-    private List<Node> nodesList;
-    private List<Vehicle> listVehicles;
-    private Vehicle vehicle;
-    private Node origin;
-    private Node destiny;
     private Project project;
 
     /**
@@ -34,23 +29,13 @@ public class BestPathController {
      * @return list of all vehicles in the project
      */
     public List<Vehicle> getAllVehicles(){
-        List<Vehicle> list = new ArrayList<>();
+        List<Vehicle> list;
         //metodo que vai buscar todos os veiculos ao sql e iguala a list
+        list = project.getVehicles();
         return list;
     }
         
-    /**
-     * Method that sets teh origin and destiny nodes received in the parameters
-     *
-     * @param origin Origin node.
-     * @param destiny Destiny node.
-     * 
-     */
-    public void setNodes(Node origin, Node destiny){
-        this.origin=origin;
-        this.destiny=destiny;
-    }
-    
+        
    /**
     * Method called by the UI that returns the list with all the nodes
     * 

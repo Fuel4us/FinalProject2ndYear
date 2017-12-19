@@ -7,6 +7,7 @@ import lapr.project.utils.Unit;
 
 import java.util.List;
 import java.util.Objects;
+import lapr.project.utils.*;
 
 /**
  * <p>
@@ -17,25 +18,24 @@ public class Vehicle {
 
     private String name;
     private String description;
-
+    
     private VehicleType type;
-
+    
     private int vehicleClass;
-
+    
     private Motorization motorization;
 
     private MotorType motorType;
 
     private Fuel fuel;
-
     private Measurable mass;
     private Measurable load;
-
+    
     private float dragCoefficient;
     private float frontalArea;
     private float rollingReleaseCoefficient;
     private float wheelSize;
-
+    
     private List<VelocityLimit> velocityLimitList;
     private Energy energy;
 
@@ -56,7 +56,7 @@ public class Vehicle {
      * @param velocityLimitList This vehicle's velocity limit list
      * @param energy This vehicle's energy
      */
-    public Vehicle(String name, String description, VehicleType type, int vehicleClass, MotorType motorType, Fuel fuel, Measurable mass, Measurable load, float dragCoefficient, Float frontalArea, float rollingReleaseCoefficient, Float wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
+    public Vehicle(String name, String description, VehicleType type, int vehicleClass, MotorType motorType, Fuel fuel, Measurable mass, Measurable load, float dragCoefficient, float frontalArea, float rollingReleaseCoefficient, float wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
         this.name = name;
         this.description = description;
         this.type = type;
@@ -68,7 +68,6 @@ public class Vehicle {
         } else if (motorType == MotorType.NONCOMBUSTION) {
             motorization = new NonCombustionMotor();
         }
-
         this.fuel = fuel;
         this.mass = mass;
         this.load = load;
@@ -77,7 +76,37 @@ public class Vehicle {
         this.rollingReleaseCoefficient = rollingReleaseCoefficient;
         this.wheelSize = wheelSize;
         this.velocityLimitList = velocityLimitList;
-        this.energy = new Energy(energy);
+        this.energy = energy;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.name);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Vehicle other = (Vehicle) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString(){
+        return String.format("%s - %s.", name,description);
     }
 
     /**
@@ -127,37 +156,7 @@ public class Vehicle {
         return null;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Vehicle other = (Vehicle) obj;
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + Objects.hashCode(this.name);
-        return hash;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s - %s.", name, description);
-    }
-
-//    /**
+    //    /**
 //     * @param segment
 //     * @return
 //     */
@@ -211,5 +210,4 @@ public class Vehicle {
         COMBUSTION, NONCOMBUSTION;
 
     }
-
 }

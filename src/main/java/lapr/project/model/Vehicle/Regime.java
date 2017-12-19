@@ -16,6 +16,9 @@ public class Regime {
     @XmlElement
     private int SFC;
 
+    public Regime() {
+    }
+
     public Regime(int torque, int rpmLow, int rpmHigh, int SFC) {
         this.torque = torque;
         this.rpmLow = rpmLow;

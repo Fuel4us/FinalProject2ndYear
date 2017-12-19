@@ -7,12 +7,16 @@ import org.antlr.stringtemplate.StringTemplateGroup;
 import org.antlr.stringtemplate.language.DefaultTemplateLexer;
 
 import javax.xml.bind.annotation.*;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collection;
 
 
 @XmlRootElement(name = "road_section")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Section extends Edge<String, Direction> {
+
+    private static String HTML_STRUCTURE_SEGMENT = "html_structure_segment";
 
     @XmlAttribute(name = "begin")
     private Node beginningNode;
@@ -101,9 +105,9 @@ public class Section extends Edge<String, Direction> {
     /**
      * Prints data of each segment included in the section, according to a certain file
      */
-    public void printSegmentsFromSection() {
+    public void printSegmentsFromSection(FileWriter file) throws IOException {
         for (Segment segment : segments) {
-            printDataFromSegment(segment);
+            printDataFromSegment(segment, file);
         }
     }
 
@@ -111,9 +115,9 @@ public class Section extends Edge<String, Direction> {
      * Prints data from a given segment filling the information missing in a given file template
      * @param segment
      */
-    public void printDataFromSegment(Segment segment) {
-        StringTemplateGroup groupSegment =  new StringTemplateGroup("myGroup", "C:\\Tutorials", DefaultTemplateLexer.class);
-        StringTemplate segmentTemplate = groupSegment.getInstanceOf("html_structure_segment");
-        segment.printDataFromSegment(segmentTemplate);
+    public void printDataFromSegment(Segment segment, FileWriter file) throws IOException {
+        StringTemplateGroup groupSegment = new StringTemplateGroup("src\\main\\resources");
+        StringTemplate segmentTemplate = groupSegment.getInstanceOf(HTML_STRUCTURE_SEGMENT);
+        segment.printDataFromSegment(segmentTemplate, file);
     }
 }
