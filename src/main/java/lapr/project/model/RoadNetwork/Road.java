@@ -51,13 +51,6 @@ public class Road {
     }
 
     /**
-     * @return the ID of this road
-     */
-    public String getID() {
-        return id;
-    }
-
-    /**
      * Equals method for objects of the class Road
      * @param o other object
      * @return true if the objects are equal
