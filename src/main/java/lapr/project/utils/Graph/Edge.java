@@ -15,7 +15,7 @@ public class Edge<V, E> implements Comparable<Edge<V, E>> {
     private double weight;       // Edge weight
     private Vertex<V, E> vOrig;  // vertex origin
     private Vertex<V, E> vDest;  // vertex destination
-    private final double teste = 0.000000001;
+    private final double test = 0.000000001;
 
     public Edge() {
         element = null;
@@ -139,7 +139,7 @@ public class Edge<V, E> implements Comparable<Edge<V, E>> {
                 !this.vDest.equals(otherEdge.vDest))
             return false;
         
-        if (Math.abs(this.weight - otherEdge.weight) > teste)
+        if (Math.abs(this.weight - otherEdge.weight) > test) 
             return false;
 
         if (this.element != null && otherEdge.element != null)
@@ -159,12 +159,14 @@ public class Edge<V, E> implements Comparable<Edge<V, E>> {
         result = 31 * result + (vDest != null ? vDest.hashCode() : 0);
         return result;
     }
-
+    
     @Override
     public int compareTo(Edge<V, E> edge) {
 
         if (this.weight < edge.weight) return -1;
-        if (this.weight == edge.weight) return 0;
+        if (Math.abs(this.weight - edge.weight) < test && Math.abs(this.weight - edge.weight) > -(test)) {  // Bug was here because this.weight == edge.weight
+            return 0;
+        }
         return 1;
     }
 
@@ -181,6 +183,7 @@ public class Edge<V, E> implements Comparable<Edge<V, E>> {
         return newEdge;
     }
 
+    
     @Override
     public String toString() {
         String st = "";
@@ -189,7 +192,7 @@ public class Edge<V, E> implements Comparable<Edge<V, E>> {
         else
             st = "\t ";
 
-        if (weight != 0)
+        if (weight < 0 || weight > 0) // had bug here because was [weight != 0]
             st += weight + " - " + vDest.getElement() + "\n";
         else
             st += vDest.getElement() + "\n";
