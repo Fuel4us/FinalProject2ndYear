@@ -17,6 +17,13 @@ public class Measurable {
     public Measurable(double quantity, Unit unit) {
         this.quantity = quantity;
         this.unit = unit;
-    }    
-    
+    }
+
+    /**
+     * Getter for the attribute quantity
+     * @return the quantity
+     */
+    public double getQuantity() {
+        return quantity;
+    }
 }

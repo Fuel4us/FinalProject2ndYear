@@ -1,5 +1,7 @@
 package lapr.project.model.Vehicle;
 
+import lapr.project.utils.Measurable;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -10,9 +12,9 @@ public class VelocityLimit {
     private String segmentType;
     
     @XmlElement(name ="limit")
-    private int limit;
+    private Measurable limit;
 
-    public VelocityLimit(String segmentType, int limit) {
+    public VelocityLimit(String segmentType, Measurable limit) {
         this.segmentType = segmentType;
         this.limit = limit;
     }
@@ -24,18 +26,16 @@ public class VelocityLimit {
         return segmentType;
     }
 
-    public int getLimit() {
+    public Measurable getLimit() {
         return limit;
     }
 
-    public void setLimit(int limit) {
+    public void setLimit(Measurable limit) {
         this.limit = limit;
     }
 
     public void setSegmentType(String segmentType) {
         this.segmentType = segmentType;
     }
-    
-    
     
 }
