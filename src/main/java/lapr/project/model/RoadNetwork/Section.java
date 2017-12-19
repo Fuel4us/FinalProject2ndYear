@@ -116,7 +116,7 @@ public class Section extends Edge<String, Direction> {
      * @param segment
      */
     public void printDataFromSegment(Segment segment, FileWriter file) throws IOException {
-        StringTemplateGroup groupSegment =  new StringTemplateGroup("myGroup", "src\\main\\resources\\html_structure_segment.st", DefaultTemplateLexer.class);
+        StringTemplateGroup groupSegment = new StringTemplateGroup("src\\main\\resources");
         StringTemplate segmentTemplate = groupSegment.getInstanceOf(HTML_STRUCTURE_SEGMENT);
         segment.printDataFromSegment(segmentTemplate, file);
     }

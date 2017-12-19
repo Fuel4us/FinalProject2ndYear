@@ -37,14 +37,14 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         initComponents();
     }
 
-    /**
-     * Creates new form StoreNetworkAnalysisUI
-     */
-    public StoreNetworkAnalysisUI(Project currentProject, DataBaseCommunicator dbCom, Analysis generatedAnalysis) {
-        initComponents();
-        analysisResultsTextField.setText(generatedAnalysis.generateReport().toString());
-        networkAnalysisController = new NetworkAnalysisController(currentProject, dbCom, generatedAnalysis);
-    }
+//    /**
+//     * Creates new form StoreNetworkAnalysisUI
+//     */
+//    public StoreNetworkAnalysisUI(Project currentProject, DataBaseCommunicator dbCom, Analysis generatedAnalysis) {
+//        initComponents();
+//        analysisResultsTextField.setText(generatedAnalysis.generateReport().toString());
+//        networkAnalysisController = new NetworkAnalysisController(currentProject, dbCom, generatedAnalysis);
+//    }
 
 
     /**
