@@ -1,29 +1,29 @@
-//package lapr.project.utils.FileParser;
-//
-//import java.util.List;
-//import javax.xml.parsers.ParserConfigurationException;
-//import lapr.project.model.*;
-//import lapr.project.model.Vehicle.*;
-//import javax.xml.parsers.DocumentBuilderFactory;
-//import javax.xml.parsers.DocumentBuilder;
-//import org.xml.sax.SAXException;
-//import org.w3c.dom.DOMException;
-//import org.w3c.dom.Document;
-//import org.w3c.dom.NodeList;
-//import org.w3c.dom.Node;
-//import org.w3c.dom.Element;
-//import java.io.File;
-//import java.io.IOException;
-//import java.util.ArrayList;
-//import lapr.project.utils.Measurable;
-//import lapr.project.utils.Unit;
-//
-///**
-// * Import of vehicles from XML
-// */
-//public class XMLImporterVehicles implements FileParser {
-//
-//    public boolean importVehicles(Project object, String filename) {
+package lapr.project.utils.FileParser;
+
+import java.util.List;
+import javax.xml.parsers.ParserConfigurationException;
+import lapr.project.model.*;
+import lapr.project.model.Vehicle.*;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import org.xml.sax.SAXException;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import lapr.project.utils.Measurable;
+import lapr.project.utils.Unit;
+
+/**
+ * Import of vehicles from XML
+ */
+public class XMLImporterVehicles implements FileParser {
+
+    public boolean importVehicles(Project object, String filename) {
 //
 //        try {
 //
@@ -365,7 +365,7 @@
 //        } catch (IOException | NumberFormatException | ParserConfigurationException | DOMException | SAXException e) {
 //            return false;
 //        }
-//        return true;
-//    }
-//
-//}
+        return true;
+    }
+
+}
