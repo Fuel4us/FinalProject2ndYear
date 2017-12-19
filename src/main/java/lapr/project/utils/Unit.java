@@ -6,7 +6,7 @@ package lapr.project.utils;
  */
 public enum Unit {
     
-    KILOGRAM("kg"), GRAM("g"), KILOMETERSPERHOUR("km/h"), KILOMETER("km"), METER("m");
+    KILOGRAM("kg"), GRAM("g"), KILOMETERSPERHOUR("km/h"), KILOMETER("km"), METER("m"), MILESPERHOUR("mp/h"), METERSPERSECOND("m/s");
     private final String unit;
 
     Unit(String unit) {

@@ -3,6 +3,7 @@ package lapr.project.model.Vehicle;
 import lapr.project.utils.Measurable;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -76,11 +77,6 @@ public class Vehicle {
         this.energy = new Energy(energy);
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s - %s.", name, description);
-    }
-
     /**
      * Retrieves the max velocity of the vehicle according to the road's typology given as a parameter
      * @param roadTypology the road's typology
@@ -128,13 +124,43 @@ public class Vehicle {
         return null;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Vehicle other = (Vehicle) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.name);
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s - %s.", name, description);
+    }
+
     /**
      * Indicates motor type
      * Assists in the instantiation of the correct motorization
      */
     public enum MotorType {
 
-        COMBUSTION, NONCOMBUSTION
+        COMBUSTION, NONCOMBUSTION;
 
     }
 
