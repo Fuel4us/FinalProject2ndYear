@@ -4,6 +4,8 @@ import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.Graph.Edge;
 import lapr.project.utils.Measurable;
 
+import org.antlr.stringtemplate.StringTemplate;
+
 import javax.xml.bind.annotation.*;
 
 @XmlRootElement
@@ -48,6 +50,32 @@ public class Segment {
 
     public double getLength() {
         return length;
+    }
+
+    /**
+     * Fills and prints data of segment in a file
+     * @param segmentTemplate instance of {@link StringTemplate}
+     */
+    public void printDataFromSegment(StringTemplate segmentTemplate) {
+        String segmentId = String.valueOf(index);
+        String segmentIniHeight = String.valueOf(initialHeight);
+        String segmentFinHeight = String.valueOf(finalHeight);
+        String segmentLength = String.valueOf(length);
+        String segmentWindAngle = String.valueOf(windAngle);
+        String segmentWindSpeed = String.valueOf(windSpeed);
+        String segmentMaxVelocity = String.valueOf(maxVelocity);
+        String segmentMinVelocity = String.valueOf(minVelocity);
+
+        segmentTemplate.setAttribute("sampleId", segmentId);
+        segmentTemplate.setAttribute("sampleIniHeight", segmentIniHeight);
+        segmentTemplate.setAttribute("sampleFimHeight", segmentFinHeight);
+        segmentTemplate.setAttribute("sampleLength", segmentLength);
+        segmentTemplate.setAttribute("sampleWindAngle", segmentWindAngle);
+        segmentTemplate.setAttribute("sampleWindSpeed", segmentWindSpeed);
+        segmentTemplate.setAttribute("sampleMaxVel", segmentMaxVelocity);
+        segmentTemplate.setAttribute("sampleMinVel", segmentMinVelocity);
+
+        System.out.println(segmentTemplate.toString());
     }
 
     /**

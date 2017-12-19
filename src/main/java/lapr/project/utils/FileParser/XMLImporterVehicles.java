@@ -24,7 +24,7 @@ import lapr.project.utils.Unit;
 public class XMLImporterVehicles implements FileParser {
 
     public boolean importVehicles(Project object, String filename) {
-//
+
 //        try {
 //
 //            /**
@@ -60,7 +60,7 @@ public class XMLImporterVehicles implements FileParser {
 //            List<VelocityLimit> newVelocityLimitList = new ArrayList<VelocityLimit>();
 //            VelocityLimit newVelocityLimit = null;
 //            String newSegmentType = "Default";
-//            Measurable newLimit = 0;
+//            int newLimit = 0;
 //
 //            Energy newEnergy = null;
 //            int newMinRpm = 0;
