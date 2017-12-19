@@ -15,11 +15,11 @@ public class Energy {
 
     /**
      * Constructor
-     * @param min_rpm
-     * @param max_rpm
-     * @param final_drive_ratio
-     * @param gears
-     * @param throttles
+     * @param min_rpm min_rpm
+     * @param max_rpm max_rpm
+     * @param final_drive_ratio final_drive_ratio
+     * @param gears gears
+     * @param throttles throttles
      */
     public Energy(int min_rpm, int max_rpm, float final_drive_ratio, List<Gears> gears, List<Throttle> throttles) {
         this.min_rpm = min_rpm;
@@ -29,30 +29,18 @@ public class Energy {
         this.throttles = throttles;
     }
 
-    public float getFinal_drive_ratio() {
-        return final_drive_ratio;
-    }
-
-    public List<Gears> getGears() {
-        return gears;
-    }
-
-    public int getMax_rpm() {
-        return max_rpm;
-    }
-
-    public int getMin_rpm() {
-        return min_rpm;
-    }
-
-    public List<Throttle> getThrottles() {
-        return throttles;
+    public Energy(Energy energy) {
+        new Energy(energy.min_rpm, energy.max_rpm, energy.final_drive_ratio, energy.gears, energy.throttles);
     }
 
     @Override
     public String toString() {
-        return "Energy têm de minRPM " +this.min_rpm+ " max RPM " +this.max_rpm+ " Ratio " +this.final_drive_ratio+ " Gears: " +this.gears+ " Throttle: " +this.throttles;
+        return "Energy{" +
+                "min_rpm=" + min_rpm +
+                ", max_rpm=" + max_rpm +
+                ", final_drive_ratio=" + final_drive_ratio +
+                ", gears=" + gears +
+                ", throttles=" + throttles +
+                '}';
     }
-    
-    
 }
