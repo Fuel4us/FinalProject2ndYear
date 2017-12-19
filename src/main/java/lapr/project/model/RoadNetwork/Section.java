@@ -52,6 +52,15 @@ public class Section extends Edge<String, Direction> {
     }
 
     /**
+     * Checks if the list of segments contains the segment given as a parameter
+     * @param segment the segment to be considered
+     * @return true if the segment is in the list of segments
+     */
+    public boolean containsSegment(Segment segment) {
+        return segments.contains(segment);
+    }
+
+    /**
      * Calculates the total minimum time interval spent for the whole section,
      * taking into account the velocity limit in each segment, its length and
      * the velocity limit of the vehicle in the typology of the segment
