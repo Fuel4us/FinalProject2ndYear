@@ -32,9 +32,6 @@ public class AddVehiclesController {
             case ".xml":
                 type = new XMLImporterVehicles();
                 break;
-            case ".csv":
-                type = new ImportCSV();
-                break;
             default:
                 return false;
         }
