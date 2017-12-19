@@ -64,17 +64,17 @@ public class Section extends Edge<String, Direction> {
      * Calculates the total minimum time interval spent for the whole section,
      * taking into account the velocity limit in each segment, its length and
      * the velocity limit of the vehicle in the typology of the segment
-     * @param vehicle the vehicle
      * @param roadNetwork the road network of the current project
+     * @param vehicle the vehicle
      * @return the total minimum time interval
      */
-    public double calculateTotalMinimumTimeInterval(Vehicle vehicle, RoadNetwork roadNetwork) {
+    public double calculateTotalMinimumTimeInterval(RoadNetwork roadNetwork, Vehicle vehicle) {
 
         double totalMinimumTimeInterval = 0;
 
         for (Segment segment : segments) {
 
-            totalMinimumTimeInterval += segment.calculateMinimumTimeInterval(vehicle, roadNetwork);
+            totalMinimumTimeInterval += segment.calculateMinimumTimeInterval(roadNetwork, vehicle);
 
         }
 
