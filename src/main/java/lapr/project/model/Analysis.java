@@ -73,18 +73,9 @@ public abstract class Analysis {
      * Prints segment information for each section that composes the best path
      */
     private void printPath() {
-//        for (Section section: bestPath) {
-//            section.printSegmentsFromSection();
-//        }
+        for (Section section: bestPath) {
+            section.printSegmentsFromSection();
+        }
     }
 
-    /**
-     * Prints data from a given segment filling the information missing in a given file template
-     * @param segment
-     */
-    public void printDataFromSegment(Segment segment) {
-        StringTemplateGroup groupSegment =  new StringTemplateGroup("myGroup", "C:\\Tutorials", DefaultTemplateLexer.class);
-        StringTemplate segmentTemplate = groupSegment.getInstanceOf("html_structure_segment");
-        segment.printDataFromSegment(segmentTemplate);
-    }
 }
