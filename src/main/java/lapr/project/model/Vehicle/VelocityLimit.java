@@ -7,21 +7,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class VelocityLimit {
     
     @XmlElement(name ="segment_type")
-    private String TypeSegment;
+    private String segmentType;
     
     @XmlElement(name ="limit")
     private int limit;
 
-    public VelocityLimit(String TypeSegment, int limit) {
-        this.TypeSegment = TypeSegment;
+    public VelocityLimit(String segmentType, int limit) {
+        this.segmentType = segmentType;
         this.limit = limit;
     }
 
     public VelocityLimit() {
     }
 
-    public String getTypeSegment() {
-        return TypeSegment;
+    public String getSegmentType() {
+        return segmentType;
     }
 
     public int getLimit() {
@@ -32,10 +32,8 @@ public class VelocityLimit {
         this.limit = limit;
     }
 
-    public void setTypeSegment(String TypeSegment) {
-        this.TypeSegment = TypeSegment;
+    public void setSegmentType(String segmentType) {
+        this.segmentType = segmentType;
     }
-    
-    
     
 }

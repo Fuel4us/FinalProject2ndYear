@@ -1,8 +1,6 @@
 package lapr.project.model.RoadNetwork;
 
 import org.antlr.stringtemplate.StringTemplate;
-import org.antlr.stringtemplate.StringTemplateGroup;
-import org.antlr.stringtemplate.language.DefaultTemplateLexer;
 
 import javax.xml.bind.annotation.*;
 
@@ -76,4 +74,16 @@ public class Segment {
         System.out.println(segmentTemplate.toString());
     }
 
+    /**
+     * Calculates the minimum time interval spent for the segment,
+     * taking into account the velocity limit, its length and
+     * the velocity limit of the vehicle
+     * @param vehicleMaxVelocity the velocity limit of the vehicle
+     * @return the minimum time interval
+     */
+    public double calculateMinimumTimeInterval(double vehicleMaxVelocity) {
+
+        return length / Math.min(maxVelocity, vehicleMaxVelocity);
+
+    }
 }

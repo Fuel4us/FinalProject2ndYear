@@ -12,17 +12,21 @@ public class Vehicle {
 
     private String name;
     private String description;
+    
     private VehicleType type;
+    
     private int vehicleClass;
+    
     private Motorization motorization;
     private Fuel fuel;
     private Measurable mass;
     private Measurable load;
-
-    private double dragCoefficient;
+    
+    private float dragCoefficient;
     private float frontalArea;
-    private double rollingReleaseCoefficient;
-    private double wheelSize;
+    private float rollingReleaseCoefficient;
+    private float wheelSize;
+    
     private List<VelocityLimit> velocityLimitList;
     private Energy energy;
 
@@ -44,7 +48,7 @@ public class Vehicle {
      * @param velocityLimitList
      * @param energy
      */
-    public Vehicle(String name, String description, VehicleType type, int vehicleClass, Motorization motorization, Fuel fuel, Measurable mass, Measurable load, double dragCoefficient, Float frontalArea, double rollingReleaseCoefficient, double wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
+    public Vehicle(String name, String description, VehicleType type, int vehicleClass, Motorization motorization, Fuel fuel, Measurable mass, Measurable load, float dragCoefficient, Float frontalArea, float rollingReleaseCoefficient, Float wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
         this.name = name;
         this.description = description;
         this.type = type;
