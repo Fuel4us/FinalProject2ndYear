@@ -58,7 +58,7 @@ public class XMLImporterVehicles implements FileParser {
             float newWheel = 0;
 
             List<VelocityLimit> newVelocityLimitList = new ArrayList<VelocityLimit>();
-            VelocityLimit newVelocityLimit = null;
+            VelocityLimit newVelocityLimit = new VelocityLimit();
             String newSegmentType = "Default";
             int newLimit = 0;
 
@@ -173,7 +173,12 @@ public class XMLImporterVehicles implements FileParser {
                                 String[] splitX = x.split(" ");
                                 newMass = Integer.parseInt(splitX[0]);
                                 massUnit = splitX[1];
-                                mass = new Measurable(newMass, Unit.valueOf(massUnit.toLowerCase()));
+                                if(massUnit.equals("kg")){
+                                    mass = new Measurable(newMass, Unit.KILOGRAM);
+                                }else if(massUnit.equals("g")){
+                                    mass = new Measurable(newMass, Unit.GRAM);
+                                }
+                                
                             }
                             
                             /**
@@ -184,7 +189,13 @@ public class XMLImporterVehicles implements FileParser {
                                 String[] splity = y.split(" ");
                                 newLoad = Integer.parseInt(splity[0]);
                                 loadUnit = splity[1];
-                                load = new Measurable(newLoad, Unit.valueOf(loadUnit.toLowerCase()));
+                                if(loadUnit.equals("kg")){
+                                    load = new Measurable(newLoad, Unit.KILOGRAM);
+                                }else if(loadUnit.equals("g")){
+                                    load = new Measurable(newLoad, Unit.GRAM
+                                    );
+                                }
+                                
                             }
                             
                             /**
@@ -240,7 +251,7 @@ public class XMLImporterVehicles implements FileParser {
                                                 newLimit = Integer.parseInt(velocityLimitNode.getTextContent());
                                             }
                                         }
-                                        newVelocityLimit.setTypeSegment(newSegmentType);
+                                        newVelocityLimit.setSegmentType(newSegmentType);
                                         newVelocityLimit.setLimit(newLimit);
                                         newVelocityLimitList.add(newVelocityLimit);
                                     }
