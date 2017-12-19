@@ -70,4 +70,57 @@ public class Vehicle {
         return String.format("%s - %s.", name,description);
     }
 
+    /**
+     * Retrieves the max velocity of the vehicle according to the road's typology given as a parameter
+     * @param roadTypology the road's typology
+     * @return the max velocity of the vehicle
+     */
+    public double retrieveMaxVelocity(String roadTypology) {
+
+        if (velocityLimitList.isEmpty()) {
+
+            //the max velocity will be the max velocity of the road
+            return 0;
+
+        } else {
+
+            if (roadTypology.toLowerCase().contains("highway")) {
+
+                for (VelocityLimit velocityLimit : velocityLimitList) {
+
+                    if (velocityLimit.getSegmentType().equalsIgnoreCase("highway")) {
+
+                        return velocityLimit.getLimit();
+
+                    } else {
+
+                        return 0;
+                    }
+
+                }
+
+            }
+
+            if (roadTypology.toLowerCase().contains("road")) {
+
+                for (VelocityLimit velocityLimit : velocityLimitList) {
+
+                    if (velocityLimit.getSegmentType().equalsIgnoreCase("road")) {
+
+                        return velocityLimit.getLimit();
+
+                    } else {
+
+                        return 0;
+                    }
+
+                }
+
+            }
+
+        }
+
+        //something went wrong
+        return 0;
+    }
 }
