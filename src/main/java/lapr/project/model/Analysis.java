@@ -1,19 +1,20 @@
 package lapr.project.model;
 
 import lapr.project.model.RoadNetwork.Section;
-import lapr.project.model.RoadNetwork.Segment;
+import lapr.project.utils.FileParser.Exportable;
 import lapr.project.utils.Measurable;
-import org.antlr.stringtemplate.StringTemplate;
-import org.antlr.stringtemplate.StringTemplateGroup;
-import org.antlr.stringtemplate.language.DefaultTemplateLexer;
+import org.antlr.stringtemplate.StringTemplate;;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collection;
 
 /**
  * Defines general behaviour for different types of analysis
  * in order to better accommodate future requirement changes
  */
-public abstract class Analysis {
+public abstract class Analysis implements Exportable {
 
     private int id;
     private Project requestingInstance;
@@ -52,7 +53,8 @@ public abstract class Analysis {
      * Prints data from a given segment filling the information missing in a given file template
      * @param stringTemplate instance of {@link StringTemplate}
      */
-    public void printDataFromAnalysis(StringTemplate stringTemplate) {
+    @Override
+    public void printDataFromAnalysis(StringTemplate stringTemplate, FileWriter file) throws IOException {
         String projectName = requestingInstance.getName();
         String analysisName = algorithmName;
 //        String travelTimeStr = travelTime.toString;
@@ -63,18 +65,20 @@ public abstract class Analysis {
 //        stringTemplate.setAttribute("sampleTime", travelTimeStr);
 //        stringTemplate.setAttribute("sampleRecords", recordsNumber);
 
-        printPath();
+        file.write(stringTemplate.toString());
 
-        System.out.println(stringTemplate.toString());
+        printPath(file);
+
+        file.write("</body></html>");
 
     }
 
     /**
      * Prints segment information for each section that composes the best path
      */
-    private void printPath() {
+    private void printPath(FileWriter file) throws IOException {
         for (Section section: bestPath) {
-            section.printSegmentsFromSection();
+            section.printSegmentsFromSection(file);
         }
     }
 

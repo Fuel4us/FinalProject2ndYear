@@ -7,6 +7,8 @@ import lapr.project.utils.Measurable;
 import org.antlr.stringtemplate.StringTemplate;
 
 import javax.xml.bind.annotation.*;
+import java.io.FileWriter;
+import java.io.IOException;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -56,7 +58,7 @@ public class Segment {
      * Fills and prints data of segment in a file
      * @param segmentTemplate instance of {@link StringTemplate}
      */
-    public void printDataFromSegment(StringTemplate segmentTemplate) {
+    public void printDataFromSegment(StringTemplate segmentTemplate, FileWriter file) throws IOException {
         String segmentId = String.valueOf(index);
         String segmentIniHeight = String.valueOf(initialHeight);
         String segmentFinHeight = String.valueOf(finalHeight);
@@ -75,6 +77,7 @@ public class Segment {
         segmentTemplate.setAttribute("sampleMaxVel", segmentMaxVelocity);
         segmentTemplate.setAttribute("sampleMinVel", segmentMinVelocity);
 
+//        file.write(segmentTemplate.toString());
         System.out.println(segmentTemplate.toString());
     }
 
