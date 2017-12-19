@@ -51,6 +51,14 @@ public class Road {
     }
 
     /**
+     * Getter for the typology of the Road
+     * @return the typology of the Road
+     */
+    public String getTypology() {
+        return typology;
+    }
+
+    /**
      * Equals method for objects of the class Road
      * @param o other object
      * @return true if the objects are equal
