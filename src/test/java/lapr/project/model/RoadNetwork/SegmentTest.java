@@ -1,5 +1,6 @@
 package lapr.project.model.RoadNetwork;
 
+import java.io.File;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.antlr.stringtemplate.language.DefaultTemplateLexer;
@@ -30,8 +31,9 @@ public class SegmentTest {
         double maxVelocity = 40;
         double minVelocity = 20;
         Segment segment = new Segment(index, initialHeight, finalHeight, length, windAngle, windSpeed, maxVelocity, minVelocity);
-
-        FileWriter fillFile = new FileWriter("C:\\Users\\anily\\Desktop\\Escolar\\RITA isep\\2º ano\\lapr3\\outputTest.html", true);
+        String directory = new File("").getAbsolutePath();
+        String filename1 = directory + "\\src\\test\\resources\\outputTest.html";
+        FileWriter fillFile = new FileWriter(filename1, true);
         StringTemplateGroup groupSegment = new StringTemplateGroup("src\\main\\resources");
         StringTemplate segmentTemplate = groupSegment.getInstanceOf("html_structure_segment");
 
