@@ -35,6 +35,11 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
      */
     public StoreNetworkAnalysisUI() {
         initComponents();
+
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setResizable(false);
+        setVisible(true);
+        setLocationRelativeTo(null);
     }
 
 //    /**

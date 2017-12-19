@@ -244,7 +244,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-       //java.awt.EventQueue.invokeLater(() -> new SelectProjectUI().setVisible(true));
+       //java.awt.EventQueue.invokeLater(() -> new SelectProjectUI(new DataBaseCommunicator()).setVisible(true));
     }
 
 

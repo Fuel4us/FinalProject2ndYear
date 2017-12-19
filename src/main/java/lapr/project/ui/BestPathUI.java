@@ -75,7 +75,6 @@ public class BestPathUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        InitializeUIElements initializer = new InitializeUIElements();
         jPanel1 = new javax.swing.JPanel();
         imgLateral = new javax.swing.JLabel();
         orangeBorder = new javax.swing.JPanel();
@@ -113,9 +112,15 @@ public class BestPathUI extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
+        jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
-        initializer.initializeJButton(jButtonBack, Main.FORTY_EIGHT_SEGOE_FONT, "«", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
+        jButtonBack.setText("«");
+        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBackActionPerformed(evt);
+            }
+        });
 
         List<Node> nodesList2 = controller.getAllNodes();
         DefaultListModel<Node> nodesModel2 = new DefaultListModel<>();
@@ -127,7 +132,7 @@ public class BestPathUI extends javax.swing.JFrame {
         jListNodes2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListNodes2.setForeground(new java.awt.Color(255, 255, 255));
         /**
-        jListNodes2.setModel(new javax.swing.AbstractListModel<String>() {n
+        jListNodes2.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Node 1", "Node 2" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
@@ -186,16 +191,21 @@ public class BestPathUI extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(155, 177, 189));
         jLabel2.setText("Road Network Path Form");
 
-        jButton1.setForeground(new java.awt.Color(45, 46, 45));
-        initializer.initializeJButton(jButton1, Main.FOURTEEN_SEGOE_FONT, "N10 - Fastest Path", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        jButton1.setText("N10 - Fastest Path");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jButton2.setForeground(new java.awt.Color(45, 46, 45));
-        initializer.initializeJButton(jButton2, Main.FOURTEEN_SEGOE_FONT, "N11 -  Theoretical most energy efficient path", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButton2.addActionListener(evt -> jButton2ActionPerformed(evt));
+        jButton2.setText("N11 -  Theoretical most energy efficient path");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
-        jButton3.setForeground(new java.awt.Color(45, 46, 45));
-        initializer.initializeJButton(jButton3, Main.FOURTEEN_SEGOE_FONT, "N12 - Most efficient path in energy saving mode", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-
+        jButton3.setText("N12 - Most efficient path in energy saving mode");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -290,6 +300,11 @@ public class BestPathUI extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        new StoreNetworkAnalysisUI();
+        setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     
     
