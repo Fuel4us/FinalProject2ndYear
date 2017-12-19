@@ -22,6 +22,7 @@ public class BestPathUI extends javax.swing.JFrame {
 
     private BestPathController controller;
     private static final long serialVersionUID = -8320152827152597623L;
+    private Project project;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
     private javax.swing.JButton jButton1;
@@ -55,6 +56,7 @@ public class BestPathUI extends javax.swing.JFrame {
      * Creates new form RoadNetworkPathFormUI
      */
     public BestPathUI(Project project) {
+        super("Best Path");
         this.controller = new BestPathController(project);
         initComponents();
         

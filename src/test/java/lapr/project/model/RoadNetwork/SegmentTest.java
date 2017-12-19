@@ -1,5 +1,6 @@
 package lapr.project.model.RoadNetwork;
 
+import java.io.File;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.antlr.stringtemplate.language.DefaultTemplateLexer;
@@ -38,5 +39,6 @@ public class SegmentTest {
 //        segment.printDataFromSegment(segmentTemplate, fillFile);
 //
 //    }
+
 
 }
