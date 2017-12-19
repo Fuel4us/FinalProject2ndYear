@@ -5,9 +5,11 @@
  */
 package lapr.project.ui;
 
+import java.util.ArrayList;
 import lapr.project.controller.CreateProjectController;
 import lapr.project.controller.SelectProjectController;
 import lapr.project.model.Project;
+import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 
 /**
@@ -206,7 +208,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonPathFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPathFormActionPerformed
-        new BestPathUI(project);
+        new BestPathUI(new Project("","",new RoadNetwork(),new ArrayList<>())).setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_jButtonPathFormActionPerformed
 
