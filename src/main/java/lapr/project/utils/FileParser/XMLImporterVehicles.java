@@ -250,7 +250,7 @@ public class XMLImporterVehicles implements FileParser {
         VehicleType[] typeOfVehicle = VehicleType.values();
         for (VehicleType type : typeOfVehicle) {
             String typeStr = newVehicleType;
-            if (typeStr.equals(type.toString())) {
+            if (typeStr.equalsIgnoreCase(type.toString())) {
                 return type;
             }
         }
