@@ -1,14 +1,12 @@
 package lapr.project.model.Vehicle;
 
-import javax.xml.bind.annotation.XmlElement;
-
 public class Regime {
     
     
-    private int torque_low;
+    private int torqueLow;
     
     
-    private int torque_high;
+    private int torqueHigh;
         
     
     private int rpmLow;
@@ -25,29 +23,29 @@ public class Regime {
     }
 
     public Regime(int torqueLow,int torqueHigh, int rpmLow, int rpmHigh, int SFC) {
-        this.torque_low = torqueLow;
-        this.torque_high = torqueHigh;
+        this.torqueLow = torqueLow;
+        this.torqueHigh = torqueHigh;
         this.rpmLow = rpmLow;
         this.rpmHigh = rpmHigh;
         this.SFC = SFC;
     }
 
     /**
-     * Getter method for torque_low
+     * Getter method for torqueLow
      * 
-     * @return torque_low 
+     * @return torqueLow
      */
-    public int getTorque_low() {
-        return torque_low;
+    public int getTorqueLow() {
+        return torqueLow;
     }
 
     /**
-     * Getter method for torque_low
+     * Getter method for torqueLow
      * 
-     * @return torque_low 
+     * @return torqueLow
      */
-    public int getTorque_high() {
-        return torque_high;
+    public int getTorqueHigh() {
+        return torqueHigh;
     }
 
     
