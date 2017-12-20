@@ -197,8 +197,7 @@ public class XMLImporterVehicles implements FileParser {
                                 if (loadUnit.equals("kg")) {
                                     load = new Measurable(newLoad, Unit.KILOGRAM);
                                 } else if (loadUnit.equals("g")) {
-                                    load = new Measurable(newLoad, Unit.GRAM
-                                    );
+                                    load = new Measurable(newLoad, Unit.GRAM);
                                 }
                             }
  
@@ -225,7 +224,7 @@ public class XMLImporterVehicles implements FileParser {
                             /**
                              * Wheel size
                              */
-                            if (attribute.getNodeName().equals("whell_size")) {
+                            if (attribute.getNodeName().equals("wheel_size")) {
                                 newWheel.setQuantity(Double.parseDouble(attribute.getTextContent()));
                             }
  
