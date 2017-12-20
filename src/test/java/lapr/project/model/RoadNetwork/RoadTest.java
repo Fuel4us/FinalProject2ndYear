@@ -55,8 +55,8 @@ public class RoadTest {
         Road roadTest4 = new Road("id1", "name2", "typology1", new ArrayList<>());
         Road roadTest5 = new Road("id1", "name1", "typology3", new ArrayList<>());
 
-        List<Float> list = new ArrayList<>();
-        list.add(0f);
+        List<Double> list = new ArrayList<>();
+        list.add(0d);
 
         Road roadTest6 = new Road("id1", "name1", "typology1", list);
 
@@ -84,7 +84,7 @@ public class RoadTest {
         String id = "id";
         String name = "name";
         String typology = "typology";
-        List<Float> tollFare = new ArrayList<>();
+        List<Double> tollFare = new ArrayList<>();
 
         Road roadTest = new Road(id, name, typology, tollFare);
 
