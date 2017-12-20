@@ -195,7 +195,7 @@ public class Vehicle {
         for (Regime regime : energy.getThrottles().get(throttlePosition).getRegimes()) {
 
             if (regime.getRpmHigh() >= engineSpeed && regime.getRpmLow() <= engineSpeed) {
-                torque = regime.getTorque();
+                torque = regime.getTorqueLow();
                 SFC = regime.getSFC();
                 break;
             }
