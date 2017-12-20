@@ -49,6 +49,20 @@ public class Analysis implements Exportable {
     }
 
     /**
+     *Creates an analysis with id, requesting instance, algorithm name and best path
+     * @param id this analysis' id
+     * @param requestingInstance this analysis' requesting instance
+     * @param algorithmName this analysis' algorithm name
+     * @param bestPath this analysis' best path
+     */
+    public Analysis(int id, Project requestingInstance, String algorithmName, Collection<Section> bestPath) {
+        this.id = id;
+        this.requestingInstance = requestingInstance;
+        this.algorithmName = algorithmName;
+        this.bestPath = bestPath;
+    }
+
+    /**
      * @return the entity that issued the analysis
      */
     public Project issueRequestingEntity() {
