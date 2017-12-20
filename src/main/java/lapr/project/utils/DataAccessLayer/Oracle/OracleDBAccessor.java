@@ -21,7 +21,7 @@ public class OracleDBAccessor implements DBAccessor {
      */
     private static final String SERVER_URL = "jdbc:oracle:thin:@//vsrvbd1.dei.isep.ipp.pt:1521/pdborcl";
     private static final String INITIAL_SESSION_SCHEMA = "LAPR3_G38";
-    private static final String SCHEMA_ACCESS_KEY = "cygnus";
+    private static final String SCHEMA_PASSWORD = "cygnus";
 
     /**
      * Restrict instantiation to current package
@@ -45,7 +45,7 @@ public class OracleDBAccessor implements DBAccessor {
         oracleDataSource = new OracleDataSource();
         oracleDataSource.setURL(SERVER_URL);
         oracleDataSource.setUser(INITIAL_SESSION_SCHEMA);
-        oracleDataSource.setPassword(SCHEMA_ACCESS_KEY);
+        oracleDataSource.setPassword(SCHEMA_PASSWORD);
         return oracleConnection;
     }
 
