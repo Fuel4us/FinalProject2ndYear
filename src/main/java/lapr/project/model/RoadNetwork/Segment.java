@@ -139,9 +139,9 @@ public class Segment {
     /**
      * Calculates the angle of the segment according to its initial and final
      * heights and length
-     * @return
+     * @return the angle
      */
-    public double calculateAngle() {
-        return Math.asin((finalHeight - initialHeight) / length);
+    public Measurable calculateAngle() {
+        return new Measurable(Math.asin((finalHeight - initialHeight) / length), Unit.DEGREE);
     }
 }
