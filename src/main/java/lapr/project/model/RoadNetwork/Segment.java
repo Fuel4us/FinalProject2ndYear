@@ -135,4 +135,13 @@ public class Segment {
         return new Measurable(length / calculateMinimumTimeInterval(roadNetwork, vehicle),
                 Unit.KILOMETERS_PER_HOUR);
     }
+
+    /**
+     * Calculates the angle of the segment according to its initial and final
+     * heights and length
+     * @return
+     */
+    public double calculateAngle() {
+        return Math.asin((finalHeight - initialHeight) / length);
+    }
 }
