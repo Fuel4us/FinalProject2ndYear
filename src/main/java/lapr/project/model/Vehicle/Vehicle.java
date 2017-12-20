@@ -81,7 +81,7 @@ public class Vehicle {
         this.rollingResistanceCoefficient = rollingResistanceCoefficient;
         this.wheelSize = wheelSize;
         this.velocityLimitList = velocityLimitList;
-        this.energy = new Energy(energy);
+        this.energy = energy;
     }
 
     /**
@@ -195,7 +195,7 @@ public class Vehicle {
         for (Regime regime : energy.getThrottles().get(throttlePosition).getRegimes()) {
 
             if (regime.getRpmHigh() >= engineSpeed && regime.getRpmLow() <= engineSpeed) {
-                torque = regime.getTorque();
+                torque = regime.getTorqueLow();
                 SFC = regime.getSFC();
                 break;
             }
@@ -217,7 +217,6 @@ public class Vehicle {
         double rollingResistance = rollingResistanceCoefficient * (mass.getQuantity() + load.getQuantity())
                 * Physics.GRAVITY_ACCELERATION.getQuantity() * Math.cos(segmentAngle.getQuantity());
 
-        //ToDo considero o windAngle?
         Measurable maxAirRelatedVelocity = segment.calculateAirRelatedVelocity(maxLinearVelocity);
         double airDrag = 0.5 * dragCoefficient * frontalArea.getQuantity() * Physics.AIR_DENSITY.getQuantity()
                 * Math.pow(maxAirRelatedVelocity.getQuantity(), 2);
