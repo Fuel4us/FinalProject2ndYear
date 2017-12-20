@@ -48,8 +48,8 @@ public class ExportHTMLTest {
         Node node3 = new Node("n03");
         Node node4 = new Node("n04");
 
-        Section sectionTest1 = new Section(node1, node2, Direction.BIDIRECTIONAL, segments1, new Road("A01", "A01", "toll highway"));
-        Section sectionTest2 = new Section(node3, node4, Direction.BIDIRECTIONAL, segments2, new Road("E02", "E02", "regular road"));
+        Section sectionTest1 = new Section(node1, node2, Direction.BIDIRECTIONAL, segments1, new Road("A01", "A01", "toll highway"), new ArrayList<>());
+        Section sectionTest2 = new Section(node3, node4, Direction.BIDIRECTIONAL, segments2, new Road("E02", "E02", "regular road"), new ArrayList<>());
 
         Collection<Section> bestPath = new LinkedList<>();
         bestPath.add(sectionTest1);
