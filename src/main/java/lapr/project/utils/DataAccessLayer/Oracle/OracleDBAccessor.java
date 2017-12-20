@@ -21,18 +21,29 @@ public class OracleDBAccessor implements DBAccessor {
      */
     private static final String SERVER_URL = "jdbc:oracle:thin:@//vsrvbd1.dei.isep.ipp.pt:1521/pdborcl";
     private static final String INITIAL_SESSION_SCHEMA = "LAPR3_G38";
-    private static final String SCHEMA_PASSWORD = "cygnus";
+    private static final String SCHEMA_ACCESS_KEY = "cygnus";
 
     /**
      * Restrict instantiation to current package
      */
     public OracleDBAccessor() {
         try {
-            openConnexion();
-            oracleConnection = oracleDataSource.getConnection();
+            initConnexion();
+            //ToDo Study encapsulation
+//            openConnexion();
+//            oracleConnection = oracleDataSource.getConnection();
         } catch (SQLException e) {
             DBAccessor.logSQLException(e);
         }
+    }
+
+    private void initConnexion() throws SQLException {
+        DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+
+        oracleDataSource = new OracleDataSource();
+        oracleDataSource.setURL(SERVER_URL);
+        oracleDataSource.setUser(INITIAL_SESSION_SCHEMA);
+        oracleDataSource.setPassword(SCHEMA_ACCESS_KEY);
     }
 
     /**
@@ -40,13 +51,8 @@ public class OracleDBAccessor implements DBAccessor {
      * @throws SQLException
      */
     public Connection openConnexion() throws SQLException {
-        DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 
-        oracleDataSource = new OracleDataSource();
-        oracleDataSource.setURL(SERVER_URL);
-        oracleDataSource.setUser(INITIAL_SESSION_SCHEMA);
-        oracleDataSource.setPassword(SCHEMA_PASSWORD);
-        return oracleConnection;
+        return oracleDataSource.getConnection();
     }
 
     /**
@@ -62,7 +68,7 @@ public class OracleDBAccessor implements DBAccessor {
      */
     @Override
     public void commit() throws SQLException {
-        oracleConnection.commit();
+    //ToDo oracleConnection.commit(); disrupts transaction flow
     }
 
     /**

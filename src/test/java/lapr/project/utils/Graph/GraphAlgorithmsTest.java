@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -111,24 +110,6 @@ public class GraphAlgorithmsTest {
         assertTrue("then Castelo Branco", it.next().compareTo("Castelo Branco") == 0);
     }
 
-    /**
-     * Test of allPaths method, of class GraphAlgorithms.
-     */
-    @Test
-    public void testAllPaths() {
-        System.out.println("Test of all paths");
-
-        ArrayList<LinkedList<String>> paths = new ArrayList<LinkedList<String>>();
-
-        assertTrue("There should not be paths if vertex does not exist",
-                GraphAlgorithms.allPaths(completeMap, "Porto", "LX") == null);
-
-        paths = GraphAlgorithms.allPaths(completeMap, "Porto", "Lisboa");
-        assertTrue("There should be 4 paths", paths.size() == 4);
-
-        paths = GraphAlgorithms.allPaths(completeMap, "Porto", "Faro");
-        assertTrue("There should not be paths between Porto and Faro in the incomplete map", paths.size() == 0);
-    }
 
     /**
      * Test of shortestPath method, of class GraphAlgorithms.
