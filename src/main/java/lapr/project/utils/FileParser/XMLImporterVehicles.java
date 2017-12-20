@@ -55,9 +55,9 @@ public class XMLImporterVehicles implements FileParser {
             int newLoad = 0;
  
             float dragCoefficient = 0;
-            float newFrontalArea = 0;
+            Measurable newFrontalArea = new Measurable(0, Unit.METER_SQUARED);
             float newRRC = 0;
-            float newWheel = 0;
+            Measurable newWheel = new Measurable(0, Unit.METER);
  
             List<VelocityLimit> newVelocityLimitList = new ArrayList<>();
             VelocityLimit newVelocityLimit = new VelocityLimit();
@@ -213,7 +213,7 @@ public class XMLImporterVehicles implements FileParser {
                              * Frontal Area
                              */
                             if (attribute.getNodeName().equals("frontal_area")) {
-                                newFrontalArea = Float.parseFloat(attribute.getTextContent());
+                                newFrontalArea.setQuantity(Double.parseDouble(attribute.getTextContent()));
                             }
                             /**
                              * RollingReleaseCoefficient
@@ -226,7 +226,7 @@ public class XMLImporterVehicles implements FileParser {
                              * Wheel size
                              */
                             if (attribute.getNodeName().equals("whell_size")) {
-                                newWheel = Float.parseFloat(attribute.getTextContent());
+                                newWheel.setQuantity(Double.parseDouble(attribute.getTextContent()));
                             }
  
                             /**
