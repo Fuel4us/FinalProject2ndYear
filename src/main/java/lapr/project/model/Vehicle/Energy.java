@@ -10,6 +10,7 @@ public class Energy {
     private float finalDriveRatio;
     private List<Gears> gears;
     private List<Throttle> throttles;
+    private float energyFinalRatio;
 
     /**
      * Constructor
@@ -27,9 +28,9 @@ public class Energy {
         this.throttles = throttles;
     }
 
-    public Energy(Energy energy) {
-        new Energy(energy.minRpm, energy.maxRpm, energy.finalDriveRatio, energy.gears, energy.throttles);
-    }
+//    public Energy(Energy energy) {
+//        new Energy(energy.minRpm, energy.maxRpm, energy.finalDriveRatio, energy.gears, energy.throttles);
+//    }
 
     /**
      * @return final drive ration
