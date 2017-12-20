@@ -396,7 +396,7 @@ public class XMLImporterVehicles implements FileParser {
         return true;
     }
     
-    private String addName(List<Vehicle> list, String name) {
+    public String addName(List<Vehicle> list, String name) {
        
         for (Vehicle v: list) {
             if(v.getName().equalsIgnoreCase(name)) {
