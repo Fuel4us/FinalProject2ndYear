@@ -211,7 +211,7 @@ public class XMLImporterVehicles implements FileParser {
                         if (attribute.getNodeName().equals("energy")) {
                             newEnergy = addEnergy(newMinRpm, newMaxRpm, newFinalDriveRatio,
                                     newGearId, newRatio, newGear, newGearList,
-                                    newThrottleId, newTorqueLow,newTorqueHigh, newRpmLow, newRpmHigh, newSfc,
+                                    newThrottleId, newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh, newSfc,
                                     newRegime, newRegimeList, newThrottle,
                                     newThrottleList, attribute);
                         }
@@ -356,7 +356,7 @@ public class XMLImporterVehicles implements FileParser {
 
     public Energy addEnergy(int newMinRpm, int newMaxRpm, float newFinalDriveRatio,
             int newGearId, float newRatio, Gears newGear, List<Gears> newGearList,
-            int newThrottleId, int newTorqueLow,int newTorqueHigh, int newRpmLow, int newRpmHigh, int newSfc,
+            int newThrottleId, int newTorqueLow, int newTorqueHigh, int newRpmLow, int newRpmHigh, int newSfc,
             Regime newRegime, List<Regime> newRegimeList, Throttle newThrottle,
             List<Throttle> newThrottleList, Node attribute) {
         NodeList energyList = attribute.getChildNodes();
@@ -385,80 +385,92 @@ public class XMLImporterVehicles implements FileParser {
                  * Gear list
                  */
                 if (energyNode.getNodeName().equals("gear_list")) {
-                    NodeList gearListList = energyNode.getChildNodes();
-                    for (int k = 0; k < gearListList.getLength(); k++) {
-                        Node gearListNode = gearListList.item(k);
-                        /**
-                         * ID
-                         */
-                        if (gearListNode.getNodeType() == Node.ELEMENT_NODE) {
-                            Element gearElement = (Element) gearListNode;
-                            newGearId = Integer.parseInt(gearElement.getAttribute("id"));
-
-                            NodeList gearList = gearListNode.getChildNodes();
-                            for (int l = 0; l < gearList.getLength(); l++) {
-                                Node gearNode = gearList.item(l);
-                                /**
-                                 * Ratio
-                                 */
-                                if (gearNode.getNodeType() == Node.ELEMENT_NODE) {
-                                    if (energyNode.getNodeName().equals("ratio")) {
-                                        newRatio = Float.parseFloat(gearNode.getTextContent());
-                                    }
-                                }
-                                newGear = new Gears(newGearId, newRatio);
-                                newGearList.add(newGear);
-
-                            }
-                        }
-
-                    }
-
+                    addGearList(energyNode, newGearId, newRatio, newGear, newGearList);
                 }
                 /**
                  * Throttle List
                  */
                 if (energyNode.getNodeName().equals("throttle_list")) {
-                    NodeList throttleList = energyNode.getChildNodes();
-                    for (int k = 0; k < throttleList.getLength(); k++) {
-                        Node throttleNode = throttleList.item(k);
-                        if (throttleNode.getNodeType() == Node.ELEMENT_NODE) {
-                            Element throttleElement = (Element) throttleNode;
-                            newThrottleId = Integer.parseInt(throttleElement.getAttribute("id"));
-                            NodeList regimeList = throttleNode.getChildNodes();
-                            for (int line = 0; line < regimeList.getLength(); line++) {
-                                Node regimeNode = regimeList.item(line);
-                                if (regimeNode.getNodeName().equals("torque_low")) {
-                                    newTorqueLow = Integer.parseInt(energyNode.getTextContent());
-                                }
-                                if (regimeNode.getNodeName().equals("torque_high")) {
-                                    newTorqueHigh = Integer.parseInt(energyNode.getTextContent());
-                                }
-                                
-                                if (regimeNode.getNodeName().equals("rpm_low")) {
-                                    newRpmLow = Integer.parseInt(energyNode.getTextContent());
-                                }
-                                if (regimeNode.getNodeName().equals("rpm_high")) {
-                                    newRpmHigh = Integer.parseInt(energyNode.getTextContent());
-                                }
-                                if (regimeNode.getNodeName().equals("SFC")) {
-                                    newSfc = Integer.parseInt(energyNode.getTextContent());
-                                }
-
-                                newRegime = new Regime(newTorqueLow,newTorqueHigh, newRpmLow, newRpmHigh, newSfc);
-                                newRegimeList.add(newRegime);
-
-                            }
-                        }
-                        newThrottle = new Throttle(newThrottleId, newRegimeList);
-                        newThrottleList.add(newThrottle);
-                    }
-
+                    addThrottleList(energyNode, newThrottleId,
+                            newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh,
+                             newSfc, newRegime, newRegimeList,
+                             newThrottle, newThrottleList);
                 }
 
             }
 
         }
         return new Energy(newMinRpm, newMaxRpm, newFinalDriveRatio, newGearList, newThrottleList);
+    }
+
+    public void addGearList(Node energyNode, int newGearId, float newRatio, Gears newGear, List<Gears> newGearList) {
+        NodeList gearListList = energyNode.getChildNodes();
+        for (int k = 0; k < gearListList.getLength(); k++) {
+            Node gearListNode = gearListList.item(k);
+            /**
+             * ID
+             */
+            if (gearListNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element gearElement = (Element) gearListNode;
+                newGearId = Integer.parseInt(gearElement.getAttribute("id"));
+
+                NodeList gearList = gearListNode.getChildNodes();
+                for (int l = 0; l < gearList.getLength(); l++) {
+                    Node gearNode = gearList.item(l);
+                    /**
+                     * Ratio
+                     */
+                    if (gearNode.getNodeType() == Node.ELEMENT_NODE) {
+                        if (energyNode.getNodeName().equals("ratio")) {
+                            newRatio = Float.parseFloat(gearNode.getTextContent());
+                        }
+                    }
+                    newGear = new Gears(newGearId, newRatio);
+                    newGearList.add(newGear);
+
+                }
+            }
+
+        }
+    }
+
+    public void addThrottleList(Node energyNode, int newThrottleId,
+            int newTorqueLow, int newTorqueHigh, int newRpmLow, int newRpmHigh,
+             int newSfc, Regime newRegime, List<Regime> newRegimeList,
+             Throttle newThrottle, List<Throttle> newThrottleList) {
+        NodeList throttleList = energyNode.getChildNodes();
+        for (int k = 0; k < throttleList.getLength(); k++) {
+            Node throttleNode = throttleList.item(k);
+            if (throttleNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element throttleElement = (Element) throttleNode;
+                newThrottleId = Integer.parseInt(throttleElement.getAttribute("id"));
+                NodeList regimeList = throttleNode.getChildNodes();
+                for (int line = 0; line < regimeList.getLength(); line++) {
+                    Node regimeNode = regimeList.item(line);
+                    if (regimeNode.getNodeName().equals("torque_low")) {
+                        newTorqueLow = Integer.parseInt(energyNode.getTextContent());
+                    }
+                    if (regimeNode.getNodeName().equals("torque_high")) {
+                        newTorqueHigh = Integer.parseInt(energyNode.getTextContent());
+                    }
+
+                    if (regimeNode.getNodeName().equals("rpm_low")) {
+                        newRpmLow = Integer.parseInt(energyNode.getTextContent());
+                    }
+                    if (regimeNode.getNodeName().equals("rpm_high")) {
+                        newRpmHigh = Integer.parseInt(energyNode.getTextContent());
+                    }
+                    if (regimeNode.getNodeName().equals("SFC")) {
+                        newSfc = Integer.parseInt(energyNode.getTextContent());
+                    }
+
+                    newRegime = new Regime(newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh, newSfc);
+                    newRegimeList.add(newRegime);
+
+                }
+            }
+            newThrottle = new Throttle(newThrottleId, newRegimeList);
+            newThrottleList.add(newThrottle);
+        }
     }
 }
