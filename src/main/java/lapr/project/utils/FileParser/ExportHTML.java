@@ -1,30 +1,36 @@
 package lapr.project.utils.FileParser;
 import lapr.project.model.Analysis;
-import lapr.project.model.RoadNetwork.Segment;
 import org.antlr.stringtemplate.*;
-import org.antlr.stringtemplate.language.*;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * Handles exportation of an analysis result to a HTML file
  */
-public class ExportHTML implements Exporter{
+public class ExportHTML implements Exporter {
 
     private Analysis analysis;
+    private static String HTML_STRUCTURE_FIRST = "html_structure_first";
+    private static String HTML_STRUCTURE_SECOND = "html_structure_second";
 
-    //method that gets and analysis result
-        //method that gets header data
-            //method that prints header data
-        //method that iterates each segment of the resulting path
-            //method that prints data of each segment
+    public ExportHTML(Analysis analysis) {
+        this.analysis = analysis;
+    }
 
     /**
      * Prints data from analysis filling the information missing in a given file template
      */
     @Override
-    public void printDataFromAnalysis() {
-        StringTemplateGroup groupSegment =  new StringTemplateGroup("myGroup", "C:\\Tutorials", DefaultTemplateLexer.class);
-        StringTemplate stringTemplate = groupSegment.getInstanceOf("html_structure_main");
-        analysis.printDataFromAnalysis(stringTemplate);
+    public void printDataFromAnalysis(File outputFile) throws IOException {
+        FileWriter fillFile = new FileWriter(outputFile, true);
+
+        StringTemplateGroup groupHTML =  new StringTemplateGroup("src\\main\\resources");
+        StringTemplate stringTemplateFirst = groupHTML.getInstanceOf(HTML_STRUCTURE_FIRST);
+        StringTemplate stringTemplateSecond = groupHTML.getInstanceOf(HTML_STRUCTURE_SECOND);
+        analysis.printDataFromAnalysis(stringTemplateFirst, stringTemplateSecond, fillFile);
+
     }
 
 }

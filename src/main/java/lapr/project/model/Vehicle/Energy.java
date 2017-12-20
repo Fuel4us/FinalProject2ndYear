@@ -1,44 +1,63 @@
 package lapr.project.model.Vehicle;
 
 import java.util.List;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 
 public class Energy {
     
 
-    private int min_rpm;
-    private int max_rpm;
-    private float final_drive_ratio;
+    private int minRpm;
+    private int maxRpm;
+    private float finalDriveRatio;
     private List<Gears> gears;
     private List<Throttle> throttles;
 
     /**
      * Constructor
-     * @param min_rpm min_rpm
-     * @param max_rpm max_rpm
-     * @param final_drive_ratio final_drive_ratio
+     * @param minRpm minRpm
+     * @param maxRpm maxRpm
+     * @param finalDriveRatio finalDriveRatio
      * @param gears gears
      * @param throttles throttles
      */
-    public Energy(int min_rpm, int max_rpm, float final_drive_ratio, List<Gears> gears, List<Throttle> throttles) {
-        this.min_rpm = min_rpm;
-        this.max_rpm = max_rpm;
-        this.final_drive_ratio = final_drive_ratio;
+    public Energy(int minRpm, int maxRpm, float finalDriveRatio, List<Gears> gears, List<Throttle> throttles) {
+        this.minRpm = minRpm;
+        this.maxRpm = maxRpm;
+        this.finalDriveRatio = finalDriveRatio;
         this.gears = gears;
         this.throttles = throttles;
     }
 
     public Energy(Energy energy) {
-        new Energy(energy.min_rpm, energy.max_rpm, energy.final_drive_ratio, energy.gears, energy.throttles);
+        new Energy(energy.minRpm, energy.maxRpm, energy.finalDriveRatio, energy.gears, energy.throttles);
+    }
+
+    /**
+     * @return final drive ration
+     */
+    public float getFinalDriveRatio() {
+        return finalDriveRatio;
+    }
+
+    /**
+     * @return gears
+     */
+    public List<Gears> getGears() {
+        return gears;
+    }
+
+    /**
+     * @return throttles
+     */
+    public List<Throttle> getThrottles() {
+        return throttles;
     }
 
     @Override
     public String toString() {
         return "Energy{" +
-                "min_rpm=" + min_rpm +
-                ", max_rpm=" + max_rpm +
-                ", final_drive_ratio=" + final_drive_ratio +
+                "minRpm=" + minRpm +
+                ", maxRpm=" + maxRpm +
+                ", finalDriveRatio=" + finalDriveRatio +
                 ", gears=" + gears +
                 ", throttles=" + throttles +
                 '}';

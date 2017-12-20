@@ -53,7 +53,7 @@ public class Vehicle {
      * @param velocityLimitList This vehicle's velocity limit list
      * @param energy This vehicle's energy
      */
-    public Vehicle(String name, String description, VehicleType type, int vehicleClass, MotorType motorType, Fuel fuel, Measurable mass, Measurable load, float dragCoefficient, Float frontalArea, float rollingReleaseCoefficient, Float wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
+    public Vehicle(String name, String description, VehicleType type, int vehicleClass, MotorType motorType, Fuel fuel, Measurable mass, Measurable load, float dragCoefficient, float frontalArea, float rollingReleaseCoefficient, float wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
         this.name = name;
         this.description = description;
         this.type = type;
