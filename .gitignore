@@ -116,3 +116,6 @@ $RECYCLE.BIN/
 
 # End of https://www.gitignore.io/api/linux,maven,windows,intellij
 /nbproject/
+\.idea/modules\.xml
+
+src/main/resources/outputTest\.html
