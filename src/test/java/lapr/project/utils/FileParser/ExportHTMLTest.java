@@ -78,7 +78,7 @@ public class ExportHTMLTest {
 
         ExportHTML exportHTML = new ExportHTML(analysis);
         File outputFile = new File("src\\main\\resources\\htmlFileStructure\\outputTest.html");
-        exportHTML.printDataFromAnalysis(outputFile);
+//        exportHTML.printDataFromAnalysis(outputFile);
     }
 
 }
