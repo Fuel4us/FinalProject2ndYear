@@ -6,12 +6,10 @@ import lapr.project.utils.DataAccessLayer.Abstraction.AnalysisDAO;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.Oracle.OracleAnalysisDAO;
 import lapr.project.utils.DataAccessLayer.Oracle.OracleDBAccessor;
-import lapr.project.utils.Graph.GraphAlgorithms;
 import oracle.jdbc.pool.OracleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -24,11 +22,26 @@ public class DataBaseCommunicator {
 
     private DBAccessor dbAccessor;
     private AnalysisDAO analysisStorage;
+    private Connection connection;
 
+    /**
+     * <p>
+     * Creates an instance of this class, taking into account
+     * the {@link DataSource} that will be used to make the connection.
+     * </p>
+     * <br>
+     * <p>
+     * Initialization of {@link DBAccessor} and corresponding Data Access Objects
+     * is inferred through the type of the implementation of the DataSource instance,
+     * which means multiple types of databases may be supported in the
+     * future without alterations in this class.
+     * </p>
+     * @param dataSource Indicates the database to which to connect
+     */
     public DataBaseCommunicator(DataSource dataSource) {
         if (dataSource instanceof OracleDataSource) {
             this.dbAccessor = new OracleDBAccessor();
-            this.analysisStorage = new OracleAnalysisDAO((OracleDataSource) dbAccessor.source());
+            this.analysisStorage = new OracleAnalysisDAO();
         }
     }
 
@@ -42,22 +55,17 @@ public class DataBaseCommunicator {
             //Start Transaction
             Connection connection = dbAccessor.openConnexion();
             connection.setAutoCommit(false);
-            //ToDo Store analyzed roads (generated report) into respective table
-            //ToDo encapsulate in analysisStorage.storeAnalysis(analysis) via procedure call
-//            try (PreparedStatement saveStatement = connection.prepareStatement(
-//                    "INSERT INTO ANALYSIS(ID, PROJECTNAME) VALUES (?, ?)"
-//            )) {
-//
-//                analysisStorage.storeAnalysis(analysis);
-//
-//            }
+            //ToDo Store analyzed sections (generated report) into respective table
+
+            //ToDo Replace by procedure call
+            analysisStorage.storeAnalysis(analysis);
 
             //ToDo Encapsulate behaviour in dbAccessor? //dbAccessor.commit();
             connection.commit();
         } catch (SQLException e) {
             if (dbAccessor.hasActiveConnection()) {
                 try {
-                    dbAccessor.rollback();
+                    connection.rollback();
                     DBAccessor.logSQLException(e);
                 } catch (SQLException ex) {
                     DBAccessor.logSQLException(ex);

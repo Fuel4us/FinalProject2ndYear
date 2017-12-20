@@ -28,7 +28,7 @@ public class XMLImporterRoadsTest {
     Document doc;
 
     public XMLImporterRoadsTest() throws JAXBException, IOException, SAXException, ParserConfigurationException {
-        file = new File("src/test/resources/TestSet02_Network.xml");
+        file = new File("src/test/resources/TestSet02_Network_v2.xml");
         fileParser = new XMLImporterRoads(file, true);
 
         roadNetworkResult = fileParser.importNetwork();
@@ -54,6 +54,7 @@ public class XMLImporterRoadsTest {
         Node nodeExpected4 = new Node("n3");
         Node nodeExpected5 = new Node("n4");
         Node nodeExpected6 = new Node("n5");
+        Node nodeExpected7 = new Node("n7");
 
         roadNetworkExpected.addNode(nodeExpected1);
         roadNetworkExpected.addNode(nodeExpected2);
@@ -61,6 +62,7 @@ public class XMLImporterRoadsTest {
         roadNetworkExpected.addNode(nodeExpected4);
         roadNetworkExpected.addNode(nodeExpected5);
         roadNetworkExpected.addNode(nodeExpected6);
+        roadNetworkExpected.addNode(nodeExpected7);
 
         assertEquals(roadNetworkExpected, roadNetworkResult);
 
