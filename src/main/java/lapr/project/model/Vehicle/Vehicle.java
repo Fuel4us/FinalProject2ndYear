@@ -28,10 +28,10 @@ public class Vehicle {
     private Measurable mass;
     private Measurable load;
 
-    private float dragCoefficient;
-    private float frontalArea;
-    private float rollingReleaseCoefficient;
-    private float wheelSize;
+    private double dragCoefficient;
+    private Measurable frontalArea;
+    private double rollingResistanceCoefficient;
+    private Measurable wheelSize;
 
     private List<VelocityLimit> velocityLimitList;
     private Energy energy;
@@ -48,12 +48,12 @@ public class Vehicle {
      * @param load This vehicle's load
      * @param dragCoefficient This vehicle's drag coefficient
      * @param frontalArea This vehicle's frontal area
-     * @param rollingReleaseCoefficient This vehicle's rolling release coefficient
+     * @param rollingResistanceCoefficient This vehicle's rolling release coefficient
      * @param wheelSize This vehicle's wheel size
      * @param velocityLimitList This vehicle's velocity limit list
      * @param energy This vehicle's energy
      */
-    public Vehicle(String name, String description, VehicleType type, int vehicleClass, MotorType motorType, Fuel fuel, Measurable mass, Measurable load, float dragCoefficient, float frontalArea, float rollingReleaseCoefficient, float wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
+    public Vehicle(String name, String description, VehicleType type, int vehicleClass, MotorType motorType, Fuel fuel, Measurable mass, Measurable load, float dragCoefficient, Measurable frontalArea, float rollingResistanceCoefficient, Measurable wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
         this.name = name;
         this.description = description;
         this.type = type;
@@ -71,7 +71,7 @@ public class Vehicle {
         this.load = load;
         this.dragCoefficient = dragCoefficient;
         this.frontalArea = frontalArea;
-        this.rollingReleaseCoefficient = rollingReleaseCoefficient;
+        this.rollingResistanceCoefficient = rollingResistanceCoefficient;
         this.wheelSize = wheelSize;
         this.velocityLimitList = velocityLimitList;
         this.energy = new Energy(energy);
