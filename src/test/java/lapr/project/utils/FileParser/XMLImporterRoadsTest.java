@@ -77,10 +77,10 @@ public class XMLImporterRoadsTest {
 
         roadsExpected.add(new Road("E01", "E01", "regular road", new ArrayList<>()));
 
-        List<Float> tollFareExpected = new ArrayList<>();
-        tollFareExpected.add(0.15f);
-        tollFareExpected.add(0.25f);
-        tollFareExpected.add(0.35f);
+        List<Double> tollFareExpected = new ArrayList<>();
+        tollFareExpected.add(0.15);
+        tollFareExpected.add(0.25);
+        tollFareExpected.add(0.35);
 
         roadsExpected.add(new Road("A01", "A1", "toll highway", tollFareExpected));
         roadsExpected.add(new Road("A02", "A2", "gantry toll highway", new ArrayList<>()));
