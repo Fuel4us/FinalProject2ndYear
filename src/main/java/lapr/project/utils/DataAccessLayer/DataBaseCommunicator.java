@@ -48,20 +48,19 @@ public class DataBaseCommunicator {
     /**
      * Stores network analysis in a database
      * @param analysis The network analysis to be stored
-     * @return true if storing operation succeeded
      */
     public void storeNetworkAnalysis(Analysis analysis) {
         try {
             //Start Transaction
             Connection connection = dbAccessor.openConnexion();
             connection.setAutoCommit(false);
-            //ToDo Store analyzed sections (generated report) into respective table
 
-            //ToDo Replace by procedure call
-            analysisStorage.storeAnalysis(analysis);
+            if (analysisStorage.connectTo(connection)) {
+                //ToDo Store analyzed sections (generated report) into respective table
+                analysisStorage.storeAnalysis(analysis);
+                connection.commit();
+            }
 
-            //ToDo Encapsulate behaviour in dbAccessor? //dbAccessor.commit();
-            connection.commit();
         } catch (SQLException e) {
             if (dbAccessor.hasActiveConnection()) {
                 try {
