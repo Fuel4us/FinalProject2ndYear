@@ -6,10 +6,12 @@ import lapr.project.utils.DataAccessLayer.Abstraction.AnalysisDAO;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.Oracle.OracleAnalysisDAO;
 import lapr.project.utils.DataAccessLayer.Oracle.OracleDBAccessor;
+import lapr.project.utils.Graph.GraphAlgorithms;
 import oracle.jdbc.pool.OracleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -42,8 +44,23 @@ public class DataBaseCommunicator {
             Connection connection = dbAccessor.openConnexion();
             connection.setAutoCommit(false);
             //ToDo Store analyzed roads (generated report) into respective table
-            analysisStorage.storeAnalysis(analysis);
-            dbAccessor.commit();
+            //ToDo encapsulate in analysisStorage.storeAnalysis(analysis) via procedure call
+            //ToDo !! - Find out how to encapsulate this behaviour in AnalysisDAO
+            PreparedStatement saveStatement = connection.prepareStatement(
+                    "INSERT INTO ANALYSIS(ID, PROJECTNAME) VALUES (?, ?)"
+            );
+
+            int analysisID = analysis.identify();
+            String name = analysis.issueRequestingEntity().getName();
+
+            saveStatement.setInt(1, analysisID);
+            saveStatement.setString(2, name);
+
+            saveStatement.executeUpdate();
+
+            //ToDo Encapsulate behaviour in dbAccessor?
+//            dbAccessor.commit();
+            connection.commit();
         } catch (SQLException e) {
             if (dbAccessor.hasActiveConnection()) {
                 try {

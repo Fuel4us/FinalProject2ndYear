@@ -4,6 +4,8 @@ import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.Graph.Edge;
 import lapr.project.utils.Measurable;
 
+import lapr.project.utils.Physics;
+import lapr.project.utils.Unit;
 import org.antlr.stringtemplate.StringTemplate;
 
 import javax.xml.bind.annotation.*;
@@ -78,7 +80,6 @@ public class Segment {
         segmentTemplate.setAttribute("sampleMinVel", segmentMinVelocity);
 
         file.write(segmentTemplate.toString());
-//        System.out.println(segmentTemplate.toString());
 
     }
 
@@ -121,5 +122,37 @@ public class Segment {
 
         }
 
+    }
+
+    /**
+     * Calculates the maximum possible velocity for the segment, knowing its length and
+     * time spent
+     * @param roadNetwork the road network
+     * @param vehicle the vehicle
+     * @return the minimum velocity
+     */
+    public Measurable calculateMaximumVelocityInterval(RoadNetwork roadNetwork, Vehicle vehicle) {
+        return new Measurable(length / calculateMinimumTimeInterval(roadNetwork, vehicle),
+                Unit.KILOMETERS_PER_HOUR);
+    }
+
+    /**
+     * Calculates the angle of the segment according to its initial and final
+     * heights and length
+     * @return the angle
+     */
+    public Measurable calculateAngle() {
+        return new Measurable(Math.asin((finalHeight - initialHeight) / length), Unit.DEGREE);
+    }
+
+    /**
+     * Calculates the velocity relative to the air (considering wind velocity)
+     * @param maxLinearVelocity the maximum velocity possible
+     * @return the velocity relative to the air
+     */
+    public Measurable calculateAirRelatedVelocity(Measurable maxLinearVelocity) {
+        return new Measurable((maxLinearVelocity.getQuantity() /
+                Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO) + windSpeed,
+                Unit.KILOMETERS_PER_HOUR);
     }
 }

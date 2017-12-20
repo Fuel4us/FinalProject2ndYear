@@ -26,4 +26,12 @@ public class Measurable {
     public double getQuantity() {
         return quantity;
     }
+
+    /**
+     * Setter for the attribute quantity
+     * @param quantity the quantity
+     */
+    public void setQuantity(double quantity) {
+        this.quantity = quantity;
+    }
 }

@@ -59,13 +59,14 @@ public class ExportHTMLTest {
 
 
         List<VelocityLimit> velocityLimitList = new ArrayList<>();
-        velocityLimitList.add(new VelocityLimit("Highway", new Measurable(110, Unit.KILOMETERSPERHOUR)));
-        velocityLimitList.add(new VelocityLimit("Road", new Measurable(80, Unit.KILOMETERSPERHOUR)));
+        velocityLimitList.add(new VelocityLimit("Highway", new Measurable(110, Unit.KILOMETERS_PER_HOUR)));
+        velocityLimitList.add(new VelocityLimit("Road", new Measurable(80, Unit.KILOMETERS_PER_HOUR)));
 
         //vehicle with velocity limits - highway
         Vehicle vehicleTest1 = new Vehicle("name1", "description", VehicleType.Car, 1,
                 Vehicle.MotorType.COMBUSTION, Fuel.Diesel, new Measurable(0, Unit.KILOGRAM),
-                new Measurable(0, Unit.KILOGRAM), 0f, 0f, 0f, 0f,
+                new Measurable(0, Unit.KILOGRAM), 0f, new Measurable(0, Unit.METER_SQUARED),
+                0f, new Measurable(0, Unit.METER),
                 velocityLimitList, new Energy(0, 0, 0f, new ArrayList<>(),
                 new ArrayList<>()));
 
@@ -77,8 +78,8 @@ public class ExportHTMLTest {
         Analysis analysis = new Analysis(1, project, "algorithm", bestPath);
 
         ExportHTML exportHTML = new ExportHTML(analysis);
-        File outputFile = new File("src\\main\\resources\\outputTest.html");
-        exportHTML.printDataFromAnalysis(outputFile);
+        File outputFile = new File("src\\main\\resources\\htmlFileStructure\\outputTest.html");
+//        exportHTML.printDataFromAnalysis(outputFile);
     }
 
 }

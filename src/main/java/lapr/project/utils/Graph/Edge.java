@@ -1,5 +1,6 @@
 package lapr.project.utils.Graph;
 
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class Edge<V, E> implements Comparable<Edge<V, E>> {
     private double weight;       // Edge weight
     private Vertex<V, E> vOrig;  // vertex origin
     private Vertex<V, E> vDest;  // vertex destination
+    private final double test = 0.000000001;
 
     public Edge() {
         element = null;
@@ -137,8 +139,8 @@ public class Edge<V, E> implements Comparable<Edge<V, E>> {
         if (this.vDest != null && otherEdge.vDest != null &&
                 !this.vDest.equals(otherEdge.vDest))
             return false;
-
-        if (this.weight != otherEdge.weight)
+        
+        if (Math.abs(this.weight - otherEdge.weight) > test) 
             return false;
 
         if (this.element != null && otherEdge.element != null)
@@ -158,12 +160,14 @@ public class Edge<V, E> implements Comparable<Edge<V, E>> {
         result = 31 * result + (vDest != null ? vDest.hashCode() : 0);
         return result;
     }
-
+    
     @Override
     public int compareTo(Edge<V, E> edge) {
 
         if (this.weight < edge.weight) return -1;
-        if (this.weight == edge.weight) return 0;
+        if (Math.abs(this.weight - edge.weight) < test && Math.abs(this.weight - edge.weight) > -(test)) {  // Bug was here because this.weight == edge.weight
+            return 0;
+        }
         return 1;
     }
 
@@ -180,6 +184,7 @@ public class Edge<V, E> implements Comparable<Edge<V, E>> {
         return newEdge;
     }
 
+    
     @Override
     public String toString() {
         String st = "";
@@ -188,7 +193,7 @@ public class Edge<V, E> implements Comparable<Edge<V, E>> {
         else
             st = "\t ";
 
-        if (weight != 0)
+        if (BigDecimal.valueOf(weight).compareTo(BigDecimal.valueOf(0.0))!=0) // had bug here because was [weight != 0]
             st += weight + " - " + vDest.getElement() + "\n";
         else
             st += vDest.getElement() + "\n";

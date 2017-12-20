@@ -16,4 +16,12 @@ public class Throttle {
         this.id = id;
         this.regimes = regime;
     }
+
+    /**
+     * @return regimes
+     */
+    public List<Regime> getRegimes() {
+        return regimes;
+    }
+
 }

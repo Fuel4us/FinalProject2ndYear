@@ -12,7 +12,8 @@ import java.io.IOException;
 public class ExportHTML implements Exporter {
 
     private Analysis analysis;
-    private static String HTML_STRUCTURE_MAIN = "html_structure_main";
+    private static String HTML_STRUCTURE_FIRST = "html_structure_first";
+    private static String HTML_STRUCTURE_SECOND = "html_structure_second";
 
     public ExportHTML(Analysis analysis) {
         this.analysis = analysis;
@@ -25,9 +26,11 @@ public class ExportHTML implements Exporter {
     public void printDataFromAnalysis(File outputFile) throws IOException {
         FileWriter fillFile = new FileWriter(outputFile, true);
 
-        StringTemplateGroup groupSegment =  new StringTemplateGroup("src\\main\\resources");
-        StringTemplate stringTemplate = groupSegment.getInstanceOf(HTML_STRUCTURE_MAIN);
-        analysis.printDataFromAnalysis(stringTemplate, fillFile);
+        StringTemplateGroup groupHTML =  new StringTemplateGroup("src\\main\\resources");
+        StringTemplate stringTemplateFirst = groupHTML.getInstanceOf(HTML_STRUCTURE_FIRST);
+        StringTemplate stringTemplateSecond = groupHTML.getInstanceOf(HTML_STRUCTURE_SECOND);
+        analysis.printDataFromAnalysis(stringTemplateFirst, stringTemplateSecond, fillFile);
+
     }
 
 }

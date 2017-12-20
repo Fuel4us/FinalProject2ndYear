@@ -34,14 +34,13 @@ public class Section extends Edge<String, Direction> {
     private Road owningRoad;
 
     /**
-     * Constructor
-     * @param beginningNode
-     * @param endingNode
-     * @param direction
-     * @param segments
+     * Creates a Section with a beginning and ending node, direction and collection of segments
+     * @param beginningNode This section's beginning {@link Node}
+     * @param endingNode This section's ending {@link Node}
+     * @param direction This section's {@link Direction}
+     * @param segments The {@link Collection} of segments that belong to this section
      */
-    public Section(lapr.project.model.RoadNetwork.Node beginningNode, lapr.project.model.RoadNetwork.Node endingNode, Direction direction, Collection<Segment> segments, Road road) {
-
+    public Section(Node beginningNode, Node endingNode, Direction direction, Collection<Segment> segments, Road road) {
         super(direction, calculateTotalLength(segments), beginningNode, endingNode);
         this.segments = segments;
         this.beginningNode = beginningNode;
@@ -119,5 +118,13 @@ public class Section extends Edge<String, Direction> {
         StringTemplateGroup groupSegment = new StringTemplateGroup("src\\main\\resources");
         StringTemplate segmentTemplate = groupSegment.getInstanceOf(HTML_STRUCTURE_SEGMENT);
         segment.printDataFromSegment(segmentTemplate, file);
+    }
+
+    /**
+     * ToDo
+     * @return
+     */
+    public Road getOwningRoad() {
+        return owningRoad;
     }
 }

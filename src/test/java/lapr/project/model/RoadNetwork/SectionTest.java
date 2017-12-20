@@ -57,14 +57,14 @@ public class SectionTest {
         roadNetworkTest1.addSection(node3, node4, sectionTest2);
 
         List<VelocityLimit> velocityLimitList = new ArrayList<>();
-        velocityLimitList.add(new VelocityLimit("Highway", new Measurable(110, Unit.KILOMETERSPERHOUR)));
-        velocityLimitList.add(new VelocityLimit("Road", new Measurable(80, Unit.KILOMETERSPERHOUR)));
+        velocityLimitList.add(new VelocityLimit("Highway", new Measurable(110, Unit.KILOMETERS_PER_HOUR)));
+        velocityLimitList.add(new VelocityLimit("Road", new Measurable(80, Unit.KILOMETERS_PER_HOUR)));
 
         //vehicle with velocity limits - highway
         Vehicle vehicleTest1 = new Vehicle("name1", "description", VehicleType.Car, 1,
                 Vehicle.MotorType.COMBUSTION, Fuel.Diesel, new Measurable(0, Unit.KILOGRAM),
-                new Measurable(0, Unit.KILOGRAM), 0f, 0f, 0f, 0f,
-                velocityLimitList, new Energy(0, 0, 0f, new ArrayList<>(),
+                new Measurable(0, Unit.KILOGRAM), 0f, new Measurable(0, Unit.METER_SQUARED), 0f,
+                new Measurable(0, Unit.METER), velocityLimitList, new Energy(0, 0, 0f, new ArrayList<>(),
                 new ArrayList<>()));
 
         double expected = (double) 50/110 + (double) 100/90 + (double) 75/70 + (double) 100/100;
@@ -75,7 +75,8 @@ public class SectionTest {
         //vehicle without velocity limits - highway
         Vehicle vehicleTest2 = new Vehicle("name2", "description", VehicleType.Car, 1,
                 Vehicle.MotorType.COMBUSTION, Fuel.Diesel, new Measurable(0, Unit.KILOGRAM),
-                new Measurable(0, Unit.KILOGRAM), 0f, 0f, 0f, 0f,
+                new Measurable(0, Unit.KILOGRAM), 0f, new Measurable(0, Unit.METER_SQUARED),
+                0f, new Measurable(0, Unit.METER),
                 new ArrayList<>(), new Energy(0, 0, 0f, new ArrayList<>(),
                 new ArrayList<>()));
 

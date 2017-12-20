@@ -59,6 +59,14 @@ public class Road {
     }
 
     /**
+     * ToDo
+     * @return
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
      * Equals method for objects of the class Road
      * @param o other object
      * @return true if the objects are equal
