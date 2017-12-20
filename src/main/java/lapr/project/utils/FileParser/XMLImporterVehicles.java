@@ -24,12 +24,11 @@ import lapr.project.utils.Unit;
  */
 public class XMLImporterVehicles implements FileParser {
 
-    
     private int id = 1;
-    
+
     @Override
     public boolean importVehicles(Project project, String filename) {
-        
+
         try {
 
             /**
@@ -51,8 +50,8 @@ public class XMLImporterVehicles implements FileParser {
 
             Measurable mass = null;
             Measurable load = null;
-            String massUnit;
-            String loadUnit;
+            String massUnit = "";
+            String loadUnit = "";
             double newMass = 0;
             double newLoad = 0;
 
@@ -128,14 +127,7 @@ public class XMLImporterVehicles implements FileParser {
                              * Type of vehicle
                              */
                             if (attribute.getNodeName().equals("type")) {
-                                newVehicleType = attribute.getTextContent();
-                                VehicleType[] typeOfVehicle = VehicleType.values();
-                                for (VehicleType type : typeOfVehicle) {
-                                    String typeStr = newVehicleType;
-                                    if (typeStr.equals(type.toString())) {
-                                        vehicleType = type;
-                                    }
-                                }
+                                vehicleType = addVehicleType(newVehicleType, attribute);
                             }
 
                             /**
@@ -149,42 +141,21 @@ public class XMLImporterVehicles implements FileParser {
                              * Motorization type ENUM
                              */
                             if (attribute.getNodeName().equals("motorization")) {
-                                newMotorization = attribute.getTextContent();
-                                String newMoto = newMotorization;
-                                if (newMoto.equalsIgnoreCase("combustion")) {
-                                    motorTypeValue = Vehicle.MotorType.COMBUSTION;
-                                } else {
-                                    motorTypeValue = Vehicle.MotorType.NONCOMBUSTION;
-                                }
+                                motorTypeValue = addMotorization(newMotorization, attribute);
                             }
 
                             /**
                              * Fuel
                              */
                             if (attribute.getNodeName().equals("fuel")) {
-                                newFuel = attribute.getTextContent();
-                                Fuel[] fuelEnum = Fuel.values();
-                                for (Fuel fuelType : fuelEnum) {
-                                    String fuelStr = newFuel;
-                                    if (fuelStr.equals(fuelType.toString())) {
-                                        fuel = fuelType;
-                                    }
-                                }
+                                fuel = addFuel(newFuel, attribute);
                             }
 
                             /**
                              * Mass from Measurable
                              */
                             if (attribute.getNodeName().equals("mass")) {
-                                String x = attribute.getTextContent();
-                                String[] splitX = x.split(" ");
-                                newMass = Double.parseDouble(splitX[0]);
-                                massUnit = splitX[1];
-                                if (massUnit.equals("kg")) {
-                                    mass = new Measurable(newMass, Unit.KILOGRAM);
-                                } else if (massUnit.equals("g")) {
-                                    mass = new Measurable(newMass, Unit.GRAM);
-                                }
+                                mass = addMass(newMass, massUnit, attribute);
 
                             }
 
@@ -395,18 +366,68 @@ public class XMLImporterVehicles implements FileParser {
         }
         return true;
     }
-    
+
     public String addName(List<Vehicle> list, String name) {
-       
-        for (Vehicle v: list) {
-            if(v.getName().equalsIgnoreCase(name)) {
+
+        for (Vehicle v : list) {
+            if (v.getName().equalsIgnoreCase(name)) {
                 name += id;
                 id++;
             }
         }
-        
+
         return name;
-       
+
     }
 
+    public VehicleType addVehicleType(String newVehicleType, Node attribute) {
+        newVehicleType = attribute.getTextContent();
+        VehicleType[] typeOfVehicle = VehicleType.values();
+        for (VehicleType type : typeOfVehicle) {
+            String typeStr = newVehicleType;
+            if (typeStr.equals(type.toString())) {
+                return type;
+            }
+        }
+        return VehicleType.Car;
+    }
+
+    public MotorType addMotorization(String newMotorization, Node attribute) {
+        newMotorization = attribute.getTextContent();
+        String newMoto = newMotorization;
+        if (newMoto.equalsIgnoreCase("combustion")) {
+            return Vehicle.MotorType.COMBUSTION;
+        } else if (newMoto.equalsIgnoreCase("electric")) {
+            return Vehicle.MotorType.NONCOMBUSTION;
+        }
+        System.out.println("Mass unit not correct the value is now the default (combustion)");
+        return Vehicle.MotorType.COMBUSTION;
+    }
+
+    public Fuel addFuel(String newFuel, Node attribute) {
+        newFuel = attribute.getTextContent();
+        Fuel[] fuelEnum = Fuel.values();
+        for (Fuel fuelType : fuelEnum) {
+            String fuelStr = newFuel;
+            if (fuelStr.equals(fuelType.toString())) {
+                return fuelType;
+            }
+        }
+        System.out.println("Fuel unit not correct the value is now the default (gasoline)");
+        return Fuel.Gasoline;
+    }
+
+    public Measurable addMass(double newMass, String massUnit, Node attribute) {
+        String x = attribute.getTextContent();
+        String[] splitX = x.split(" ");
+        newMass = Double.parseDouble(splitX[0]);
+        massUnit = splitX[1];
+        if (massUnit.equals("kg")) {
+            return new Measurable(newMass, Unit.KILOGRAM);
+        } else if (massUnit.equals("g")) {
+            return new Measurable(newMass, Unit.GRAM);
+        }
+        System.out.println("Mass unit not correct the value is now the default (kg)");
+        return new Measurable(newMass, Unit.KILOGRAM);
+    }
 }
