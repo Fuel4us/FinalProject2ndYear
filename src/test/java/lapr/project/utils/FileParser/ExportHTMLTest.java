@@ -65,7 +65,8 @@ public class ExportHTMLTest {
         //vehicle with velocity limits - highway
         Vehicle vehicleTest1 = new Vehicle("name1", "description", VehicleType.Car, 1,
                 Vehicle.MotorType.COMBUSTION, Fuel.Diesel, new Measurable(0, Unit.KILOGRAM),
-                new Measurable(0, Unit.KILOGRAM), 0f, 0f, 0f, 0f,
+                new Measurable(0, Unit.KILOGRAM), 0f, new Measurable(0, Unit.METER_SQUARED),
+                0f, new Measurable(0, Unit.METER),
                 velocityLimitList, new Energy(0, 0, 0f, new ArrayList<>(),
                 new ArrayList<>()));
 
