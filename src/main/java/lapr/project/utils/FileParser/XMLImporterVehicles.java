@@ -24,6 +24,7 @@ import lapr.project.utils.Unit;
  */
 public class XMLImporterVehicles implements FileParser {
 
+    private final String byDefault = "Default";
     private int id = 1;
 
     @Override
@@ -34,19 +35,19 @@ public class XMLImporterVehicles implements FileParser {
             /**
              * Initiate Variables
              */
-            String name = "Default";
-            String description = "Default";
+            String name;
+            String description;
 
             VehicleType vehicleType = null;
-            String newVehicleType = "Default";
+            String newVehicleType = byDefault;
 
             int newTollClass = 0;
 
-            String newMotorization = "Default";
+            String newMotorization = byDefault;
             MotorType motorTypeValue = null;
 
             Fuel fuel = null;
-            String newFuel = "Default";
+            String newFuel = byDefault;
 
             Measurable mass = null;
             Measurable load = null;
@@ -62,8 +63,8 @@ public class XMLImporterVehicles implements FileParser {
 
             List<VelocityLimit> newVelocityLimitList = new ArrayList<>();
             VelocityLimit newVelocityLimit = new VelocityLimit();
-            String newSegmentType = "Default";
-            String newVelocity = "Default";
+            String newSegmentType = byDefault;
+            String newVelocity = byDefault;
             Measurable newVelocityLimitValue = null;
             double newLimit = 0;
 
@@ -87,7 +88,7 @@ public class XMLImporterVehicles implements FileParser {
             List<Regime> newRegimeList = new ArrayList<>();
             Throttle newThrottle = null;
             List<Throttle> newThrottleList = new ArrayList<>();
-            Vehicle newVehicle = null;
+            Vehicle newVehicle;
 
             // Get vehicleList
             List<Vehicle> set = new ArrayList<>();
