@@ -1,5 +1,7 @@
 package lapr.project.model.RoadNetwork;
 
+import lapr.project.model.Vehicle.Vehicle;
+
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +65,20 @@ public class Road {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Retrieves the toll fare for the vehicle given as parameter
+     * @param vehicle the vehicle
+     * @return the toll fare
+     */
+    public double retrieveVehicleClassRespectiveTollFare(Vehicle vehicle) {
+        for (int i = 0; i < tollFare.size(); i++) {
+            if (i == vehicle.getVehicleClass()) {
+                return tollFare.get(i);
+            }
+        }
+        return 0;
     }
 
     /**
