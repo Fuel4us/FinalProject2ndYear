@@ -165,7 +165,7 @@ public class Edge<V, E> implements Comparable<Edge<V, E>> {
     public int compareTo(Edge<V, E> edge) {
 
         if (this.weight < edge.weight) return -1;
-        if (Math.abs(this.weight - edge.weight) < test && Math.abs(this.weight - edge.weight) > -(test)) {  // Bug was here because this.weight == edge.weight
+        if (this.weight == edge.weight) {  // Bug was here because this.weight == edge.weight
             return 0;
         }
         return 1;

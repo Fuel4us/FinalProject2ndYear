@@ -6,6 +6,7 @@
 package lapr.project.ui;
 
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import lapr.project.controller.CreateProjectController;
 import lapr.project.controller.SelectProjectController;
 import lapr.project.model.Project;
@@ -208,7 +209,8 @@ public class SelectProjectUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonPathFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPathFormActionPerformed
-        new BestPathUI(new Project("","",new RoadNetwork(),new ArrayList<>())).setVisible(true);
+        Project project = new Project("test", "description", new RoadNetwork(), new ArrayList<>());
+        new BestPathUI(project, dbCom);
         setVisible(false);
     }//GEN-LAST:event_jButtonPathFormActionPerformed
 

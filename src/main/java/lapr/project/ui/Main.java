@@ -9,8 +9,10 @@ import oracle.jdbc.pool.OracleDataSource;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import lapr.project.model.Analysis;
 
 /**
  * Triggers UI events
@@ -20,7 +22,7 @@ class Main {
     /*
     ToDo Refactor this so as not to be static,
     ToDo temporary solution for testing purposes only
-    */
+     */
     private static Project currentProject;
     private static DataBaseCommunicator dbCom;
 
@@ -64,6 +66,7 @@ class Main {
 
     /**
      * Application main method.
+     *
      * @param args the command line arguments
      */
     public static void main(String[] args) throws SQLException {
@@ -73,21 +76,12 @@ class Main {
         //<editor-fold desc="Demonstration purposes" default=collapsed>
 //        WelcomeUI.main(null);
         //Testing purposes only
-//        Analysis generatedAnalysis = new Analysis(1,currentProject) {
-//            @Override
-//            public Collection<?> generateReport() {
-//
-//                ArrayList<String> strings = new ArrayList<>();
-//                strings.add("A");
-//                strings.add("B");
-//                strings.add("C");
-//                return strings;
-//            }
-//        };
+        
+        new BestPathUI(currentProject, dbCom).setVisible(true);
+
 
 //        new StoreNetworkAnalysisUI(currentProject, dbCom, generatedAnalysis).setVisible(true);
         //</editor-fold>
-
     }
 
     private static void setLook() {

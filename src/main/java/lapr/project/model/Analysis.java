@@ -63,12 +63,20 @@ public class Analysis implements Exportable {
         return id;
     }
 
-//    /**
-//     * Provides the results of an analysis,
-//     * encapsulating them in a Collection subclass
-//     * @return Such Results as aforementioned
-//     */
-//    public abstract Collection<?> generateReport();
+    /**
+     * Provides the results of an analysis,
+     * encapsulating them in a Collection subclass
+     * @return Such Results as aforementioned
+     */
+    public Collection<?> generateReport() {
+        //ToDo Test only, replace by actual implementation
+        List<String> test = new ArrayList<>();
+        test.add("A");
+        test.add("B");
+        test.add("C");
+        test.add("D");
+        return test;
+    };
 
     /**
      * Prints data from a given segment filling the information missing in a given file template
