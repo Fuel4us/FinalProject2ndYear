@@ -81,7 +81,7 @@ public class Vehicle {
         this.rollingResistanceCoefficient = rollingResistanceCoefficient;
         this.wheelSize = wheelSize;
         this.velocityLimitList = velocityLimitList;
-        this.energy = new Energy(energy);
+        this.energy = energy;
     }
 
     /**
