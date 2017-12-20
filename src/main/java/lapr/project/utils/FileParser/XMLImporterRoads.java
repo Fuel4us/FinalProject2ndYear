@@ -73,7 +73,7 @@ public class XMLImporterRoads {
 
         addNodes(doc);
         List<Road> roadList = addRoads(doc);
-//        addSections(roadNetwork, doc);
+        addSections(roadList, doc);
     }
 
     /**
@@ -98,7 +98,7 @@ public class XMLImporterRoads {
                 String id = element.getAttributes().item(0).getTextContent();
                 String name = element.getElementsByTagName("road_name").item(0).getTextContent();
                 String typology = element.getElementsByTagName("typology").item(0).getTextContent();
-                List<Float> tollFaresList = new ArrayList<>();
+                List<Double> tollFaresList = new ArrayList<>();
 
                 if (element.getElementsByTagName("class").getLength() > 0) {
 
@@ -110,7 +110,7 @@ public class XMLImporterRoads {
 
                         if (tollFaresNode instanceof Element) {
 
-                            Float tollFare = Float.parseFloat(tollFaresNode.getTextContent());
+                            Double tollFare = Double.parseDouble(tollFaresNode.getTextContent());
 
                             tollFaresList.add(tollFare);
 
@@ -155,6 +155,31 @@ public class XMLImporterRoads {
 
     }
 
+    /**
+     * Adds sections from the file in the RoadNetwork graph
+     * @param roadList the list of roads
+     * @param doc the document
+     */
+    private void addSections(List<Road> roadList, Document doc) {
+
+        NodeList sections = doc.getElementsByTagName("road_section");
+
+        for (int i = 0; i < sections.getLength(); i++) {
+
+            Node node = sections.item(i);
+
+            if (node instanceof Element) {
+
+                Element element = (Element) node;
+
+
+
+            }
+
+        }
+
+    }
+
 
 //    /**
 //     * Adds sections from file in the RoadNetwork graph
@@ -186,35 +211,6 @@ public class XMLImporterRoads {
 ////                //roadNetwork.addSection(section);
 //
 ////            }
-//        }
-//    }
-
-//    /**
-//     * Adds roads from file in the RoadNetwork graph
-//     *
-//     * @param roadNetwork
-//     * @param doc
-//     * @throws Exception
-//     */
-//    private void addNodes(RoadNetwork roadNetwork, Document doc) {
-
-//        NodeList nodes = doc.getElementsByTagName("node_list");
-//
-//        for (int i = 0; i < nodes.getLength(); i++) {
-//            org.w3c.dom.Node node = nodes.item(i);
-//                if (node.hasChildNodes()
-//                        && node instanceof Element) {
-//                    Node child = node.getFirstChild();
-//                    lapr.project.model.RoadNetwork.Node junction = new lapr.project.model.RoadNetwork.Node();
-//                    Element element = (Element) node;
-//
-//
-//
-////                String str = node.getTextContent();
-////                Class cls = Class.forName(str);
-////                lapr.project.model.RoadNetwork.Node junction = (lapr.project.model.RoadNetwork.Node) cls.newInstance();
-////                roadNetwork.addNode(junction);
-//                }
 //        }
 //    }
 
