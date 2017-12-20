@@ -289,6 +289,13 @@ public class Vehicle {
     }
 
     /**
+     * @return motor type
+     */
+    public MotorType getMotorType() {
+        return motorType;
+    }
+
+    /**
      * Indicates motor type Assists in the instantiation of the correct
      * motorization
      */
