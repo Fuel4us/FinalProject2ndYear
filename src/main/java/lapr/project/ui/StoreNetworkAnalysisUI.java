@@ -50,7 +50,6 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         setResizable(false);
         setVisible(true);
         setLocationRelativeTo(null);
-        dbCom = dbCom;
         analysisResultTextField.setEditable(false);
         analysisResultTextField.setText(generatedAnalysis.generateReport().toString());
         networkAnalysisController = new NetworkAnalysisController(project, dbCom, generatedAnalysis);

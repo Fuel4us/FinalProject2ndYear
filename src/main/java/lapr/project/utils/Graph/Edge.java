@@ -16,7 +16,7 @@ public class Edge<V, E> implements Comparable<Edge<V, E>> {
     private double weight;       // Edge weight
     private Vertex<V, E> vOrig;  // vertex origin
     private Vertex<V, E> vDest;  // vertex destination
-    private final double test = 0.000000001;
+    private final double test = 0.00000000000000000000001;
 
     public Edge() {
         element = null;
@@ -165,7 +165,7 @@ public class Edge<V, E> implements Comparable<Edge<V, E>> {
     public int compareTo(Edge<V, E> edge) {
 
         if (this.weight < edge.weight) return -1;
-        if (this.weight == edge.weight) {  // Bug was here because this.weight == edge.weight
+        if (Math.abs(this.weight - edge.weight) < test) {  // Bug was here because this.weight == edge.weight
             return 0;
         }
         return 1;
