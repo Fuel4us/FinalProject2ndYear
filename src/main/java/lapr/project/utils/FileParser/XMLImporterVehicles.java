@@ -337,13 +337,15 @@ public class XMLImporterVehicles implements FileParser {
                         if (stringSplit.length == 2) {
                             newLimit = Double.parseDouble(stringSplit[0]);
                             newVelocity = stringSplit[1];
-                            if (newVelocity.equalsIgnoreCase("km/h") || stringSplit.length == 1) {
+                            if (newVelocity.equalsIgnoreCase("km/h")) {
                                 newVelocityLimitValue = new Measurable(newLimit, Unit.KILOMETERS_PER_HOUR);
                             } else if (newVelocity.equalsIgnoreCase("mp/h")) {
                                 newVelocityLimitValue = new Measurable(newLimit, Unit.MILES_PER_HOUR);
                             } else if (newVelocity.equalsIgnoreCase("m/s")) {
                                 newVelocityLimitValue = new Measurable(newLimit, Unit.METERS_PER_SECOND);
                             }
+                        }else{
+                            newVelocityLimitValue = new Measurable(newLimit, Unit.KILOMETERS_PER_HOUR);
                         }
                     }
                 }
