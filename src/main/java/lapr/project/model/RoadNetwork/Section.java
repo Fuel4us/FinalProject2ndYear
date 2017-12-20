@@ -167,10 +167,16 @@ public class Section extends Edge<String, Direction> {
     }
 
     /**
-     * ToDo
-     * @return
+     * @return owning road
      */
     public Road getOwningRoad() {
         return owningRoad;
+    }
+
+    /**
+     * @return segments
+     */
+    public Collection<Segment> getSegments() {
+        return segments;
     }
 }
