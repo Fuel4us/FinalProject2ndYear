@@ -45,7 +45,7 @@ public class DataBaseCommunicator {
         }
     }
 
-    /**
+    /** 
      * Stores network analysis in a database
      * @param analysis The network analysis to be stored
      * @return true if storing operation succeeded
