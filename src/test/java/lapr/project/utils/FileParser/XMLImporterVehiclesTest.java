@@ -65,6 +65,7 @@ public class XMLImporterVehiclesTest {
         boolean result = instance.importVehicles(object, filename1);
         assertEquals(expResult, result);
         assertEquals(object.getVehicles().get(0), new Vehicle("Pick_up", "", VehicleType.Car, 0, Vehicle.MotorType.COMBUSTION, Fuel.Diesel, new Measurable(1.0, Unit.KILOGRAM), new Measurable(1.0, Unit.KILOMETERS_PER_HOUR), 1f, new Measurable(1, Unit.METER_SQUARED), 1f, new Measurable(0, Unit.METER), new ArrayList<>(), new Energy(0, 0, 0, new ArrayList<>(), new ArrayList<>())));
+        assertFalse(instance.importVehicles(object, ""));
     }
 
     @Test
