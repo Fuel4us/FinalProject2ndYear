@@ -28,6 +28,7 @@ public class Vehicle {
     private MotorType motorType;
 
     private Fuel fuel;
+
     private Measurable mass;
     private Measurable load;
 
@@ -41,21 +42,20 @@ public class Vehicle {
 
     /**
      * Creates a new vehicle
-     *
-     * @param name                         This vehicle's name
-     * @param description                  This vehicle's description
-     * @param type                         This vehicle's type
-     * @param vehicleClass                 This vehicle's class
-     * @param motorType                    This vehicle's motor type
-     * @param fuel                         This vehicle's fuel
-     * @param mass                         This vehicle's mass
-     * @param load                         This vehicle's load
-     * @param dragCoefficient              This vehicle's drag coefficient
-     * @param frontalArea                  This vehicle's frontal area
+     * @param name This vehicle's name
+     * @param description This vehicle's description
+     * @param type This vehicle's type
+     * @param vehicleClass This vehicle's class
+     * @param motorType This vehicle's motor type
+     * @param fuel This vehicle's fuel
+     * @param mass This vehicle's mass
+     * @param load This vehicle's load
+     * @param dragCoefficient This vehicle's drag coefficient
+     * @param frontalArea This vehicle's frontal area
      * @param rollingResistanceCoefficient This vehicle's rolling release coefficient
-     * @param wheelSize                    This vehicle's wheel size
-     * @param velocityLimitList            This vehicle's velocity limit list
-     * @param energy                       This vehicle's energy
+     * @param wheelSize This vehicle's wheel size
+     * @param velocityLimitList This vehicle's velocity limit list
+     * @param energy This vehicle's energy
      */
     public Vehicle(String name, String description, VehicleType type, int vehicleClass, MotorType motorType, Fuel fuel, Measurable mass, Measurable load, float dragCoefficient, Measurable frontalArea, float rollingResistanceCoefficient, Measurable wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
         this.name = name;
@@ -69,6 +69,7 @@ public class Vehicle {
         } else if (motorType == MotorType.NONCOMBUSTION) {
             motorization = new NonCombustionMotor();
         }
+
         this.fuel = fuel;
         this.mass = mass;
         this.load = load;
@@ -77,42 +78,11 @@ public class Vehicle {
         this.rollingResistanceCoefficient = rollingResistanceCoefficient;
         this.wheelSize = wheelSize;
         this.velocityLimitList = velocityLimitList;
-        this.energy = energy;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + Objects.hashCode(this.name);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Vehicle other = (Vehicle) obj;
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s - %s.", name, description);
+        this.energy = new Energy(energy);
     }
 
     /**
      * Retrieves the max velocity of the vehicle according to the road's typology given as a parameter
-     *
      * @param roadTypology the road's typology
      * @return the max velocity of the vehicle
      */
@@ -265,6 +235,36 @@ public class Vehicle {
                 new Measurable(SFC, Unit.GRAM_PER_KILOWATT_HOUR)};
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Vehicle other = (Vehicle) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.name);
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s - %s.", name, description);
+    }
+
     /**
      * Indicates motor type
      * Assists in the instantiation of the correct motorization
@@ -274,4 +274,5 @@ public class Vehicle {
         COMBUSTION, NONCOMBUSTION;
 
     }
+
 }
