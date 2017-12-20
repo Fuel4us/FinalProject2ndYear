@@ -77,7 +77,7 @@ public class ExportHTMLTest {
         Analysis analysis = new Analysis(1, project, "algorithm", bestPath);
 
         ExportHTML exportHTML = new ExportHTML(analysis);
-        File outputFile = new File("src\\main\\resources\\outputTest.html");
+        File outputFile = new File("src\\main\\resources\\htmlFileStructure\\outputTest.html");
         exportHTML.printDataFromAnalysis(outputFile);
     }
 

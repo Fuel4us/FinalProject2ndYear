@@ -32,8 +32,8 @@ public class SegmentTest {
 //        double minVelocity = 20;
 //        Segment segment = new Segment(index, initialHeight, finalHeight, length, windAngle, windSpeed, maxVelocity, minVelocity);
 //
-//        FileWriter fillFile = new FileWriter("src\main\resources\outputSegmentTest.html", true);
-//        StringTemplateGroup groupSegment = new StringTemplateGroup("src\\main\\resources");
+//        FileWriter fillFile = new FileWriter("src\main\resources\htmlFileStructure\outputSegmentTest.html", true);
+//        StringTemplateGroup groupSegment = new StringTemplateGroup("src\\main\\resources\\htmlFileStructure");
 //        StringTemplate segmentTemplate = groupSegment.getInstanceOf("html_structure_segment");
 //
 //        segment.printDataFromSegment(segmentTemplate, fillFile);
