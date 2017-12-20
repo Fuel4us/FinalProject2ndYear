@@ -40,8 +40,6 @@ public class Vehicle {
     private List<VelocityLimit> velocityLimitList;
     private Energy energy;
     
-    private int id = 1;
-    
 
     /**
      * Creates a new vehicle
@@ -270,6 +268,9 @@ public class Vehicle {
 
     public String getName() {
         return name;
+    }
+
+    public Vehicle() {
     }
 
     /**
