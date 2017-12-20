@@ -41,7 +41,7 @@ public class DataBaseCommunicator {
     public DataBaseCommunicator(DataSource dataSource) {
         if (dataSource instanceof OracleDataSource) {
             this.dbAccessor = new OracleDBAccessor();
-            this.analysisStorage = new OracleAnalysisDAO();
+            this.analysisStorage = null; //  this.analysisStorage = new OracleAnalysisDAO()
         }
     }
 
