@@ -44,13 +44,13 @@ public class DataBaseCommunicator {
             connection.setAutoCommit(false);
             //ToDo Store analyzed roads (generated report) into respective table
             //ToDo encapsulate in analysisStorage.storeAnalysis(analysis) via procedure call
-            try (PreparedStatement saveStatement = connection.prepareStatement(
-                    "INSERT INTO ANALYSIS(ID, PROJECTNAME) VALUES (?, ?)"
-            )) {
-
-                analysisStorage.storeAnalysis(analysis);
-
-            }
+//            try (PreparedStatement saveStatement = connection.prepareStatement(
+//                    "INSERT INTO ANALYSIS(ID, PROJECTNAME) VALUES (?, ?)"
+//            )) {
+//
+//                analysisStorage.storeAnalysis(analysis);
+//
+//            }
 
             //ToDo Encapsulate behaviour in dbAccessor? //dbAccessor.commit();
             connection.commit();
