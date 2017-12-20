@@ -1,5 +1,6 @@
 package lapr.project.utils.Graph;
 
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -192,7 +193,7 @@ public class Edge<V, E> implements Comparable<Edge<V, E>> {
         else
             st = "\t ";
 
-        if (weight < 0 || weight > 0) // had bug here because was [weight != 0]
+        if (BigDecimal.valueOf(weight).compareTo(BigDecimal.valueOf(0.0))!=0) // had bug here because was [weight != 0]
             st += weight + " - " + vDest.getElement() + "\n";
         else
             st += vDest.getElement() + "\n";
