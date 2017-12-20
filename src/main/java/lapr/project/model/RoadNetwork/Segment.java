@@ -151,8 +151,8 @@ public class Segment {
      * @return the velocity relative to the air
      */
     public Measurable calculateAirRelatedVelocity(Measurable maxLinearVelocity) {
-        return new Measurable(maxLinearVelocity.getQuantity() +
-                windSpeed / Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO,
+        return new Measurable((maxLinearVelocity.getQuantity() /
+                Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO) + windSpeed,
                 Unit.KILOMETERS_PER_HOUR);
     }
 }
