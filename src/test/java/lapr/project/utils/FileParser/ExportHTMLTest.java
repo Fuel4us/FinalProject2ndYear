@@ -59,8 +59,8 @@ public class ExportHTMLTest {
 
 
         List<VelocityLimit> velocityLimitList = new ArrayList<>();
-        velocityLimitList.add(new VelocityLimit("Highway", new Measurable(110, Unit.KILOMETERSPERHOUR)));
-        velocityLimitList.add(new VelocityLimit("Road", new Measurable(80, Unit.KILOMETERSPERHOUR)));
+        velocityLimitList.add(new VelocityLimit("Highway", new Measurable(110, Unit.KILOMETERS_PER_HOUR)));
+        velocityLimitList.add(new VelocityLimit("Road", new Measurable(80, Unit.KILOMETERS_PER_HOUR)));
 
         //vehicle with velocity limits - highway
         Vehicle vehicleTest1 = new Vehicle("name1", "description", VehicleType.Car, 1,

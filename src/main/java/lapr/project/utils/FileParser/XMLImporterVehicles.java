@@ -258,11 +258,11 @@ public class XMLImporterVehicles implements FileParser {
                                                     newLimit = Double.parseDouble(stringSplit[0]);
                                                     newVelocity = stringSplit[1];
                                                     if (newVelocity.equalsIgnoreCase("km/h") || stringSplit.length == 1) {
-                                                        newVelocityLimitValue = new Measurable(newLimit, Unit.KILOMETERSPERHOUR);
+                                                        newVelocityLimitValue = new Measurable(newLimit, Unit.KILOMETERS_PER_HOUR);
                                                     } else if (newVelocity.equalsIgnoreCase("mp/h")) {
-                                                        newVelocityLimitValue = new Measurable(newLimit, Unit.MILESPERHOUR);
+                                                        newVelocityLimitValue = new Measurable(newLimit, Unit.MILES_PER_HOUR);
                                                     } else if (newVelocity.equalsIgnoreCase("m/s")) {
-                                                        newVelocityLimitValue = new Measurable(newLimit, Unit.METERSPERSECOND);
+                                                        newVelocityLimitValue = new Measurable(newLimit, Unit.METERS_PER_SECOND);
                                                     }
                                                 }
                                             }
