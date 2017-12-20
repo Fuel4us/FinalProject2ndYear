@@ -24,7 +24,6 @@ public class DataBaseCommunicator {
 
     private DBAccessor dbAccessor;
     private AnalysisDAO analysisStorage;
-    //ToDo Create ProjectDAO (Data Access Object)
 
     public DataBaseCommunicator(DataSource dataSource) {
         if (dataSource instanceof OracleDataSource) {
@@ -45,21 +44,15 @@ public class DataBaseCommunicator {
             connection.setAutoCommit(false);
             //ToDo Store analyzed roads (generated report) into respective table
             //ToDo encapsulate in analysisStorage.storeAnalysis(analysis) via procedure call
-            //ToDo !! - Find out how to encapsulate this behaviour in AnalysisDAO
-            PreparedStatement saveStatement = connection.prepareStatement(
+            try (PreparedStatement saveStatement = connection.prepareStatement(
                     "INSERT INTO ANALYSIS(ID, PROJECTNAME) VALUES (?, ?)"
-            );
+            )) {
 
-            int analysisID = analysis.identify();
-            String name = analysis.issueRequestingEntity().getName();
+                analysisStorage.storeAnalysis(analysis);
 
-            saveStatement.setInt(1, analysisID);
-            saveStatement.setString(2, name);
+            }
 
-            saveStatement.executeUpdate();
-
-            //ToDo Encapsulate behaviour in dbAccessor?
-//            dbAccessor.commit();
+            //ToDo Encapsulate behaviour in dbAccessor? //dbAccessor.commit();
             connection.commit();
         } catch (SQLException e) {
             if (dbAccessor.hasActiveConnection()) {
