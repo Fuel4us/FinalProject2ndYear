@@ -206,7 +206,7 @@ public class Vehicle {
 
         Measurable segmentAngle = segment.calculateAngle();
 
-        double rollingResistance = rollingResistanceCoefficient * mass.getQuantity() *
+        double rollingResistance = rollingResistanceCoefficient * (mass.getQuantity() + load.getQuantity()) *
                 Physics.GRAVITY_ACCELERATION.getQuantity() * Math.cos(segmentAngle.getQuantity());
 
         //ToDo considero o windAngle?
@@ -214,7 +214,7 @@ public class Vehicle {
         double airDrag = 0.5 * dragCoefficient * frontalArea.getQuantity() * Physics.AIR_DENSITY.getQuantity() *
                 Math.pow(maxAirRelatedVelocity.getQuantity(), 2);
 
-        double gravitationalForce = mass.getQuantity() * Physics.GRAVITY_ACCELERATION.getQuantity() *
+        double gravitationalForce = (mass.getQuantity() + load.getQuantity()) * Physics.GRAVITY_ACCELERATION.getQuantity() *
                 Math.sin(segmentAngle.getQuantity());
 
         // if motor force is lesser than the sum of the rolling resistance, air drag and gravitational force
