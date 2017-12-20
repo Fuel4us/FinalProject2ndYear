@@ -85,6 +85,13 @@ public class Vehicle {
     }
 
     /**
+     * @return vehicle class
+     */
+    public int getVehicleClass() {
+        return vehicleClass;
+    }
+
+    /**
      * Retrieves the max velocity of the vehicle according to the road's
      * typology given as a parameter
      *
