@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 
 @XmlRootElement(name = "road_section")
@@ -33,20 +34,24 @@ public class Section extends Edge<String, Direction> {
 
     private Road owningRoad;
 
+    private List<Double> tollFare;
+
     /**
      * Creates a Section with a beginning and ending node, direction and collection of segments
      * @param beginningNode This section's beginning {@link Node}
      * @param endingNode This section's ending {@link Node}
      * @param direction This section's {@link Direction}
      * @param segments The {@link Collection} of segments that belong to this section
+     * @param tollFare The {@link List} of toll fares of this section
      */
-    public Section(Node beginningNode, Node endingNode, Direction direction, Collection<Segment> segments, Road road) {
+    public Section(Node beginningNode, Node endingNode, Direction direction, Collection<Segment> segments, Road road, List<Double> tollFare) {
         super(direction, calculateTotalLength(segments), beginningNode, endingNode);
         this.segments = segments;
         this.beginningNode = beginningNode;
         this.endingNode = endingNode;
         this.direction = direction;
         this.owningRoad = road;
+        this.tollFare = tollFare;
     }
 
     /**
