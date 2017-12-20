@@ -4,6 +4,7 @@ import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.Graph.Edge;
 import lapr.project.utils.Measurable;
 
+import lapr.project.utils.Unit;
 import org.antlr.stringtemplate.StringTemplate;
 
 import javax.xml.bind.annotation.*;
@@ -120,5 +121,26 @@ public class Segment {
 
         }
 
+    }
+
+    /**
+     * Calculates the minimum velocity for the segment, knowing its length and
+     * time spent
+     * @param roadNetwork the road network
+     * @param vehicle the vehicle
+     * @return the minimum velocity
+     */
+    public Measurable calculateMinimumVelocityInterval(RoadNetwork roadNetwork, Vehicle vehicle) {
+        return new Measurable(length / calculateMinimumTimeInterval(roadNetwork, vehicle),
+                Unit.KILOMETERS_PER_HOUR);
+    }
+
+    /**
+     * Calculates the angle of the segment according to its initial and final
+     * heights and length
+     * @return the angle
+     */
+    public Measurable calculateAngle() {
+        return new Measurable(Math.asin((finalHeight - initialHeight) / length), Unit.DEGREE);
     }
 }

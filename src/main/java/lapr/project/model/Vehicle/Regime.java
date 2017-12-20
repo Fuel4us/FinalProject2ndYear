@@ -8,10 +8,10 @@ public class Regime {
     private int torque;
     
     @XmlElement
-    private int rpm_low;
+    private int rpmLow;
 
     @XmlElement
-    private int rpm_high;
+    private int rpmHigh;
     
     @XmlElement
     private int SFC;
@@ -19,12 +19,38 @@ public class Regime {
     public Regime() {
     }
 
-    public Regime(int torque, int rpm_low, int rpm_high, int SFC) {
+    public Regime(int torque, int rpmLow, int rpmHigh, int SFC) {
         this.torque = torque;
-        this.rpm_low = rpm_low;
-        this.rpm_high = rpm_high;
+        this.rpmLow = rpmLow;
+        this.rpmHigh = rpmHigh;
         this.SFC = SFC;
     }
-    
-    
+
+    /**
+     * @return torque
+     */
+    public int getTorque() {
+        return torque;
+    }
+
+    /**
+     * @return rpm low
+     */
+    public int getRpmLow() {
+        return rpmLow;
+    }
+
+    /**
+     * @return rpm high
+     */
+    public int getRpmHigh() {
+        return rpmHigh;
+    }
+
+    /**
+     * @return SFC
+     */
+    public int getSFC() {
+        return SFC;
+    }
 }
