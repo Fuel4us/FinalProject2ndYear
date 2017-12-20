@@ -38,6 +38,9 @@ public class Vehicle {
 
     private List<VelocityLimit> velocityLimitList;
     private Energy energy;
+    
+    private int id = 1;
+    
 
     /**
      * Creates a new vehicle
@@ -264,6 +267,10 @@ public class Vehicle {
 //        return new Measurable[]{new Measurable(engineSpeed, Unit.ROTATIONS_PER_MINUTE), new Measurable(torque, Unit.NEWTON_METER),
 //                new Measurable(SFC, Unit.GRAM_PER_KILOWATT_HOUR)};
 //    }
+
+    public String getName() {
+        return name;
+    }
 
     /**
      * Indicates motor type
