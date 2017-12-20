@@ -21,7 +21,7 @@ public class Road {
     private String typology;
     @XmlElementWrapper(name = "toll_fare")
     @XmlElement(name = "class")
-    private List<Float> tollFare;
+    private List<Double> tollFare;
 
     /**
      * Full constructor for the class Road
@@ -30,7 +30,7 @@ public class Road {
      * @param typology the road's typology
      * @param tollFare the road's toll fare
      */
-    public Road(String id, String name, String typology, List<Float> tollFare) {
+    public Road(String id, String name, String typology, List<Double> tollFare) {
         this.id = id;
         this.name = name;
         this.typology = typology;
@@ -59,8 +59,7 @@ public class Road {
     }
 
     /**
-     * ToDo
-     * @return
+     * @return the name of the Road
      */
     public String getName() {
         return name;
