@@ -151,9 +151,11 @@ public class Vehicle {
 
         Measurable power = calculatePowerGenerated(data[0], data[1]);
 
-        double fuelQuantity = power.getQuantity() * data[2].getQuantity();
+        double SFC = data[2].getQuantity();
 
-        return new Measurable(fuelQuantity * fuel.getSpecificEnergy().getQuantity(), Unit.KILOJOULE);
+        double fuelQuantity = power.getQuantity() * SFC * segment.calculateMinimumTimeInterval(roadNetwork, this);
+
+        return new Measurable(fuelQuantity * fuel.getSpecificEnergy().getQuantity(), Unit.GRAM);
     }
 
     /**
