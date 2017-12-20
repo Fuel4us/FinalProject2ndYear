@@ -120,4 +120,12 @@ public class Section extends Edge<String, Direction> {
         StringTemplate segmentTemplate = groupSegment.getInstanceOf(HTML_STRUCTURE_SEGMENT);
         segment.printDataFromSegment(segmentTemplate, file);
     }
+
+    /**
+     * ToDo
+     * @return
+     */
+    public Road getOwningRoad() {
+        return owningRoad;
+    }
 }

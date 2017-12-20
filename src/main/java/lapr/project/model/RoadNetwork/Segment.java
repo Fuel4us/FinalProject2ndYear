@@ -80,7 +80,6 @@ public class Segment {
         segmentTemplate.setAttribute("sampleMinVel", segmentMinVelocity);
 
         file.write(segmentTemplate.toString());
-//        System.out.println(segmentTemplate.toString());
 
     }
 
