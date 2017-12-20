@@ -6,12 +6,10 @@ import lapr.project.utils.FileParser.Exportable;
 import lapr.project.utils.Measurable;
 import org.antlr.stringtemplate.StringTemplate;;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -23,12 +21,39 @@ public class Analysis implements Exportable {
     private int id;
     private Project requestingInstance;
     private String algorithmName;
-//    private Measurable travelTime;
     private Collection<Section> bestPath;
+    private Measurable expendedEnergy;
+    private Measurable travelTime;
+    private Measurable travelCost;
 
     /**
-     *
-     * ToDo
+     * Creates an analysis with id, requesting instance, algorithm name, best path, expended energy,
+     * travel time and travel cost
+     * @param id this analysis' id
+     * @param requestingInstance this analysis' requesting instance
+     * @param algorithmName this analysis' algorithm name
+     * @param bestPath this analysis' best path
+     * @param expendedEnergy this analysis' expended energy
+     * @param travelTime this analysis' travel time
+     * @param travelCost this analysis' travel cost
+     */
+    public Analysis(int id, Project requestingInstance, String algorithmName, Collection<Section> bestPath,
+                    Measurable expendedEnergy, Measurable travelTime, Measurable travelCost) {
+        this.id = id;
+        this.requestingInstance = requestingInstance;
+        this.algorithmName = algorithmName;
+        this.bestPath = bestPath;
+        this.expendedEnergy = expendedEnergy;
+        this.travelTime = travelTime;
+        this.travelCost = travelCost;
+    }
+
+    /**
+     *Creates an analysis with id, requesting instance, algorithm name and best path
+     * @param id this analysis' id
+     * @param requestingInstance this analysis' requesting instance
+     * @param algorithmName this analysis' algorithm name
+     * @param bestPath this analysis' best path
      */
     public Analysis(int id, Project requestingInstance, String algorithmName, Collection<Section> bestPath) {
         this.id = id;
@@ -52,12 +77,20 @@ public class Analysis implements Exportable {
         return id;
     }
 
-//    /**
-//     * Provides the results of an analysis,
-//     * encapsulating them in a Collection subclass
-//     * @return Such Results as aforementioned
-//     */
-//    public abstract Collection<?> generateReport();
+    /**
+     * Provides the results of an analysis,
+     * encapsulating them in a Collection subclass
+     * @return Such Results as aforementioned
+     */
+    public Collection<?> generateReport() {
+        //ToDo Test only, replace by actual implementation
+        List<String> test = new ArrayList<>();
+        test.add("A");
+        test.add("B");
+        test.add("C");
+        test.add("D");
+        return test;
+    };
 
     /**
      * Prints data from a given segment filling the information missing in a given file template

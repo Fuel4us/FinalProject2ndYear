@@ -2,6 +2,8 @@ package lapr.project.model.RoadNetwork;
 
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.Graph.Edge;
+import lapr.project.utils.Measurable;
+import lapr.project.utils.Unit;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.antlr.stringtemplate.language.DefaultTemplateLexer;
@@ -52,6 +54,45 @@ public class Section extends Edge<String, Direction> {
         this.direction = direction;
         this.owningRoad = road;
         this.tollFare = tollFare;
+    }
+
+    /**
+     * Calculates the toll costs for this section, depending on the correspondent Road
+     * @param vehicle the vehicle
+     * @return the toll costs
+     */
+    public Measurable determineTollCosts(Vehicle vehicle) {
+
+        if (owningRoad.getTypology().equalsIgnoreCase("regular road")) {
+
+            //regular roads are free
+            return new Measurable(0, Unit.EUROS);
+
+        } else if (owningRoad.getTypology().equalsIgnoreCase("toll highway")) {
+
+            //toll highway is the toll fare of each segment times the number of km in each segment
+            double kmTravelled = 0;
+            for (Segment segment : segments) {
+                kmTravelled += segment.getLength();
+            }
+
+            double tollFare = owningRoad.retrieveVehicleClassRespectiveTollFare(vehicle);
+
+            return new Measurable(kmTravelled * tollFare, Unit.EUROS);
+
+        } else if (owningRoad.getTypology().equalsIgnoreCase("gantry toll highway")) {
+
+            //gantry toll highway is the toll fare of this section
+            for (int i = 0; i < tollFare.size(); i++) {
+                if (i == vehicle.getVehicleClass()) {
+                    return new Measurable(tollFare.get(i), Unit.EUROS);
+                }
+            }
+
+        }
+
+        return new Measurable(0, Unit.EUROS);
+
     }
 
     /**
@@ -126,10 +167,16 @@ public class Section extends Edge<String, Direction> {
     }
 
     /**
-     * ToDo
-     * @return
+     * @return owning road
      */
     public Road getOwningRoad() {
         return owningRoad;
+    }
+
+    /**
+     * @return segments
+     */
+    public Collection<Segment> getSegments() {
+        return segments;
     }
 }

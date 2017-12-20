@@ -5,8 +5,11 @@ import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork.Node;
 import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.RoadNetwork.Section;
+import lapr.project.model.RoadNetwork.Segment;
 import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.model.Vehicle.VehicleType;
 import lapr.project.utils.Measurable;
+import lapr.project.utils.Unit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +39,10 @@ public class PathAlgorithm {
      */
     public Analysis fastestPath(Project project, Node start, Node end, Vehicle vehicle) {
 
+        if (vehicle.getMotorType() != Vehicle.MotorType.COMBUSTION) {
+            throw new IllegalArgumentException("This operation doesn't support electric vehicles");
+        }
+
         RoadNetwork roadNetwork = project.getRoadNetwork();
         List<Node> path = new ArrayList<>();
 
@@ -43,12 +50,6 @@ public class PathAlgorithm {
         double travelTime = shortestPathLeastTime(roadNetwork, start, end, path, vehicle);
 
         //list of sections the vehicle used along the road network
-
-        //Todo -> ensure list represents shortest to Node end NO FIM WTV
-
-
-        //Todo -> convert list to list of sections
-        //ToDo Done -> Requires testing only
         List<Section> sections = new ArrayList<>();
         int size = path.size();
         for (int i = 0; i < size; i++) {
@@ -58,19 +59,20 @@ public class PathAlgorithm {
             }
         }
 
-
         // the traveling time is already contained in the travelTime double
 
-        // ToDo energy consumption considering wind effect
-
-        double expendedEnergy = 0;
+        Measurable expendedEnergy = new Measurable(0, Unit.GRAM);
+        Measurable tollCosts = new Measurable(0, Unit.EUROS);
         for (Section section : sections) {
+            for (Segment segment : section.getSegments()) {
+                expendedEnergy.setQuantity(expendedEnergy.getQuantity() +
+                        vehicle.determineEnergyExpenditure(roadNetwork, segment).getQuantity());
+            }
+            tollCosts.setQuantity(tollCosts.getQuantity() + section.determineTollCosts(vehicle).getQuantity());
         }
 
-        // ToDo toll costs
-
-        //ToDo include above information in generated report, and make it a class of its own
-        return null;
+        return new Analysis(0, project, "N10 - Fastest Path", sections, expendedEnergy,
+                new Measurable(travelTime, Unit.HOUR), tollCosts);
 
     }
 

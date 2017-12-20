@@ -6,13 +6,16 @@
 package lapr.project.ui;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import lapr.project.controller.BestPathController;
+import lapr.project.model.Analysis;
 import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork.Node;
 import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 
 /**
  *
@@ -23,6 +26,7 @@ public class BestPathUI extends javax.swing.JFrame {
     private BestPathController controller;
     private static final long serialVersionUID = -8320152827152597623L;
     private Project project;
+    private Analysis generatedAnalysis;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
     private javax.swing.JButton jButton1;
@@ -52,14 +56,17 @@ public class BestPathUI extends javax.swing.JFrame {
     private javax.swing.JPanel orangeBorder;
     // End of variables declaration//GEN-END:variables
 
+    private DataBaseCommunicator dbCom;
+
     /**
      * Creates new form RoadNetworkPathFormUI
      */
-    public BestPathUI(Project project) {
+    public BestPathUI(Project project, DataBaseCommunicator dbCom) {
         super("Best Path");
         this.controller = new BestPathController(project);
         initComponents();
-        
+        this.dbCom = dbCom;
+        this.project = project;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setVisible(true);
@@ -302,44 +309,14 @@ public class BestPathUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new StoreNetworkAnalysisUI();
+        //Algorithm N10
+//ToDo  Analyis generatedAnalysis = controller.executeAlgorithm(N10);
+
+//TEST ONLY
+        Analysis generatedAnalysis = new Analysis(1, project, "N10", new ArrayList<>());
+
+        new StoreNetworkAnalysisUI(project, dbCom, generatedAnalysis);
         setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BestPathUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BestPathUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BestPathUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BestPathUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new BestPathUI(new Project("","",new RoadNetwork(),new ArrayList<>())).setVisible(true));
-    }
 
 }

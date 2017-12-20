@@ -24,6 +24,7 @@ import lapr.project.utils.Unit;
  */
 public class XMLImporterVehicles implements FileParser {
 
+    private final String byDefault = "Default";
     private int id = 1;
 
     @Override
@@ -34,19 +35,19 @@ public class XMLImporterVehicles implements FileParser {
             /**
              * Initiate Variables
              */
-            String name = "Default";
-            String description = "Default";
+            String name;
+            String description;
 
             VehicleType vehicleType = null;
-            String newVehicleType = "Default";
+            String newVehicleType = byDefault;
 
             int newTollClass = 0;
 
-            String newMotorization = "Default";
+            String newMotorization = byDefault;
             MotorType motorTypeValue = null;
 
             Fuel fuel = null;
-            String newFuel = "Default";
+            String newFuel = byDefault;
 
             Measurable mass = null;
             Measurable load = null;
@@ -62,8 +63,8 @@ public class XMLImporterVehicles implements FileParser {
 
             List<VelocityLimit> newVelocityLimitList = new ArrayList<>();
             VelocityLimit newVelocityLimit = new VelocityLimit();
-            String newSegmentType = "Default";
-            String newVelocity = "Default";
+            String newSegmentType = byDefault;
+            String newVelocity = byDefault;
             Measurable newVelocityLimitValue = null;
             double newLimit = 0;
 
@@ -87,7 +88,7 @@ public class XMLImporterVehicles implements FileParser {
             List<Regime> newRegimeList = new ArrayList<>();
             Throttle newThrottle = null;
             List<Throttle> newThrottleList = new ArrayList<>();
-            Vehicle newVehicle = null;
+            Vehicle newVehicle;
 
             // Get vehicleList
             List<Vehicle> set = new ArrayList<>();
@@ -127,35 +128,35 @@ public class XMLImporterVehicles implements FileParser {
                             /**
                              * Type of vehicle
                              */
-                            if (attribute.getNodeName().equals("type")) {
+                            if (attribute.getNodeName().equalsIgnoreCase("type")) {
                                 vehicleType = addVehicleType(newVehicleType, attribute);
                             }
 
                             /**
                              * Toll_class
                              */
-                            if (attribute.getNodeName().equals("toll_class")) {
+                            if (attribute.getNodeName().equalsIgnoreCase("toll_class")) {
                                 newTollClass = Integer.parseInt(attribute.getTextContent());
                             }
 
                             /**
                              * Motorization type ENUM
                              */
-                            if (attribute.getNodeName().equals("motorization")) {
+                            if (attribute.getNodeName().equalsIgnoreCase("motorization")) {
                                 motorTypeValue = addMotorization(newMotorization, attribute);
                             }
 
                             /**
                              * Fuel
                              */
-                            if (attribute.getNodeName().equals("fuel")) {
+                            if (attribute.getNodeName().equalsIgnoreCase("fuel")) {
                                 fuel = addFuel(newFuel, attribute);
                             }
 
                             /**
                              * Mass from Measurable
                              */
-                            if (attribute.getNodeName().equals("mass")) {
+                            if (attribute.getNodeName().equalsIgnoreCase("mass")) {
                                 mass = addMass(newMass, massUnit, attribute);
 
                             }
@@ -163,41 +164,41 @@ public class XMLImporterVehicles implements FileParser {
                             /**
                              * Load from Measurable
                              */
-                            if (attribute.getNodeName().equals("load")) {
+                            if (attribute.getNodeName().equalsIgnoreCase("load")) {
                                 load = addLoad(newLoad, loadUnit, attribute);
                             }
 
                             /**
                              * Drag
                              */
-                            if (attribute.getNodeName().equals("drag")) {
+                            if (attribute.getNodeName().equalsIgnoreCase("drag")) {
                                 dragCoefficient = Float.parseFloat(attribute.getTextContent());
                             }
 
                             /**
                              * Frontal Area
                              */
-                            if (attribute.getNodeName().equals("frontal_area")) {
+                            if (attribute.getNodeName().equalsIgnoreCase("frontal_area")) {
                                 newFrontalArea.setQuantity(Double.parseDouble(attribute.getTextContent()));
                             }
                             /**
                              * RollingReleaseCoefficient
                              */
-                            if (attribute.getNodeName().equals("rrc")) {
+                            if (attribute.getNodeName().equalsIgnoreCase("rrc")) {
                                 newRRC = Float.parseFloat(attribute.getTextContent());
                             }
 
                             /**
                              * Wheel size
                              */
-                            if (attribute.getNodeName().equals("wheel_size")) {
+                            if (attribute.getNodeName().equalsIgnoreCase("wheel_size")) {
                                 newWheel.setQuantity(Double.parseDouble(attribute.getTextContent()));
                             }
 
                             /**
                              * VelocityLimitList
                              */
-                            if (attribute.getNodeName().equals("velocity_limit_list")) {
+                            if (attribute.getNodeName().equalsIgnoreCase("velocity_limit_list")) {
                                 velocityLimitList(newLimit, newSegmentType,
                                         newVelocity, newVelocityLimitValue,
                                         newVelocityLimitList, newVelocityLimit,
@@ -208,7 +209,7 @@ public class XMLImporterVehicles implements FileParser {
                         /**
                          * Energy
                          */
-                        if (attribute.getNodeName().equals("energy")) {
+                        if (attribute.getNodeName().equalsIgnoreCase("energy")) {
                             newEnergy = addEnergy(newMinRpm, newMaxRpm, newFinalDriveRatio,
                                     newGearId, newRatio, newGear, newGearList,
                                     newThrottleId, newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh, newSfc,
@@ -232,25 +233,12 @@ public class XMLImporterVehicles implements FileParser {
         return true;
     }
 
-    public String addName(List<Vehicle> list, String name) {
-
-        for (Vehicle v : list) {
-            if (v.getName().equalsIgnoreCase(name)) {
-                name += id;
-                id++;
-            }
-        }
-
-        return name;
-
-    }
-
     public VehicleType addVehicleType(String newVehicleType, Node attribute) {
         newVehicleType = attribute.getTextContent();
         VehicleType[] typeOfVehicle = VehicleType.values();
         for (VehicleType type : typeOfVehicle) {
             String typeStr = newVehicleType;
-            if (typeStr.equals(type.toString())) {
+            if (typeStr.equalsIgnoreCase(type.toString())) {
                 return type;
             }
         }
@@ -274,7 +262,7 @@ public class XMLImporterVehicles implements FileParser {
         Fuel[] fuelEnum = Fuel.values();
         for (Fuel fuelType : fuelEnum) {
             String fuelStr = newFuel;
-            if (fuelStr.equals(fuelType.toString())) {
+            if (fuelStr.equalsIgnoreCase(fuelType.toString())) {
                 return fuelType;
             }
         }
@@ -287,9 +275,9 @@ public class XMLImporterVehicles implements FileParser {
         String[] splitX = x.split(" ");
         newMass = Double.parseDouble(splitX[0]);
         massUnit = splitX[1];
-        if (massUnit.equals("kg")) {
+        if (massUnit.equalsIgnoreCase("kg")) {
             return new Measurable(newMass, Unit.KILOGRAM);
-        } else if (massUnit.equals("g")) {
+        } else if (massUnit.equalsIgnoreCase("g")) {
             return new Measurable(newMass, Unit.GRAM);
         }
         System.out.println("Mass unit not correct the value is now the default (kg)");
@@ -301,9 +289,9 @@ public class XMLImporterVehicles implements FileParser {
         String[] splity = y.split(" ");
         newLoad = Double.parseDouble(splity[0]);
         loadUnit = splity[1];
-        if (loadUnit.equals("kg")) {
+        if (loadUnit.equalsIgnoreCase("kg")) {
             return new Measurable(newLoad, Unit.KILOGRAM);
-        } else if (loadUnit.equals("g")) {
+        } else if (loadUnit.equalsIgnoreCase("g")) {
             return new Measurable(newLoad, Unit.GRAM);
         }
         System.out.println("Load unit not correct the value is now the default (kg)");
@@ -325,13 +313,13 @@ public class XMLImporterVehicles implements FileParser {
                                         *Segment Type
                  */
                 if (velocityLimitNode.getNodeType() == Node.ELEMENT_NODE) {
-                    if (velocityLimitNode.getNodeName().equals("segment_type")) {
+                    if (velocityLimitNode.getNodeName().equalsIgnoreCase("segment_type")) {
                         newSegmentType = velocityLimitNode.getTextContent();
                     }
                     /**
                      * Velocity Limit
                      */
-                    if (velocityLimitNode.getNodeName().equals("limit")) {
+                    if (velocityLimitNode.getNodeName().equalsIgnoreCase("limit")) {
                         String string = attribute.getTextContent();
                         String[] stringSplit = string.split(" ");
                         if (stringSplit.length == 2) {
@@ -344,7 +332,7 @@ public class XMLImporterVehicles implements FileParser {
                             } else if (newVelocity.equalsIgnoreCase("m/s")) {
                                 newVelocityLimitValue = new Measurable(newLimit, Unit.METERS_PER_SECOND);
                             }
-                        }else{
+                        } else {
                             newVelocityLimitValue = new Measurable(newLimit, Unit.KILOMETERS_PER_HOUR);
                         }
                     }
@@ -368,35 +356,35 @@ public class XMLImporterVehicles implements FileParser {
                 /**
                  * Min RPM
                  */
-                if (energyNode.getNodeName().equals("min_rpm")) {
+                if (energyNode.getNodeName().equalsIgnoreCase("min_rpm")) {
                     newMinRpm = Integer.parseInt(energyNode.getTextContent());
                 }
                 /**
                  * Max RPM
                  */
-                if (energyNode.getNodeName().equals("max_rpm")) {
+                if (energyNode.getNodeName().equalsIgnoreCase("max_rpm")) {
                     newMaxRpm = Integer.parseInt(energyNode.getTextContent());
                 }
                 /**
                  * Final Drive ratio
                  */
-                if (energyNode.getNodeName().equals("final_drive_ratio")) {
+                if (energyNode.getNodeName().equalsIgnoreCase("final_drive_ratio")) {
                     newFinalDriveRatio = Float.parseFloat(energyNode.getTextContent());
                 }
                 /**
                  * Gear list
                  */
-                if (energyNode.getNodeName().equals("gear_list")) {
+                if (energyNode.getNodeName().equalsIgnoreCase("gear_list")) {
                     addGearList(energyNode, newGearId, newRatio, newGear, newGearList);
                 }
                 /**
                  * Throttle List
                  */
-                if (energyNode.getNodeName().equals("throttle_list")) {
+                if (energyNode.getNodeName().equalsIgnoreCase("throttle_list")) {
                     addThrottleList(energyNode, newThrottleId,
                             newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh,
-                             newSfc, newRegime, newRegimeList,
-                             newThrottle, newThrottleList);
+                            newSfc, newRegime, newRegimeList,
+                            newThrottle, newThrottleList);
                 }
 
             }
@@ -423,7 +411,7 @@ public class XMLImporterVehicles implements FileParser {
                      * Ratio
                      */
                     if (gearNode.getNodeType() == Node.ELEMENT_NODE) {
-                        if (energyNode.getNodeName().equals("ratio")) {
+                        if (energyNode.getNodeName().equalsIgnoreCase("ratio")) {
                             newRatio = Float.parseFloat(gearNode.getTextContent());
                         }
                     }
@@ -438,8 +426,8 @@ public class XMLImporterVehicles implements FileParser {
 
     public void addThrottleList(Node energyNode, int newThrottleId,
             int newTorqueLow, int newTorqueHigh, int newRpmLow, int newRpmHigh,
-             int newSfc, Regime newRegime, List<Regime> newRegimeList,
-             Throttle newThrottle, List<Throttle> newThrottleList) {
+            int newSfc, Regime newRegime, List<Regime> newRegimeList,
+            Throttle newThrottle, List<Throttle> newThrottleList) {
         NodeList throttleList = energyNode.getChildNodes();
         for (int k = 0; k < throttleList.getLength(); k++) {
             Node throttleNode = throttleList.item(k);
@@ -449,20 +437,20 @@ public class XMLImporterVehicles implements FileParser {
                 NodeList regimeList = throttleNode.getChildNodes();
                 for (int line = 0; line < regimeList.getLength(); line++) {
                     Node regimeNode = regimeList.item(line);
-                    if (regimeNode.getNodeName().equals("torque_low")) {
+                    if (regimeNode.getNodeName().equalsIgnoreCase("torque_low")) {
                         newTorqueLow = Integer.parseInt(energyNode.getTextContent());
                     }
-                    if (regimeNode.getNodeName().equals("torque_high")) {
+                    if (regimeNode.getNodeName().equalsIgnoreCase("torque_high")) {
                         newTorqueHigh = Integer.parseInt(energyNode.getTextContent());
                     }
 
-                    if (regimeNode.getNodeName().equals("rpm_low")) {
+                    if (regimeNode.getNodeName().equalsIgnoreCase("rpm_low")) {
                         newRpmLow = Integer.parseInt(energyNode.getTextContent());
                     }
-                    if (regimeNode.getNodeName().equals("rpm_high")) {
+                    if (regimeNode.getNodeName().equalsIgnoreCase("rpm_high")) {
                         newRpmHigh = Integer.parseInt(energyNode.getTextContent());
                     }
-                    if (regimeNode.getNodeName().equals("SFC")) {
+                    if (regimeNode.getNodeName().equalsIgnoreCase("SFC")) {
                         newSfc = Integer.parseInt(energyNode.getTextContent());
                     }
 
@@ -475,4 +463,18 @@ public class XMLImporterVehicles implements FileParser {
             newThrottleList.add(newThrottle);
         }
     }
+
+    public String addName(List<Vehicle> list, String name) {
+
+        for (Vehicle v : list) {
+            if (v.getName().equalsIgnoreCase(name)) {
+                name += id;
+                id++;
+            }
+        }
+
+        return name;
+
+    }
+
 }
