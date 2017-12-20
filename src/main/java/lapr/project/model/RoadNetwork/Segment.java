@@ -39,7 +39,8 @@ public class Segment {
     /**
      * Forbid default no-arg instantiation
      */
-    private Segment() {}
+    private Segment() {
+    }
 
     public Segment(int index, double initialHeight, double finalHeight, double length, double windAngle, double windSpeed, double maxVelocity, double minVelocity) {
         this.index = index;
@@ -58,6 +59,7 @@ public class Segment {
 
     /**
      * Fills and prints data of segment in a file
+     *
      * @param segmentTemplate instance of {@link StringTemplate}
      */
     public void printDataFromSegment(StringTemplate segmentTemplate, FileWriter file) throws IOException {
@@ -87,8 +89,9 @@ public class Segment {
      * Calculates the minimum time interval spent for the segment,
      * taking into account the velocity limit, its length and
      * the velocity limit of the vehicle for the typology
+     *
      * @param roadNetwork the road network of the current project
-     * @param vehicle the vehicle
+     * @param vehicle     the vehicle
      * @return the minimum time interval
      */
     public double calculateMinimumTimeInterval(RoadNetwork roadNetwork, Vehicle vehicle) {
@@ -98,7 +101,7 @@ public class Segment {
         Section section = null;
 
         //check which section has this segment
-        for (Edge<Node,Section> edge : edges) {
+        for (Edge<Node, Section> edge : edges) {
 
             section = edge.getElement();
 
@@ -127,8 +130,9 @@ public class Segment {
     /**
      * Calculates the maximum possible velocity for the segment, knowing its length and
      * time spent
+     *
      * @param roadNetwork the road network
-     * @param vehicle the vehicle
+     * @param vehicle     the vehicle
      * @return the minimum velocity
      */
     public Measurable calculateMaximumVelocityInterval(RoadNetwork roadNetwork, Vehicle vehicle) {
@@ -139,6 +143,7 @@ public class Segment {
     /**
      * Calculates the angle of the segment according to its initial and final
      * heights and length
+     *
      * @return the angle
      */
     public Measurable calculateAngle() {
@@ -147,12 +152,18 @@ public class Segment {
 
     /**
      * Calculates the velocity relative to the air (considering wind velocity)
+     *
      * @param maxLinearVelocity the maximum velocity possible
      * @return the velocity relative to the air
      */
     public Measurable calculateAirRelatedVelocity(Measurable maxLinearVelocity) {
-        return new Measurable((maxLinearVelocity.getQuantity() /
-                Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO) + windSpeed,
-                Unit.KILOMETERS_PER_HOUR);
+
+        //conversion km/h -> m/s
+        maxLinearVelocity.setQuantity(maxLinearVelocity.getQuantity() / Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO);
+
+        double airRelatedVelocity = Math.sqrt(Math.pow(windSpeed * Math.cos(windAngle) - maxLinearVelocity.getQuantity(), 2)
+                + Math.pow(windSpeed * Math.sin(windAngle) - maxLinearVelocity.getQuantity(), 2));
+
+        return new Measurable(airRelatedVelocity, Unit.METERS_PER_SECOND);
     }
 }
