@@ -51,8 +51,8 @@ public class SectionTest {
         roadNetworkTest1.addNode(node3);
         roadNetworkTest1.addNode(node4);
 
-        Section sectionTest1 = new Section(node1, node2, Direction.BIDIRECTIONAL, segments1, new Road("A01", "A01", "toll highway"));
-        Section sectionTest2 = new Section(node3, node4, Direction.BIDIRECTIONAL, segments2, new Road("E02", "E02", "regular road"));
+        Section sectionTest1 = new Section(node1, node2, Direction.BIDIRECTIONAL, segments1, new Road("A01", "A01", "toll highway"), new ArrayList<>());
+        Section sectionTest2 = new Section(node3, node4, Direction.BIDIRECTIONAL, segments2, new Road("E02", "E02", "regular road"), new ArrayList<>());
         roadNetworkTest1.addSection(node1, node2, sectionTest1);
         roadNetworkTest1.addSection(node3, node4, sectionTest2);
 

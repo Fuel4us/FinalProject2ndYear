@@ -6,7 +6,7 @@
         <motorization>combustion</motorization>
         <fuel>diesel</fuel>
         <mass>2400 Kg</mass>
-        <load>800 kg</load>
+        <load>1200 kg</load>
         <drag>0.39</drag>
         <frontal_area>2.4</frontal_area>
         <rrc>0.015</rrc>
@@ -14,7 +14,11 @@
         <velocity_limit_list>
             <velocity_limit>
                 <segment_type>Highway</segment_type>
-                <limit>120</limit>
+                <limit>110</limit>
+            </velocity_limit>
+            <velocity_limit>
+                <segment_type>Road</segment_type>
+                <limit>80</limit>
             </velocity_limit>
         </velocity_limit_list>
         <energy>  			
@@ -44,31 +48,36 @@
             <throttle_list>
                 <throttle id="25">
                     <regime>
-                        <torque>115</torque>
+                        <torque_low>115</torque_low>
+                        <torque_high>125</torque_high>
                         <rpm_low>900</rpm_low>
                         <rpm_high>1499</rpm_high>
                         <SFC>500</SFC>
                     </regime>
                     <regime>
-                        <torque>125</torque>
+                        <torque_low>125</torque_low>
+                        <torque_high>120</torque_high>
                         <rpm_low>1500</rpm_low>
                         <rpm_high>2499</rpm_high>
                         <SFC>450</SFC>
                     </regime>
                     <regime>
-                        <torque>120</torque>
+                        <torque_low>120</torque_low>
+                        <torque_high>105</torque_high>
                         <rpm_low>2500</rpm_low>
                         <rpm_high>3499</rpm_high>
                         <SFC>520</SFC>
                     </regime>
                     <regime>
-                        <torque>105</torque>
+                        <torque_low>105</torque_low>
+                        <torque_high>90</torque_high>
                         <rpm_low>3500</rpm_low>
                         <rpm_high>4499</rpm_high>
                         <SFC>550</SFC>
                     </regime>
                     <regime>
-                        <torque>90</torque>
+                        <torque_low>90</torque_low>
+                        <torque_high>80</torque_high>
                         <rpm_low>4500</rpm_low>
                         <rpm_high>5500</rpm_high>
                         <SFC>650</SFC>
@@ -76,31 +85,36 @@
                 </throttle>
                 <throttle id="50">
                     <regime>
-                        <torque>185</torque>
+                        <torque_low>185</torque_low>
+                        <torque_high>195</torque_high>
                         <rpm_low>900</rpm_low>
                         <rpm_high>1499</rpm_high>
                         <SFC>380</SFC>
                     </regime>
                     <regime>
-                        <torque>195</torque>
+                        <torque_low>195</torque_low>
+                        <torque_high>190</torque_high>
                         <rpm_low>1500</rpm_low>
                         <rpm_high>2499</rpm_high>
                         <SFC>350</SFC>
                     </regime>
                     <regime>
-                        <torque>190</torque>
+                        <torque_low>190</torque_low>
+                        <torque_high>180</torque_high>
                         <rpm_low>2500</rpm_low>
                         <rpm_high>3999</rpm_high>
                         <SFC>360</SFC>
                     </regime>
                     <regime>
-                        <torque>180</torque>
+                        <torque_low>180</torque_low>
+                        <torque_high>150</torque_high>
                         <rpm_low>3500</rpm_low>
                         <rpm_high>4499</rpm_high>
                         <SFC>400</SFC>
                     </regime>
                     <regime>
-                        <torque>150</torque>
+                        <torque_low>150</torque_low>
+                        <torque_high>135</torque_high>
                         <rpm_low>4500</rpm_low>
                         <rpm_high>5500</rpm_high>
                         <SFC>520</SFC>
@@ -108,31 +122,36 @@
                 </throttle>
                 <throttle id="100">
                     <regime>
-                        <torque>305</torque>
+                        <torque_low>305</torque_low>
+                        <torque_high>325</torque_high>
                         <rpm_low>900</rpm_low>
                         <rpm_high>1499</rpm_high>
                         <SFC>380</SFC>
                     </regime>
                     <regime>
-                        <torque>325</torque>
+                        <torque_low>325</torque_low>
+                        <torque_high>315</torque_high>
                         <rpm_low>1500</rpm_low>
                         <rpm_high>2499</rpm_high>
                         <SFC>350</SFC>
                     </regime>
                     <regime>
-                        <torque>315</torque>
+                        <torque_low>315</torque_low>
+                        <torque_high>290</torque_high>
                         <rpm_low>2500</rpm_low>
                         <rpm_high>3999</rpm_high>
                         <SFC>360</SFC>
                     </regime>
                     <regime>
-                        <torque>290</torque>
+                        <torque_low>290</torque_low>
+                        <torque_high>220</torque_high>
                         <rpm_low>3500</rpm_low>
                         <rpm_high>4499</rpm_high>
                         <SFC>400</SFC>
                     </regime>
                     <regime>
-                        <torque>220</torque>
+                        <torque_low>220</torque_low>
+                        <torque_high>205</torque_high>
                         <rpm_low>4500</rpm_low>
                         <rpm_high>5500</rpm_high>
                         <SFC>520</SFC>
@@ -179,31 +198,36 @@
             <throttle_list>
                 <throttle id="25">
                     <regime>
-                        <torque>85</torque>
+                        <torque_low>85</torque_low>
+                        <torque_high>95</torque_high>
                         <rpm_low>1000</rpm_low>
                         <rpm_high>1999</rpm_high>
                         <SFC>480</SFC>
                     </regime>
                     <regime>
-                        <torque>95</torque>
+                        <torque_low>95</torque_low>
+                        <torque_high>82</torque_high>
                         <rpm_low>2000</rpm_low>
                         <rpm_high>3499</rpm_high>
                         <SFC>470</SFC>
                     </regime>
                     <regime>
-                        <torque>82</torque>
+                        <torque_low>82</torque_low>
+                        <torque_high>80</torque_high>
                         <rpm_low>3500</rpm_low>
                         <rpm_high>4500</rpm_high>
                         <SFC>475</SFC>
                     </regime>
                     <regime>
-                        <torque>80</torque>
+                        <torque_low>80</torque_low>
+                        <torque_high>70</torque_high>
                         <rpm_low>4500</rpm_low>
                         <rpm_high>5350</rpm_high>
                         <SFC>482</SFC>
                     </regime>
                     <regime>
-                        <torque>70</torque>
+                        <torque_low>70</torque_low>
+                        <torque_high>60</torque_high>
                         <rpm_low>5351</rpm_low>
                         <rpm_high>6500</rpm_high>
                         <SFC>500.2</SFC>
@@ -211,31 +235,36 @@
                 </throttle>
                 <throttle id="50">
                     <regime>
-                        <torque>125</torque>
+                        <torque_low>125</torque_low>
+                        <torque_high>135</torque_high>
                         <rpm_low>1000</rpm_low>
                         <rpm_high>1999</rpm_high>
                         <SFC>330</SFC>
                     </regime>
                     <regime>
-                        <torque>135</torque>
+                        <torque_low>135</torque_low>
+                        <torque_high>138</torque_high>
                         <rpm_low>2000</rpm_low>
                         <rpm_high>3499</rpm_high>
                         <SFC>320</SFC>
                     </regime>
                     <regime>
-                        <torque>138</torque>
+                        <torque_low>138</torque_low>
+                        <torque_high>128</torque_high>
                         <rpm_low>3500</rpm_low>
                         <rpm_high>4500</rpm_high>
                         <SFC>325</SFC>
                     </regime>
                     <regime>
-                        <torque>128</torque>
+                        <torque_low>128</torque_low>
+                        <torque_high>110</torque_high>
                         <rpm_low>4500</rpm_low>
                         <rpm_high>5350</rpm_high>
                         <SFC>350.3</SFC>
                     </regime>
                     <regime>
-                        <torque>110</torque>
+                        <torque_low>110</torque_low>
+                        <torque_high>95</torque_high>
                         <rpm_low>5351</rpm_low>
                         <rpm_high>6500</rpm_high>
                         <SFC>385</SFC>
@@ -243,31 +272,36 @@
                 </throttle>
                 <throttle id="100">
                     <regime>
-                        <torque>175</torque>
+                        <torque_low>175</torque_low>
+                        <torque_high>215</torque_high>
                         <rpm_low>1000</rpm_low>
                         <rpm_high>1999</rpm_high>
                         <SFC>270</SFC>
                     </regime>
                     <regime>
-                        <torque>215</torque>
+                        <torque_low>215</torque_low>
+                        <torque_high>216</torque_high>
                         <rpm_low>2000</rpm_low>
                         <rpm_high>3499</rpm_high>
                         <SFC>220</SFC>
                     </regime>
                     <regime>
-                        <torque>216</torque>
+                        <torque_low>216</torque_low>
+                        <torque_high>194</torque_high>
                         <rpm_low>3500</rpm_low>
                         <rpm_high>4500</rpm_high>
                         <SFC>235</SFC>
                     </regime>
                     <regime>
-                        <torque>194</torque>
+                        <torque_low>194</torque_low>
+                        <torque_high>168</torque_high>
                         <rpm_low>4500</rpm_low>
                         <rpm_high>5350</rpm_high>
                         <SFC>256</SFC>
                     </regime>
                     <regime>
-                        <torque>168</torque>
+                        <torque_low>168</torque_low>
+                        <torque_high>150</torque_high>
                         <rpm_low>5351</rpm_low>
                         <rpm_high>6500</rpm_high>
                         <SFC>300</SFC>
@@ -300,126 +334,150 @@
             <throttle_list>
                 <throttle id="25">
                     <regime>
-                        <torque>185</torque>
+                        <torque_low>185</torque_low>
+                        <torque_high>175</torque_high>
                         <rpm_low>0</rpm_low>
                         <rpm_high>3499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>175</torque>
+                        <torque_low>175</torque_low>
+                        <torque_high>166</torque_high>
                         <rpm_low>3500</rpm_low>
                         <rpm_high>4499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>166</torque>
+                        <torque_low>166</torque_low>
+                        <torque_high>158</torque_high>
                         <rpm_low>4500</rpm_low>
                         <rpm_high>5499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>158</torque>
+                        <torque_low>158</torque_low>
+                        <torque_high>143</torque_high>
                         <rpm_low>5500</rpm_low>
                         <rpm_high>6499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>143</torque>
+                        <torque_low>143</torque_low>
+                        <torque_high>129</torque_high>
                         <rpm_low>6500</rpm_low>
                         <rpm_high>7499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>129</torque>
+                        <torque_low>129</torque_low>
+                        <torque_high>116</torque_high>
                         <rpm_low>7500</rpm_low>
                         <rpm_high>8499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>116</torque>
+                        <torque_low>116</torque_low>
+                        <torque_high>104</torque_high>
                         <rpm_low>8500</rpm_low>
                         <rpm_high>9499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>104</torque>
+                        <torque_low>104</torque_low>
+                        <torque_high>81</torque_high>
                         <rpm_low>9500</rpm_low>
                         <rpm_high>12500</rpm_high>
                     </regime>
                 </throttle>
                 <throttle id="50">
                     <regime>
-                        <torque>250</torque>
+                        <torque_low>250</torque_low>
+                        <torque_high>237</torque_high>
                         <rpm_low>0</rpm_low>
                         <rpm_high>3499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>237</torque>
+                        <torque_low>237</torque_low>
+                        <torque_high>224</torque_high>
                         <rpm_low>3500</rpm_low>
                         <rpm_high>4499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>224</torque>
+                        <torque_low>224</torque_low>
+                        <torque_high>213</torque_high>
                         <rpm_low>4500</rpm_low>
                         <rpm_high>5499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>213</torque>
+                        <torque_low>213</torque_low>
+                        <torque_high>192</torque_high>
                         <rpm_low>5500</rpm_low>
                         <rpm_high>6499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>192</torque>
+                        <torque_low>192</torque_low>
+                        <torque_high>174</torque_high>
                         <rpm_low>6500</rpm_low>
                         <rpm_high>7499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>174</torque>
+                        <torque_low>174</torque_low>
+                        <torque_high>156</torque_high>
                         <rpm_low>7500</rpm_low>
                         <rpm_high>8499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>156</torque>
+                        <torque_low>156</torque_low>
+                        <torque_high>140</torque_high>
                         <rpm_low>8500</rpm_low>
                         <rpm_high>9499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>140</torque>
+                        <torque_low>140</torque_low>
+                        <torque_high>112</torque_high>
                         <rpm_low>9500</rpm_low>
                         <rpm_high>12500</rpm_high>
                     </regime>
                 </throttle>
                 <throttle id="100">
                     <regime>
-                        <torque>350</torque>
+                        <torque_low>350</torque_low>
+                        <torque_high>332</torque_high>
                         <rpm_low>0</rpm_low>
                         <rpm_high>3499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>332</torque>
+                        <torque_low>332</torque_low>
+                        <torque_high>315</torque_high>
                         <rpm_low>3500</rpm_low>
                         <rpm_high>4499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>315</torque>
+                        <torque_low>315</torque_low>
+                        <torque_high>299</torque_high>
                         <rpm_low>4500</rpm_low>
                         <rpm_high>5499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>299</torque>
+                        <torque_low>299</torque_low>
+                        <torque_high>270</torque_high>
                         <rpm_low>5500</rpm_low>
                         <rpm_high>6499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>270</torque>
+                        <torque_low>270</torque_low>
+                        <torque_high>243</torque_high>
                         <rpm_low>6500</rpm_low>
                         <rpm_high>7499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>243</torque>
+                        <torque_low>243</torque_low>
+                        <torque_high>222</torque_high>
                         <rpm_low>7500</rpm_low>
                         <rpm_high>8499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>222</torque>
+                        <torque_low>222</torque_low>
+                        <torque_high>200</torque_high>
                         <rpm_low>8500</rpm_low>
                         <rpm_high>9499</rpm_high>
                     </regime>
                     <regime>
-                        <torque>200</torque>
+                        <torque_low>200</torque_low>
+                        <torque_high>160</torque_high>
                         <rpm_low>9500</rpm_low>
                         <rpm_high>12500</rpm_high>
                     </regime>
