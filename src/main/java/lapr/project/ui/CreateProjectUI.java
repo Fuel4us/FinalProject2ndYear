@@ -12,7 +12,7 @@ import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 public class CreateProjectUI extends javax.swing.JFrame {
 
     private static final long serialVersionUID = -1818083907306250629L;
-    private DataBaseCommunicator dbCom;
+    private static DataBaseCommunicator dbCom;
     private CreateProjectController cpc;
     private Project p;
     
@@ -256,7 +256,7 @@ public class CreateProjectUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        //java.awt.EventQueue.invokeLater(() -> new CreateProjectUI().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new CreateProjectUI(dbCom).setVisible(true));
     }
 
 }

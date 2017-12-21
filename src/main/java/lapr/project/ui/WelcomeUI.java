@@ -15,7 +15,7 @@ import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 public class WelcomeUI extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 8935086433569396442L;
-    private DataBaseCommunicator dbCom;
+    private static DataBaseCommunicator dbCom;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
     private javax.swing.JButton jButtonCopy;
@@ -29,8 +29,9 @@ public class WelcomeUI extends javax.swing.JFrame {
     /**
      * Creates new form Welcome
      */
-    public WelcomeUI() {
+    public WelcomeUI(DataBaseCommunicator dbCom) {
         initComponents();
+        this.dbCom = dbCom;
     }
 
     /**
@@ -187,7 +188,7 @@ public class WelcomeUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new WelcomeUI().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new WelcomeUI(dbCom).setVisible(true));
     }
 
 
