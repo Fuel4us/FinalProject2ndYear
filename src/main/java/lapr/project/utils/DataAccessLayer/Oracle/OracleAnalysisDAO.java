@@ -30,17 +30,18 @@ public class OracleAnalysisDAO implements AnalysisDAO {
             return false;
         }
 
-        CallableStatement storeAnalysisCallable = oracleConnection.prepareCall(
+        try (CallableStatement storeAnalysisCallable = oracleConnection.prepareCall(
                 "CALL STORE_ANALYSIS(?,?)"
-        );
+        )) {
 
-        int analysisID = analysis.identify();
-        String name = analysis.issueRequestingEntity().getName();
+            int analysisID = analysis.identify();
+            String name = analysis.issueRequestingEntity().getName();
 
-        storeAnalysisCallable.setInt(1, analysisID);
-        storeAnalysisCallable.setString(2, name);
+            storeAnalysisCallable.setInt(1, analysisID);
+            storeAnalysisCallable.setString(2, name);
 
-        storeAnalysisCallable.executeUpdate();
+            storeAnalysisCallable.executeUpdate();
+        }
 
         return true;
     }
