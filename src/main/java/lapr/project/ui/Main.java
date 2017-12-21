@@ -24,7 +24,7 @@ class Main {
     ToDo temporary solution for testing purposes only
      */
     private static Project currentProject;
-    private static DataBaseCommunicator dbCom;
+    static DataBaseCommunicator dbCom;
 
     static final String SEGOE_FONT = "Segoe UI Semibold";
     static final Font FORTY_EIGHT_SEGOE_FONT = new java.awt.Font(SEGOE_FONT, 0, 48);
@@ -74,7 +74,7 @@ class Main {
         new Main();
 
         //<editor-fold desc="Demonstration purposes" default=collapsed>
-        new WelcomeUI(dbCom).setVisible(true);
+        WelcomeUI.main(null);
         //Testing purposes only
         
        // new BestPathUI(currentProject, dbCom).setVisible(true);

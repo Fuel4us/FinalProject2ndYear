@@ -24,10 +24,10 @@ import lapr.project.utils.FileParser.ExportHTML;
  */
 public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
 
-    private static final long serialVersionUID = 606009290497975171L;
     private Project project;
-    private DataBaseCommunicator dbCom;
     private Analysis generatedAnalysis;
+
+    private static final long serialVersionUID = 606009290497975171L;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField analysisResultTextField;
     private javax.swing.JLabel imgLateral;
@@ -44,7 +44,7 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
     /**
      * Creates new form StoreNetworkAnalysisUI
      */
-        public StoreNetworkAnalysisUI(Project project, DataBaseCommunicator dbCom, Analysis generatedAnalysis) {       
+        public StoreNetworkAnalysisUI(Project project, Analysis generatedAnalysis) {
         initComponents();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -52,7 +52,7 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         analysisResultTextField.setEditable(false);
         analysisResultTextField.setText(generatedAnalysis.generateReport().toString());
-        networkAnalysisController = new NetworkAnalysisController(project, dbCom, generatedAnalysis);
+        networkAnalysisController = new NetworkAnalysisController(project, Main.dbCom, generatedAnalysis);
     }
 
 //    /**
@@ -222,7 +222,7 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonGenerateFileActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        new BestPathUI(project, dbCom);
+        new BestPathUI(project);
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 

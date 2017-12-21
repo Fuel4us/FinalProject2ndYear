@@ -56,16 +56,13 @@ public class BestPathUI extends javax.swing.JFrame {
     private javax.swing.JPanel orangeBorder;
     // End of variables declaration//GEN-END:variables
 
-    private DataBaseCommunicator dbCom;
-
     /**
      * Creates new form RoadNetworkPathFormUI
      */
-    public BestPathUI(Project project, DataBaseCommunicator dbCom) {
+    BestPathUI(Project project) {
         super("Best Path");
         this.controller = new BestPathController(project);
         initComponents();
-        this.dbCom = dbCom;
         this.project = project;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -315,7 +312,7 @@ public class BestPathUI extends javax.swing.JFrame {
 //TEST ONLY
         Analysis generatedAnalysis = new Analysis(1, project, "N10", new ArrayList<>());
 
-        new StoreNetworkAnalysisUI(project, dbCom, generatedAnalysis);
+        new StoreNetworkAnalysisUI(project, generatedAnalysis);
         setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
