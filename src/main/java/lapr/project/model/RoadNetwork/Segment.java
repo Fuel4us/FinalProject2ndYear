@@ -147,7 +147,11 @@ public class Segment {
      * @return the angle
      */
     public Measurable calculateAngle() {
-        return new Measurable(Math.asin((finalHeight - initialHeight) / length), Unit.DEGREE);
+
+        //finalHeight and initialHeight m -> km
+        return new Measurable(Math.asin(
+                Math.abs(finalHeight * Physics.KILOMETERS_METERS_CONVERSION_RATIO - initialHeight * Physics.KILOMETERS_METERS_CONVERSION_RATIO)
+                        / length), Unit.DEGREE);
     }
 
     /**
@@ -162,7 +166,7 @@ public class Segment {
         maxLinearVelocity.setQuantity(maxLinearVelocity.getQuantity() / Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO);
 
         double airRelatedVelocity = Math.sqrt(Math.pow(windSpeed * Math.cos(windAngle) - maxLinearVelocity.getQuantity(), 2)
-                + Math.pow(windSpeed * Math.sin(windAngle) - maxLinearVelocity.getQuantity(), 2));
+                + Math.pow(windSpeed * Math.sin(windAngle), 2));
 
         return new Measurable(airRelatedVelocity, Unit.METERS_PER_SECOND);
     }
