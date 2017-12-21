@@ -162,7 +162,7 @@ public class Vehicle {
 
         double fuelQuantity = power.getQuantity() * SFC * segment.calculateMinimumTimeInterval(roadNetwork, this);
 
-        return new Measurable(fuelQuantity * fuel.getSpecificEnergy().getQuantity(), Unit.GRAM);
+        return new Measurable(fuelQuantity * fuel.getSpecificEnergy().getQuantity(), Unit.KILOJOULE);
     }
 
     /**
