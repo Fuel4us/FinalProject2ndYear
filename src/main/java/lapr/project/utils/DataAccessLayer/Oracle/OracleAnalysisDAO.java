@@ -3,50 +3,64 @@ package lapr.project.utils.DataAccessLayer.Oracle;
 import lapr.project.model.Analysis;
 import lapr.project.utils.DataAccessLayer.Abstraction.AnalysisDAO;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
-import oracle.jdbc.pool.OracleDataSource;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.logging.Level;
 
 /**
  * Handles Data Access via OracleDB
  */
 public class OracleAnalysisDAO implements AnalysisDAO {
 
-    private PreparedStatement saveStatement;
     private Connection oracleConnection;
 
-    public OracleAnalysisDAO(OracleDataSource oracleDataSource) {
-        try {
-            this.oracleConnection = oracleDataSource.getConnection();
-            saveStatement = oracleConnection.prepareStatement(
-                    "INSERT INTO ANALYSIS(ID, PROJECTNAME) VALUES (?, ?)"
-            );
-            if (!oracleConnection.getAutoCommit()) {
-                oracleConnection.commit();
-            }
-        } catch (SQLException e) {
-            DBAccessor.logSQLException(e);
-        }
-    }
+    public OracleAnalysisDAO() {}
 
     /**
      * Store an analysis into data layer
      * @param analysis an instance of {@link Analysis}
      */
     @Override
-    public void storeAnalysis(Analysis analysis) throws SQLException {
+    public boolean storeAnalysis(Analysis analysis) throws SQLException {
+
+        if (oracleConnection == null) {
+            DBAccessor.DB_ACCESS_LOG.log(Level.INFO, "No connection found in " + this.getClass());
+            return false;
+        }
+
+        CallableStatement storeAnalysisCallable = oracleConnection.prepareCall(
+                "CALL STORE_ANALYSIS(?,?)"
+        );
 
         int analysisID = analysis.identify();
         String name = analysis.issueRequestingEntity().getName();
 
-        saveStatement.setInt(1, analysisID);
-        saveStatement.setString(2, name);
+        storeAnalysisCallable.setInt(1, analysisID);
+        storeAnalysisCallable.setString(2, name);
 
-        saveStatement.executeUpdate();
+        storeAnalysisCallable.executeUpdate();
+
+        return true;
     }
 
+
+    /**
+     * Connects this Data Access Object to a database
+     * if the databaseProductName matches the database to which this DAO is an implementation of.
+     * @param connection Connects this DAO to a database
+     * @return true if obtaining connection was possible, and that connection refers to an OracleDB
+     * @throws SQLException
+     */
+    @Override
+    public boolean connectTo(Connection connection) throws SQLException {
+
+        if (OracleDBAccessor.verifyConnectionIsOracle(connection)) {
+            this.oracleConnection = connection;
+            return true;
+        }
+        return false;
+    }
 
 }
