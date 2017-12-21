@@ -31,7 +31,7 @@ public class WelcomeUI extends javax.swing.JFrame {
      */
     public WelcomeUI(DataBaseCommunicator dbCom) {
         initComponents();
-        this.dbCom = dbCom;
+        WelcomeUI.dbCom = dbCom;
     }
 
     /**

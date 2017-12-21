@@ -36,8 +36,8 @@ public class CreateProjectUI extends javax.swing.JFrame {
      */
     public CreateProjectUI(DataBaseCommunicator dbCom) {
         super("Create Project");
-        this.dbCom = dbCom;
-        cpc = new CreateProjectController(this.dbCom);
+        CreateProjectUI.dbCom = dbCom;
+        cpc = new CreateProjectController(CreateProjectUI.dbCom);
         //p = cpc.newProject();
         initComponents();
 

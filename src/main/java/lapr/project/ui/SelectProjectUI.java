@@ -42,8 +42,8 @@ public class SelectProjectUI extends javax.swing.JFrame {
      */
     public SelectProjectUI(DataBaseCommunicator dbCom) {
         super("Select Project");
-        this.dbCom = dbCom;
-        spc = new SelectProjectController(this.dbCom);
+        SelectProjectUI.dbCom = dbCom;
+        spc = new SelectProjectController(SelectProjectUI.dbCom);
         //p = cpc.newProject();
         initComponents();
 
