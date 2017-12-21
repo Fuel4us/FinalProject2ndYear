@@ -28,8 +28,8 @@ public class NetworkAnalysisController {
      * Stores generated network analysis to current project
      * @return true if storing was successful
      */
-    public void storeGeneratedNetworkAnalysis() {
-        DBCom.storeNetworkAnalysis(generatedAnalysis);
+    public boolean storeGeneratedNetworkAnalysis() {
+        return DBCom.storeNetworkAnalysis(generatedAnalysis);
     }
     
     public void exportData(File output) throws IOException{
