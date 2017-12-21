@@ -41,7 +41,7 @@ public class DataBaseCommunicator {
     public DataBaseCommunicator(DataSource dataSource) {
         if (dataSource instanceof OracleDataSource) {
             this.dbAccessor = new OracleDBAccessor();
-            this.analysisStorage = null; //  this.analysisStorage = new OracleAnalysisDAO()
+            this.analysisStorage = new OracleAnalysisDAO();
         }
     }
 
@@ -49,7 +49,7 @@ public class DataBaseCommunicator {
      * Stores network analysis in a database
      * @param analysis The network analysis to be stored
      */
-    public void storeNetworkAnalysis(Analysis analysis) {
+    public boolean storeNetworkAnalysis(Analysis analysis) {
         try {
             //Start Transaction
             Connection connection = dbAccessor.openConnexion();
@@ -59,6 +59,7 @@ public class DataBaseCommunicator {
                 //ToDo Store analyzed sections (generated report) into respective table
                 analysisStorage.storeAnalysis(analysis);
                 connection.commit();
+                return true;
             }
 
         } catch (SQLException e) {
@@ -71,7 +72,7 @@ public class DataBaseCommunicator {
                 }
             }
         }
-
+        return false;
     }
 
     public List<Project> fetchProjectList() {
