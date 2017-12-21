@@ -67,7 +67,8 @@ public class VehicleTest {
         Project object = new Project("test", "description", new RoadNetwork(), new ArrayList<>());
         XMLImporterVehicles xmlImport = new XMLImporterVehicles();
         String filename1 = "src/test/resources/TestSet02_Vehicles_v2.xml";
-        xmlImport.importVehicles(object, filename1);
+        boolean bol = xmlImport.importVehicles(object, filename1);
+        assertTrue(bol);
         Measurable expResult = new Measurable(80.0, Unit.KILOMETERS_PER_HOUR);
         Measurable result = object.getVehicles().get(0).retrieveMaxVelocity(roadTypology);
         assertEquals(expResult, result);
