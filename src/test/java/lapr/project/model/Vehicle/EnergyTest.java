@@ -5,37 +5,23 @@
  */
 package lapr.project.model.Vehicle;
 
+import java.util.ArrayList;
 import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
  * @author goncalo
  */
 public class EnergyTest {
-    
+
+    List<Gears> gears = new ArrayList<>();
+    List<Throttle> throttle = new ArrayList<>();
+    List<Regime> regime = new ArrayList<>();
+    private final Energy instance = new Energy(20, 20, 4, gears, throttle);
+
     public EnergyTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
     }
 
     /**
@@ -44,12 +30,9 @@ public class EnergyTest {
     @Test
     public void testGetFinalDriveRatio() {
         System.out.println("getFinalDriveRatio");
-        Energy instance = null;
-        float expResult = 0.0F;
+        float expResult = 4;
         float result = instance.getFinalDriveRatio();
         assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -58,12 +41,9 @@ public class EnergyTest {
     @Test
     public void testGetGears() {
         System.out.println("getGears");
-        Energy instance = null;
-        List<Gears> expResult = null;
+        List<Gears> expResult = gears;
         List<Gears> result = instance.getGears();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -72,12 +52,9 @@ public class EnergyTest {
     @Test
     public void testGetThrottles() {
         System.out.println("getThrottles");
-        Energy instance = null;
-        List<Throttle> expResult = null;
+        List<Throttle> expResult = throttle;
         List<Throttle> result = instance.getThrottles();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -86,12 +63,15 @@ public class EnergyTest {
     @Test
     public void testToString() {
         System.out.println("toString");
-        Energy instance = null;
-        String expResult = "";
+        String expResult = "Energy{"
+                + "minRpm=" + 20
+                + ", maxRpm=" + 20
+                + ", finalDriveRatio=" + 4f
+                + ", gears=" + gears
+                + ", throttles=" + throttle
+                + '}';
         String result = instance.toString();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
-    
+
 }
