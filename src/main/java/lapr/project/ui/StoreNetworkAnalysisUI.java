@@ -206,13 +206,14 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         fileChooser.showSaveDialog(jButtonGenerateFile);
         String name = JOptionPane.showInputDialog(jButtonGenerateFile,"Choose the name for this file");
-        
-        //ToDo Replace by constant
-        if (!name.contains(".html")) {
-            name += ".html";
+
+        String[] splitFileName = name.split("\\.");
+        if (!splitFileName[splitFileName.length - 1].equals(ExportHTML.HTML_FILE_EXTENSION)) {
+            name += ExportHTML.HTML_FILE_EXTENSION;
         }
+        
         String dir = fileChooser.getSelectedFile().getAbsolutePath();
-        File file = new File(dir + "\\" + name);       
+        File file = new File(dir + System.getProperty("file.separator") + name);
         try {
             networkAnalysisController.exportData(file);
         } catch (IOException ex) {
