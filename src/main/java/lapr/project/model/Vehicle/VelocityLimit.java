@@ -1,17 +1,9 @@
 package lapr.project.model.Vehicle;
 
 import lapr.project.utils.Measurable;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name = "velocity_limit")
 public class VelocityLimit {
     
-    @XmlElement(name ="segment_type")
     private String segmentType;
-    
-    @XmlElement(name ="limit")
     private Measurable limit;
 
     public VelocityLimit(String segmentType, Measurable limit) {

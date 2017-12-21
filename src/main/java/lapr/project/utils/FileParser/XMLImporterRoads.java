@@ -47,13 +47,7 @@ public class XMLImporterRoads {
      * @return the road network updated
      * @throws Exception
      */
-    public RoadNetwork importNetwork() throws JAXBException, IOException, SAXException, ParserConfigurationException {
-
-//        JAXBContext context = JAXBContext.newInstance(RoadNetwork.class);
-//        Unmarshaller unmarshaller = context.createUnmarshaller();
-//        roadNetwork = ClassCast.uncheckedCast(unmarshaller.unmarshal(file));
-
-//        roadNetwork.addNode()
+    public RoadNetwork importNetwork() throws JAXBException, IOException, SAXException, ParserConfigurationException {  
 
         completeNetworkInformationDOMParsing();
 

@@ -2,23 +2,12 @@ package lapr.project.model.Vehicle;
 
 public class Regime {
     
-    
     private int torqueLow;
-    
-    
     private int torqueHigh;
-        
-    
     private int rpmLow;
-
-    
     private int rpmHigh;
-    
-    
     private double SFC;
     
-    
-
     public Regime() {
     }
 
