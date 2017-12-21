@@ -85,8 +85,8 @@ public class RoadNetwork extends Graph<Node, Section> {
     public boolean addSection(Node n1, Node n2, Section section) {
         boolean flag = false;
         if (insertEdge(n1, n2, section, section.getWeight())) {
-            n1.addAdjVert(n2.getElement(), section);
-            n2.addAdjVert(n1.getElement(), section);
+//            n1.addAdjVert(n2.getElement(), section);
+//            n2.addAdjVert(n1.getElement(), section);
             flag = true;
         }
         return flag;

@@ -12,6 +12,7 @@ import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static lapr.project.utils.Graph.GraphAlgorithms.shortestPath;
@@ -44,10 +45,10 @@ public class PathAlgorithm {
         }
 
         RoadNetwork roadNetwork = project.getRoadNetwork();
-        List<Node> path = new ArrayList<>();
+        List<Node> path = new LinkedList<>();
 
         //Verifies which path requires the least time and fills the list of nodes, returning the time expended in travelling
-        double travelTime = shortestPathLeastTime(roadNetwork, start, end, path, vehicle);
+        double travelTime = shortestPathLeastTime(roadNetwork, start, end, (LinkedList<Node>) path, vehicle);
 
         //list of sections the vehicle used along the road network
         List<Section> sections = new ArrayList<>();
@@ -85,7 +86,7 @@ public class PathAlgorithm {
      * @param vehicle The vehicle used in the travelling
      * @return the required time to travel
      */
-    double shortestPathLeastTime(RoadNetwork roadNetwork, Node start, Node end, List<Node> path, Vehicle vehicle) {
+    double shortestPathLeastTime(RoadNetwork roadNetwork, Node start, Node end, LinkedList<Node> path, Vehicle vehicle) {
         return shortestPath(roadNetwork, start, end, path,
                 //Take into account the travelling time each section requires
                 eachSection -> eachSection.getElement().calculateTotalMinimumTimeInterval(roadNetwork, vehicle));

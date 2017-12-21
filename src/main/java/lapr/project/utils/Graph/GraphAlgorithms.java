@@ -189,7 +189,7 @@ public class GraphAlgorithms {
      * This condition only applies if weighted is set to false
      * @return the weight of the shortestPath if weighted is set to true, 1 otherwise
      */
-    public static <V, E> double shortestPath(Graph<V, E> g, V vOrig, V vDest, List<V> shortPath, GeneralOperator<Edge<V, E>> edgeOperator) {
+    public static <V, E> double shortestPath(Graph<V, E> g, V vOrig, V vDest, LinkedList<V> shortPath, GeneralOperator<Edge<V, E>> edgeOperator) {
         if (!g.validVertex(vOrig) || !g.validVertex(vDest)) {
             return 0;
         }
@@ -211,7 +211,7 @@ public class GraphAlgorithms {
         double lengthPath = dist[g.getKey(vDest)];
 
         if (Math.abs(lengthPath - Double.MAX_VALUE) > 0) {  // had error because was [if (Math.abs(lengthPath - Double.MAX_VALUE) > 0 || Math.abs(lengthPath - Double.MAX_VALUE) < 0) {]
-            getPath(g, vOrig, vDest, vertices, pathKeys, (LinkedList<V>) shortPath);
+            getPath(g, vOrig, vDest, vertices, pathKeys, shortPath);
             return lengthPath;
         }
 
