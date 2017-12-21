@@ -8,11 +8,10 @@ package lapr.project.utils;
 import java.util.Objects;
 
 /**
- *
  * @author goncalo
  */
 public class Measurable {
-    
+
     private double quantity;
     private Unit unit;
 
@@ -65,5 +64,10 @@ public class Measurable {
         }
         return true;
     }
-    
+
+    @Override
+    public String toString() {
+        return String.format("%s %s", quantity, unit.toString());
+    }
+
 }
