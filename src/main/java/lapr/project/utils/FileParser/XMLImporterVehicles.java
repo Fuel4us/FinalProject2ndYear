@@ -320,9 +320,9 @@ public class XMLImporterVehicles implements FileParser {
                      * Velocity Limit
                      */
                     if (velocityLimitNode.getNodeName().equalsIgnoreCase("limit")) {
-                        String string = attribute.getTextContent();
+                        String string = velocityLimitNode.getTextContent().replaceAll("\\s+","");
                         String[] stringSplit = string.split(" ");
-                        if (stringSplit.length == 2) {
+                        if (stringSplit.length==2) {
                             newLimit = Double.parseDouble(stringSplit[0]);
                             newVelocity = stringSplit[1];
                             if (newVelocity.equalsIgnoreCase("km/h")) {
@@ -332,7 +332,8 @@ public class XMLImporterVehicles implements FileParser {
                             } else if (newVelocity.equalsIgnoreCase("m/s")) {
                                 newVelocityLimitValue = new Measurable(newLimit, Unit.METERS_PER_SECOND);
                             }
-                        } else {
+                        }else {
+                            newLimit = Double.parseDouble(stringSplit[0]);
                             newVelocityLimitValue = new Measurable(newLimit, Unit.KILOMETERS_PER_HOUR);
                         }
                     }

@@ -74,10 +74,10 @@ class Main {
         new Main();
 
         //<editor-fold desc="Demonstration purposes" default=collapsed>
-//        WelcomeUI.main(null);
+        new WelcomeUI(dbCom).setVisible(true);
         //Testing purposes only
         
-        new BestPathUI(currentProject, dbCom).setVisible(true);
+       // new BestPathUI(currentProject, dbCom).setVisible(true);
 
 
 //        new StoreNetworkAnalysisUI(currentProject, dbCom, generatedAnalysis).setVisible(true);

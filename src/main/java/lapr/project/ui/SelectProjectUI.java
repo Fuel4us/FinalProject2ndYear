@@ -21,7 +21,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
 
     InitializeUIElements initializer = new InitializeUIElements();
     private static final long serialVersionUID = -5188965937946662366L;
-    private DataBaseCommunicator dbCom;
+    private static DataBaseCommunicator dbCom;
     private SelectProjectController spc;
     private Project project;
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -42,8 +42,8 @@ public class SelectProjectUI extends javax.swing.JFrame {
      */
     public SelectProjectUI(DataBaseCommunicator dbCom) {
         super("Select Project");
-        this.dbCom = dbCom;
-        spc = new SelectProjectController(this.dbCom);
+        SelectProjectUI.dbCom = dbCom;
+        spc = new SelectProjectController(SelectProjectUI.dbCom);
         //p = cpc.newProject();
         initComponents();
 
@@ -246,7 +246,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-       //java.awt.EventQueue.invokeLater(() -> new SelectProjectUI(new DataBaseCommunicator()).setVisible(true));
+       java.awt.EventQueue.invokeLater(() -> new SelectProjectUI(dbCom).setVisible(true));
     }
 
 

@@ -3,8 +3,8 @@ package lapr.project.utils.DataAccessLayer.Oracle;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import oracle.jdbc.pool.OracleDataSource;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
@@ -15,6 +15,11 @@ public class OracleDBAccessor implements DBAccessor {
 
     private OracleDataSource oracleDataSource;
     private Connection oracleConnection;
+
+    /*
+    Database product name
+     */
+    private static final String ORACLE_DATABASE_PRODUCT_NAME = "Oracle";
 
     /*
      * Connection access specifications
@@ -29,14 +34,15 @@ public class OracleDBAccessor implements DBAccessor {
     public OracleDBAccessor() {
         try {
             initConnexion();
-            //ToDo Study encapsulation
-//            openConnexion();
-//            oracleConnection = oracleDataSource.getConnection();
         } catch (SQLException e) {
             DBAccessor.logSQLException(e);
         }
     }
 
+    /**
+     * Initializes connection by setting its properties
+     * @throws SQLException for invalid properties
+     */
     private void initConnexion() throws SQLException {
         DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 
@@ -64,28 +70,16 @@ public class OracleDBAccessor implements DBAccessor {
     }
 
     /**
-     * Finishes a transaction by committing changes
+     * Verifies that a given {@link Connection} is done to an OracleDB
+     * @param connection An instance of {@link Connection}
+     * @return true if the database product name matches that of an OracleDB
+     * @throws SQLException requires connection to be valid
      */
-    @Override
-    public void commit() throws SQLException {
-    //ToDo oracleConnection.commit(); disrupts transaction flow
-    }
+    static boolean verifyConnectionIsOracle(Connection connection) throws SQLException {
+        DatabaseMetaData metaData = connection.getMetaData();
+        String databaseProductName = metaData.getDatabaseProductName();
 
-    /**
-     * Rolls a transaction back
-     */
-    @Override
-    public void rollback() throws SQLException {
-        oracleConnection.rollback();
-    }
-
-    /**
-     * Indicates the data source
-     * @return the data source class, by which type may be inferred
-     */
-    @Override
-    public DataSource source() {
-        return oracleDataSource;
+        return databaseProductName.equalsIgnoreCase(ORACLE_DATABASE_PRODUCT_NAME);
     }
 
 }
