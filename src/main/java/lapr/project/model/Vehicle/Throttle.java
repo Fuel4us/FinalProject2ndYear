@@ -19,4 +19,9 @@ public class Throttle {
         return regimes;
     }
 
-}
+    @Override
+    public String toString() {
+        return "Throttle "+id;
+    }
+    
+    }

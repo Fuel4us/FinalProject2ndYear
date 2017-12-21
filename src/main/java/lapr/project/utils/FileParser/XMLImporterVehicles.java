@@ -24,7 +24,7 @@ import lapr.project.utils.Unit;
  */
 public class XMLImporterVehicles implements FileParser {
 
-    private final String byDefault = "Default";
+    private static final String byDefault = "Default";
     private int id = 1;
 
     @Override
