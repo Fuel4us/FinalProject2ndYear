@@ -1,9 +1,9 @@
 package lapr.project.ui;
 
-import javax.swing.*;
 import lapr.project.controller.CreateProjectController;
 import lapr.project.model.Project;
-import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
+
+import javax.swing.*;
 
 /**
  *
@@ -12,7 +12,7 @@ import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 public class CreateProjectUI extends javax.swing.JFrame {
 
     private static final long serialVersionUID = -1818083907306250629L;
-    private CreateProjectController cpc;
+    private CreateProjectController createProjectController;
     private Project p;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -35,8 +35,8 @@ public class CreateProjectUI extends javax.swing.JFrame {
      */
     public CreateProjectUI() {
         super("Create Project");
-        cpc = new CreateProjectController(Main.dbCom);
-        //p = cpc.newProject();
+        createProjectController = new CreateProjectController(Main.dbCom);
+
         initComponents();
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);

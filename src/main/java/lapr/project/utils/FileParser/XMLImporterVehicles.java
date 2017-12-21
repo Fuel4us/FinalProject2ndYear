@@ -83,7 +83,7 @@ public class XMLImporterVehicles implements FileParser {
             int newTorqueHigh = 0;
             int newRpmLow = 0;
             int newRpmHigh = 0;
-            int newSfc = 0;
+            double newSfc = 0;
 
             List<Regime> newRegimeList = new ArrayList<>();
             Throttle newThrottle = null;
@@ -103,17 +103,14 @@ public class XMLImporterVehicles implements FileParser {
 
             // Get attributes
             NodeList vehicleList = doc.getElementsByTagName("vehicle");
-            Node vehicleNode = vehicleList.item(0);
-            Element nameElement = (Element) vehicleNode;
 
             // Get vehicle nodes
             for (int temp = 0; temp < vehicleList.getLength(); temp++) {
                 Node vehicle = vehicleList.item(temp);
-
+                Element nameElement = (Element) vehicle;
                 // Name & Description
                 name = addName(set, nameElement.getAttribute("name"));
                 description = nameElement.getAttribute("description");
-
                 /**
                  * Get vehicle attributes
                  */
@@ -225,7 +222,6 @@ public class XMLImporterVehicles implements FileParser {
                 newVehicle = new Vehicle(name, description, vehicleType, newTollClass, motorTypeValue, fuel, mass, load, dragCoefficient, newFrontalArea, newRRC, newWheel, newVelocityLimitList, newEnergy);
                 set.add(newVehicle);
             }
-
             project.setVehicles(set);
         } catch (IOException | NumberFormatException | ParserConfigurationException | DOMException | SAXException e) {
             return false;
@@ -320,33 +316,43 @@ public class XMLImporterVehicles implements FileParser {
                      * Velocity Limit
                      */
                     if (velocityLimitNode.getNodeName().equalsIgnoreCase("limit")) {
-                        String string = attribute.getTextContent();
+                        String string = velocityLimitNode.getTextContent().replaceAll("\\s+", "");
                         String[] stringSplit = string.split(" ");
                         if (stringSplit.length == 2) {
                             newLimit = Double.parseDouble(stringSplit[0]);
                             newVelocity = stringSplit[1];
                             if (newVelocity.equalsIgnoreCase("km/h")) {
                                 newVelocityLimitValue = new Measurable(newLimit, Unit.KILOMETERS_PER_HOUR);
+                                newVelocityLimit.setSegmentType(newSegmentType);
+                                newVelocityLimit.setLimit(newVelocityLimitValue);
+                                newVelocityLimitList.add(newVelocityLimit);
                             } else if (newVelocity.equalsIgnoreCase("mp/h")) {
                                 newVelocityLimitValue = new Measurable(newLimit, Unit.MILES_PER_HOUR);
+                                newVelocityLimit.setSegmentType(newSegmentType);
+                                newVelocityLimit.setLimit(newVelocityLimitValue);
+                                newVelocityLimitList.add(newVelocityLimit);
                             } else if (newVelocity.equalsIgnoreCase("m/s")) {
                                 newVelocityLimitValue = new Measurable(newLimit, Unit.METERS_PER_SECOND);
+                                newVelocityLimit.setSegmentType(newSegmentType);
+                                newVelocityLimit.setLimit(newVelocityLimitValue);
+                                newVelocityLimitList.add(newVelocityLimit);
                             }
-                        } else {
+                        } else if (stringSplit.length == 1) {
+                            newLimit = Double.parseDouble(stringSplit[0]);
                             newVelocityLimitValue = new Measurable(newLimit, Unit.KILOMETERS_PER_HOUR);
+                            newVelocityLimit.setSegmentType(newSegmentType);
+                            newVelocityLimit.setLimit(newVelocityLimitValue);
+                            newVelocityLimitList.add(newVelocityLimit);
                         }
                     }
                 }
-                newVelocityLimit.setSegmentType(newSegmentType);
-                newVelocityLimit.setLimit(newVelocityLimitValue);
-                newVelocityLimitList.add(newVelocityLimit);
             }
         }
     }
 
     public Energy addEnergy(int newMinRpm, int newMaxRpm, float newFinalDriveRatio,
             int newGearId, float newRatio, Gears newGear, List<Gears> newGearList,
-            int newThrottleId, int newTorqueLow, int newTorqueHigh, int newRpmLow, int newRpmHigh, int newSfc,
+            int newThrottleId, int newTorqueLow, int newTorqueHigh, int newRpmLow, int newRpmHigh, double newSfc,
             Regime newRegime, List<Regime> newRegimeList, Throttle newThrottle,
             List<Throttle> newThrottleList, Node attribute) {
         NodeList energyList = attribute.getChildNodes();
@@ -426,7 +432,7 @@ public class XMLImporterVehicles implements FileParser {
 
     public void addThrottleList(Node energyNode, int newThrottleId,
             int newTorqueLow, int newTorqueHigh, int newRpmLow, int newRpmHigh,
-            int newSfc, Regime newRegime, List<Regime> newRegimeList,
+            double newSfc, Regime newRegime, List<Regime> newRegimeList,
             Throttle newThrottle, List<Throttle> newThrottleList) {
         NodeList throttleList = energyNode.getChildNodes();
         for (int k = 0; k < throttleList.getLength(); k++) {
@@ -437,23 +443,26 @@ public class XMLImporterVehicles implements FileParser {
                 NodeList regimeList = throttleNode.getChildNodes();
                 for (int line = 0; line < regimeList.getLength(); line++) {
                     Node regimeNode = regimeList.item(line);
-                    if (regimeNode.getNodeName().equalsIgnoreCase("torque_low")) {
-                        newTorqueLow = Integer.parseInt(energyNode.getTextContent());
-                    }
-                    if (regimeNode.getNodeName().equalsIgnoreCase("torque_high")) {
-                        newTorqueHigh = Integer.parseInt(energyNode.getTextContent());
-                    }
+                    NodeList regimeChildList = regimeNode.getChildNodes();
+                    for (int i = 0; i < regimeChildList.getLength(); i++) {
+                        Node regimeChild = regimeChildList.item(i);
+                        if (regimeChild.getNodeName().equalsIgnoreCase("torque_low")) {
+                            newTorqueLow = Integer.parseInt(regimeChild.getTextContent());
+                        }
+                        if (regimeChild.getNodeName().equalsIgnoreCase("torque_high")) {
+                            newTorqueHigh = Integer.parseInt(regimeChild.getTextContent());
+                        }
 
-                    if (regimeNode.getNodeName().equalsIgnoreCase("rpm_low")) {
-                        newRpmLow = Integer.parseInt(energyNode.getTextContent());
+                        if (regimeChild.getNodeName().equalsIgnoreCase("rpm_low")) {
+                            newRpmLow = Integer.parseInt(regimeChild.getTextContent());
+                        }
+                        if (regimeChild.getNodeName().equalsIgnoreCase("rpm_high")) {
+                            newRpmHigh = Integer.parseInt(regimeChild.getTextContent());
+                        }
+                        if (regimeChild.getNodeName().equalsIgnoreCase("SFC")) {
+                            newSfc = Double.parseDouble(regimeChild.getTextContent());
+                        }
                     }
-                    if (regimeNode.getNodeName().equalsIgnoreCase("rpm_high")) {
-                        newRpmHigh = Integer.parseInt(energyNode.getTextContent());
-                    }
-                    if (regimeNode.getNodeName().equalsIgnoreCase("SFC")) {
-                        newSfc = Integer.parseInt(energyNode.getTextContent());
-                    }
-
                     newRegime = new Regime(newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh, newSfc);
                     newRegimeList.add(newRegime);
 

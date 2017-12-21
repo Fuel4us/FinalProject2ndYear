@@ -42,7 +42,6 @@ public class SelectProjectUI extends javax.swing.JFrame {
     public SelectProjectUI() {
         super("Select Project");
         spc = new SelectProjectController(Main.dbCom);
-        //p = cpc.newProject();
         initComponents();
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);

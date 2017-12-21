@@ -10,7 +10,7 @@ import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 
 /**
  *
- * @author anily
+ * Triggers all subsequent UIs
  */
 public class WelcomeUI extends javax.swing.JFrame {
 

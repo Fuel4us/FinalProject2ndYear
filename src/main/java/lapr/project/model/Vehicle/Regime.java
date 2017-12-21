@@ -15,14 +15,14 @@ public class Regime {
     private int rpmHigh;
     
     
-    private int SFC;
+    private double SFC;
     
     
 
     public Regime() {
     }
 
-    public Regime(int torqueLow,int torqueHigh, int rpmLow, int rpmHigh, int SFC) {
+    public Regime(int torqueLow,int torqueHigh, int rpmLow, int rpmHigh, double SFC) {
         this.torqueLow = torqueLow;
         this.torqueHigh = torqueHigh;
         this.rpmLow = rpmLow;
@@ -67,7 +67,7 @@ public class Regime {
     /**
      * @return SFC
      */
-    public int getSFC() {
+    public double getSFC() {
         return SFC;
     }
 }
