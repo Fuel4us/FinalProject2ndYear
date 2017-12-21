@@ -147,7 +147,11 @@ public class Segment {
      * @return the angle
      */
     public Measurable calculateAngle() {
-        return new Measurable(Math.asin((finalHeight - initialHeight) / length), Unit.DEGREE);
+
+        //finalHeight and initialHeight m -> km
+        return new Measurable(Math.asin(
+                Math.abs(finalHeight * Physics.KILOMETERS_METERS_CONVERSION_RATIO - initialHeight * Physics.KILOMETERS_METERS_CONVERSION_RATIO)
+                        / length), Unit.DEGREE);
     }
 
     /**
