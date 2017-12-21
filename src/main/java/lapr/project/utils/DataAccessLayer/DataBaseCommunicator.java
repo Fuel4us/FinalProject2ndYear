@@ -41,27 +41,27 @@ public class DataBaseCommunicator {
     public DataBaseCommunicator(DataSource dataSource) {
         if (dataSource instanceof OracleDataSource) {
             this.dbAccessor = new OracleDBAccessor();
-            this.analysisStorage = null; //  this.analysisStorage = new OracleAnalysisDAO()
+            this.analysisStorage = new OracleAnalysisDAO();
         }
     }
 
     /** 
      * Stores network analysis in a database
      * @param analysis The network analysis to be stored
-     * @return true if storing operation succeeded
      */
-    public void storeNetworkAnalysis(Analysis analysis) {
+    public boolean storeNetworkAnalysis(Analysis analysis) {
         try {
             //Start Transaction
             Connection connection = dbAccessor.openConnexion();
             connection.setAutoCommit(false);
-            //ToDo Store analyzed sections (generated report) into respective table
 
-            //ToDo Replace by procedure call
-            analysisStorage.storeAnalysis(analysis);
+            if (analysisStorage.connectTo(connection)) {
+                //ToDo Store analyzed sections (generated report) into respective table
+                analysisStorage.storeAnalysis(analysis);
+                connection.commit();
+                return true;
+            }
 
-            //ToDo Encapsulate behaviour in dbAccessor? //dbAccessor.commit();
-            connection.commit();
         } catch (SQLException e) {
             if (dbAccessor.hasActiveConnection()) {
                 try {
@@ -72,7 +72,7 @@ public class DataBaseCommunicator {
                 }
             }
         }
-
+        return false;
     }
 
     public List<Project> fetchProjectList() {

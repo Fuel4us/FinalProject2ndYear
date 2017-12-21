@@ -24,6 +24,7 @@ import lapr.project.utils.Unit;
  */
 public class XMLImporterVehicles implements FileParser {
 
+    private final String byDefault = "Default";
     private int id = 1;
 
     @Override
@@ -34,19 +35,19 @@ public class XMLImporterVehicles implements FileParser {
             /**
              * Initiate Variables
              */
-            String name = "Default";
-            String description = "Default";
+            String name;
+            String description;
 
             VehicleType vehicleType = null;
-            String newVehicleType = "Default";
+            String newVehicleType = byDefault;
 
             int newTollClass = 0;
 
-            String newMotorization = "Default";
+            String newMotorization = byDefault;
             MotorType motorTypeValue = null;
 
             Fuel fuel = null;
-            String newFuel = "Default";
+            String newFuel = byDefault;
 
             Measurable mass = null;
             Measurable load = null;
@@ -62,8 +63,8 @@ public class XMLImporterVehicles implements FileParser {
 
             List<VelocityLimit> newVelocityLimitList = new ArrayList<>();
             VelocityLimit newVelocityLimit = new VelocityLimit();
-            String newSegmentType = "Default";
-            String newVelocity = "Default";
+            String newSegmentType = byDefault;
+            String newVelocity = byDefault;
             Measurable newVelocityLimitValue = null;
             double newLimit = 0;
 
@@ -87,7 +88,7 @@ public class XMLImporterVehicles implements FileParser {
             List<Regime> newRegimeList = new ArrayList<>();
             Throttle newThrottle = null;
             List<Throttle> newThrottleList = new ArrayList<>();
-            Vehicle newVehicle = null;
+            Vehicle newVehicle;
 
             // Get vehicleList
             List<Vehicle> set = new ArrayList<>();
@@ -232,19 +233,6 @@ public class XMLImporterVehicles implements FileParser {
         return true;
     }
 
-    public String addName(List<Vehicle> list, String name) {
-
-        for (Vehicle v : list) {
-            if (v.getName().equalsIgnoreCase(name)) {
-                name += id;
-                id++;
-            }
-        }
-
-        return name;
-
-    }
-
     public VehicleType addVehicleType(String newVehicleType, Node attribute) {
         newVehicleType = attribute.getTextContent();
         VehicleType[] typeOfVehicle = VehicleType.values();
@@ -344,7 +332,7 @@ public class XMLImporterVehicles implements FileParser {
                             } else if (newVelocity.equalsIgnoreCase("m/s")) {
                                 newVelocityLimitValue = new Measurable(newLimit, Unit.METERS_PER_SECOND);
                             }
-                        }else{
+                        } else {
                             newVelocityLimitValue = new Measurable(newLimit, Unit.KILOMETERS_PER_HOUR);
                         }
                     }
@@ -395,8 +383,8 @@ public class XMLImporterVehicles implements FileParser {
                 if (energyNode.getNodeName().equalsIgnoreCase("throttle_list")) {
                     addThrottleList(energyNode, newThrottleId,
                             newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh,
-                             newSfc, newRegime, newRegimeList,
-                             newThrottle, newThrottleList);
+                            newSfc, newRegime, newRegimeList,
+                            newThrottle, newThrottleList);
                 }
 
             }
@@ -438,8 +426,8 @@ public class XMLImporterVehicles implements FileParser {
 
     public void addThrottleList(Node energyNode, int newThrottleId,
             int newTorqueLow, int newTorqueHigh, int newRpmLow, int newRpmHigh,
-             int newSfc, Regime newRegime, List<Regime> newRegimeList,
-             Throttle newThrottle, List<Throttle> newThrottleList) {
+            int newSfc, Regime newRegime, List<Regime> newRegimeList,
+            Throttle newThrottle, List<Throttle> newThrottleList) {
         NodeList throttleList = energyNode.getChildNodes();
         for (int k = 0; k < throttleList.getLength(); k++) {
             Node throttleNode = throttleList.item(k);
@@ -475,4 +463,18 @@ public class XMLImporterVehicles implements FileParser {
             newThrottleList.add(newThrottle);
         }
     }
+
+    public String addName(List<Vehicle> list, String name) {
+
+        for (Vehicle v : list) {
+            if (v.getName().equalsIgnoreCase(name)) {
+                name += id;
+                id++;
+            }
+        }
+
+        return name;
+
+    }
+
 }

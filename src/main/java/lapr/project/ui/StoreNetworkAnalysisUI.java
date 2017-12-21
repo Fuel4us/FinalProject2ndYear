@@ -50,7 +50,6 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         setResizable(false);
         setVisible(true);
         setLocationRelativeTo(null);
-        dbCom = dbCom;
         analysisResultTextField.setEditable(false);
         analysisResultTextField.setText(generatedAnalysis.generateReport().toString());
         networkAnalysisController = new NetworkAnalysisController(project, dbCom, generatedAnalysis);
@@ -227,7 +226,11 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {
-        networkAnalysisController.storeGeneratedNetworkAnalysis();
+        if (networkAnalysisController.storeGeneratedNetworkAnalysis()) {
+            JOptionPane.showMessageDialog(null, "Analysis saved successfully");
+        } else {
+            JOptionPane.showMessageDialog(null, "There was an error storing the analysis, please check your internet connection and try again later.");
+        }
     }
 
 }
