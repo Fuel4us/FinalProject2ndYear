@@ -2,18 +2,16 @@ package lapr.project.utils.pathAlgorithm;
 
 import lapr.project.model.Analysis;
 import lapr.project.model.Project;
-import lapr.project.model.ProjectTest;
 import lapr.project.model.RoadNetwork.*;
 import lapr.project.model.Vehicle.*;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
-import org.ini4j.Reg;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static junit.framework.Assert.assertEquals;
 
 /**
  * Test class to the class PathAlgorithm
@@ -27,7 +25,7 @@ public class PathAlgorithmTest {
     @Test
     public void ensureFastestPathReturnsCorrectAnalysis() throws Exception {
 
-        RoadNetwork roadNetworkTest = new RoadNetwork(true, "1", "the road network");
+        RoadNetwork roadNetworkTest = new RoadNetwork(false, "1", "the road network");
 
         Node nodeTest1 = new Node("n01");
         Node nodeTest2 = new Node("n02");
@@ -56,10 +54,10 @@ public class PathAlgorithmTest {
         segmentsTest1.add(segmentTest1);
 
         List<Segment> segmentsTest2 = new ArrayList<>();
-        segmentsTest1.add(segmentTest3);
+        segmentsTest2.add(segmentTest3);
 
         List<Segment> segmentsTest3 = new ArrayList<>();
-        segmentsTest1.add(segmentTest5);
+        segmentsTest3.add(segmentTest5);
 
         List<Double> tollFaresSectionTest = new ArrayList<>();
         tollFaresSectionTest.add(0.25);
@@ -94,18 +92,18 @@ public class PathAlgorithmTest {
         regimes25Test.add(new Regime(90, 80, 4500, 5500, 650));
 
         List<Regime> regimes50Test = new ArrayList<>();
-        regimes25Test.add(new Regime(185, 195, 900, 1499, 380));
-        regimes25Test.add(new Regime(195, 190, 1500, 2499, 350));
-        regimes25Test.add(new Regime(190, 180, 2500, 3499, 360));
-        regimes25Test.add(new Regime(180, 150, 3500, 4499, 400));
-        regimes25Test.add(new Regime(150, 135, 4500, 5500, 520));
+        regimes50Test.add(new Regime(185, 195, 900, 1499, 380));
+        regimes50Test.add(new Regime(195, 190, 1500, 2499, 350));
+        regimes50Test.add(new Regime(190, 180, 2500, 3499, 360));
+        regimes50Test.add(new Regime(180, 150, 3500, 4499, 400));
+        regimes50Test.add(new Regime(150, 135, 4500, 5500, 520));
 
         List<Regime> regimes100Test = new ArrayList<>();
-        regimes25Test.add(new Regime(305, 325, 900, 1499, 380));
-        regimes25Test.add(new Regime(325, 315, 1500, 2499, 350));
-        regimes25Test.add(new Regime(315, 290, 2500, 3499, 360));
-        regimes25Test.add(new Regime(290, 220, 3500, 4499, 400));
-        regimes25Test.add(new Regime(220, 205, 4500, 5500, 520));
+        regimes100Test.add(new Regime(305, 325, 900, 1499, 380));
+        regimes100Test.add(new Regime(325, 315, 1500, 2499, 350));
+        regimes100Test.add(new Regime(315, 290, 2500, 3499, 360));
+        regimes100Test.add(new Regime(290, 220, 3500, 4499, 400));
+        regimes100Test.add(new Regime(220, 205, 4500, 5500, 520));
 
         List<Throttle> throttlesTest = new ArrayList<>();
         throttlesTest.add(new Throttle(25, regimes25Test));
@@ -135,11 +133,14 @@ public class PathAlgorithmTest {
 
         Analysis analysisResult = pathAlgorithmTest.fastestPath(projectTest, nodeTest1, nodeTest4, vehicle1);
 
-        String hi = "hello";
+        Analysis analysisExpected = new Analysis(projectTest, "N10 - Fastest Path",
+                sectionsExpected, new Measurable(1384560, Unit.KILOJOULE), new Measurable(0.925, Unit.HOUR), new Measurable(4,Unit.EUROS));
 
-//        Analysis analysisExpected = new Analysis(0, projectTest, "N10 - Fastest Path", sectionsExpected,
-//                );
 
+        assertEquals(analysisExpected.getBestPath(), analysisResult.getBestPath());
+        assertEquals(analysisExpected.getExpendedEnergy().getQuantity(), analysisResult.getExpendedEnergy().getQuantity(), 150000);
+        assertEquals(analysisExpected.getTravelTime().getQuantity(), analysisResult.getTravelTime().getQuantity(), 0.1);
+        assertEquals(analysisExpected.getTravelCost().getQuantity(), analysisResult.getTravelCost().getQuantity(), 0.1);
     }
 
 }
