@@ -21,6 +21,8 @@ import static lapr.project.utils.Graph.GraphAlgorithms.shortestPath;
  */
 public class PathAlgorithm {
 
+    private static int analysisID = 0;
+
     /**
      * <p>
      * Calculates the fastest path between two nodes, given a vehicle, for a given project.
@@ -71,7 +73,7 @@ public class PathAlgorithm {
             tollCosts.setQuantity(tollCosts.getQuantity() + section.determineTollCosts(vehicle).getQuantity());
         }
 
-        return new Analysis(0, project, "N10 - Fastest Path", sections, expendedEnergy,
+        return new Analysis(analysisID++, project, "N10 - Fastest Path", sections, expendedEnergy,
                 new Measurable(travelTime, Unit.HOUR), tollCosts);
 
     }
