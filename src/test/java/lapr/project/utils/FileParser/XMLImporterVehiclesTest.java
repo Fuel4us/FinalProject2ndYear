@@ -27,7 +27,8 @@ import static org.junit.Assert.*;
  *
  * @author TOSHIBA
  */
-public class XMLImporterVehiclesTest {
+public class
+XMLImporterVehiclesTest {
 
     List<Vehicle> instance = new ArrayList<>();
     XMLImporterVehicles obj = new XMLImporterVehicles();

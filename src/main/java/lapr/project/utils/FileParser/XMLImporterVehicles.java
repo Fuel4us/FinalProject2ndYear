@@ -473,6 +473,12 @@ public class XMLImporterVehicles implements FileParser {
         }
     }
 
+    /**
+     * If we get the name search for that name. save the spot we started. start searching after that
+     * @param list
+     * @param name
+     * @return 
+     */
     public String addName(List<Vehicle> list, String name) {
 
         for (Vehicle v : list) {

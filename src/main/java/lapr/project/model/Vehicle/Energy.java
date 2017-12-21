@@ -3,7 +3,6 @@ package lapr.project.model.Vehicle;
 import java.util.List;
 
 public class Energy {
-    
 
     private int minRpm;
     private int maxRpm;
@@ -14,6 +13,7 @@ public class Energy {
 
     /**
      * Constructor
+     *
      * @param minRpm minRpm
      * @param maxRpm maxRpm
      * @param finalDriveRatio finalDriveRatio
@@ -55,12 +55,12 @@ public class Energy {
 
     @Override
     public String toString() {
-        return "Energy{" +
-                "minRpm=" + minRpm +
-                ", maxRpm=" + maxRpm +
-                ", finalDriveRatio=" + finalDriveRatio +
-                ", gears=" + gears +
-                ", throttles=" + throttles +
-                '}';
+        return "Energy{"
+                + "minRpm=" + minRpm
+                + ", maxRpm=" + maxRpm
+                + ", finalDriveRatio=" + finalDriveRatio
+                + ", gears=" + gears
+                + ", throttles=" + throttles
+                + '}';
     }
 }
