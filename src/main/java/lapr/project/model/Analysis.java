@@ -26,10 +26,11 @@ public class Analysis implements Exportable {
     private Measurable travelTime;
     private Measurable travelCost;
 
+    private static int analysisCounter = 0;
+
     /**
      * Creates an analysis with id, requesting instance, algorithm name, best path, expended energy,
      * travel time and travel cost
-     * @param id this analysis' id
      * @param requestingInstance this analysis' requesting instance
      * @param algorithmName this analysis' algorithm name
      * @param bestPath this analysis' best path
@@ -37,9 +38,9 @@ public class Analysis implements Exportable {
      * @param travelTime this analysis' travel time
      * @param travelCost this analysis' travel cost
      */
-    public Analysis(int id, Project requestingInstance, String algorithmName, Collection<Section> bestPath,
+    public Analysis(Project requestingInstance, String algorithmName, Collection<Section> bestPath,
                     Measurable expendedEnergy, Measurable travelTime, Measurable travelCost) {
-        this.id = id;
+        id = ++analysisCounter;
         this.requestingInstance = requestingInstance;
         this.algorithmName = algorithmName;
         this.bestPath = bestPath;
@@ -50,13 +51,12 @@ public class Analysis implements Exportable {
 
     /**
      *Creates an analysis with id, requesting instance, algorithm name and best path
-     * @param id this analysis' id
      * @param requestingInstance this analysis' requesting instance
      * @param algorithmName this analysis' algorithm name
      * @param bestPath this analysis' best path
      */
-    public Analysis(int id, Project requestingInstance, String algorithmName, Collection<Section> bestPath) {
-        this.id = id;
+    public Analysis(Project requestingInstance, String algorithmName, Collection<Section> bestPath) {
+        id = ++analysisCounter;
         this.requestingInstance = requestingInstance;
         this.algorithmName = algorithmName;
         this.bestPath = bestPath;
