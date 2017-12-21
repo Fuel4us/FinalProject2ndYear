@@ -310,7 +310,7 @@ public class BestPathUI extends javax.swing.JFrame {
 //ToDo  Analyis generatedAnalysis = controller.executeAlgorithm(N10);
 
 //TEST ONLY
-        Analysis generatedAnalysis = new Analysis(1, project, "N10", new ArrayList<>());
+        Analysis generatedAnalysis = new Analysis(project, "N10", new ArrayList<>());
 
         new StoreNetworkAnalysisUI(project, generatedAnalysis);
         setVisible(false);
