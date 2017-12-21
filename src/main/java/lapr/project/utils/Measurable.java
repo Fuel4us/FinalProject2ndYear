@@ -5,6 +5,8 @@
  */
 package lapr.project.utils;
 
+import java.util.Objects;
+
 /**
  *
  * @author goncalo
@@ -34,4 +36,34 @@ public class Measurable {
     public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 19 * hash + (int) (Double.doubleToLongBits(this.quantity) ^ (Double.doubleToLongBits(this.quantity) >>> 32));
+        hash = 19 * hash + Objects.hashCode(this.unit);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Measurable other = (Measurable) obj;
+        if (Double.doubleToLongBits(this.quantity) != Double.doubleToLongBits(other.quantity)) {
+            return false;
+        }
+        if (this.unit != other.unit) {
+            return false;
+        }
+        return true;
+    }
+    
 }
