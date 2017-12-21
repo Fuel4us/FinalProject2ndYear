@@ -75,7 +75,7 @@ public class ExportHTMLTest {
 
         Project project = new Project("1", "Ola", roadNetworkTest1, vehicles);
 
-        Analysis analysis = new Analysis(1, project, "algorithm", bestPath);
+        Analysis analysis = new Analysis(project, "algorithm", bestPath);
 
         ExportHTML exportHTML = new ExportHTML(analysis);
         File outputFile = new File("src\\main\\resources\\htmlFileStructure\\outputTest.html");
