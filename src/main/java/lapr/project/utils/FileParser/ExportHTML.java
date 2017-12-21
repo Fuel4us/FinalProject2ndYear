@@ -14,7 +14,7 @@ public class ExportHTML implements Exporter {
     private Analysis analysis;
     private static final String HTML_STRUCTURE_FIRST = "html_structure_first";
     private static final String HTML_STRUCTURE_SECOND = "html_structure_second";
-    public static final String HTML_FILE_EXTENSION = "html";
+    public static final String HTML_FILE_EXTENSION = ".html";
 
     public ExportHTML(Analysis analysis) {
         this.analysis = analysis;
