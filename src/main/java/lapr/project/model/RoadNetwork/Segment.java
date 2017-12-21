@@ -150,7 +150,7 @@ public class Segment {
 
         //finalHeight and initialHeight m -> km
         return new Measurable(Math.asin(
-                Math.abs(finalHeight * Physics.KILOMETERS_METERS_CONVERSION_RATIO - initialHeight * Physics.KILOMETERS_METERS_CONVERSION_RATIO)
+                finalHeight * Physics.KILOMETERS_METERS_CONVERSION_RATIO - initialHeight * Physics.KILOMETERS_METERS_CONVERSION_RATIO
                         / length), Unit.DEGREE);
     }
 
