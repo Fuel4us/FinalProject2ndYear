@@ -153,28 +153,28 @@ public class Analysis implements Exportable {
     /**
      * @return the BestPath
      */
-    Collection<Section> getBestPath() {
+    public Collection<Section> getBestPath() {
         return bestPath;
     }
 
     /**
      * @return the ExpendedEnergy
      */
-    Measurable getExpendedEnergy() {
+    public Measurable getExpendedEnergy() {
         return expendedEnergy;
     }
 
     /**
      * @return the TravelTime
      */
-    Measurable getTravelTime() {
+    public Measurable getTravelTime() {
         return travelTime;
     }
 
     /**
      * @return the TravelCost
      */
-    Measurable getTravelCost() {
+    public Measurable getTravelCost() {
         return travelCost;
     }
 
