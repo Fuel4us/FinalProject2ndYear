@@ -30,7 +30,6 @@ public class BestPathController {
      */
     public List<Vehicle> getAllVehicles(){
         List<Vehicle> list;
-        //metodo que vai buscar todos os veiculos ao sql e iguala a list
         list = project.getVehicles();
         return list;
     }

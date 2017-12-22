@@ -6,12 +6,16 @@
 package lapr.project.ui;
 
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import lapr.project.controller.CreateProjectController;
 import lapr.project.controller.SelectProjectController;
 import lapr.project.model.Project;
-import lapr.project.model.RoadNetwork.RoadNetwork;
+import lapr.project.model.RoadNetwork.*;
+import lapr.project.model.Vehicle.*;
 import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
+import lapr.project.utils.Measurable;
+import lapr.project.utils.Unit;
 
 /**
  *
@@ -28,7 +32,10 @@ public class SelectProjectUI extends javax.swing.JFrame {
     private javax.swing.JButton jButtonBack;
     private javax.swing.JButton jButtonCompForm;
     private javax.swing.JButton jButtonPathForm;
+    /**
     private javax.swing.JComboBox<String> jComboBox1;
+    */
+    private javax.swing.JComboBox<Project> jComboBox1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -43,8 +50,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
         super("Select Project");
         spc = new SelectProjectController(Main.dbCom);
         initComponents();
-
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         setVisible(true);
         setLocationRelativeTo(null);
@@ -68,7 +74,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox1 = new javax.swing.JComboBox<Project>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -94,21 +100,33 @@ public class SelectProjectUI extends javax.swing.JFrame {
         jButtonCompForm.setForeground(new java.awt.Color(45, 46, 45));
         jButtonCompForm.setText("Road Network Comparison Form");
         jButtonCompForm.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonCompForm.addActionListener(evt -> jButtonCompFormActionPerformed(evt));
+        jButtonCompForm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCompFormActionPerformed(evt);
+            }
+        });
 
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
         jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack.setText("«");
         jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
+        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBackActionPerformed(evt);
+            }
+        });
 
         jButtonPathForm.setBackground(new java.awt.Color(45, 46, 45));
         jButtonPathForm.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jButtonPathForm.setForeground(new java.awt.Color(45, 46, 45));
         jButtonPathForm.setText("Road Network Path Form");
         jButtonPathForm.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonPathForm.addActionListener(evt -> jButtonPathFormActionPerformed(evt));
+        jButtonPathForm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPathFormActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(155, 177, 189));
@@ -122,9 +140,21 @@ public class SelectProjectUI extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(155, 177, 189));
         jLabel4.setText("project");
 
+        List<Project> projectsList = spc.fetchProjectsList();
+        DefaultComboBoxModel<Project> projectsModel = new DefaultComboBoxModel<>();
+        for (Project obj : projectsList) {
+            projectsModel.addElement(obj);
+        }
+        jComboBox1.setModel(projectsModel);
         jComboBox1.setBackground(new java.awt.Color(204, 204, 204));
+        /**
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(evt -> jComboBox1ActionPerformed(evt));
+        */
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -206,7 +236,108 @@ public class SelectProjectUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonPathFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPathFormActionPerformed
-        Project project = new Project("New Project", "Add a description", new RoadNetwork(), new ArrayList<>());
+
+        //ToDo Test only; Replace when XML importing is available
+
+        RoadNetwork roadNetworkTest = new RoadNetwork(false, "1", "the road network");
+
+        Node nodeTest1 = new Node("n01");
+        Node nodeTest2 = new Node("n02");
+        Node nodeTest3 = new Node("n03");
+        Node nodeTest4 = new Node("n04");
+
+        roadNetworkTest.addNode(nodeTest1);
+        roadNetworkTest.addNode(nodeTest2);
+        roadNetworkTest.addNode(nodeTest3);
+        roadNetworkTest.addNode(nodeTest4);
+
+        List<Double> tollFaresRoadTest = new ArrayList<>();
+        tollFaresRoadTest.add(0.15);
+        tollFaresRoadTest.add(0.25);
+        tollFaresRoadTest.add(0.35);
+
+        Road roadTest1 = new Road("A01", "A01", "gantry toll highway");
+        Road roadTest2 = new Road("A02", "A02", "toll highway", tollFaresRoadTest);
+        Road roadTest3 = new Road("E01", "E01", "regular road");
+
+        Segment segmentTest1 = new Segment(0, 250, 50, 2.5, 10, 2.5, 120, 50);
+        Segment segmentTest3 = new Segment(0, 50, 250, 25, -30, 1.75, 90, 50);
+        Segment segmentTest5 = new Segment(0, 250, 50, 50, 10, 2.5, 90, 0);
+
+        List<Segment> segmentsTest1 = new ArrayList<>();
+        segmentsTest1.add(segmentTest1);
+
+        List<Segment> segmentsTest2 = new ArrayList<>();
+        segmentsTest2.add(segmentTest3);
+
+        List<Segment> segmentsTest3 = new ArrayList<>();
+        segmentsTest3.add(segmentTest5);
+
+        List<Double> tollFaresSectionTest = new ArrayList<>();
+        tollFaresSectionTest.add(0.25);
+        tollFaresSectionTest.add(0.35);
+        tollFaresSectionTest.add(0.40);
+
+        Section sectionTest1 = new Section(nodeTest1, nodeTest2, Direction.BIDIRECTIONAL, segmentsTest1, roadTest1, tollFaresSectionTest);
+        Section sectionTest2 = new Section(nodeTest2, nodeTest3, Direction.BIDIRECTIONAL, segmentsTest2, roadTest2, new ArrayList<>());
+        Section sectionTest3 = new Section(nodeTest3, nodeTest4, Direction.BIDIRECTIONAL, segmentsTest3, roadTest3, new ArrayList<>());
+
+        roadNetworkTest.addSection(nodeTest1, nodeTest2, sectionTest1);
+        roadNetworkTest.addSection(nodeTest2, nodeTest3, sectionTest2);
+        roadNetworkTest.addSection(nodeTest3, nodeTest4, sectionTest3);
+
+        List<VelocityLimit> velocityLimitListTest = new ArrayList<>();
+        velocityLimitListTest.add(new VelocityLimit("highway", new Measurable(110, Unit.KILOMETERS_PER_HOUR)));
+        velocityLimitListTest.add(new VelocityLimit("road", new Measurable(80, Unit.KILOMETERS_PER_HOUR)));
+
+        List<Gears> gearsTest = new ArrayList<>();
+        gearsTest.add(new Gears(1, 4.5f));
+        gearsTest.add(new Gears(2, 3.5f));
+        gearsTest.add(new Gears(3, 2.7f));
+        gearsTest.add(new Gears(4, 1.6f));
+        gearsTest.add(new Gears(5, 1.2f));
+        gearsTest.add(new Gears(6, 0.9f));
+
+        List<Regime> regimes25Test = new ArrayList<>();
+        regimes25Test.add(new Regime(115, 125, 900, 1499, 500));
+        regimes25Test.add(new Regime(125, 120, 1500, 2499, 450));
+        regimes25Test.add(new Regime(120, 105, 2500, 3499, 520));
+        regimes25Test.add(new Regime(105, 90, 3500, 4499, 550));
+        regimes25Test.add(new Regime(90, 80, 4500, 5500, 650));
+
+        List<Regime> regimes50Test = new ArrayList<>();
+        regimes50Test.add(new Regime(185, 195, 900, 1499, 380));
+        regimes50Test.add(new Regime(195, 190, 1500, 2499, 350));
+        regimes50Test.add(new Regime(190, 180, 2500, 3499, 360));
+        regimes50Test.add(new Regime(180, 150, 3500, 4499, 400));
+        regimes50Test.add(new Regime(150, 135, 4500, 5500, 520));
+
+        List<Regime> regimes100Test = new ArrayList<>();
+        regimes100Test.add(new Regime(305, 325, 900, 1499, 380));
+        regimes100Test.add(new Regime(325, 315, 1500, 2499, 350));
+        regimes100Test.add(new Regime(315, 290, 2500, 3499, 360));
+        regimes100Test.add(new Regime(290, 220, 3500, 4499, 400));
+        regimes100Test.add(new Regime(220, 205, 4500, 5500, 520));
+
+        List<Throttle> throttlesTest = new ArrayList<>();
+        throttlesTest.add(new Throttle(25, regimes25Test));
+        throttlesTest.add(new Throttle(50, regimes50Test));
+        throttlesTest.add(new Throttle(100, regimes100Test));
+
+        Vehicle vehicle1 = new Vehicle("Toyota", "Vehicle 1", VehicleType.Car, 1, Vehicle.MotorType.COMBUSTION, Fuel.Diesel, new Measurable(2000, Unit.KILOGRAM),
+                new Measurable(0, Unit.KILOGRAM), 0.320f, new Measurable(1.9, Unit.METER_SQUARED), 0.01f, new Measurable(0.6, Unit.METER),
+                velocityLimitListTest, new Energy(900, 5500, 4f, gearsTest, throttlesTest));
+
+        Vehicle vehicle2 = new Vehicle("BMW", "Vehicle 2", VehicleType.Car, 1, Vehicle.MotorType.NONCOMBUSTION, Fuel.Electric, new Measurable(2000, Unit.KILOGRAM),
+                new Measurable(0, Unit.KILOGRAM), 0.320f, new Measurable(1.9, Unit.METER_SQUARED), 0.01f, new Measurable(0.6, Unit.METER),
+                velocityLimitListTest, new Energy(900, 5500, 4f, gearsTest, throttlesTest));
+
+        List<Vehicle> vehiclesTest = new ArrayList<>();
+        vehiclesTest.add(vehicle1);
+        vehiclesTest.add(vehicle2);
+
+        Project project = new Project("New Project", "Add a description", roadNetworkTest, vehiclesTest);
+
         new BestPathUI(project);
         setVisible(false);
     }//GEN-LAST:event_jButtonPathFormActionPerformed

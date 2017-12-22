@@ -12,6 +12,7 @@ import lapr.project.model.RoadNetwork.*;
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
+import lapr.project.utils.pathAlgorithm.PathAlgorithm;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -65,36 +66,9 @@ public class BestPathUI extends JFrame {
         this.controller = new BestPathController(project);
         initComponents();
         this.project = project;
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setVisible(true);
         setLocationRelativeTo(null);
-        initSelectionLists(project);
-    }
-
-    /**
-     * Initializes nodes and vehicles selection JLists
-     * @param project the project to which the nodes and vehicles belong
-     */
-    private void initSelectionLists(Project project) {
-        RoadNetwork roadNetwork = project.getRoadNetwork();
-
-        //Init node selection lists
-        DefaultListModel<Node> nodes1ListModel = new DefaultListModel<>();
-        for (Node node : roadNetwork.vertices()) {
-            nodes1ListModel.addElement(node);
-        }
-
-        jListNodes1 = new JList<>(nodes1ListModel);
-        jListNodes2 = new JList<>(nodes1ListModel);
-
-        DefaultListModel<Vehicle> vehicleListModel = new DefaultListModel<>();
-        for (Vehicle vehicle : project.getVehicles()) {
-            vehicleListModel.addElement(vehicle);
-        }
-
-        jListVehicles = new JList<>(vehicleListModel);
-
     }
 
     /**
@@ -335,23 +309,33 @@ public class BestPathUI extends JFrame {
     private void executeAlgorithmN10(ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //Algorithm N10
 //ToDo  Analyis generatedAnalysis = controller.executeAlgorithm(N10);
-//        new PathAlgorithm().fastestPath(project,jLabelNode1.getText(),jLabelNode2.getText(),)
+        Node startNode = jListNodes1.getSelectedValue();
+        Node endNode = jListNodes2.getSelectedValue();
+        Vehicle selectedVehicle = jListVehicles.getSelectedValue();
+        if (startNode != null
+                && endNode != null
+                && selectedVehicle != null) {
 
-//TEST ONLY
-        List<Section> bestPath = new ArrayList<>();
-        Node n1 = new Node("n1");
-        Node n2 = new Node("n2");
-        List<Segment> segments = new ArrayList<>();
-        List<Double> tollFare = new ArrayList<>();
-        tollFare.add(30d);
-        Road road = new Road("3", "road1", "highway", tollFare);
-        List<Double> tollFare1 = new ArrayList<>();
-        tollFare1.add(50d);
-        bestPath.add(new Section(n1, n2, Direction.BIDIRECTIONAL, segments, road, tollFare1));
-        Analysis generatedAnalysis = new Analysis(project, "N10", bestPath, new Measurable(300, Unit.KILOJOULE), new Measurable(3, Unit.HOUR), new Measurable(50, Unit.EUROS));
+            new PathAlgorithm().fastestPath(project, startNode, endNode, selectedVehicle);
 
-        new StoreNetworkAnalysisUI(project, generatedAnalysis);
-        setVisible(false);
+            //TEST ONLY
+            List<Section> bestPath = new ArrayList<>();
+            Node n1 = new Node("n1");
+            Node n2 = new Node("n2");
+            List<Segment> segments = new ArrayList<>();
+            List<Double> tollFare = new ArrayList<>();
+            tollFare.add(30d);
+            Road road = new Road("3", "road1", "highway", tollFare);
+            List<Double> tollFare1 = new ArrayList<>();
+            tollFare1.add(50d);
+            bestPath.add(new Section(n1, n2, Direction.BIDIRECTIONAL, segments, road, tollFare1));
+            Analysis generatedAnalysis = new Analysis(project, "N10", bestPath, new Measurable(300, Unit.KILOJOULE), new Measurable(3, Unit.HOUR), new Measurable(50, Unit.EUROS));
+
+            new StoreNetworkAnalysisUI(project, generatedAnalysis);
+            setVisible(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes, as well as a vehicle.");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
 }
