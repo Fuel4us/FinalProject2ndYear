@@ -10,7 +10,9 @@ import lapr.project.utils.Unit;
 import oracle.jdbc.pool.OracleDataSource;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,17 +21,21 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class DataBaseCommunicatorTest {
 
     private DataBaseCommunicator dbCom;
     private Analysis analysisExpected;
+    private MockDBAccessor mockDBAccessor;
+    private MockConnection mockConnection;
+    private MockAnalysisDAO mockAnalysisStorage;
+
 
     public DataBaseCommunicatorTest() {
         try {
             dbCom = new DataBaseCommunicator(new OracleDataSource());
-            //PACKAGE PRIVATE SETTER FOR TESTING PURPOSES ONLY -> SEE JAVADOC
-            dbCom.setDbAccessor(new MockDBAccessor(true));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -38,6 +44,14 @@ public class DataBaseCommunicatorTest {
     @Before
     public void setUp() throws Exception {
 
+
+        //Mock elements
+        mockDBAccessor = new MockDBAccessor(true);
+        //PACKAGE PRIVATE SETTER FOR TESTING PURPOSES ONLY -> SEE JAVADOC
+        dbCom.setDbAccessor(mockDBAccessor);
+
+
+        //Test elements for analysis
         RoadNetwork roadNetworkTest = new RoadNetwork(false, "1", "the road network");
 
         Node nodeTest1 = new Node("n01");
@@ -98,6 +112,10 @@ public class DataBaseCommunicatorTest {
 
     }
 
+    /**
+     * Success use case
+     * Method : storeNetworkAnalysis
+     */
     @Test
     public void ensureAnalysisIsStoredAssumingDataSourceIsAvailable() throws Exception {
 
@@ -107,6 +125,8 @@ public class DataBaseCommunicatorTest {
         dbCom.storeNetworkAnalysis(analysisExpected);
         Analysis actual = mockAnalysisStorage.retrieveStoredAnalysis(analysisExpected.identify());
 
+        assert mockConnection.isCommitted();
+
         assertEquals(analysisExpected.getBestPath(), actual.getBestPath());
         assertEquals(analysisExpected.getExpendedEnergy().getQuantity(), actual.getExpendedEnergy().getQuantity(), 0);
         assertEquals(analysisExpected.getTravelTime().getQuantity(), actual.getTravelTime().getQuantity(), 0);
@@ -114,10 +134,6 @@ public class DataBaseCommunicatorTest {
 
     }
 
-    @Test
-    public void ensureAnalysisStorageFailsForNullConnection() throws Exception {
-
-    }
 
     /*
     Mock classes
@@ -183,7 +199,7 @@ public class DataBaseCommunicatorTest {
             this.simulateConnection = simulateConnection;
         }
 
-        public void setSimulateConnection(boolean simulateConnection) {
+        void simulateConnection(boolean simulateConnection) {
             this.simulateConnection = simulateConnection;
         }
 
@@ -193,7 +209,13 @@ public class DataBaseCommunicatorTest {
          */
         @Override
         public Connection openConnexion() throws SQLException {
-            return simulateConnection ? new MockConnection() : null;
+            if (simulateConnection) {
+                if (mockConnection == null) {
+                    mockConnection = new MockConnection();
+                }
+                return mockConnection;
+            }
+            throw new SQLException();
         }
 
         /**
@@ -202,8 +224,9 @@ public class DataBaseCommunicatorTest {
          */
         @Override
         public boolean hasActiveConnection() {
-            return true;
+            return simulateConnection;
         }
+
     }
 
     /**
@@ -213,6 +236,51 @@ public class DataBaseCommunicatorTest {
      * </p>
      */
     private class MockConnection implements Connection {
+        private boolean committed;
+
+        private boolean rolledBack;
+
+        private boolean simulateTransactionFailure;
+
+        MockConnection() {
+            committed = false;
+            rolledBack = false;
+            simulateTransactionFailure = false;
+        }
+
+        /**
+         * Checks that a connection was used to commit a transaction
+         */
+        boolean isCommitted() {
+            return committed;
+        }
+
+        /**
+         * Checks that a connection was used to roll back a transaction
+         */
+        boolean isRolledBack() {
+            return rolledBack;
+        }
+
+
+        /**
+         * Actives transaction failure mode, implying commit attempts will fail
+         */
+        void setSimulateTransactionFailure(boolean simulateTransactionFailure) {
+            this.simulateTransactionFailure = simulateTransactionFailure;
+        }
+
+        /**
+         * Simulates a commit.
+         * @throws SQLException if simulateTransactionFailure is set to true
+         */
+        @Override
+        public void commit() throws SQLException {
+            if (!simulateTransactionFailure) {
+                committed = true;
+            }
+            throw new SQLException();
+        }
 
         @Override
         public Statement createStatement() throws SQLException {
@@ -245,13 +313,8 @@ public class DataBaseCommunicatorTest {
         }
 
         @Override
-        public void commit() throws SQLException {
-
-        }
-
-        @Override
         public void rollback() throws SQLException {
-
+            rolledBack = true;
         }
 
         @Override
@@ -483,7 +546,6 @@ public class DataBaseCommunicatorTest {
         public boolean isWrapperFor(Class<?> aClass) throws SQLException {
             return false;
         }
-
     }
 
 }
