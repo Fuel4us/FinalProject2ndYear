@@ -152,7 +152,7 @@ public class RoadTest {
     @Test
     public void testRetrieveVehicleClassRespectiveTollFare() {
         System.out.println("retrieveVehicleClassRespectiveTollFare");
-        Vehicle vehicle = new Vehicle("Pick_up", "", VehicleType.Car, 0, Vehicle.MotorType.COMBUSTION, Fuel.Diesel, new Measurable(1.0, Unit.KILOGRAM), new Measurable(1.0, Unit.KILOMETERS_PER_HOUR), 1f, new Measurable(1, Unit.METER_SQUARED), 1f, new Measurable(0, Unit.METER), new ArrayList<>(), new Energy(0, 0, 0, new ArrayList<>(), new ArrayList<>()));
+        Vehicle vehicle = new Vehicle("Pick_up", "", VehicleType.Car, 1, Vehicle.MotorType.COMBUSTION, Fuel.Diesel, new Measurable(1.0, Unit.KILOGRAM), new Measurable(1.0, Unit.KILOMETERS_PER_HOUR), 1f, new Measurable(1, Unit.METER_SQUARED), 1f, new Measurable(0, Unit.METER), new ArrayList<>(), new Energy(0, 0, 0, new ArrayList<>(), new ArrayList<>()));
         List<Double> toll = new ArrayList<>();
         toll.add(10.0);
         Road instance = new Road("id","name","typo",toll);
