@@ -76,8 +76,16 @@ public class OracleDBAccessor implements DBAccessor {
      * @throws SQLException requires connection to be valid
      */
     static boolean verifyConnectionIsOracle(Connection connection) throws SQLException {
-        DatabaseMetaData metaData = connection.getMetaData();
-        String databaseProductName = metaData.getDatabaseProductName();
+        String databaseProductName = "";
+
+        if (connection != null) {
+            DatabaseMetaData metaData = connection.getMetaData();
+
+            if (metaData != null) {
+                databaseProductName = metaData.getDatabaseProductName();
+            }
+
+        }
 
         return databaseProductName.equalsIgnoreCase(ORACLE_DATABASE_PRODUCT_NAME);
     }
