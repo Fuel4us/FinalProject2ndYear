@@ -8,7 +8,7 @@ package lapr.project.utils;
 import java.util.Objects;
 
 /**
- * @author goncalo
+ * ToDo
  */
 public class Measurable {
 

@@ -18,9 +18,9 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
- * JUnit tests of class ExportHTML
+ * JUnit tests of class ExportCSV
  */
-public class ExportHTMLTest {
+public class ExportCSVTest {
 
     /**
      * Test of method exportDataFromAnalysis
@@ -76,9 +76,9 @@ public class ExportHTMLTest {
 
         Analysis analysis = new Analysis(project, "N10", bestPath, new Measurable(300, Unit.KILOJOULE), new Measurable(3, Unit.HOUR), new Measurable(50, Unit.EUROS));
 
-        ExportHTML exportHTML = new ExportHTML(analysis);
-        File outputFile = new File("src\\main\\resources\\htmlFileStructure\\outputTestHTML.html");
-        exportHTML.exportDataFromAnalysis(outputFile);
+        ExportCSV exportCSV = new ExportCSV(analysis);
+        File outputFile = new File("src\\main\\resources\\htmlFileStructure\\outputTestCSV.csv");
+        exportCSV.exportDataFromAnalysis(outputFile);
     }
 
 }

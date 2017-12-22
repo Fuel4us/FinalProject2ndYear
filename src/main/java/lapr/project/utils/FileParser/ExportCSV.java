@@ -9,14 +9,13 @@ import java.io.IOException;
 /**
  * Handles exportation of an object to a HTML file
  */
-public class ExportHTML implements Exporter {
+public class ExportCSV implements Exporter {
 
     private Analysis analysis;
-    private static final String HTML_STRUCTURE_FIRST = "html_structure_first";
-    private static final String HTML_STRUCTURE_SECOND = "html_structure_second";
-    public static final String HTML_FILE_EXTENSION = ".html";
+    private static String CSV_STRUCTURE_FIRST = "csv_structure_first";
+    private static String CSV_STRUCTURE_SECOND = "csv_structure_second";
 
-    public ExportHTML(Analysis analysis) {
+    public ExportCSV(Analysis analysis) {
         this.analysis = analysis;
     }
 
@@ -28,9 +27,9 @@ public class ExportHTML implements Exporter {
         FileWriter fillFile = new FileWriter(outputFile, true);
 
         StringTemplateGroup groupHTML =  new StringTemplateGroup("src\\main\\resources");
-        StringTemplate stringTemplateFirst = groupHTML.getInstanceOf(HTML_STRUCTURE_FIRST);
-        StringTemplate stringTemplateSecond = groupHTML.getInstanceOf(HTML_STRUCTURE_SECOND);
-        analysis.exportDataHTML(stringTemplateFirst, stringTemplateSecond, fillFile);
+        StringTemplate stringTemplateFirst = groupHTML.getInstanceOf(CSV_STRUCTURE_FIRST);
+        StringTemplate stringTemplateSecond = groupHTML.getInstanceOf(CSV_STRUCTURE_SECOND);
+        analysis.exportDataCSV(stringTemplateFirst, stringTemplateSecond, fillFile);
 
     }
 
