@@ -309,7 +309,7 @@ public class DataBaseCommunicatorTest {
             if (!simulateTransactionFailure) {
                 committed = true;
             }
-            throw new SQLException();
+            else throw new SQLException();
         }
 
         @Override
