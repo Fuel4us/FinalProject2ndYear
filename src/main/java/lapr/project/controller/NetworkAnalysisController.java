@@ -33,7 +33,7 @@ public class NetworkAnalysisController {
     }
     
     public void exportData(File output) throws IOException{
-        exp.printDataFromAnalysis(output);
+        exp.exportDataFromAnalysis(output);
     }
     
 }

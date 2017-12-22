@@ -19,6 +19,7 @@ import java.util.List;
 public class Section extends Edge<String, Direction> {
 
     private static String HTML_STRUCTURE_SEGMENT = "html_structure_segment";
+    private static String CSV_STRUCTURE_SEGMENT = "csv_structure_segment";
 
     @XmlAttribute(name = "begin")
     private Node beginningNode;
@@ -147,25 +148,47 @@ public class Section extends Edge<String, Direction> {
     }
 
     /**
-     * Prints data of each segment included in the section, according to a certain file
+     * Prints data of each segment included in the section, according to a certain html file
      */
-    public void printSegmentsFromSection(FileWriter file) throws IOException {
+    public void printSegmentsFromSectionHTML(FileWriter file) throws IOException {
         for (Segment segment : segments) {
-            printDataFromSegment(segment, file);
+            file.write("\n");
+            printDataFromSegmentHTML(segment, file);
         }
     }
 
     /**
-     * Prints data from a given segment filling the information missing in a given file template
+     * Prints data of each segment included in the section, according to a certain csv file
+     */
+    public void printSegmentsFromSectionCSV(FileWriter file) throws IOException {
+        for (Segment segment : segments) {
+            file.write("\n");
+            printDataFromSegmentCSV(segment, file);
+        }
+    }
+
+    /**
+     * Prints data from a given segment filling the information missing in a given HTML file template
      * @param segment
      */
-    public void printDataFromSegment(Segment segment, FileWriter file) throws IOException {
+    private void printDataFromSegmentHTML(Segment segment, FileWriter file) throws IOException {
         StringTemplateGroup groupSegment = new StringTemplateGroup("src\\main\\resources");
         StringTemplate segmentTemplate = groupSegment.getInstanceOf(HTML_STRUCTURE_SEGMENT);
         segment.printDataFromSegment(segmentTemplate, file);
     }
 
     /**
+     * Prints data from a given segment filling the information missing in a given CSV file template
+     * @param segment
+     */
+    private void printDataFromSegmentCSV(Segment segment, FileWriter file) throws IOException {
+        StringTemplateGroup groupSegment = new StringTemplateGroup("src\\main\\resources");
+        StringTemplate segmentTemplate = groupSegment.getInstanceOf(CSV_STRUCTURE_SEGMENT);
+        segment.printDataFromSegment(segmentTemplate, file);
+    }
+
+    /**
+     * ToDo
      * @return owning road
      */
     public Road getOwningRoad() {
