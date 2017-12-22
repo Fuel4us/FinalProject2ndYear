@@ -8,6 +8,6 @@ import java.io.IOException;
  */
 public interface Exporter {
 
-    void printDataFromAnalysis(File file) throws IOException;
+    void exportDataFromAnalysis(File file) throws IOException;
 
 }
