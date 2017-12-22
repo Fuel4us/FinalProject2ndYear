@@ -162,10 +162,12 @@ public class Segment {
      */
     public Measurable calculateAirRelatedVelocity(Measurable maxLinearVelocity) {
 
-        //conversion km/h -> m/s
-        maxLinearVelocity.setQuantity(maxLinearVelocity.getQuantity() / Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO);
+        Measurable convertedVelocity = new Measurable(maxLinearVelocity.getQuantity() / Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO, Unit.METERS_PER_SECOND);
 
-        double airRelatedVelocity = Math.sqrt(Math.pow(windSpeed * Math.cos(windAngle) - maxLinearVelocity.getQuantity(), 2)
+
+
+        //conversion km/h -> m/s
+        double airRelatedVelocity = Math.sqrt(Math.pow(windSpeed * Math.cos(windAngle) - convertedVelocity.getQuantity(), 2)
                 + Math.pow(windSpeed * Math.sin(windAngle), 2));
 
         return new Measurable(airRelatedVelocity, Unit.METERS_PER_SECOND);
