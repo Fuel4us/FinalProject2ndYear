@@ -99,9 +99,19 @@ public class DataBaseCommunicatorTest {
     }
 
     @Test
-    void ensureAnalysisIsStoredAssumingDataSourceIsAvailable() throws Exception {
+    public void ensureAnalysisIsStoredAssumingDataSourceIsAvailable() throws Exception {
 
-        
+        //PACKAGE PRIVATE SETTER FOR TESTING PURPOSES ONLY -> SEE JAVADOC
+        MockAnalysisDAO mockAnalysisStorage = new MockAnalysisDAO();
+        dbCom.setAnalysisStorage(mockAnalysisStorage);
+        dbCom.storeNetworkAnalysis(analysisExpected);
+        Analysis actual = mockAnalysisStorage.retrieveStoredAnalysis(analysisExpected.identify());
+
+        assertEquals(analysisExpected.getBestPath(), actual.getBestPath());
+        assertEquals(analysisExpected.getExpendedEnergy().getQuantity(), actual.getExpendedEnergy().getQuantity(), 0);
+        assertEquals(analysisExpected.getTravelTime().getQuantity(), actual.getTravelTime().getQuantity(), 0);
+        assertEquals(analysisExpected.getTravelCost().getQuantity(), actual.getTravelCost().getQuantity(), 0);
+
     }
 
     @Test
