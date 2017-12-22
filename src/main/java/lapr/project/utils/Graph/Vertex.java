@@ -130,10 +130,7 @@ public class Vertex<V, E> {
 
     @Override
     public int hashCode() {
-        int result = key;
-        result = 31 * result + (element != null ? element.hashCode() : 0);
-        result = 31 * result + (outVerts != null ? outVerts.hashCode() : 0);
-        return result;
+        return super.hashCode();
     }
 
     @Override
