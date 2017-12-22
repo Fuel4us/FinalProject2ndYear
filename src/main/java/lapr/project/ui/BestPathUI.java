@@ -66,7 +66,6 @@ public class BestPathUI extends JFrame {
         this.controller = new BestPathController(project);
         initComponents();
         this.project = project;
-//        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setVisible(true);
         setLocationRelativeTo(null);
