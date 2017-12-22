@@ -159,8 +159,9 @@ public class Vehicle {
         Measurable power = calculatePowerGenerated(data[0], data[1]);
 
         double SFC = data[2].getQuantity();
+        double timeSpent = segment.getLength() / data[3].getQuantity();
 
-        double fuelQuantity = power.getQuantity() * Physics.KILOMETERS_METERS_CONVERSION_RATIO * SFC * data[3].getQuantity();
+        double fuelQuantity = power.getQuantity() * Physics.KILOMETERS_METERS_CONVERSION_RATIO * SFC * timeSpent;
 
         return new Measurable(fuelQuantity * fuel.getSpecificEnergy().getQuantity(), Unit.KILOJOULE);
     }

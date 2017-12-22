@@ -150,7 +150,7 @@ public class Segment {
 
         //finalHeight and initialHeight m -> km
         return new Measurable(Math.asin(
-                finalHeight * Physics.KILOMETERS_METERS_CONVERSION_RATIO - initialHeight * Physics.KILOMETERS_METERS_CONVERSION_RATIO
+                (finalHeight * Physics.KILOMETERS_METERS_CONVERSION_RATIO - initialHeight * Physics.KILOMETERS_METERS_CONVERSION_RATIO)
                         / length), Unit.DEGREE);
     }
 
@@ -167,8 +167,8 @@ public class Segment {
 
 
         //conversion km/h -> m/s
-        double airRelatedVelocity = Math.sqrt(Math.pow(windSpeed * Math.cos(windAngle) - convertedVelocity.getQuantity(), 2)
-                + Math.pow(windSpeed * Math.sin(windAngle), 2));
+        double airRelatedVelocity = Math.sqrt(Math.pow(windSpeed * Math.cos(Math.toRadians(windAngle)) - convertedVelocity.getQuantity(), 2)
+                + Math.pow(windSpeed * Math.sin(Math.toRadians(windAngle)), 2));
 
         return new Measurable(airRelatedVelocity, Unit.METERS_PER_SECOND);
     }
