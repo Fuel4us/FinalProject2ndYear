@@ -134,6 +134,36 @@ public class DataBaseCommunicatorTest {
 
     }
 
+    /**
+     * Failing use case
+     * Method : storeNetworkAnalysis
+     */
+    @Test
+    public void ensureAnalysisStorageRollsBackForInactiveConnection() throws Exception {
+
+        MockAnalysisDAO mockAnalysisStorage = new MockAnalysisDAO();
+        dbCom.setAnalysisStorage(mockAnalysisStorage);
+        dbCom.storeNetworkAnalysis(analysisExpected);
+
+        //Set connection simulation to false so that an exception may be thrown when opening connections
+        mockDBAccessor.simulateConnection(false);
+
+        //Assert simulating inactive connection throws SQLException
+        Assertions.assertThrows(SQLException.class, () -> mockDBAccessor.openConnexion());
+
+        //Assert thrown SQLException is caught and return line is reached
+        assert !dbCom.storeNetworkAnalysis(analysisExpected);
+
+        //Assert connection is rolled back for active connection, when transaction fails
+        // Simulate active connection
+        mockDBAccessor.simulateConnection(true);
+        // Simulate transaction failure with active connection
+        mockDBAccessor.openConnexion();
+        mockConnection.setSimulateTransactionFailure(true);
+        //Test SQLException is caught by rolling back
+        dbCom.storeNetworkAnalysis(analysisExpected);
+        assert mockConnection.isRolledBack();
+    }
 
     /*
     Mock classes
