@@ -32,7 +32,10 @@ public class SelectProjectUI extends javax.swing.JFrame {
     private javax.swing.JButton jButtonBack;
     private javax.swing.JButton jButtonCompForm;
     private javax.swing.JButton jButtonPathForm;
+    /**
     private javax.swing.JComboBox<String> jComboBox1;
+    */
+    private javax.swing.JComboBox<Project> jComboBox1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -47,8 +50,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
         super("Select Project");
         spc = new SelectProjectController(Main.dbCom);
         initComponents();
-
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         setVisible(true);
         setLocationRelativeTo(null);
@@ -72,7 +74,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox1 = new javax.swing.JComboBox<Project>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -98,21 +100,33 @@ public class SelectProjectUI extends javax.swing.JFrame {
         jButtonCompForm.setForeground(new java.awt.Color(45, 46, 45));
         jButtonCompForm.setText("Road Network Comparison Form");
         jButtonCompForm.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonCompForm.addActionListener(evt -> jButtonCompFormActionPerformed(evt));
+        jButtonCompForm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCompFormActionPerformed(evt);
+            }
+        });
 
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
         jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack.setText("«");
         jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
+        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBackActionPerformed(evt);
+            }
+        });
 
         jButtonPathForm.setBackground(new java.awt.Color(45, 46, 45));
         jButtonPathForm.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jButtonPathForm.setForeground(new java.awt.Color(45, 46, 45));
         jButtonPathForm.setText("Road Network Path Form");
         jButtonPathForm.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonPathForm.addActionListener(evt -> jButtonPathFormActionPerformed(evt));
+        jButtonPathForm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPathFormActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(155, 177, 189));
@@ -126,9 +140,21 @@ public class SelectProjectUI extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(155, 177, 189));
         jLabel4.setText("project");
 
+        List<Project> projectsList = spc.fetchProjectsList();
+        DefaultComboBoxModel<Project> projectsModel = new DefaultComboBoxModel<>();
+        for (Project obj : projectsList) {
+            projectsModel.addElement(obj);
+        }
+        jComboBox1.setModel(projectsModel);
         jComboBox1.setBackground(new java.awt.Color(204, 204, 204));
+        /**
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(evt -> jComboBox1ActionPerformed(evt));
+        */
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

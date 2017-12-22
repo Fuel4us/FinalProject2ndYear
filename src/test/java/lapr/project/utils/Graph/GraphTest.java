@@ -1,11 +1,10 @@
 package lapr.project.utils.Graph;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 /**
@@ -602,6 +601,84 @@ public class GraphTest {
     public void testToString() {
 
         System.out.println(instance);
+    }
+
+    /**
+     * Test of validVertex method, of class Graph.
+     */
+    @Test
+    public void testValidVertex() {
+        System.out.println("validVertex");
+        Graph<String, String> instance = new Graph<>(true);
+        boolean expResult = false;
+        boolean result = instance.validVertex("abc");
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getKey method, of class Graph.
+     */
+    @Test
+    public void testGetKey() {
+        System.out.println("getKey");
+        Graph<String,String> instance1 = new Graph<>(true);
+        int expResult = 0;
+        instance1.insertVertex("A");
+        int result = instance1.getKey("A");
+        System.out.println(result);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of allkeyVerts method, of class Graph.
+     */
+    @Test
+    public void testAllkeyVerts() {
+        System.out.println("allkeyVerts");
+        Graph<Integer,Integer> instance1 = new Graph<>(true);
+        instance1.insertVertex(1);
+        List<Integer> expResult = new ArrayList<>();
+        List<Integer> result = instance1.allkeyVerts();
+        expResult.add(instance1.getKey(1), 1);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of adjVertices method, of class Graph.
+     */
+    @Test
+    public void testAdjVertices() {
+        System.out.println("adjVertices");
+        Graph<String, String> instance2 = new Graph<>(true);
+        instance2.insertEdge("A", "B", "Edge1", 6);
+        Graph<String, String> testGraph = new Graph<>(true);
+        testGraph.insertEdge("A", "B", "Edge1", 6);
+        Iterable<String> result = instance2.adjVertices("A");
+        Iterable<String> expResult = testGraph.adjVertices("A");
+        assertEquals(expResult, result);
+    }
+
+//    /**
+//     * Test of getEdges method, of class Graph.
+//     */
+//    @Test
+//    public void testGetEdges() {
+//        System.out.println("getEdges");
+//        Graph instance = null;
+//        List<Edge<V, E>> expResult = null;
+//        List<Edge<V, E>> result = instance.getEdges();
+//        assertEquals(expResult, result);
+//    }
+
+    /**
+     * Test of hashCode method, of class Graph.
+     */
+    @Test
+    public void testHashCode() {
+        System.out.println("hashCode");
+        int expResult = 31;
+        int result = instance.hashCode();
+        assertEquals(expResult, result);
     }
 
 }

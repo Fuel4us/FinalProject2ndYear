@@ -66,36 +66,9 @@ public class BestPathUI extends JFrame {
         this.controller = new BestPathController(project);
         initComponents();
         this.project = project;
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setVisible(true);
         setLocationRelativeTo(null);
-        initSelectionLists(project);
-    }
-
-    /**
-     * Initializes nodes and vehicles selection JLists
-     * @param project the project to which the nodes and vehicles belong
-     */
-    private void initSelectionLists(Project project) {
-        RoadNetwork roadNetwork = project.getRoadNetwork();
-
-        //Init node selection lists
-        DefaultListModel<Node> nodes1ListModel = new DefaultListModel<>();
-        for (Node node : roadNetwork.vertices()) {
-            nodes1ListModel.addElement(node);
-        }
-
-        jListNodes1 = new JList<>(nodes1ListModel);
-        jListNodes2 = new JList<>(nodes1ListModel);
-
-        DefaultListModel<Vehicle> vehicleListModel = new DefaultListModel<>();
-        for (Vehicle vehicle : project.getVehicles()) {
-            vehicleListModel.addElement(vehicle);
-        }
-
-        jListVehicles = new JList<>(vehicleListModel);
-
     }
 
     /**
