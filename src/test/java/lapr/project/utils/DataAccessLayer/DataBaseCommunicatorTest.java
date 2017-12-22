@@ -122,7 +122,10 @@ public class DataBaseCommunicatorTest {
         //PACKAGE PRIVATE SETTER FOR TESTING PURPOSES ONLY -> SEE JAVADOC
         MockAnalysisDAO mockAnalysisStorage = new MockAnalysisDAO();
         dbCom.setAnalysisStorage(mockAnalysisStorage);
-        dbCom.storeNetworkAnalysis(analysisExpected);
+
+        //Assert return true line is reached
+        if (!dbCom.storeNetworkAnalysis(analysisExpected)) throw new AssertionError();
+
         Analysis actual = mockAnalysisStorage.retrieveStoredAnalysis(analysisExpected.identify());
 
         assert mockConnection.isCommitted();
@@ -160,7 +163,7 @@ public class DataBaseCommunicatorTest {
         // Simulate transaction failure with active connection
         mockDBAccessor.openConnexion();
         mockConnection.setSimulateTransactionFailure(true);
-        //Test SQLException is caught by rolling back
+        //Test SQLException is caught by rolling back (logging should be available on console output)
         dbCom.storeNetworkAnalysis(analysisExpected);
         assert mockConnection.isRolledBack();
     }
