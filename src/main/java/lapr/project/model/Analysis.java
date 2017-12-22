@@ -151,13 +151,6 @@ public class Analysis implements Exportable {
     }
 
     /**
-     * @return the Id
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
      * @return the RequestingInstance
      */
     public Project getRequestingInstance() {
