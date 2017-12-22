@@ -102,17 +102,15 @@ public class Analysis implements Exportable {
     public void printDataFromAnalysis(StringTemplate stringTemplate1, StringTemplate stringTemplate2, FileWriter file) throws IOException {
         String projectName = requestingInstance.getName();
         String analysisName = algorithmName;
-//        String travelTimeStr = travelTime.toString;
-//        String recordsNumber = String.valueOf(recordsNumber);
-//        String energyConsumption;
-//        String tollCost;
+        String travelTimeStr = travelTime.toString();
+        String energyConsumption = expendedEnergy.toString();
+        String tollCost = travelCost.toString();
 
         stringTemplate1.setAttribute("projectName", projectName);
         stringTemplate1.setAttribute("sampleName", analysisName);
-//        stringTemplate1.setAttribute("sampleTime", travelTimeStr);
-//        stringTemplate1.setAttribute("sampleRecords", recordsNumber);
-//        stringTemplate1.setAttribute("sampleEnergy", energyConsumption);
-//        stringTemplate1.setAttribute("sampleCost", tollCost);
+        stringTemplate1.setAttribute("sampleTime", travelTimeStr);
+        stringTemplate1.setAttribute("sampleEnergy", energyConsumption);
+        stringTemplate1.setAttribute("sampleCost", tollCost);
 
         file.write(stringTemplate1.toString());
         printPathRoads(file);
@@ -138,7 +136,6 @@ public class Analysis implements Exportable {
             }
         }
         for (Road road : roads) {
-//            String roadName = road.getName();
             file.write(road.getName() + " | ");
         }
         file.write("</center>");
@@ -151,6 +148,34 @@ public class Analysis implements Exportable {
         for (Section section : bestPath) {
             section.printSegmentsFromSection(file);
         }
+    }
+
+    /**
+     * @return the BestPath
+     */
+    Collection<Section> getBestPath() {
+        return bestPath;
+    }
+
+    /**
+     * @return the ExpendedEnergy
+     */
+    Measurable getExpendedEnergy() {
+        return expendedEnergy;
+    }
+
+    /**
+     * @return the TravelTime
+     */
+    Measurable getTravelTime() {
+        return travelTime;
+    }
+
+    /**
+     * @return the TravelCost
+     */
+    Measurable getTravelCost() {
+        return travelCost;
     }
 
 }
