@@ -2,23 +2,21 @@ package lapr.project.model;
 
 import lapr.project.model.RoadNetwork.Road;
 import lapr.project.model.RoadNetwork.Section;
-import lapr.project.utils.FileParser.Exportable;
-import lapr.project.utils.Measurable;
+import lapr.project.utils.FileParser.ExportableCSV;
+import lapr.project.utils.FileParser.ExportableHTML;
 import org.antlr.stringtemplate.StringTemplate;;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Defines general behaviour for different types of analysis
  * in order to better accommodate future requirement changes
  */
-public class Analysis implements Exportable {
+public class Analysis implements ExportableHTML, ExportableCSV {
 
     private int id;
     private Project requestingInstance;
@@ -60,13 +58,45 @@ public class Analysis implements Exportable {
 //    public abstract Collection<?> generateReport();
 
     /**
-     * Prints data from a given segment filling the information missing in a given file template
+     * Exports data from analysis to an html file according to given templates
      * @param stringTemplate1 instance of {@link StringTemplate}
      * @param stringTemplate2 instance of {@link StringTemplate}
      * @param file FileWriter object
      */
     @Override
-    public void printDataFromAnalysis(StringTemplate stringTemplate1, StringTemplate stringTemplate2, FileWriter file) throws IOException {
+    public void exportDataHTML(StringTemplate stringTemplate1, StringTemplate stringTemplate2, FileWriter file) throws IOException {
+        exportAnalysisData(stringTemplate1, file);
+        printPathRoadsHTML(file);
+        file.write(stringTemplate2.toString());
+        printPathHTML(file);
+        file.write("</body></html>");
+
+        file.close();
+    }
+
+    /**
+     * Exports data from analysis to an csv file according to given templates
+     * @param stringTemplate1 instance of {@link StringTemplate}
+     * @param stringTemplate2 instance of {@link StringTemplate}
+     * @param file FileWriter object
+     */
+    @Override
+    public void exportDataCSV(StringTemplate stringTemplate1, StringTemplate stringTemplate2, FileWriter file) throws IOException {
+        exportAnalysisData(stringTemplate1, file);
+        printPathRoadsCSV(file);
+        file.write(stringTemplate2.toString());
+        printPathCSV(file);
+
+        file.close();
+    }
+
+    /**
+     * Exports data from analysis excluding path information
+     * @param stringTemplate1
+     * @param file
+     * @throws IOException
+     */
+    private void exportAnalysisData(StringTemplate stringTemplate1, FileWriter file) throws IOException {
         String projectName = requestingInstance.getName();
         String analysisName = algorithmName;
 //        String travelTimeStr = travelTime.toString;
@@ -82,41 +112,69 @@ public class Analysis implements Exportable {
 //        stringTemplate1.setAttribute("sampleCost", tollCost);
 
         file.write(stringTemplate1.toString());
-        printPathRoads(file);
-        file.write(stringTemplate2.toString());
-
-        printPath(file);
-
-        file.write("</body></html>");
-        file.close();
-
     }
 
     /**
-     * Prints roads that compose the best path
+     * Exports roads in html that compose the best path
      */
-    private void printPathRoads(FileWriter file) throws IOException {
-        List<Road> roads = new ArrayList<>();
+    private void printPathRoadsHTML(FileWriter file) throws IOException {
+        List<Road> roads = getPathRoads();
         file.write("<center>");
-        for (Section section: bestPath) {
-            Road road = section.getOwningRoad();
-            if (!roads.contains(road)) {
-                roads.add(road);
-            }
-        }
         for (Road road : roads) {
-//            String roadName = road.getName();
             file.write(road.getName() + " | ");
         }
         file.write("</center>");
     }
 
     /**
-     * Prints segment information for each section that composes the best path
+     * Exports roads in csv that compose the best path
      */
-    private void printPath(FileWriter file) throws IOException {
+    private void printPathRoadsCSV(FileWriter file) throws IOException {
+        List<Road> roads = getPathRoads();
+        file.write("\n");
+        file.write("Roads:,");
+        int i = roads.size();
+        for (Road road : roads) {
+            if (i > 1) {
+                file.write(road.getName() + ",");
+            } else {
+                file.write(road.getName());
+            }
+            i--;
+        }
+        file.write("\n");
+    }
+
+    /**
+     * ToDo
+     * @return
+     */
+    private List<Road> getPathRoads() {
+        List<Road> roads = new ArrayList<>();
         for (Section section: bestPath) {
-            section.printSegmentsFromSection(file);
+            Road road = section.getOwningRoad();
+            if (!roads.contains(road)) {
+                roads.add(road);
+            }
+        }
+        return roads;
+    }
+
+    /**
+     * Exports to an html file the segment information for each section that composes the best path
+     */
+    private void printPathHTML(FileWriter file) throws IOException {
+        for (Section section: bestPath) {
+            section.printSegmentsFromSectionHTML(file);
+        }
+    }
+
+    /**
+     * Exports to a csv file the segment information for each section that composes the best path
+     */
+    private void printPathCSV(FileWriter file) throws IOException {
+        for (Section section: bestPath) {
+            section.printSegmentsFromSectionCSV(file);
         }
     }
 

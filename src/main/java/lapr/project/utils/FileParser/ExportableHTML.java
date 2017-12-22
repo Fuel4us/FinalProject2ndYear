@@ -10,6 +10,6 @@ import java.io.IOException;
  */
 public interface Exportable {
 
-    void printDataFromAnalysis(StringTemplate stringTemplate1, StringTemplate stringTemplate2, FileWriter file) throws IOException;
+    void exportData(StringTemplate stringTemplate1, StringTemplate stringTemplate2, FileWriter file) throws IOException;
 }
 

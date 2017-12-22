@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Handles exportation of an analysis result to a HTML file
+ * Handles exportation of an object to a HTML file
  */
 public class ExportHTML implements Exporter {
 
@@ -20,16 +20,16 @@ public class ExportHTML implements Exporter {
     }
 
     /**
-     * Prints data from analysis filling the information missing in a given file template
+     * Exports data from analysis filling the information missing in a given file template
      */
     @Override
-    public void printDataFromAnalysis(File outputFile) throws IOException {
+    public void exportDataFromAnalysis(File outputFile) throws IOException {
         FileWriter fillFile = new FileWriter(outputFile, true);
 
         StringTemplateGroup groupHTML =  new StringTemplateGroup("src\\main\\resources");
         StringTemplate stringTemplateFirst = groupHTML.getInstanceOf(HTML_STRUCTURE_FIRST);
         StringTemplate stringTemplateSecond = groupHTML.getInstanceOf(HTML_STRUCTURE_SECOND);
-        analysis.printDataFromAnalysis(stringTemplateFirst, stringTemplateSecond, fillFile);
+        analysis.exportDataHTML(stringTemplateFirst, stringTemplateSecond, fillFile);
 
     }
 

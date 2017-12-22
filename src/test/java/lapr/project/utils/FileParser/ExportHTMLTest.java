@@ -9,7 +9,6 @@ import lapr.project.utils.Unit;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,10 +23,10 @@ import static org.junit.Assert.*;
 public class ExportHTMLTest {
 
     /**
-     * Test of method printDataFromAnalysis, of class Section
+     * Test of method exportDataFromAnalysis
      */
     @Test
-    public void printDataFromAnalysisTest() throws IOException {
+    public void exportDataFromAnalysisTest() throws IOException {
 
         Collection<Segment> segments1 = new ArrayList<>();
         segments1.add(new Segment(0, 0, 0, 50, 0, 0, 120, 0));
@@ -73,13 +72,13 @@ public class ExportHTMLTest {
         List<Vehicle> vehicles = new LinkedList<>();
         vehicles.add(vehicleTest1);
 
-        Project project = new Project("1", "Ola", roadNetworkTest1, vehicles);
+        Project project = new Project("name1", "Ola", roadNetworkTest1, vehicles);
 
         Analysis analysis = new Analysis(1, project, "algorithm", bestPath);
 
         ExportHTML exportHTML = new ExportHTML(analysis);
-        File outputFile = new File("src\\main\\resources\\htmlFileStructure\\outputTest.html");
-//        exportHTML.printDataFromAnalysis(outputFile);
+        File outputFile = new File("src\\main\\resources\\htmlFileStructure\\outputTestHTML.html");
+        exportHTML.exportDataFromAnalysis(outputFile);
     }
 
 }
