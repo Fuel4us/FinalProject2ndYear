@@ -72,9 +72,9 @@ public class Road {
      * @param vehicle the vehicle
      * @return the toll fare
      */
-    public double retrieveVehicleClassRespectiveTollFare(Vehicle vehicle) {
+    double retrieveVehicleClassRespectiveTollFare(Vehicle vehicle) {
         for (int i = 0; i < tollFare.size(); i++) {
-            if (i == vehicle.getVehicleClass()) {
+            if (i + 1 == vehicle.getVehicleClass()) {
                 return tollFare.get(i);
             }
         }
