@@ -6,10 +6,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Handles the exportation of analysis data to files of multiple formats
+ * Handles the exportation of multiple objects's data to an HTML file
  */
-public interface Exportable {
+public interface ExportableHTML {
 
-    void exportData(StringTemplate stringTemplate1, StringTemplate stringTemplate2, FileWriter file) throws IOException;
+    void exportDataHTML(StringTemplate stringTemplate1, StringTemplate stringTemplate2, FileWriter file) throws IOException;
 }
 
