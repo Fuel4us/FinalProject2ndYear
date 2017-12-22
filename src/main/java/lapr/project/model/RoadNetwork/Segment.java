@@ -64,13 +64,13 @@ public class Segment {
      */
     public void printDataFromSegment(StringTemplate segmentTemplate, FileWriter file) throws IOException {
         String segmentId = String.valueOf(index);
-        String segmentIniHeight = String.valueOf(initialHeight);
-        String segmentFinHeight = String.valueOf(finalHeight);
-        String segmentLength = String.valueOf(length);
-        String segmentWindAngle = String.valueOf(windAngle);
-        String segmentWindSpeed = String.valueOf(windSpeed);
-        String segmentMaxVelocity = String.valueOf(maxVelocity);
-        String segmentMinVelocity = String.valueOf(minVelocity);
+        String segmentIniHeight = String.valueOf(initialHeight).replace(".", ",");
+        String segmentFinHeight = String.valueOf(finalHeight).replace(".", ",");
+        String segmentLength = String.valueOf(length).replace(".", ",");
+        String segmentWindAngle = String.valueOf(windAngle).replace(".", ",");
+        String segmentWindSpeed = String.valueOf(windSpeed).replace(".", ",");
+        String segmentMaxVelocity = String.valueOf(maxVelocity).replace(".", ",");
+        String segmentMinVelocity = String.valueOf(minVelocity).replace(".", ",");
 
         segmentTemplate.setAttribute("sampleId", segmentId);
         segmentTemplate.setAttribute("sampleIniHeight", segmentIniHeight);
