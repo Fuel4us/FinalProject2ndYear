@@ -151,14 +151,7 @@ public class Edge<V, E> implements Comparable<Edge<V, E>> {
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = element != null ? element.hashCode() : 0;
-        temp = Double.doubleToLongBits(weight);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (vOrig != null ? vOrig.hashCode() : 0);
-        result = 31 * result + (vDest != null ? vDest.hashCode() : 0);
-        return result;
+        return super.hashCode();
     }
     
     @Override

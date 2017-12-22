@@ -21,7 +21,6 @@ public class SelectProjectUI extends javax.swing.JFrame {
 
     InitializeUIElements initializer = new InitializeUIElements();
     private static final long serialVersionUID = -5188965937946662366L;
-    private static DataBaseCommunicator dbCom;
     private SelectProjectController spc;
     private Project project;
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -40,11 +39,9 @@ public class SelectProjectUI extends javax.swing.JFrame {
     /**
      * Creates new form SelectProjectUI
      */
-    public SelectProjectUI(DataBaseCommunicator dbCom) {
+    public SelectProjectUI() {
         super("Select Project");
-        SelectProjectUI.dbCom = dbCom;
-        spc = new SelectProjectController(SelectProjectUI.dbCom);
-        //p = cpc.newProject();
+        spc = new SelectProjectController(Main.dbCom);
         initComponents();
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -209,8 +206,8 @@ public class SelectProjectUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonPathFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPathFormActionPerformed
-        Project project = new Project("test", "description", new RoadNetwork(), new ArrayList<>());
-        new BestPathUI(project, dbCom);
+        Project project = new Project("New Project", "Add a description", new RoadNetwork(), new ArrayList<>());
+        new BestPathUI(project);
         setVisible(false);
     }//GEN-LAST:event_jButtonPathFormActionPerformed
 
@@ -246,7 +243,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-       java.awt.EventQueue.invokeLater(() -> new SelectProjectUI(dbCom).setVisible(true));
+       java.awt.EventQueue.invokeLater(() -> new SelectProjectUI().setVisible(true));
     }
 
 

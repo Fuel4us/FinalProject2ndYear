@@ -5,72 +5,96 @@
  */
 package lapr.project.ui;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import javax.swing.DefaultListModel;
 import lapr.project.controller.BestPathController;
 import lapr.project.model.Analysis;
 import lapr.project.model.Project;
-import lapr.project.model.RoadNetwork.Node;
-import lapr.project.model.RoadNetwork.RoadNetwork;
+import lapr.project.model.RoadNetwork.*;
 import lapr.project.model.Vehicle.Vehicle;
-import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
+import lapr.project.utils.Measurable;
+import lapr.project.utils.Unit;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- *
  * @author anily
  */
-public class BestPathUI extends javax.swing.JFrame {
+public class BestPathUI extends JFrame {
 
     private BestPathController controller;
     private static final long serialVersionUID = -8320152827152597623L;
     private Project project;
     private Analysis generatedAnalysis;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel imgLateral;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButtonBack;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabelAlgorithm1;
-    private javax.swing.JLabel jLabelNode1;
-    private javax.swing.JLabel jLabelNode2;
+    private JLabel imgLateral;
+    private JButton jButton1;
+    private JButton jButton2;
+    private JButton jButton3;
+    private JButton jButtonBack;
+    private JLabel jLabel2;
+    private JLabel jLabelAlgorithm1;
+    private JLabel jLabelNode1;
+    private JLabel jLabelNode2;
     /**
-    private javax.swing.JList<String> jListNodes1;
-    */
-    private javax.swing.JList<Node> jListNodes1;
+     * private JList<String> jListNodes1;
+     */
+    private JList<Node> jListNodes1;
     /**
-    private javax.swing.JList<String> jListNodes2;
-    */
-    private javax.swing.JList<Node> jListNodes2;
+     * private JList<String> jListNodes2;
+     */
+    private JList<Node> jListNodes2;
     /**
-    private javax.swing.JList<String> jListVehicles;
-    */
-    private javax.swing.JList<Vehicle> jListVehicles;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JPanel orangeBorder;
+     * private JList<String> jListVehicles;
+     */
+    private JList<Vehicle> jListVehicles;
+    private JPanel jPanel1;
+    private JScrollPane jScrollPane2;
+    private JScrollPane jScrollPane3;
+    private JScrollPane jScrollPane4;
+    private JPanel orangeBorder;
     // End of variables declaration//GEN-END:variables
-
-    private DataBaseCommunicator dbCom;
 
     /**
      * Creates new form RoadNetworkPathFormUI
      */
-    public BestPathUI(Project project, DataBaseCommunicator dbCom) {
+    BestPathUI(Project project) {
         super("Best Path");
         this.controller = new BestPathController(project);
         initComponents();
-        this.dbCom = dbCom;
         this.project = project;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setVisible(true);
         setLocationRelativeTo(null);
+        initSelectionLists(project);
+    }
+
+    /**
+     * Initializes nodes and vehicles selection JLists
+     * @param project the project to which the nodes and vehicles belong
+     */
+    private void initSelectionLists(Project project) {
+        RoadNetwork roadNetwork = project.getRoadNetwork();
+
+        //Init node selection lists
+        DefaultListModel<Node> nodes1ListModel = new DefaultListModel<>();
+        for (Node node : roadNetwork.vertices()) {
+            nodes1ListModel.addElement(node);
+        }
+
+        jListNodes1 = new JList<>(nodes1ListModel);
+        jListNodes2 = new JList<>(nodes1ListModel);
+
+        DefaultListModel<Vehicle> vehicleListModel = new DefaultListModel<>();
+        for (Vehicle vehicle : project.getVehicles()) {
+            vehicleListModel.addElement(vehicle);
+        }
+
+        jListVehicles = new JList<>(vehicleListModel);
+
     }
 
     /**
@@ -82,49 +106,49 @@ public class BestPathUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        imgLateral = new javax.swing.JLabel();
-        orangeBorder = new javax.swing.JPanel();
-        jButtonBack = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jListNodes2 = new javax.swing.JList<Node>();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jListNodes1 = new javax.swing.JList<Node>();
-        jLabelNode1 = new javax.swing.JLabel();
-        jLabelNode2 = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jListVehicles = new javax.swing.JList<Vehicle>();
-        jLabelAlgorithm1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jPanel1 = new JPanel();
+        imgLateral = new JLabel();
+        orangeBorder = new JPanel();
+        jButtonBack = new JButton();
+        jScrollPane2 = new JScrollPane();
+        jListNodes2 = new JList<Node>();
+        jScrollPane3 = new JScrollPane();
+        jListNodes1 = new JList<Node>();
+        jLabelNode1 = new JLabel();
+        jLabelNode2 = new JLabel();
+        jScrollPane4 = new JScrollPane();
+        jListVehicles = new JList<Vehicle>();
+        jLabelAlgorithm1 = new JLabel();
+        jLabel2 = new JLabel();
+        jButton1 = new JButton();
+        jButton2 = new JButton();
+        jButton3 = new JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(45, 46, 45));
 
-        imgLateral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fundo.png"))); // NOI18N
+        imgLateral.setIcon(new ImageIcon(getClass().getResource("/fundo.png"))); // NOI18N
 
         orangeBorder.setBackground(new java.awt.Color(250, 152, 60));
 
-        javax.swing.GroupLayout orangeBorderLayout = new javax.swing.GroupLayout(orangeBorder);
+        GroupLayout orangeBorderLayout = new GroupLayout(orangeBorder);
         orangeBorder.setLayout(orangeBorderLayout);
         orangeBorderLayout.setHorizontalGroup(
-            orangeBorderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 10, Short.MAX_VALUE)
+                orangeBorderLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGap(0, 10, Short.MAX_VALUE)
         );
         orangeBorderLayout.setVerticalGroup(
-            orangeBorderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+                orangeBorderLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGap(0, 0, Short.MAX_VALUE)
         );
 
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
         jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack.setText("«");
-        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonBack.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 jButtonBackActionPerformed(evt);
             }
         });
@@ -136,16 +160,16 @@ public class BestPathUI extends javax.swing.JFrame {
         }
         jListNodes2.setModel(nodesModel2);
         jListNodes2.setBackground(new java.awt.Color(97, 122, 133));
-        jListNodes2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
+        jListNodes2.setBorder(BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListNodes2.setForeground(new java.awt.Color(255, 255, 255));
         /**
-        jListNodes2.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Node 1", "Node 2" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        */
-        jListNodes2.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+         jListNodes2.setModel(new AbstractListModel<String>() {
+         String[] strings = { "Node 1", "Node 2" };
+         public int getSize() { return strings.length; }
+         public String getElementAt(int i) { return strings[i]; }
+         });
+         */
+        jListNodes2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(jListNodes2);
 
         List<Node> nodesList = controller.getAllNodes();
@@ -155,12 +179,12 @@ public class BestPathUI extends javax.swing.JFrame {
         }
         jListNodes1.setModel(nodesModel);
         jListNodes1.setBackground(new java.awt.Color(97, 122, 133));
-        jListNodes1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
+        jListNodes1.setBorder(BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListNodes1.setForeground(new java.awt.Color(255, 255, 255));
         /**
-        jListNodes1.setModel(null);
-        */
-        jListNodes1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+         jListNodes1.setModel(null);
+         */
+        jListNodes1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(jListNodes1);
 
         jLabelNode1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
@@ -178,16 +202,16 @@ public class BestPathUI extends javax.swing.JFrame {
         }
         jListVehicles.setModel(vehicleModel);
         jListVehicles.setBackground(new java.awt.Color(97, 122, 133));
-        jListVehicles.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
+        jListVehicles.setBorder(BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListVehicles.setForeground(new java.awt.Color(255, 255, 255));
         /**
-        jListVehicles.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "V1", "V2", "V3" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        */
-        jListVehicles.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+         jListVehicles.setModel(new AbstractListModel<String>() {
+         String[] strings = { "V1", "V2", "V3" };
+         public int getSize() { return strings.length; }
+         public String getElementAt(int i) { return strings[i]; }
+         });
+         */
+        jListVehicles.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jScrollPane4.setViewportView(jListVehicles);
 
         jLabelAlgorithm1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
@@ -199,123 +223,134 @@ public class BestPathUI extends javax.swing.JFrame {
         jLabel2.setText("Road Network Path Form");
 
         jButton1.setText("N10 - Fastest Path");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        jButton1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                executeAlgorithmN10(evt);
             }
         });
 
         jButton2.setText("N11 -  Theoretical most energy efficient path");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
         jButton3.setText("N12 - Most efficient path in energy saving mode");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(imgLateral, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(orangeBorder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(66, 66, 66)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelNode1)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
-                        .addComponent(jLabelAlgorithm1)
-                        .addGap(352, 352, 352))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabelNode2)
-                                    .addComponent(jButtonBack, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(53, 53, 53)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton3)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(71, 71, 71)
-                                .addComponent(jLabel2)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(imgLateral, GroupLayout.PREFERRED_SIZE, 182, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(orangeBorder, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addGap(66, 66, 66)
+                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabelNode1)
+                                                        .addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                                                .addComponent(jLabelAlgorithm1)
+                                                .addGap(352, 352, 352))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jLabelNode2)
+                                                                        .addComponent(jButtonBack, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE))
+                                                                .addGap(53, 53, 53)
+                                                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 263, GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jScrollPane4, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jButton2, GroupLayout.PREFERRED_SIZE, 263, GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jButton3)))
+                                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                .addGap(71, 71, 71)
+                                                                .addComponent(jLabel2)))
+                                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(orangeBorder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(imgLateral)
-                .addGap(0, 1, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelAlgorithm1)
-                    .addComponent(jLabelNode1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE))
-                .addGap(33, 33, 33)
-                .addComponent(jLabelNode2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(54, 54, 54))
+                jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(orangeBorder, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(imgLateral)
+                                .addGap(0, 1, Short.MAX_VALUE))
+                        .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabelAlgorithm1)
+                                        .addComponent(jLabelNode1))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jScrollPane4, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                        .addComponent(jScrollPane3, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE))
+                                .addGap(33, 33, 33)
+                                .addComponent(jLabelNode2)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jButtonBack, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jButton2, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jButton3, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)))
+                                .addGap(54, 54, 54))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
+    private void jButtonBackActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
         SelectProjectUI.main(null);
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButton2ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void executeAlgorithmN10(ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //Algorithm N10
 //ToDo  Analyis generatedAnalysis = controller.executeAlgorithm(N10);
+//        new PathAlgorithm().fastestPath(project,jLabelNode1.getText(),jLabelNode2.getText(),)
 
 //TEST ONLY
-        Analysis generatedAnalysis = new Analysis(project, "N10", new ArrayList<>());
+        List<Section> bestPath = new ArrayList<>();
+        Node n1 = new Node("n1");
+        Node n2 = new Node("n2");
+        List<Segment> segments = new ArrayList<>();
+        List<Double> tollFare = new ArrayList<>();
+        tollFare.add(30d);
+        Road road = new Road("3", "road1", "highway", tollFare);
+        List<Double> tollFare1 = new ArrayList<>();
+        tollFare1.add(50d);
+        bestPath.add(new Section(n1, n2, Direction.BIDIRECTIONAL, segments, road, tollFare1));
+        Analysis generatedAnalysis = new Analysis(project, "N10", bestPath, new Measurable(300, Unit.KILOJOULE), new Measurable(3, Unit.HOUR), new Measurable(50, Unit.EUROS));
 
-        new StoreNetworkAnalysisUI(project, dbCom, generatedAnalysis);
+        new StoreNetworkAnalysisUI(project, generatedAnalysis);
         setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 

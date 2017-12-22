@@ -6,7 +6,6 @@ import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
-import org.antlr.stringtemplate.language.DefaultTemplateLexer;
 
 import javax.xml.bind.annotation.*;
 import java.io.FileWriter;
@@ -84,7 +83,7 @@ public class Section extends Edge<String, Direction> {
 
             //gantry toll highway is the toll fare of this section
             for (int i = 0; i < tollFare.size(); i++) {
-                if (i == vehicle.getVehicleClass()) {
+                if (i + 1 == vehicle.getVehicleClass()) {
                     return new Measurable(tollFare.get(i), Unit.EUROS);
                 }
             }

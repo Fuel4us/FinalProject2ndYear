@@ -160,7 +160,7 @@ public class Vehicle {
 
         double SFC = data[2].getQuantity();
 
-        double fuelQuantity = power.getQuantity() * SFC * segment.calculateMinimumTimeInterval(roadNetwork, this);
+        double fuelQuantity = power.getQuantity() * Physics.KILOMETERS_METERS_CONVERSION_RATIO * SFC * segment.calculateMinimumTimeInterval(roadNetwork, this);
 
         return new Measurable(fuelQuantity * fuel.getSpecificEnergy().getQuantity(), Unit.KILOJOULE);
     }
@@ -215,7 +215,7 @@ public class Vehicle {
             maxLinearVelocity.setQuantity(maxLinearVelocity.getQuantity() - maxLinearVelocity.getQuantity() * 0.02d);
             gearPosition = energy.getGears().size() - 1;
             throttlePosition = 0;
-            calculateEngineSpeedTorqueSFC(segment, gearPosition, throttlePosition, maxLinearVelocity);
+            return calculateEngineSpeedTorqueSFC(segment, gearPosition, throttlePosition, maxLinearVelocity);
         }
 
         double motorForce = (torque * energy.getFinalDriveRatio() * energy.getGears().get(gearPosition).getRatio())
@@ -238,12 +238,12 @@ public class Vehicle {
 
             // if the throttle position is not 100%, we increase the throttle position
             if (throttlePosition < 2) {
-                calculateEngineSpeedTorqueSFC(segment, gearPosition, ++throttlePosition, maxLinearVelocity);
+                return calculateEngineSpeedTorqueSFC(segment, gearPosition, ++throttlePosition, maxLinearVelocity);
             }
 
             // if the throttle position is in 100%, we decrease the gear position and start the throttle as 25%
             throttlePosition = 0;
-            calculateEngineSpeedTorqueSFC(segment, --gearPosition, throttlePosition, maxLinearVelocity);
+            return calculateEngineSpeedTorqueSFC(segment, --gearPosition, throttlePosition, maxLinearVelocity);
 
         }
 

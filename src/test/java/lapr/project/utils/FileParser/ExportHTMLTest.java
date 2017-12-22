@@ -75,7 +75,7 @@ public class ExportHTMLTest {
 
         Project project = new Project("1", "Ola", roadNetworkTest1, vehicles);
 
-        Analysis analysis = new Analysis(project, "algorithm", bestPath);
+        Analysis analysis = new Analysis(project, "N10", new ArrayList<>(), new Measurable(300, Unit.KILOJOULE), new Measurable(3, Unit.HOUR), new Measurable(50, Unit.EUROS));
 
         ExportHTML exportHTML = new ExportHTML(analysis);
         File outputFile = new File("src\\main\\resources\\htmlFileStructure\\outputTest.html");

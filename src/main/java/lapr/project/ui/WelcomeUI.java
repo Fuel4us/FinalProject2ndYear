@@ -10,12 +10,11 @@ import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 
 /**
  *
- * @author anily
+ * Triggers all subsequent UIs
  */
 public class WelcomeUI extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 8935086433569396442L;
-    private static DataBaseCommunicator dbCom;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
     private javax.swing.JButton jButtonCopy;
@@ -29,9 +28,8 @@ public class WelcomeUI extends javax.swing.JFrame {
     /**
      * Creates new form Welcome
      */
-    public WelcomeUI(DataBaseCommunicator dbCom) {
+    public WelcomeUI() {
         initComponents();
-        WelcomeUI.dbCom = dbCom;
     }
 
     /**
@@ -152,7 +150,7 @@ public class WelcomeUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateActionPerformed
-        new CreateProjectUI(dbCom);
+        new CreateProjectUI();
         setVisible(false);
     }//GEN-LAST:event_jButtonCreateActionPerformed
 
@@ -161,7 +159,7 @@ public class WelcomeUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCopyActionPerformed
 
     private void jButtonSetProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetProjectActionPerformed
-        new SelectProjectUI(dbCom);
+        new SelectProjectUI();
         setVisible(false);
     }//GEN-LAST:event_jButtonSetProjectActionPerformed
 
@@ -188,7 +186,7 @@ public class WelcomeUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new WelcomeUI(dbCom).setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new WelcomeUI().setVisible(true));
     }
 
 
