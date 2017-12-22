@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Graph view of a network of roads
  */
 @XmlRootElement(name = "Network")
-public class RoadNetwork extends Graph<Node,Section> {
+public class RoadNetwork extends Graph<Node, Section> {
 
     @XmlElement(name = "id")
     private String id;
@@ -18,6 +18,7 @@ public class RoadNetwork extends Graph<Node,Section> {
 
     /**
      * Full constructor for the class RoadNetwork
+     *
      * @param directed if the graph is directed or not
      * @param id the id of the road network
      * @param description the description of the road network
@@ -30,6 +31,7 @@ public class RoadNetwork extends Graph<Node,Section> {
 
     /**
      * Constructor
+     *
      * @param directed if the graph is directed or not
      */
     public RoadNetwork(boolean directed) {
@@ -44,7 +46,9 @@ public class RoadNetwork extends Graph<Node,Section> {
     }
 
     /**
-     * Defines identifier of roadNetwork, obtained during the importation of data from file
+     * Defines identifier of roadNetwork, obtained during the importation of
+     * data from file
+     *
      * @param id identifier of roadNetwork
      */
     public void setId(String id) {
@@ -52,7 +56,17 @@ public class RoadNetwork extends Graph<Node,Section> {
     }
 
     /**
+     *Returns the id
+     * 
+     * @return id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
      * Inserts a Node into the graph
+     *
      * @param node the node to be added
      * @return true if the operation succeeds
      */

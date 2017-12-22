@@ -106,9 +106,9 @@ public class OracleRoadNetworkDAO {
             ResultSet tollSet = statement.executeQuery(
                     "SELECT * FROM TOLLFARELIST WHERE ROAD.ID = roadId AND ROAD.ID = TOLLFARELIST.ROADID"
             );
-            List<Float> tollFareList = new LinkedList<>();
+            List<Double> tollFareList = new LinkedList<>();
             while (tollSet.next()) {
-                Float tollFare = tollSet.getFloat("tollFare");
+                Double tollFare = tollSet.getDouble("tollFare");
                 tollFareList.add(tollFare);
             }
             Road road = new Road(roadID, roadName, typology, tollFareList);
@@ -130,7 +130,7 @@ public class OracleRoadNetworkDAO {
                     segments.add(new Segment(index, initialHeight, finalHeight, length, windAngle, windSpeed, maxVelocity, minVelocity));
                 }
             //adicionar section
-            Section section = new Section(begginningNode, endingNode, roadDirection, segments, road);
+            Section section = new Section(begginningNode, endingNode, roadDirection, segments, road, new ArrayList<>());
             roadNetwork.addSection(begginningNode, endingNode, section);
         }
         return roadNetwork;

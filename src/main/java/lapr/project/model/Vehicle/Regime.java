@@ -1,37 +1,43 @@
 package lapr.project.model.Vehicle;
 
-import javax.xml.bind.annotation.XmlElement;
-
 public class Regime {
     
-    @XmlElement
-    private int torque;
-    
-    @XmlElement
+    private int torqueLow;
+    private int torqueHigh;
     private int rpmLow;
-
-    @XmlElement
     private int rpmHigh;
+    private double SFC;
     
-    @XmlElement
-    private int SFC;
-
     public Regime() {
     }
 
-    public Regime(int torque, int rpmLow, int rpmHigh, int SFC) {
-        this.torque = torque;
+    public Regime(int torqueLow,int torqueHigh, int rpmLow, int rpmHigh, double SFC) {
+        this.torqueLow = torqueLow;
+        this.torqueHigh = torqueHigh;
         this.rpmLow = rpmLow;
         this.rpmHigh = rpmHigh;
         this.SFC = SFC;
     }
 
     /**
-     * @return torque
+     * Getter method for torqueLow
+     * 
+     * @return torqueLow
      */
-    public int getTorque() {
-        return torque;
+    public int getTorqueLow() {
+        return torqueLow;
     }
+
+    /**
+     * Getter method for torqueLow
+     * 
+     * @return torqueLow
+     */
+    public int getTorqueHigh() {
+        return torqueHigh;
+    }
+
+    
 
     /**
      * @return rpm low
@@ -50,7 +56,7 @@ public class Regime {
     /**
      * @return SFC
      */
-    public int getSFC() {
+    public double getSFC() {
         return SFC;
     }
 }

@@ -64,7 +64,7 @@
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="jButtonSave" min="-2" pref="215" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jTextField1" alignment="0" min="-2" pref="460" max="-2" attributes="0"/>
+                          <Component id="analysisResultTextField" alignment="0" min="-2" pref="460" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace pref="63" max="32767" attributes="0"/>
@@ -82,7 +82,7 @@
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="jLabelTitle" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jTextField1" min="-2" pref="223" max="-2" attributes="0"/>
+                  <Component id="analysisResultTextField" min="-2" pref="223" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="jButtonBack" alignment="0" min="-2" pref="56" max="-2" attributes="0"/>
@@ -170,7 +170,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonBackActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField1">
+        <Component class="javax.swing.JTextField" name="analysisResultTextField">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="85" green="7a" red="61" type="rgb"/>

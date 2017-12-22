@@ -47,8 +47,8 @@ public class ExportHTMLTest {
         Node node3 = new Node("n03");
         Node node4 = new Node("n04");
 
-        Section sectionTest1 = new Section(node1, node2, Direction.BIDIRECTIONAL, segments1, new Road("A01", "A01", "toll highway"));
-        Section sectionTest2 = new Section(node3, node4, Direction.BIDIRECTIONAL, segments2, new Road("E02", "E02", "regular road"));
+        Section sectionTest1 = new Section(node1, node2, Direction.BIDIRECTIONAL, segments1, new Road("A01", "A01", "toll highway"), new ArrayList<>());
+        Section sectionTest2 = new Section(node3, node4, Direction.BIDIRECTIONAL, segments2, new Road("E02", "E02", "regular road"), new ArrayList<>());
 
         Collection<Section> bestPath = new LinkedList<>();
         bestPath.add(sectionTest1);
@@ -74,7 +74,7 @@ public class ExportHTMLTest {
 
         Project project = new Project("name1", "Ola", roadNetworkTest1, vehicles);
 
-        Analysis analysis = new Analysis(1, project, "algorithm", bestPath);
+        Analysis analysis = new Analysis(project, "N10", new ArrayList<>(), new Measurable(300, Unit.KILOJOULE), new Measurable(3, Unit.HOUR), new Measurable(50, Unit.EUROS));
 
         ExportHTML exportHTML = new ExportHTML(analysis);
         File outputFile = new File("src\\main\\resources\\htmlFileStructure\\outputTestHTML.html");

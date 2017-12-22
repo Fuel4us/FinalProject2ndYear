@@ -16,7 +16,7 @@ public class Edge<V, E> implements Comparable<Edge<V, E>> {
     private double weight;       // Edge weight
     private Vertex<V, E> vOrig;  // vertex origin
     private Vertex<V, E> vDest;  // vertex destination
-    private final double test = 0.000000001;
+    private final double test = 0.00000000000000000000001;
 
     public Edge() {
         element = null;
@@ -151,21 +151,14 @@ public class Edge<V, E> implements Comparable<Edge<V, E>> {
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = element != null ? element.hashCode() : 0;
-        temp = Double.doubleToLongBits(weight);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (vOrig != null ? vOrig.hashCode() : 0);
-        result = 31 * result + (vDest != null ? vDest.hashCode() : 0);
-        return result;
+        return super.hashCode();
     }
     
     @Override
     public int compareTo(Edge<V, E> edge) {
 
         if (this.weight < edge.weight) return -1;
-        if (Math.abs(this.weight - edge.weight) < test && Math.abs(this.weight - edge.weight) > -(test)) {  // Bug was here because this.weight == edge.weight
+        if (Math.abs(this.weight - edge.weight) < test) {  // Bug was here because this.weight == edge.weight
             return 0;
         }
         return 1;

@@ -5,10 +5,36 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import lapr.project.model.Vehicle.Energy;
+import lapr.project.model.Vehicle.Fuel;
+import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.model.Vehicle.VehicleType;
+import lapr.project.utils.Measurable;
+import lapr.project.utils.Unit;
+import org.junit.After;
+import org.junit.AfterClass;
 
 import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.BeforeClass;
 
 public class RoadTest {
+
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+    }
+
+    @Before
+    public void setUp() throws Exception {
+    }
+
+    @After
+    public void tearDown() throws Exception {
+    }
 
     /**
      * Ensures the method equals() returns true:
@@ -55,8 +81,8 @@ public class RoadTest {
         Road roadTest4 = new Road("id1", "name2", "typology1", new ArrayList<>());
         Road roadTest5 = new Road("id1", "name1", "typology3", new ArrayList<>());
 
-        List<Float> list = new ArrayList<>();
-        list.add(0f);
+        List<Double> list = new ArrayList<>();
+        list.add(0d);
 
         Road roadTest6 = new Road("id1", "name1", "typology1", list);
 
@@ -84,7 +110,7 @@ public class RoadTest {
         String id = "id";
         String name = "name";
         String typology = "typology";
-        List<Float> tollFare = new ArrayList<>();
+        List<Double> tollFare = new ArrayList<>();
 
         Road roadTest = new Road(id, name, typology, tollFare);
 
@@ -94,6 +120,72 @@ public class RoadTest {
 
         assertEquals(expected, result);
 
+    }
+
+    /**
+     * Test of getTypology method, of class Road.
+     */
+    @Test
+    public void testGetTypology() {
+        System.out.println("getTypology");
+        Road instance = new Road("id","name","typo",new ArrayList<>());
+        String expResult = "typo";
+        String result = instance.getTypology();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getName method, of class Road.
+     */
+    @Test
+    public void testGetName() {
+        System.out.println("getName");
+        Road instance = new Road("id","name","typo",new ArrayList<>());
+        String expResult = "name";
+        String result = instance.getName();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of retrieveVehicleClassRespectiveTollFare method, of class Road.
+     */
+    @Test
+    public void testRetrieveVehicleClassRespectiveTollFare() {
+        System.out.println("retrieveVehicleClassRespectiveTollFare");
+        Vehicle vehicle = new Vehicle("Pick_up", "", VehicleType.Car, 1, Vehicle.MotorType.COMBUSTION, Fuel.Diesel, new Measurable(1.0, Unit.KILOGRAM), new Measurable(1.0, Unit.KILOMETERS_PER_HOUR), 1f, new Measurable(1, Unit.METER_SQUARED), 1f, new Measurable(0, Unit.METER), new ArrayList<>(), new Energy(0, 0, 0, new ArrayList<>(), new ArrayList<>()));
+        List<Double> toll = new ArrayList<>();
+        toll.add(10.0);
+        Road instance = new Road("id","name","typo",toll);
+        double expResult = 10.0;
+        double result = instance.retrieveVehicleClassRespectiveTollFare(vehicle);
+        assertEquals(expResult, result, 0.0);
+    }
+
+    /**
+     * Test of equals method, of class Road.
+     */
+    @Test
+    public void testEquals() {
+        System.out.println("equals");
+        Object o = (Object)(new Road("id","name","typo",new ArrayList<>()));
+        Road instance = new Road("id","name","typo",new ArrayList<>());
+        boolean result = instance.equals(o);
+        Road instance2 = new Road("i","name","typo",new ArrayList<>());
+        assertTrue(result);
+        assertFalse(instance2.equals(o));
+    }
+
+    /**
+     * Test of hashCode method, of class Road.
+     */
+    @Test
+    public void testHashCode() {
+        System.out.println("hashCode");
+        Road instance = new Road("id","name","typo",new ArrayList<>());;
+        int expResult = -842041843;
+        int result = instance.hashCode();
+        System.out.println(result);
+        assertEquals(expResult, result);
     }
 
 }

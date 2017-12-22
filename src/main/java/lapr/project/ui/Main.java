@@ -1,12 +1,30 @@
 package lapr.project.ui;
 
+import lapr.project.model.Project;
+import lapr.project.model.RoadNetwork.RoadNetwork;
+import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
+import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
+import oracle.jdbc.pool.OracleDataSource;
+
 import java.awt.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import lapr.project.model.Analysis;
 
 /**
  * Triggers UI events
  */
 class Main {
+
+    /*
+    ToDo Refactor this so as not to be static,
+    ToDo temporary solution for testing purposes only
+     */
+    private static Project currentProject;
+    static DataBaseCommunicator dbCom;
 
     static final String SEGOE_FONT = "Segoe UI Semibold";
     static final Font FORTY_EIGHT_SEGOE_FONT = new java.awt.Font(SEGOE_FONT, 0, 48);
@@ -31,15 +49,60 @@ class Main {
      * Private constructor to hide implicit public one.
      */
     private Main() {
-
+        currentProject = new Project(
+                "New Project",
+                "Add a description",
+                new RoadNetwork(true),
+                new ArrayList<>()
+        );
+        try {
+            LOGGER.log(Level.INFO, "Attempting connection to database...");
+            dbCom = new DataBaseCommunicator(new OracleDataSource());
+        } catch (SQLException e) {
+            DBAccessor.logSQLException(e);
+            LOGGER.log(Level.SEVERE, "Connection to the database failed, falling back to memory");
+        }
     }
 
     /**
      * Application main method.
+     *
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
+        setLook();
+        new Main();
+
+        //<editor-fold desc="Demonstration purposes" default=collapsed>
         WelcomeUI.main(null);
+        //Testing purposes only
+        
+       // new BestPathUI(currentProject, dbCom).setVisible(true);
+
+
+//        new StoreNetworkAnalysisUI(currentProject, dbCom, generatedAnalysis).setVisible(true);
+        //</editor-fold>
+    }
+
+    private static void setLook() {
+
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | javax.swing.UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException ex) {
+            java.util.logging.Logger.getLogger(StoreNetworkAnalysisUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
     }
 
 }

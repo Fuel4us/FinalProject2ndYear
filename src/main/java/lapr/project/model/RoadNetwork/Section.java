@@ -2,14 +2,16 @@ package lapr.project.model.RoadNetwork;
 
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.Graph.Edge;
+import lapr.project.utils.Measurable;
+import lapr.project.utils.Unit;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
-import org.antlr.stringtemplate.language.DefaultTemplateLexer;
 
 import javax.xml.bind.annotation.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 
 @XmlRootElement(name = "road_section")
@@ -34,21 +36,63 @@ public class Section extends Edge<String, Direction> {
 
     private Road owningRoad;
 
-    /**
-     * Constructor
-     * @param beginningNode
-     * @param endingNode
-     * @param direction
-     * @param segments
-     */
-    public Section(lapr.project.model.RoadNetwork.Node beginningNode, lapr.project.model.RoadNetwork.Node endingNode, Direction direction, Collection<Segment> segments, Road road) {
+    private List<Double> tollFare;
 
+    /**
+     * Creates a Section with a beginning and ending node, direction and collection of segments
+     * @param beginningNode This section's beginning {@link Node}
+     * @param endingNode This section's ending {@link Node}
+     * @param direction This section's {@link Direction}
+     * @param segments The {@link Collection} of segments that belong to this section
+     * @param tollFare The {@link List} of toll fares of this section
+     */
+    public Section(Node beginningNode, Node endingNode, Direction direction, Collection<Segment> segments, Road road, List<Double> tollFare) {
         super(direction, calculateTotalLength(segments), beginningNode, endingNode);
         this.segments = segments;
         this.beginningNode = beginningNode;
         this.endingNode = endingNode;
         this.direction = direction;
         this.owningRoad = road;
+        this.tollFare = tollFare;
+    }
+
+    /**
+     * Calculates the toll costs for this section, depending on the correspondent Road
+     * @param vehicle the vehicle
+     * @return the toll costs
+     */
+    public Measurable determineTollCosts(Vehicle vehicle) {
+
+        if (owningRoad.getTypology().equalsIgnoreCase("regular road")) {
+
+            //regular roads are free
+            return new Measurable(0, Unit.EUROS);
+
+        } else if (owningRoad.getTypology().equalsIgnoreCase("toll highway")) {
+
+            //toll highway is the toll fare of each segment times the number of km in each segment
+            double kmTravelled = 0;
+            for (Segment segment : segments) {
+                kmTravelled += segment.getLength();
+            }
+
+            double tollFare = owningRoad.retrieveVehicleClassRespectiveTollFare(vehicle);
+
+            return new Measurable(kmTravelled * tollFare, Unit.EUROS);
+
+        } else if (owningRoad.getTypology().equalsIgnoreCase("gantry toll highway")) {
+
+            //gantry toll highway is the toll fare of this section
+            for (int i = 0; i < tollFare.size(); i++) {
+                if (i + 1 == vehicle.getVehicleClass()) {
+                    return new Measurable(tollFare.get(i), Unit.EUROS);
+                }
+            }
+
+        }
+
+        return new Measurable(0, Unit.EUROS);
+
     }
 
     /**
@@ -127,7 +171,7 @@ public class Section extends Edge<String, Direction> {
      * Prints data from a given segment filling the information missing in a given HTML file template
      * @param segment
      */
-    public void printDataFromSegmentHTML(Segment segment, FileWriter file) throws IOException {
+    private void printDataFromSegmentHTML(Segment segment, FileWriter file) throws IOException {
         StringTemplateGroup groupSegment = new StringTemplateGroup("src\\main\\resources");
         StringTemplate segmentTemplate = groupSegment.getInstanceOf(HTML_STRUCTURE_SEGMENT);
         segment.printDataFromSegment(segmentTemplate, file);
@@ -137,7 +181,7 @@ public class Section extends Edge<String, Direction> {
      * Prints data from a given segment filling the information missing in a given CSV file template
      * @param segment
      */
-    public void printDataFromSegmentCSV(Segment segment, FileWriter file) throws IOException {
+    private void printDataFromSegmentCSV(Segment segment, FileWriter file) throws IOException {
         StringTemplateGroup groupSegment = new StringTemplateGroup("src\\main\\resources");
         StringTemplate segmentTemplate = groupSegment.getInstanceOf(CSV_STRUCTURE_SEGMENT);
         segment.printDataFromSegment(segmentTemplate, file);
@@ -145,9 +189,16 @@ public class Section extends Edge<String, Direction> {
 
     /**
      * ToDo
-     * @return
+     * @return owning road
      */
     public Road getOwningRoad() {
         return owningRoad;
+    }
+
+    /**
+     * @return segments
+     */
+    public Collection<Segment> getSegments() {
+        return segments;
     }
 }

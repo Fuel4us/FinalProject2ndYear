@@ -1,9 +1,9 @@
 package lapr.project.ui;
 
-import javax.swing.*;
 import lapr.project.controller.CreateProjectController;
 import lapr.project.model.Project;
-import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
+
+import javax.swing.*;
 
 /**
  *
@@ -12,8 +12,7 @@ import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 public class CreateProjectUI extends javax.swing.JFrame {
 
     private static final long serialVersionUID = -1818083907306250629L;
-    private DataBaseCommunicator dbCom;
-    private CreateProjectController cpc;
+    private CreateProjectController createProjectController;
     private Project p;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -34,11 +33,10 @@ public class CreateProjectUI extends javax.swing.JFrame {
     /**
      * Creates new form CreateProjectUI
      */
-    public CreateProjectUI(DataBaseCommunicator dbCom) {
+    public CreateProjectUI() {
         super("Create Project");
-        this.dbCom = dbCom;
-        cpc = new CreateProjectController(this.dbCom);
-        //p = cpc.newProject();
+        createProjectController = new CreateProjectController(Main.dbCom);
+
         initComponents();
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -256,7 +254,7 @@ public class CreateProjectUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        //java.awt.EventQueue.invokeLater(() -> new CreateProjectUI().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new CreateProjectUI().setVisible(true));
     }
 
 }
