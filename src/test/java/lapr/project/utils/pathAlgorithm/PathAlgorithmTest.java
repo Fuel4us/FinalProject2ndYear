@@ -135,12 +135,12 @@ public class PathAlgorithmTest {
         Analysis analysisResult = pathAlgorithmTest.fastestPath(projectTest, nodeTest1, nodeTest4, vehicle1);
 
         Analysis analysisExpected = new Analysis(projectTest, "N10 - Fastest Path",
-                sectionsExpected, new Measurable(1384560, Unit.KILOJOULE), new Measurable(0.925, Unit.HOUR), new Measurable(4,Unit.EUROS));
+                sectionsExpected, new Measurable(770976, Unit.KILOJOULE), new Measurable(0.925, Unit.HOUR), new Measurable(4,Unit.EUROS));
 
         assertEquals(analysisExpected.getAlgorithmName(), analysisResult.getAlgorithmName());
         assertEquals(analysisExpected.getRequestingInstance(), analysisResult.getRequestingInstance());
         assertEquals(analysisExpected.getBestPath(), analysisResult.getBestPath());
-        assertEquals(analysisExpected.getExpendedEnergy().getQuantity(), analysisResult.getExpendedEnergy().getQuantity(), 150000);
+        assertEquals(analysisExpected.getExpendedEnergy().getQuantity(), analysisResult.getExpendedEnergy().getQuantity(), 2000);
         assertEquals(analysisExpected.getTravelTime().getQuantity(), analysisResult.getTravelTime().getQuantity(), 0.1);
         assertEquals(analysisExpected.getTravelCost().getQuantity(), analysisResult.getTravelCost().getQuantity(), 0.1);
 
