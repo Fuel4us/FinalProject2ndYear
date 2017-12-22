@@ -52,13 +52,14 @@ public class DataBaseCommunicator {
     public boolean storeNetworkAnalysis(Analysis analysis) {
         try {
             //Start Transaction
-            Connection connection = dbAccessor.openConnexion();
+            connection = dbAccessor.openConnexion();
             connection.setAutoCommit(false);
 
             if (analysisStorage.connectTo(connection)) {
                 //ToDo Store analyzed sections (generated report) into respective table
                 analysisStorage.storeAnalysis(analysis);
                 connection.commit();
+                connection.close();
                 return true;
             }
 
@@ -77,15 +78,34 @@ public class DataBaseCommunicator {
 
     public List<Project> fetchProjectList() {
         //ToDo return all projects through ProjectDAO
-        List<Project> listProjects = null;
-        return listProjects;
+        throw new UnsupportedOperationException();
     }
 
     public boolean storeProject(Project p) {
         //ToDo Store project through ProjectDAO
-        return true;
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Package-private setters for <em>testing purposes</em> only.
+     * <br>
+     * This implementation relies on the fact that
+     * <em>this is the only class in this package.</em>
+     * thus being only invokable by this class' test suite
+     */
+    void setDbAccessor(DBAccessor dbAccessor) {
+        this.dbAccessor = dbAccessor;
+    }
+
+    /**
+     * Package-private setters for <em>testing purposes</em> only.
+     * <br>
+     * This implementation relies on the fact that
+     * <em>this is the only class in this package.</em>
+     * thus being only invokable by this class' test suite
+     */
+    void setAnalysisStorage(AnalysisDAO analysisStorage) {
+        this.analysisStorage = analysisStorage;
     }
 
 }
-
-
