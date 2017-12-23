@@ -8,7 +8,7 @@ import java.sql.SQLException;
 /**
  * Allows for different implementation of methods that fetch a RoadNetwork for a given project from the database, for different databases
  */
-public interface RoadNetworkDAO {
+public interface RoadNetworkDAO extends DataAccessObject {
 
     /**
      * Creates an instance of {@link RoadNetwork} from a given project name
