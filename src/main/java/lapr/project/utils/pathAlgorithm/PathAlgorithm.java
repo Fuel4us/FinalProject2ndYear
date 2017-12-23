@@ -62,7 +62,7 @@ public class PathAlgorithm {
 
         // the traveling time is already contained in the travelTime double
 
-        Measurable expendedEnergy = new Measurable(0, Unit.GRAM);
+        Measurable expendedEnergy = new Measurable(0, Unit.KILOJOULE);
         Measurable tollCosts = new Measurable(0, Unit.EUROS);
         for (Section section : sections) {
             for (Segment segment : section.getSegments()) {

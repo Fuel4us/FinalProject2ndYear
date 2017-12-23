@@ -213,6 +213,20 @@ public class Analysis implements ExportableHTML, ExportableCSV {
     }
 
     /**
+     * @return the RequestingInstance
+     */
+    public Project getRequestingInstance() {
+        return requestingInstance;
+    }
+
+    /**
+     * @return the AlgorithmName
+     */
+    public String getAlgorithmName() {
+        return algorithmName;
+    }
+
+    /**
      * @return the BestPath
      */
     public Collection<Section> getBestPath() {
