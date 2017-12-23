@@ -16,19 +16,11 @@ import java.util.List;
 /**
  * ToDo
  */
-public class OracleProjectDAO implements ProjectDAO {
+public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
 
     private PreparedStatement statement;
-    private OracleDataSource oracleDataSource;
 
-    public OracleProjectDAO(OracleDataSource oracleDataSource) {
-        this.oracleDataSource = oracleDataSource;
-        try {
-            Connection oracleConnection = oracleDataSource.getConnection();
-        } catch (SQLException e) {
-            DBAccessor.logSQLException(e);
-        }
-    }
+    public OracleProjectDAO() {}
 
     /**
      * Stores instances of Project from database in a List
@@ -48,8 +40,8 @@ public class OracleProjectDAO implements ProjectDAO {
         String projectDescription;
         List<Vehicle> vehicles;
         RoadNetwork roadNetwork;
-//        OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO(oracleDataSource);
-        OracleRoadNetworkDAO oracleRoadNetworkDAO = new OracleRoadNetworkDAO(oracleDataSource);
+//        OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO();
+        OracleRoadNetworkDAO oracleRoadNetworkDAO = new OracleRoadNetworkDAO();
         Project project;
         while (resultSet.next()) {
             projectName = resultSet.getString("name");
@@ -73,5 +65,6 @@ public class OracleProjectDAO implements ProjectDAO {
     public void storeProject(Project project) {
         //ToDo
     }
+
 
 }

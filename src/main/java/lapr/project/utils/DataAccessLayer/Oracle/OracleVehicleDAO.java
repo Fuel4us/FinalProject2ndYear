@@ -21,18 +21,12 @@
 ///**
 // * ToDo
 // */
-//public class OracleVehicleDAO {
+//public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 //
 //    private PreparedStatement statement;
 //    private Connection oracleConnection;
 //
-//    public OracleVehicleDAO(OracleDataSource oracleDataSource) {
-//        try {
-//            Connection connection = oracleDataSource.getConnection();
-//        } catch (SQLException e) {
-//            DBAccessor.logSQLException(e);
-//        }
-//    }
+//    public OracleVehicleDAO() {}
 //
 //    /**
 //     * Creates a list of instances of {@link Vehicle} from a given project name
@@ -40,6 +34,7 @@
 //     * @return list of {@link Vehicle}
 //     * @throws SQLException
 //     */
+//    @Override
 //    public List<Vehicle> createVehicle(String projectName) throws SQLException {
 //        ResultSet vehicleSet = statement.executeQuery(
 //                "SELECT * FROM VEHICLE, PROJECT WHERE VEHICLE.PROJECTNAME = PROJECT.NAME AND PROJECT.NAME = projectName;"
@@ -59,6 +54,7 @@
 //     * @return instance of {@link Vehicle}
 //     * @throws SQLException
 //     */
+//    @Override
 //    public Vehicle createVehicle(ResultSet resultSet) throws SQLException {
 //        Vehicle vehicle;
 //        String name = resultSet.getString("name");
