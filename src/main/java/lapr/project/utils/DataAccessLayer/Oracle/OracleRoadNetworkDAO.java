@@ -21,6 +21,7 @@ import lapr.project.model.RoadNetwork.Road;
 import lapr.project.model.RoadNetwork.Section;
 import lapr.project.model.RoadNetwork.Segment;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
+import lapr.project.utils.DataAccessLayer.Abstraction.RoadNetworkDAO;
 import oracle.jdbc.pool.OracleDataSource;
 
 
@@ -28,17 +29,11 @@ import oracle.jdbc.pool.OracleDataSource;
  *
  * ToDo
  */
-public class OracleRoadNetworkDAO {
+public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
     private PreparedStatement statement;
 
-    public OracleRoadNetworkDAO(OracleDataSource oracleDataSource) {
-        try {
-            Connection oracleConnection = oracleDataSource.getConnection();
-        } catch (SQLException e) {
-            DBAccessor.logSQLException(e);
-        }
-    }
+    public OracleRoadNetworkDAO() {}
 
     /**
      * Creates an instance of {@link RoadNetwork} from a given project name
@@ -46,6 +41,7 @@ public class OracleRoadNetworkDAO {
      * @return instance of {@link RoadNetwork}
      * @throws SQLException
      */
+    @Override
     public RoadNetwork createRoadNetwork(String projectName) throws SQLException {
         ResultSet networkSet = statement.executeQuery(
                 "SELECT * FROM ROADNETWORK, PROJECT WHERE ROADNETWORK.PROJECTNAME = PROJECT.NAME AND PROJECT.NAME = projectName;"
@@ -59,7 +55,8 @@ public class OracleRoadNetworkDAO {
      * @return instance of {@link RoadNetwork}
      * @throws SQLException
      */
-    private RoadNetwork createRoadNetwork(ResultSet resultSet) throws SQLException {
+    @Override
+    public RoadNetwork createRoadNetwork(ResultSet resultSet) throws SQLException {
         String networkID = resultSet.getString("ID");
         RoadNetwork roadNetwork = new RoadNetwork(true);
         roadNetwork.setId(networkID);
@@ -130,6 +127,7 @@ public class OracleRoadNetworkDAO {
                     segments.add(new Segment(index, initialHeight, finalHeight, length, windAngle, windSpeed, maxVelocity, minVelocity));
                 }
             //adicionar section
+            //TODO preencher arraylist que bruno fez para calar erro
             Section section = new Section(begginningNode, endingNode, roadDirection, segments, road, new ArrayList<>());
             roadNetwork.addSection(begginningNode, endingNode, section);
         }

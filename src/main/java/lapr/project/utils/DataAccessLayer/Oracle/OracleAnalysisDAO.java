@@ -12,9 +12,8 @@ import java.util.logging.Level;
 /**
  * Handles Data Access via OracleDB
  */
-public class OracleAnalysisDAO implements AnalysisDAO {
+public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
 
-    private Connection oracleConnection;
 
     public OracleAnalysisDAO() {}
 
@@ -25,12 +24,12 @@ public class OracleAnalysisDAO implements AnalysisDAO {
     @Override
     public boolean storeAnalysis(Analysis analysis) throws SQLException {
 
-        if (oracleConnection == null) {
+        if (super.oracleConnection == null) {
             DBAccessor.DB_ACCESS_LOG.log(Level.INFO, "No connection found in " + this.getClass());
             return false;
         }
 
-        try (CallableStatement storeAnalysisCallable = oracleConnection.prepareCall(
+        try (CallableStatement storeAnalysisCallable = super.oracleConnection.prepareCall(
                 "CALL STORE_ANALYSIS(?,?)"
         )) {
 
@@ -44,24 +43,6 @@ public class OracleAnalysisDAO implements AnalysisDAO {
         }
 
         return true;
-    }
-
-
-    /**
-     * Connects this Data Access Object to a database
-     * if the databaseProductName matches the database to which this DAO is an implementation of.
-     * @param connection Connects this DAO to a database
-     * @return true if obtaining connection was possible, and that connection refers to an OracleDB
-     * @throws SQLException
-     */
-    @Override
-    public boolean connectTo(Connection connection) throws SQLException {
-
-        if (OracleDBAccessor.verifyConnectionIsOracle(connection)) {
-            this.oracleConnection = connection;
-            return true;
-        }
-        return false;
     }
 
 }

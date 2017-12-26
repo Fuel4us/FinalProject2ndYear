@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Allows for different implementation of methods that fetch and store Projects on the database, for different databases
  */
-public interface ProjectDAO {
+public interface ProjectDAO extends DataAccessObject {
 
     /**
      * Fetches instances of Project from the database

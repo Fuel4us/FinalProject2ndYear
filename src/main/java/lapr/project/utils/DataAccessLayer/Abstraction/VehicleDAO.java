@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Allows for different implementation of methods that fetch instances of Vehicle for a given project from the database, for different databases
  */
-public interface VehicleDAO {
+public interface VehicleDAO extends DataAccessObject {
 
     /**
      * Creates a list of instances of {@link Vehicle} from a given project name
