@@ -190,17 +190,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             Gears gear = new Gears(gearsSet.getInt("id"), gearsSet.getFloat("ratio"));
             gearList.add(gear);
         }
-        List<Throttle> throttleList = new LinkedList<>(); //creation of throttles needed by energy
-        ResultSet throttleSet = statement.executeQuery(
-                "SELECT * FROM THROTTLE WHERE THROTTLE.ENERGY_ID = ENERGY.ID AND ENERGY.ID = energyID;"
-        );
-        //getThrottleSet(energyID)
-        while (throttleSet.next()){
-            int throttleID = throttleSet.getInt("id");
-            List<Regime> regimeList = fillRegimeList(throttleID);
-            Throttle throttle = new Throttle(throttleID, regimeList);
-            throttleList.add(throttle);
-        }
+        List<Throttle> throttleList = fillThrottleList(energyID);
         energy = new Energy(energySet.getInt("rpmLow"), energySet.getInt("rpmHigh"), energySet.getFloat("finalDriveRatio"), gearList, throttleList);
 
         //creation of vehicle
@@ -219,6 +209,21 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             regimeList.add(regime);
         }
         return regimeList;
+    }
+
+    private List<Throttle> fillThrottleList(int energyID) throws SQLException {
+        List<Throttle> throttleList = new LinkedList<>();
+        ResultSet throttleSet = statement.executeQuery(
+                "SELECT * FROM THROTTLE WHERE THROTTLE.ENERGY_ID = ENERGY.ID AND ENERGY.ID = energyID;"
+        );
+        //getThrottleSet(energyID)
+        while (throttleSet.next()){
+            int throttleID = throttleSet.getInt("id");
+            List<Regime> regimeList = fillRegimeList(throttleID);
+            Throttle throttle = new Throttle(throttleID, regimeList);
+            throttleList.add(throttle);
+        }
+        return  throttleList;
     }
 
 }
