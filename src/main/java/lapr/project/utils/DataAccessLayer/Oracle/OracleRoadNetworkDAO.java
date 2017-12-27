@@ -74,23 +74,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
             Road road = createRoad(sectionId);
 
-            //select section's segments
-            Collection<Segment> segments = new ArrayList<>();
-            ResultSet segmentSet = statement.executeQuery(
-                        "SELECT * FROM SEGMENT WHERE SECTION.ID = sectionId AND SEGMENT.SECTIONID = SECTION.ID"
-            );
-            //getSegmentsSet(sectionID)
-                while(segmentSet.next()) {
-                    int index = segmentSet.getInt("index");
-                    double initialHeight = segmentSet.getDouble("initialHeight");
-                    double finalHeight = segmentSet.getDouble("finalHeight");
-                    double length = segmentSet.getDouble("length");
-                    double windAngle = segmentSet.getDouble("windAngle");
-                    double windSpeed = segmentSet.getDouble("windSpeed");
-                    double maxVelocity = segmentSet.getDouble("maxVelocity");
-                    double minVelocity = segmentSet.getDouble("minVelocity");
-                    segments.add(new Segment(index, initialHeight, finalHeight, length, windAngle, windSpeed, maxVelocity, minVelocity));
-                }
+            Collection<Segment> segments = fetchSectionSegments(sectionId);
             //section needs list of tollfare
             ResultSet sectionTollSet = statement.executeQuery(
                     "SELECT * FROM TOLLFARESECTION WHERE SECTION.ID = sectionID AND SECTION.ID = TOLLFARESECTION.SECTIONID"
@@ -150,13 +134,33 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
         ResultSet roadSet = statement.executeQuery(
                 "SELECT * FROM ROAD WHERE SECTION.ID = sectionId AND ROAD.ID = SECTION.OWNINGROAD"
         );
-        //getRoadSet(networkID)
+        //getRoadSet(sectionID)
         String roadID = roadSet.getString("ID");
         String roadName = roadSet.getString("name");
         String typology = roadSet.getString("typology");
 
         List<Double> tollFareRoadList = fillRoadTollFareList(roadID);
         return new Road(roadID, roadName, typology, tollFareRoadList);
+    }
+
+    private Collection<Segment> fetchSectionSegments(int sectionID) throws SQLException {
+        Collection<Segment> segments = new ArrayList<>();
+        ResultSet segmentSet = statement.executeQuery(
+                "SELECT * FROM SEGMENT WHERE SECTION.ID = sectionId AND SEGMENT.SECTIONID = SECTION.ID"
+        );
+        //getSegmentsSet(sectionID)
+        while(segmentSet.next()) {
+            int index = segmentSet.getInt("index");
+            double initialHeight = segmentSet.getDouble("initialHeight");
+            double finalHeight = segmentSet.getDouble("finalHeight");
+            double length = segmentSet.getDouble("length");
+            double windAngle = segmentSet.getDouble("windAngle");
+            double windSpeed = segmentSet.getDouble("windSpeed");
+            double maxVelocity = segmentSet.getDouble("maxVelocity");
+            double minVelocity = segmentSet.getDouble("minVelocity");
+            segments.add(new Segment(index, initialHeight, finalHeight, length, windAngle, windSpeed, maxVelocity, minVelocity));
+        }
+        return segments;
     }
 
 }
