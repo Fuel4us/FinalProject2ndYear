@@ -37,6 +37,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         ResultSet vehicleSet = statement.executeQuery(
                 "SELECT * FROM VEHICLE WHERE VEHICLE.PROJECTNAME = PROJECT.NAME AND PROJECT.NAME = projectName;"
         );
+        //fetchVehiclesFromProject(projectName)
 
         List<Vehicle> vehicles = new LinkedList<>();
         while(vehicleSet.next()) {
@@ -96,6 +97,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         ResultSet massSet = statement.executeQuery(
                 "SELECT * FROM MEASURABLE WHERE MEASURABLE.ID = VEHICLE.MASS_ID AND VEHICLE.NAME = name;"
         );
+        //getMassSet(name)
         Unit[] unitEnum = Unit.values();
         Unit unit = null;
         for (Unit unitType : unitEnum) {
@@ -111,6 +113,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         ResultSet loadSet = statement.executeQuery(
                 "SELECT * FROM MEASURABLE WHERE MEASURABLE.ID = VEHICLE.LOAD_ID AND VEHICLE.NAME = name;"
         );
+        //getLoadSet(name)
         for (Unit unitType : unitEnum) {
             String unitStr = loadSet.getString("unit");
             if (unitStr.equals(unitType.toString())) {
@@ -124,6 +127,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         ResultSet areaSet = statement.executeQuery(
                 "SELECT * FROM MEASURABLE WHERE MEASURABLE.ID = VEHICLE.FRONTALAREAID AND VEHICLE.NAME = name;"
         );
+        //getFrontalAreaSet(name)
         for (Unit unitType : unitEnum) {
             String unitStr = areaSet.getString("unit");
             if (unitStr.equals(unitType.toString())) {
@@ -135,26 +139,30 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
         //creation of wheel size
         ResultSet wheelSet = statement.executeQuery(
-                "SELECT * FROM MEASURABLE WHERE MEASURABLE.ID = VEHICLE.FRONTALAREA_ID AND VEHICLE.NAME = name;"
+                "SELECT * FROM MEASURABLE WHERE MEASURABLE.ID = VEHICLE.FRONTALAREAID AND VEHICLE.NAME = name;"
         );
+        //getWheelSize(name)
         for (Unit unitType : unitEnum) {
             String unitStr = wheelSet.getString("unit");
             if (unitStr.equals(unitType.toString())) {
                 unit = unitType;
             }
         }
-        quantity = massSet.getDouble("class");
+        quantity = wheelSet.getDouble("class");
         Measurable wheelSize = new Measurable(quantity, unit);
 
         //creation of list of velocity limits
         ResultSet velocitySet = statement.executeQuery(
-                "SELECT * FROM VELOCITYLIMIT WHERE VELOCITYLIMIT.ID = VEHICLE.VELOCITYLIMITSLISTS_ID AND VEHICLE.NAME = name;"
+                "SELECT * FROM VELOCITYLIMIT WHERE VELOCITYLIMIT.ID = VEHICLE.VELOCITYLIMITSLISTSID AND VEHICLE.NAME = name;"
         );
+        //getVelocitySet(name)
         while(velocitySet.next()) {
-            String segmentType = velocitySet.getString("segment_type");
+            String segmentType = velocitySet.getString("segmentType");
+            //ToDo esta qualquer coisa mal
             ResultSet limitSet = statement.executeQuery(
-                    "SELECT * FROM MEASURABLE WHERE MEASURABLE.ID = VEHICLE.LOAD_ID AND VEHICLE.NAME = name;"
+                    "SELECT * FROM MEASURABLE WHERE MEASURABLE.ID = VEHICLE.LIMITID AND VEHICLE.NAME = name;"
             );
+            //getLimitSet(name)
             for (Unit unitType : unitEnum) {
                 String unitStr = limitSet.getString("unit");
                 if (unitStr.equals(unitType.toString())) {
@@ -171,11 +179,13 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         ResultSet energySet = statement.executeQuery(
                 "SELECT * FROM ENERGY WHERE ENERGY.ID = VEHICLE.ENERGY_ID AND VEHICLE.NAME = name;"
         );
+        //getEnergySet(name)
         int energyID = energySet.getInt("id");
         List<Gears> gearList = new LinkedList<>(); //creation of gears needed by energy
         ResultSet gearsSet = statement.executeQuery(
                 "SELECT * FROM GEARS WHERE GEARS.ENERGY_ID = ENERGY.ID AND ENERGY.ID = energyID;"
         );
+        //getGearSet(energyID)
         while (gearsSet.next()){
             Gears gear = new Gears(gearsSet.getInt("id"), gearsSet.getFloat("ratio"));
             gearList.add(gear);
@@ -184,20 +194,22 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         ResultSet throttleSet = statement.executeQuery(
                 "SELECT * FROM THROTTLE WHERE THROTTLE.ENERGY_ID = ENERGY.ID AND ENERGY.ID = energyID;"
         );
+        //getThrottleSet(energyID)
         while (throttleSet.next()){
             int throttleID = throttleSet.getInt("id");
             ResultSet regimeSet = statement.executeQuery(
                     "SELECT * FROM REGIME WHERE REGIME.THROTTLE_ID = THROTTLE.ID AND THROTTLE.ID = throttleID;"
             );
+            //getRegimeSet(throttleID)
             List<Regime> regimeList = new LinkedList<>();
             while (regimeSet.next()){
-                Regime regime = new Regime(regimeSet.getInt("torqueLow"), regimeSet.getInt("torqueHigh"), regimeSet.getInt("rpm_low"), regimeSet.getInt("rpm_high"), regimeSet.getInt("SFC"));
+                Regime regime = new Regime(regimeSet.getInt("torqueLow"), regimeSet.getInt("torqueHigh"), regimeSet.getInt("rpmLow"), regimeSet.getInt("rpmHigh"), regimeSet.getInt("SFC"));
                 regimeList.add(regime);
             }
             Throttle throttle = new Throttle(throttleID, regimeList);
             throttleList.add(throttle);
         }
-        energy = new Energy(energySet.getInt("rpm_low"), energySet.getInt("rpm_high"), energySet.getFloat("final_drive_ratio"), gearList, throttleList);
+        energy = new Energy(energySet.getInt("rpmLow"), energySet.getInt("rpmHigh"), energySet.getFloat("finalDriveRatio"), gearList, throttleList);
 
         //creation of vehicle
         vehicle = new Vehicle(name, description, vehicleType, vehicleClass, motorization, fuel, mass, load, dragCoefficient, frontalArea, rollingReleaseCoefficient, wheelSize, velocityLimitList, energy);
