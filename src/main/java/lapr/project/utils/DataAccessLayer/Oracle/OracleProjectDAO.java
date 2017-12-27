@@ -4,12 +4,9 @@ package lapr.project.utils.DataAccessLayer.Oracle;
 import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.Vehicle.Vehicle;
-import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.Abstraction.ProjectDAO;
-import oracle.jdbc.pool.OracleDataSource;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,8 +43,8 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
         while (resultSet.next()) {
             projectName = resultSet.getString("name");
             projectDescription = resultSet.getString("description");
-//            vehicles = oracleVehicleDAO.createVehicle(projectName);
-            roadNetwork = oracleRoadNetworkDAO.createRoadNetwork(projectName);
+//            vehicles = oracleVehicleDAO.retrieveVehicle(projectName);
+            roadNetwork = oracleRoadNetworkDAO.retrieveRoadNetwork(projectName);
 
 //            project = new Project(projectName, projectDescription, roadNetwork, vehicles);
 //            projects.add(project);
