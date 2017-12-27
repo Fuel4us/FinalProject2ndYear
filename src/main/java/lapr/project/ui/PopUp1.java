@@ -5,6 +5,13 @@
  */
 package lapr.project.ui;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import lapr.project.controller.CopyProjectController;
+import static lapr.project.ui.Main.dbCom;
+
 /**
  *
  * @author anily
@@ -123,7 +130,8 @@ public class PopUp1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonChangeDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonChangeDataActionPerformed
-        // TODO add your handling code here:
+//        EditProjectUI epui = new EditProjectUI(register);
+//        setVisible(false);
     }//GEN-LAST:event_jButtonChangeDataActionPerformed
 
     private void jButtonSetActiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetActiveActionPerformed
@@ -131,7 +139,8 @@ public class PopUp1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSetActiveActionPerformed
 
     private void jButtonCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCopyActionPerformed
-        // TODO add your handling code here:
+        CopyProjectController controller = new CopyProjectController(dbCom);
+        
     }//GEN-LAST:event_jButtonCopyActionPerformed
 
     /**

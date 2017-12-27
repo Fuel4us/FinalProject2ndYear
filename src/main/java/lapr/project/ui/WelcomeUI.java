@@ -6,6 +6,8 @@
 package lapr.project.ui;
 
 import javax.swing.*;
+import lapr.project.controller.SelectProjectController;
+import static lapr.project.ui.Main.dbCom;
 import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 
 /**
@@ -147,13 +149,23 @@ public class WelcomeUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateActionPerformed
-        new CreateProjectUI();
+        CreateProjectUI ui = new CreateProjectUI();
         setVisible(false);
     }//GEN-LAST:event_jButtonCreateActionPerformed
 
     private void jButtonSetProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetProjectActionPerformed
-        new SelectProjectUI();
-        setVisible(false);
+        SelectProjectController controller = new SelectProjectController(dbCom);
+        
+        if(controller.fetchProjectsList().isEmpty()){
+            JOptionPane.showMessageDialog(
+                        this,
+                        "It's not possible to open a project because no one was created yet!",
+                        "Open Project",
+                        JOptionPane.INFORMATION_MESSAGE);
+        }else {
+            SelectProjectUI ui = new SelectProjectUI(controller);
+            setVisible(false);
+        }  
     }//GEN-LAST:event_jButtonSetProjectActionPerformed
 
     /**
