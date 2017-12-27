@@ -5,7 +5,6 @@
  */
 package lapr.project.utils.DataAccessLayer.Oracle;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -61,27 +60,9 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         float dragCoefficient = resultSet.getFloat("dragCoefficient");
         float rollingReleaseCoefficient = resultSet.getFloat("rollingReleaseCoefficient");
 
-        //creation of vehicleType
-        VehicleType vehicleType = null;
-        VehicleType[] typesEnum = VehicleType.values();
-        for (VehicleType type : typesEnum) {
-            String typeStr = resultSet.getString("vehicleType");
-            if (typeStr.equals(type.toString())) {
-                vehicleType = type;
-            }
-        }
-
-        //creation of motorization
-        Vehicle.MotorType motorization = null;
-        Vehicle.MotorType[] motorizationEnum = Vehicle.MotorType.values();
-        for (Vehicle.MotorType motorizationType : motorizationEnum) {
-            String motorizationStr = resultSet.getString("motorType");
-            if (motorizationStr.equals(motorizationType.toString())) {
-                motorization = motorizationType;
-            }
-        }
-
-        Fuel fuel = createFuel(resultSet);
+        VehicleType vehicleType = determineVehicleType(resultSet);
+        Vehicle.MotorType motorization = determineMotorType(resultSet);
+        Fuel fuel = determineFuel(resultSet);
 
         Unit[] unitEnum = Unit.values();
         Measurable mass = createMass(name, unitEnum);
@@ -224,7 +205,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         return createMeasurable(massSet, unitEnum);
     }
 
-    private Fuel createFuel(ResultSet resultSet) throws SQLException {
+    private Fuel determineFuel(ResultSet resultSet) throws SQLException {
         Fuel fuel = null;
         Fuel[] fuelEnum = Fuel.values();
         for (Fuel fuelType : fuelEnum) {
@@ -234,6 +215,30 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             }
         }
         return fuel;
+    }
+
+    private Vehicle.MotorType determineMotorType(ResultSet resultSet) throws SQLException {
+        Vehicle.MotorType motorization = null;
+        Vehicle.MotorType[] motorizationEnum = Vehicle.MotorType.values();
+        for (Vehicle.MotorType motorizationType : motorizationEnum) {
+            String motorizationStr = resultSet.getString("motorType");
+            if (motorizationStr.equals(motorizationType.toString())) {
+                motorization = motorizationType;
+            }
+        }
+        return motorization;
+    }
+
+    private VehicleType determineVehicleType(ResultSet resultSet) throws SQLException {
+        VehicleType vehicleType = null;
+        VehicleType[] typesEnum = VehicleType.values();
+        for (VehicleType type : typesEnum) {
+            String typeStr = resultSet.getString("vehicleType");
+            if (typeStr.equals(type.toString())) {
+                vehicleType = type;
+            }
+        }
+        return vehicleType;
     }
 
 }
