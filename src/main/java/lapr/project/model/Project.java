@@ -1,9 +1,10 @@
 package lapr.project.model;
 
+import java.util.ArrayList;
 import lapr.project.model.RoadNetwork.*;
 import lapr.project.model.Vehicle.Vehicle;
-
 import java.util.List;
+import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 
 /**
  * <p>
@@ -29,9 +30,18 @@ public class Project {
         this.name = name;
         this.description = description;
         this.roadNetwork = roadNetwork;
-        this.vehicles = vehicles;
+        this.vehicles = new ArrayList<Vehicle>();
     }
 
+    /**
+     * Build a Project instance with default data
+     */
+    public Project() {
+        name = "";
+        description = "";
+        roadNetwork = new RoadNetwork();
+        vehicles = new ArrayList<>();
+    }
 
     /**
      * Implementation of the equals for objects of the type Project
@@ -95,5 +105,13 @@ public class Project {
         this.vehicles = vehicles;
     }
     
-    
+    /**
+     * Clone project
+     * @return
+     * @throws CloneNotSupportedException
+     */
+    public Project cloneProject() throws CloneNotSupportedException {
+       return new Project(getName() + " (Copy)", getDescription() + " (Copy)", getRoadNetwork(), getVehicles());
+    }
+   
 }

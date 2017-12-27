@@ -17,7 +17,6 @@ public class WelcomeUI extends javax.swing.JFrame {
     private static final long serialVersionUID = 8935086433569396442L;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
-    private javax.swing.JButton jButtonCopy;
     private javax.swing.JButton jButtonCreate;
     private javax.swing.JButton jButtonSetProject;
     private javax.swing.JLabel jLabel1;
@@ -41,13 +40,10 @@ public class WelcomeUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        InitializeUIElements initializer = new InitializeUIElements();
-
         jPanel3 = new javax.swing.JPanel();
         imgLateral = new javax.swing.JLabel();
         jButtonCreate = new javax.swing.JButton();
         orangeBorder2 = new javax.swing.JPanel();
-        jButtonCopy = new javax.swing.JButton();
         jButtonSetProject = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
@@ -57,9 +53,16 @@ public class WelcomeUI extends javax.swing.JFrame {
 
         imgLateral.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fundo.png"))); // NOI18N
 
+        jButtonCreate.setBackground(new java.awt.Color(45, 46, 45));
+        jButtonCreate.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jButtonCreate.setForeground(new java.awt.Color(45, 46, 45));
-        initializer.initializeJButton(jButtonCreate, Main.EIGHTEEN_SEGOE_FONT, "Create project", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonCreate.addActionListener(evt -> jButtonCreateActionPerformed(evt));
+        jButtonCreate.setText("Create project");
+        jButtonCreate.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        jButtonCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCreateActionPerformed(evt);
+            }
+        });
 
         orangeBorder2.setBackground(new java.awt.Color(250, 152, 60));
 
@@ -74,22 +77,21 @@ public class WelcomeUI extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jButtonCopy.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonCopy.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonCopy.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonCopy.setText("Copy project");
-        jButtonCopy.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonCopy.addActionListener(evt -> jButtonCopyActionPerformed(evt));
-
         jButtonSetProject.setBackground(new java.awt.Color(45, 46, 45));
         jButtonSetProject.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jButtonSetProject.setForeground(new java.awt.Color(45, 46, 45));
         jButtonSetProject.setText("I already have an existing project");
         jButtonSetProject.setToolTipText("");
         jButtonSetProject.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonSetProject.addActionListener(evt -> jButtonSetProjectActionPerformed(evt));
+        jButtonSetProject.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSetProjectActionPerformed(evt);
+            }
+        });
 
-        initializer.initializeLabels(jLabel1, Main.TV_POSTER_FONT,"Please select what you wish to do", SwingConstants.CENTER, Main.LIGHT_BLUE);
+        jLabel1.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(155, 177, 189));
+        jLabel1.setText("Please select what you wish to do");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -102,12 +104,9 @@ public class WelcomeUI extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(67, 67, 67)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jButtonCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(62, 62, 62)
-                                .addComponent(jButtonCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButtonSetProject, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButtonSetProject, javax.swing.GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+                            .addComponent(jButtonCreate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(79, 79, 79)
                         .addComponent(jLabel1)))
@@ -123,9 +122,7 @@ public class WelcomeUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(28, 28, 28)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jButtonCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
                 .addComponent(jButtonSetProject, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(83, 83, 83))
@@ -153,10 +150,6 @@ public class WelcomeUI extends javax.swing.JFrame {
         new CreateProjectUI();
         setVisible(false);
     }//GEN-LAST:event_jButtonCreateActionPerformed
-
-    private void jButtonCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCopyActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonCopyActionPerformed
 
     private void jButtonSetProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetProjectActionPerformed
         new SelectProjectUI();
