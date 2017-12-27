@@ -64,7 +64,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         float dragCoefficient = resultSet.getFloat("dragCoefficient");
         float rollingReleaseCoefficient = resultSet.getFloat("rollingReleaseCoefficient");
         List<VelocityLimit> velocityLimitList = new LinkedList<>();
-        Energy energy = null;
 
         //creation of vehicleType
         VehicleType[] typesEnum = VehicleType.values();
@@ -175,23 +174,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             velocityLimitList.add(velocityLimit);
         }
 
-        //creation of energy attribute
-        ResultSet energySet = statement.executeQuery(
-                "SELECT * FROM ENERGY WHERE ENERGY.ID = VEHICLE.ENERGY_ID AND VEHICLE.NAME = name;"
-        );
-        //getEnergySet(name)
-        int energyID = energySet.getInt("id");
-        List<Gears> gearList = new LinkedList<>(); //creation of gears needed by energy
-        ResultSet gearsSet = statement.executeQuery(
-                "SELECT * FROM GEARS WHERE GEARS.ENERGY_ID = ENERGY.ID AND ENERGY.ID = energyID;"
-        );
-        //getGearSet(energyID)
-        while (gearsSet.next()){
-            Gears gear = new Gears(gearsSet.getInt("id"), gearsSet.getFloat("ratio"));
-            gearList.add(gear);
-        }
-        List<Throttle> throttleList = fillThrottleList(energyID);
-        energy = new Energy(energySet.getInt("rpmLow"), energySet.getInt("rpmHigh"), energySet.getFloat("finalDriveRatio"), gearList, throttleList);
+        Energy energy = createEnergy(name);
 
         //creation of vehicle
         vehicle = new Vehicle(name, description, vehicleType, vehicleClass, motorization, fuel, mass, load, dragCoefficient, frontalArea, rollingReleaseCoefficient, wheelSize, velocityLimitList, energy);
@@ -224,6 +207,31 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             throttleList.add(throttle);
         }
         return  throttleList;
+    }
+
+    private List<Gears> fillGearList(int energyID) throws SQLException {
+        List<Gears> gearList = new LinkedList<>(); //creation of gears needed by energy
+        ResultSet gearsSet = statement.executeQuery(
+                "SELECT * FROM GEARS WHERE GEARS.ENERGY_ID = ENERGY.ID AND ENERGY.ID = energyID;"
+        );
+        //getGearSet(energyID)
+        while (gearsSet.next()){
+            Gears gear = new Gears(gearsSet.getInt("id"), gearsSet.getFloat("ratio"));
+            gearList.add(gear);
+        }
+        return gearList;
+    }
+
+    private Energy createEnergy(String name) throws SQLException {
+        ResultSet energySet = statement.executeQuery(
+                "SELECT * FROM ENERGY WHERE ENERGY.ID = VEHICLE.ENERGY_ID AND VEHICLE.NAME = name;"
+        );
+        //getEnergySet(name)
+        int energyID = energySet.getInt("id");
+        List<Gears> gearList = fillGearList(energyID);
+        List<Throttle> throttleList = fillThrottleList(energyID);
+        return new Energy(energySet.getInt("rpmLow"), energySet.getInt("rpmHigh"), energySet.getFloat("finalDriveRatio"), gearList, throttleList);
+
     }
 
 }
