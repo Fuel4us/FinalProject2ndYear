@@ -31,8 +31,9 @@ public class PopUp1 extends javax.swing.JFrame {
 
         imgLateral = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jButtonBack = new javax.swing.JButton();
-        jButtonBack1 = new javax.swing.JButton();
+        jButtonChangeData = new javax.swing.JButton();
+        jButtonSetActive = new javax.swing.JButton();
+        jButtonCopy = new javax.swing.JButton();
         imgLateral1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -41,19 +42,38 @@ public class PopUp1 extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(155, 177, 189));
 
-        jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setText("Change project data");
-        jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
+        jButtonChangeData.setBackground(new java.awt.Color(45, 46, 45));
+        jButtonChangeData.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        jButtonChangeData.setForeground(new java.awt.Color(45, 46, 45));
+        jButtonChangeData.setText("Change project data");
+        jButtonChangeData.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        jButtonChangeData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonChangeDataActionPerformed(evt);
+            }
+        });
 
-        jButtonBack1.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonBack1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonBack1.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonBack1.setText("Set active");
-        jButtonBack1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack1.addActionListener(evt -> jButtonBack1ActionPerformed(evt));
+        jButtonSetActive.setBackground(new java.awt.Color(45, 46, 45));
+        jButtonSetActive.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        jButtonSetActive.setForeground(new java.awt.Color(45, 46, 45));
+        jButtonSetActive.setText("Set active");
+        jButtonSetActive.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        jButtonSetActive.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSetActiveActionPerformed(evt);
+            }
+        });
+
+        jButtonCopy.setBackground(new java.awt.Color(45, 46, 45));
+        jButtonCopy.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        jButtonCopy.setForeground(new java.awt.Color(45, 46, 45));
+        jButtonCopy.setText("Copy project");
+        jButtonCopy.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        jButtonCopy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCopyActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -62,18 +82,21 @@ public class PopUp1 extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonBack1, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonSetActive, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonChangeData, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
-                .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonChangeData, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButtonBack1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addComponent(jButtonSetActive, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         imgLateral1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fundo.png"))); // NOI18N
@@ -91,24 +114,25 @@ public class PopUp1 extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(imgLateral, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(imgLateral1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(0, 0, 0))
+            .addComponent(imgLateral, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(imgLateral1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
+    private void jButtonChangeDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonChangeDataActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonBackActionPerformed
+    }//GEN-LAST:event_jButtonChangeDataActionPerformed
 
-    private void jButtonBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBack1ActionPerformed
+    private void jButtonSetActiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetActiveActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonBack1ActionPerformed
+    }//GEN-LAST:event_jButtonSetActiveActionPerformed
+
+    private void jButtonCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCopyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonCopyActionPerformed
 
     /**
      * @param args the command line arguments
@@ -148,8 +172,9 @@ public class PopUp1 extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
     private javax.swing.JLabel imgLateral1;
-    private javax.swing.JButton jButtonBack;
-    private javax.swing.JButton jButtonBack1;
+    private javax.swing.JButton jButtonChangeData;
+    private javax.swing.JButton jButtonCopy;
+    private javax.swing.JButton jButtonSetActive;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
