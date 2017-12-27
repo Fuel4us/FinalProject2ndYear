@@ -8,7 +8,10 @@ package lapr.project.utils;
 import java.util.Objects;
 
 /**
- * ToDo
+ * <p>
+ * A measurable is a data structure containing
+ * information about quantity and a corresponding unit
+ * </p>
  */
 public class Measurable {
 
@@ -34,6 +37,13 @@ public class Measurable {
      */
     public void setQuantity(double quantity) {
         this.quantity = quantity;
+    }
+
+    /**
+     * @return the unit of this measurable
+     */
+    public Unit getUnit() {
+        return unit;
     }
 
     @Override
