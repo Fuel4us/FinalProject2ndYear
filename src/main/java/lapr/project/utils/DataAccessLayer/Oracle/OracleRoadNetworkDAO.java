@@ -60,45 +60,19 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
         addNodesToRoadNetwork(networkID, roadNetwork);
 
-        //select sections
         ResultSet sectionSet = statement.executeQuery(
                 "SELECT * FROM section WHERE SECTION.ID = NETWORKSECTION.SECTIONID AND NETWORKSECTION.NETWORKID = ROADNETWORK.ID AND ROADNETWORK.ID = networkID;"
         );
         //getSectionSet(networkID)
         while(sectionSet.next()){
             int sectionId = sectionSet.getInt("ID");
-            //section needs origin and ending node
+
             Node beginningNode = new Node(sectionSet.getString("beginningNodeID"));
             Node endingNode = new Node(sectionSet.getString("endingNodeID"));
 
-            //section's direction obtained in a similar way with vehicle data
-            Direction roadDirection = null;
-            Direction[] directionEnum = Direction.values();
-            for (Direction direction : directionEnum) {
-                String directionStr = sectionSet.getString("vehicleType");
-                if (directionStr.equals(direction.toString())) {
-                    roadDirection = direction;
-                }
-            }
+            Direction roadDirection = determineDirection(sectionSet);
 
-            //select that determines section's road
-            ResultSet roadSet = statement.executeQuery(
-                    "SELECT * FROM ROAD WHERE SECTION.ID = sectionId AND ROAD.ID = SECTION.OWNINGROAD"
-            );
-            //getRoadSet(networkID)
-            String roadID = roadSet.getString("ID");
-            String roadName = roadSet.getString("name");
-            String typology = roadSet.getString("typology");
-            ResultSet roadTollSet = statement.executeQuery(
-                    "SELECT * FROM TOLLFAREROAD WHERE ROAD.ID = roadID AND ROAD.ID = TOLLFAREROAD.ROADID"
-            );
-            //getRoadTollSet(roadID)
-            List<Double> tollFareRoadList = new LinkedList<>();
-            while (roadTollSet.next()) {
-                Double tollFare = roadTollSet.getDouble("tollFare");
-                tollFareRoadList.add(tollFare);
-            }
-            Road road = new Road(roadID, roadName, typology, tollFareRoadList);
+            Road road = createRoad(sectionId);
 
             //select section's segments
             Collection<Segment> segments = new ArrayList<>();
@@ -145,6 +119,44 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             node = new Node(nodeName);
             roadNetwork.addNode(node);
         }
+    }
+
+    private Direction determineDirection(ResultSet sectionSet) throws SQLException {
+        Direction roadDirection = null;
+        Direction[] directionEnum = Direction.values();
+        for (Direction direction : directionEnum) {
+            String directionStr = sectionSet.getString("vehicleType");
+            if (directionStr.equals(direction.toString())) {
+                roadDirection = direction;
+            }
+        }
+        return roadDirection;
+    }
+
+    private List<Double> fillRoadTollFareList(String roadID) throws SQLException {
+        ResultSet roadTollSet = statement.executeQuery(
+                "SELECT * FROM TOLLFAREROAD WHERE ROAD.ID = roadID AND ROAD.ID = TOLLFAREROAD.ROADID"
+        );
+        //getRoadTollSet(roadID)
+        List<Double> tollFareRoadList = new LinkedList<>();
+        while (roadTollSet.next()) {
+            Double tollFare = roadTollSet.getDouble("tollFare");
+            tollFareRoadList.add(tollFare);
+        }
+        return tollFareRoadList;
+    }
+
+    private Road createRoad(int sectionID) throws SQLException {
+        ResultSet roadSet = statement.executeQuery(
+                "SELECT * FROM ROAD WHERE SECTION.ID = sectionId AND ROAD.ID = SECTION.OWNINGROAD"
+        );
+        //getRoadSet(networkID)
+        String roadID = roadSet.getString("ID");
+        String roadName = roadSet.getString("name");
+        String typology = roadSet.getString("typology");
+
+        List<Double> tollFareRoadList = fillRoadTollFareList(roadID);
+        return new Road(roadID, roadName, typology, tollFareRoadList);
     }
 
 }
