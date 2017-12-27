@@ -1,11 +1,13 @@
 package lapr.project.utils.DataAccessLayer.Oracle;
 
 import lapr.project.model.Analysis;
+import lapr.project.model.RoadNetwork.Section;
 import lapr.project.utils.DataAccessLayer.Abstraction.AnalysisDAO;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
+import lapr.project.utils.Measurable;
+import lapr.project.utils.Unit;
 
 import java.sql.CallableStatement;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 
@@ -14,8 +16,8 @@ import java.util.logging.Level;
  */
 public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
 
-
-    public OracleAnalysisDAO() {}
+    public OracleAnalysisDAO() {
+    }
 
     /**
      * Store an analysis into data layer
@@ -29,20 +31,36 @@ public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
             return false;
         }
 
-        try (CallableStatement storeAnalysisCallable = super.oracleConnection.prepareCall(
-                "CALL STORE_ANALYSIS(?,?)"
-        )) {
-
-            int analysisID = analysis.identify();
-            String name = analysis.issueRequestingEntity().getName();
-
-            storeAnalysisCallable.setInt(1, analysisID);
-            storeAnalysisCallable.setString(2, name);
-
-            storeAnalysisCallable.executeUpdate();
-        }
+//        storePrimitives(analysis);
+        storeAnalysedSections(analysis);
 
         return true;
+
+    }
+
+
+    /**
+     * Stores sections pertaining to the {@link Analysis}
+     * @param analysis the {@link Analysis} to store
+     */
+    private void storeAnalysedSections(Analysis analysis) throws SQLException {
+
+        int analysisID = analysis.identify();
+
+        try (CallableStatement storeSectionCallable = super.oracleConnection
+                .prepareCall("CALL STORE_ANALYSED_SECTION(?,?)")) {
+
+            for (Section section : analysis.getBestPath()) {
+
+                storeSectionCallable.setInt(1, analysisID);
+                storeSectionCallable.setInt(1, section.getID());
+
+                storeSectionCallable.executeUpdate();
+
+            }
+
+        }
+
     }
 
 }
