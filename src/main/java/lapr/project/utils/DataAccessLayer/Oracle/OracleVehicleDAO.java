@@ -135,21 +135,8 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         quantity = massSet.getDouble("class");
         Measurable frontalArea = new Measurable(quantity, unit);
 
-        //creation of wheel size
-        ResultSet wheelSet = statement.executeQuery(
-                "SELECT * FROM MEASURABLE WHERE MEASURABLE.ID = VEHICLE.FRONTALAREAID AND VEHICLE.NAME = name;"
-        );
-        //getWheelSize(name)
-        for (Unit unitType : unitEnum) {
-            String unitStr = wheelSet.getString("unit");
-            if (unitStr.equals(unitType.toString())) {
-                unit = unitType;
-            }
-        }
-        quantity = wheelSet.getDouble("class");
-        Measurable wheelSize = new Measurable(quantity, unit);
+        Measurable wheelSize = createWheelSize(name, unitEnum);
 
-        //creation of list of velocity limits
         List<VelocityLimit> velocityLimitList = fillVelocityLimitList(name, unitEnum);
 
         Energy energy = createEnergy(name);
@@ -247,6 +234,15 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             velocityLimitList.add(velocityLimit);
         }
         return velocityLimitList;
+    }
+
+    private Measurable createWheelSize(String name, Unit[] unitEnum) throws SQLException {
+        ResultSet wheelSet = statement.executeQuery(
+                "SELECT * FROM MEASURABLE WHERE MEASURABLE.ID = VEHICLE.FRONTALAREAID AND VEHICLE.NAME = name;"
+        );
+        //getWheelSize(name)
+
+        return createMeasurable(wheelSet, unitEnum);
     }
 
 }
