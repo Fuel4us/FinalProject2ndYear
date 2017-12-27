@@ -63,7 +63,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         int vehicleClass = resultSet.getInt("vehicleTollClass");
         float dragCoefficient = resultSet.getFloat("dragCoefficient");
         float rollingReleaseCoefficient = resultSet.getFloat("rollingReleaseCoefficient");
-        List<VelocityLimit> velocityLimitList = new LinkedList<>();
 
         //creation of vehicleType
         VehicleType[] typesEnum = VehicleType.values();
@@ -151,25 +150,14 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         Measurable wheelSize = new Measurable(quantity, unit);
 
         //creation of list of velocity limits
+        List<VelocityLimit> velocityLimitList = new LinkedList<>();
         ResultSet velocitySet = statement.executeQuery(
                 "SELECT * FROM VELOCITYLIMIT WHERE VELOCITYLIMIT.ID = VEHICLE.VELOCITYLIMITSLISTSID AND VEHICLE.NAME = name;"
         );
         //getVelocitySet(name)
         while(velocitySet.next()) {
             String segmentType = velocitySet.getString("segmentType");
-            //ToDo esta qualquer coisa mal
-            ResultSet limitSet = statement.executeQuery(
-                    "SELECT * FROM MEASURABLE WHERE MEASURABLE.ID = VEHICLE.LIMITID AND VEHICLE.NAME = name;"
-            );
-            //getLimitSet(name)
-            for (Unit unitType : unitEnum) {
-                String unitStr = limitSet.getString("unit");
-                if (unitStr.equals(unitType.toString())) {
-                    unit = unitType;
-                }
-            }
-            quantity = limitSet.getDouble("class");
-            Measurable limit = new Measurable(quantity, unit);
+            Measurable limit = createVelocityLimit(name, unitEnum);
             VelocityLimit velocityLimit = new VelocityLimit(segmentType, limit);
             velocityLimitList.add(velocityLimit);
         }
@@ -232,6 +220,28 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         List<Throttle> throttleList = fillThrottleList(energyID);
         return new Energy(energySet.getInt("rpmLow"), energySet.getInt("rpmHigh"), energySet.getFloat("finalDriveRatio"), gearList, throttleList);
 
+    }
+
+    private Measurable createVelocityLimit(String name, Unit[] unitEnum) throws SQLException {
+        //ToDo esta qualquer coisa mal
+        ResultSet limitSet = statement.executeQuery(
+                "SELECT * FROM MEASURABLE WHERE MEASURABLE.ID = VEHICLE.LIMITID AND VEHICLE.NAME = name;"
+        );
+        //getLimitSet(name)
+
+        return createMeasurable(limitSet, unitEnum);
+    }
+
+    private Measurable createMeasurable(ResultSet resultSet, Unit[] unitEnum) throws SQLException {
+        Unit unit = null;
+        for (Unit unitType : unitEnum) {
+            String unitStr = resultSet.getString("unit");
+            if (unitStr.equals(unitType.toString())) {
+                unit = unitType;
+            }
+        }
+        double quantity = resultSet.getDouble("class");
+        return new Measurable(quantity, unit);
     }
 
 }
