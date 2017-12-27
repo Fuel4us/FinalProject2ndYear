@@ -17,14 +17,6 @@ public interface VehicleDAO extends DataAccessObject {
      * @return list of {@link Vehicle}
      * @throws SQLException
      */
-    List<Vehicle> createVehicle(String projectName) throws SQLException;
-
-    /**
-     * Creates an instance of {@link Vehicle} from a given ResultSet
-     * @param resultSet name of the project
-     * @return instance of {@link Vehicle}
-     * @throws SQLException
-     */
-    Vehicle createVehicle(ResultSet resultSet) throws SQLException;
+    List<Vehicle> retrieveVehicle(String projectName) throws SQLException;
 
 }

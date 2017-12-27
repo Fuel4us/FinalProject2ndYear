@@ -5,7 +5,6 @@
  */
 package lapr.project.utils.DataAccessLayer.Oracle;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,14 +19,12 @@ import lapr.project.model.RoadNetwork.Node;
 import lapr.project.model.RoadNetwork.Road;
 import lapr.project.model.RoadNetwork.Section;
 import lapr.project.model.RoadNetwork.Segment;
-import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.Abstraction.RoadNetworkDAO;
-import oracle.jdbc.pool.OracleDataSource;
 
 
 /**
  *
- * ToDo
+ * Retrieves the Road Network for a given project
  */
 public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
@@ -42,11 +39,11 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * @throws SQLException
      */
     @Override
-    public RoadNetwork createRoadNetwork(String projectName) throws SQLException {
+    public RoadNetwork retrieveRoadNetwork(String projectName) throws SQLException {
         ResultSet networkSet = statement.executeQuery(
                 "SELECT * FROM ROADNETWORK, PROJECT WHERE ROADNETWORK.PROJECTNAME = PROJECT.NAME AND PROJECT.NAME = projectName;"
         );
-        return createRoadNetwork(networkSet);
+        return retrieveRoadNetwork(networkSet);
     }
 
     /**
@@ -55,68 +52,67 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * @return instance of {@link RoadNetwork}
      * @throws SQLException
      */
-    @Override
-    public RoadNetwork createRoadNetwork(ResultSet resultSet) throws SQLException {
+    public RoadNetwork retrieveRoadNetwork(ResultSet resultSet) throws SQLException {
         String networkID = resultSet.getString("ID");
         RoadNetwork roadNetwork = new RoadNetwork(true);
         roadNetwork.setId(networkID);
 
-        //selects nodes
+        //select nodes
         ResultSet nodeSet = statement.executeQuery(
                 "SELECT * FROM NODE WHERE NODE.ID = NETWORKNODE.NODEID AND NETWORKNODE.NETWORKID = ROADNETWORK.ID AND ROADNETWORK.ID = networkID;"
         );
         while (nodeSet.next()) {
             String nodeName;
             Node node;
-            nodeName = resultSet.getString("id");
+            nodeName = nodeSet.getString("ID");
             node = new Node(nodeName);
             roadNetwork.addNode(node);
         }
 
-        //select pra ir buscar as sections
+        //select sections
         ResultSet sectionSet = statement.executeQuery(
-                "SELECT * FROM THROTTLE WHERE SECTION.ID = NETWORKSECTION.SECTIONID AND NETWORKSECTION.NETWORKID = ROADNETWORK.ID AND ROADNETWORK.ID = networkID;"
+                "SELECT * FROM section WHERE SECTION.ID = NETWORKSECTION.SECTIONID AND NETWORKSECTION.NETWORKID = ROADNETWORK.ID AND ROADNETWORK.ID = networkID;"
         );
         while(sectionSet.next()){
             int sectionId = sectionSet.getInt("ID");
-            //section precisa dos dois nodes origem e destino
-            Node begginningNode = new Node(sectionSet.getString("beginningNodeID"));
+            //section needs origin and ending node
+            Node beginningNode = new Node(sectionSet.getString("beginningNodeID"));
             Node endingNode = new Node(sectionSet.getString("endingNodeID"));
 
-            //ir buscar direction da mesma forma que eu faço com os enums do veiculo
+            //section's direction obtained in a similar way with vehicle data
             Direction roadDirection = null;
             Direction[] directionEnum = Direction.values();
             for (Direction direction : directionEnum) {
-                String directionStr = resultSet.getString("vehicleType");
+                String directionStr = sectionSet.getString("vehicleType");
                 if (directionStr.equals(direction.toString())) {
                     roadDirection = direction;
                 }
             }
 
-            //select que determina qual a road desta section
+            //select that determines section's road
             ResultSet roadSet = statement.executeQuery(
                     "SELECT * FROM ROAD WHERE SECTION.ID = sectionId AND ROAD.ID = SECTION.OWNINGROAD"
             );
             String roadID = roadSet.getString("ID");
             String roadName = roadSet.getString("name");
             String typology = roadSet.getString("typology");
-            ResultSet tollSet = statement.executeQuery(
-                    "SELECT * FROM TOLLFARELIST WHERE ROAD.ID = roadId AND ROAD.ID = TOLLFARELIST.ROADID"
+            ResultSet roadTollSet = statement.executeQuery(
+                    "SELECT * FROM TOLLFAREROAD WHERE ROAD.ID = roadID AND ROAD.ID = TOLLFAREROAD.ROADID"
             );
-            List<Double> tollFareList = new LinkedList<>();
-            while (tollSet.next()) {
-                Double tollFare = tollSet.getDouble("tollFare");
-                tollFareList.add(tollFare);
+            List<Double> tollFareRoadList = new LinkedList<>();
+            while (roadTollSet.next()) {
+                Double tollFare = roadTollSet.getDouble("tollFare");
+                tollFareRoadList.add(tollFare);
             }
-            Road road = new Road(roadID, roadName, typology, tollFareList);
+            Road road = new Road(roadID, roadName, typology, tollFareRoadList);
 
-            //select para ir buscar segments da section
+            //select section's segments
             Collection<Segment> segments = new ArrayList<>();
             ResultSet segmentSet = statement.executeQuery(
                         "SELECT * FROM SEGMENT WHERE SECTION.ID = sectionId AND SEGMENT.SECTIONID = SECTION.ID"
             );
                 while(segmentSet.next()) {
-                    int index = resultSet.getInt("index");
+                    int index = segmentSet.getInt("index");
                     double initialHeight = segmentSet.getDouble("initialHeight");
                     double finalHeight = segmentSet.getDouble("finalHeight");
                     double length = segmentSet.getDouble("length");
@@ -126,10 +122,17 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
                     double minVelocity = segmentSet.getDouble("minVelocity");
                     segments.add(new Segment(index, initialHeight, finalHeight, length, windAngle, windSpeed, maxVelocity, minVelocity));
                 }
-            //adicionar section
-            //TODO preencher arraylist que bruno fez para calar erro
-            Section section = new Section(begginningNode, endingNode, roadDirection, segments, road, new ArrayList<>());
-            roadNetwork.addSection(begginningNode, endingNode, section);
+            //section needs list of tollfare
+            ResultSet sectionTollSet = statement.executeQuery(
+                    "SELECT * FROM TOLLFARESECTION WHERE SECTION.ID = sectionID AND SECTION.ID = TOLLFARESECTION.SECTIONID"
+            );
+            List<Double> tollFareSectionList = new LinkedList<>();
+            while (sectionTollSet.next()) {
+                Double tollFare = sectionTollSet.getDouble("tollFare");
+                tollFareRoadList.add(tollFare);
+            }
+            Section section = new Section(beginningNode, endingNode, roadDirection, segments, road, tollFareSectionList);
+            roadNetwork.addSection(beginningNode, endingNode, section);
         }
         return roadNetwork;
     }
