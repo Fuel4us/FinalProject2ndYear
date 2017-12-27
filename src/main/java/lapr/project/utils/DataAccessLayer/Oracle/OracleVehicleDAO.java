@@ -57,14 +57,12 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         Vehicle vehicle;
         String name = resultSet.getString("name");
         String description = resultSet.getString("description");
-        VehicleType vehicleType = null;
-        Vehicle.MotorType motorization = null;
-        Fuel fuel = null;
         int vehicleClass = resultSet.getInt("vehicleTollClass");
         float dragCoefficient = resultSet.getFloat("dragCoefficient");
         float rollingReleaseCoefficient = resultSet.getFloat("rollingReleaseCoefficient");
 
         //creation of vehicleType
+        VehicleType vehicleType = null;
         VehicleType[] typesEnum = VehicleType.values();
         for (VehicleType type : typesEnum) {
             String typeStr = resultSet.getString("vehicleType");
@@ -74,6 +72,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         }
 
         //creation of motorization
+        Vehicle.MotorType motorization = null;
         Vehicle.MotorType[] motorizationEnum = Vehicle.MotorType.values();
         for (Vehicle.MotorType motorizationType : motorizationEnum) {
             String motorizationStr = resultSet.getString("motorType");
@@ -83,6 +82,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         }
 
         //creation of fuel
+        Fuel fuel = null;
         Fuel[] fuelEnum = Fuel.values();
         for (Fuel fuelType : fuelEnum) {
             String fuelStr = resultSet.getString("fuelType");
@@ -91,50 +91,10 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             }
         }
 
-        //creation of mass
-        ResultSet massSet = statement.executeQuery(
-                "SELECT * FROM MEASURABLE WHERE MEASURABLE.ID = VEHICLE.MASS_ID AND VEHICLE.NAME = name;"
-        );
-        //getMassSet(name)
         Unit[] unitEnum = Unit.values();
-        Unit unit = null;
-        for (Unit unitType : unitEnum) {
-            String unitStr = massSet.getString("unit");
-            if (unitStr.equals(unitType.toString())) {
-                unit = unitType;
-            }
-        }
-        double quantity = massSet.getDouble("class");
-        Measurable mass = new Measurable(quantity, unit);
-
-        //creation of load
-        ResultSet loadSet = statement.executeQuery(
-                "SELECT * FROM MEASURABLE WHERE MEASURABLE.ID = VEHICLE.LOAD_ID AND VEHICLE.NAME = name;"
-        );
-        //getLoadSet(name)
-        for (Unit unitType : unitEnum) {
-            String unitStr = loadSet.getString("unit");
-            if (unitStr.equals(unitType.toString())) {
-                unit = unitType;
-            }
-        }
-        quantity = loadSet.getDouble("class");
-        Measurable load = new Measurable(quantity, unit);
-
-        //creation of frontal area
-        ResultSet areaSet = statement.executeQuery(
-                "SELECT * FROM MEASURABLE WHERE MEASURABLE.ID = VEHICLE.FRONTALAREAID AND VEHICLE.NAME = name;"
-        );
-        //getFrontalAreaSet(name)
-        for (Unit unitType : unitEnum) {
-            String unitStr = areaSet.getString("unit");
-            if (unitStr.equals(unitType.toString())) {
-                unit = unitType;
-            }
-        }
-        quantity = massSet.getDouble("class");
-        Measurable frontalArea = new Measurable(quantity, unit);
-
+        Measurable mass = createMass(name, unitEnum);
+        Measurable load = createLoad(name, unitEnum);
+        Measurable frontalArea = createFrontalArea(name, unitEnum);
         Measurable wheelSize = createWheelSize(name, unitEnum);
 
         List<VelocityLimit> velocityLimitList = fillVelocityLimitList(name, unitEnum);
@@ -243,6 +203,33 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         //getWheelSize(name)
 
         return createMeasurable(wheelSet, unitEnum);
+    }
+
+    private Measurable createFrontalArea(String name, Unit[] unitEnum) throws SQLException {
+        ResultSet areaSet = statement.executeQuery(
+                "SELECT * FROM MEASURABLE WHERE MEASURABLE.ID = VEHICLE.FRONTALAREAID AND VEHICLE.NAME = name;"
+        );
+        //getFrontalAreaSet(name)
+
+        return createMeasurable(areaSet, unitEnum);
+    }
+
+    private Measurable createLoad(String name, Unit[] unitEnum) throws SQLException {
+        ResultSet loadSet = statement.executeQuery(
+                "SELECT * FROM MEASURABLE WHERE MEASURABLE.ID = VEHICLE.LOAD_ID AND VEHICLE.NAME = name;"
+        );
+        //getLoadSet(name)
+
+        return createMeasurable(loadSet, unitEnum);
+    }
+
+    private Measurable createMass(String name, Unit[] unitEnum) throws SQLException {
+        ResultSet massSet = statement.executeQuery(
+                "SELECT * FROM MEASURABLE WHERE MEASURABLE.ID = VEHICLE.MASS_ID AND VEHICLE.NAME = name;"
+        );
+        //getMassSet(name)
+
+        return createMeasurable(massSet, unitEnum);
     }
 
 }
