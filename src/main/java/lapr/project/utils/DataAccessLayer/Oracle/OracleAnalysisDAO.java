@@ -9,6 +9,7 @@ import lapr.project.utils.Unit;
 
 import java.sql.CallableStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.logging.Level;
 
 /**
@@ -46,19 +47,20 @@ public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
     private int storeStatisticalInfo(Measurable measurable) throws SQLException {
 
         try (CallableStatement storeMeasurableFunction = super.oracleConnection
-                .prepareCall("CALL STORE_MEASURABLE(?,?)")) {
+                .prepareCall("{? = call STORE_MEASURABLE(?,?)}")) {
 
             double quantity = measurable.getQuantity();
             Unit unit = measurable.getUnit();
 
-            storeMeasurableFunction.setDouble(1, quantity);
-            storeMeasurableFunction.setString(2, unit.toString());
+            storeMeasurableFunction.registerOutParameter(1, Types.INTEGER);
+
+            storeMeasurableFunction.setDouble(2, quantity);
+            storeMeasurableFunction.setString(3, unit.toString());
 
             storeMeasurableFunction.executeUpdate();
 
             return storeMeasurableFunction.getInt(1);
         }
-
 
     }
 
@@ -107,7 +109,7 @@ public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
             for (Section section : analysis.getBestPath()) {
 
                 storeSectionCallable.setInt(1, analysisID);
-                storeSectionCallable.setInt(1, section.getID());
+                storeSectionCallable.setInt(2, section.getID());
 
                 storeSectionCallable.executeUpdate();
 
