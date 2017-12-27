@@ -32,22 +32,23 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
         ResultSet resultSet = statement.executeQuery(
                 "SELECT * FROM PROJECT;"
         );
+        //fetchAllProjects
 
         String projectName;
         String projectDescription;
         List<Vehicle> vehicles;
         RoadNetwork roadNetwork;
-//        OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO();
+        OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO();
         OracleRoadNetworkDAO oracleRoadNetworkDAO = new OracleRoadNetworkDAO();
         Project project;
         while (resultSet.next()) {
             projectName = resultSet.getString("name");
             projectDescription = resultSet.getString("description");
-//            vehicles = oracleVehicleDAO.retrieveVehicle(projectName);
+            vehicles = oracleVehicleDAO.retrieveVehicle(projectName);
             roadNetwork = oracleRoadNetworkDAO.retrieveRoadNetwork(projectName);
 
-//            project = new Project(projectName, projectDescription, roadNetwork, vehicles);
-//            projects.add(project);
+            project = new Project(projectName, projectDescription, roadNetwork, vehicles);
+            projects.add(project);
         }
 
         return projects;
