@@ -77,8 +77,8 @@ public class ExportCSVTest {
         Analysis analysis = new Analysis(project, "N10", bestPath, new Measurable(300, Unit.KILOJOULE), new Measurable(3, Unit.HOUR), new Measurable(50, Unit.EUROS));
 
         ExportCSV exportCSV = new ExportCSV(analysis);
-        File outputFile = new File("src\\main\\resources\\htmlFileStructure\\outputTestCSV.csv");
-        exportCSV.exportDataFromAnalysis(outputFile);
+//        File outputFile = new File("src\\main\\resources\\htmlFileStructure\\outputTestCSV.csv");
+//        exportCSV.exportDataFromAnalysis(outputFile);
     }
 
 }

@@ -77,8 +77,8 @@ public class ExportHTMLTest {
         Analysis analysis = new Analysis(project, "N10", bestPath, new Measurable(300, Unit.KILOJOULE), new Measurable(3, Unit.HOUR), new Measurable(50, Unit.EUROS));
 
         ExportHTML exportHTML = new ExportHTML(analysis);
-        File outputFile = new File("src\\main\\resources\\htmlFileStructure\\outputTestHTML.html");
-        exportHTML.exportDataFromAnalysis(outputFile);
+//        File outputFile = new File("src\\main\\resources\\htmlFileStructure\\outputTestHTML.html");
+//        exportHTML.exportDataFromAnalysis(outputFile);
     }
 
 }
