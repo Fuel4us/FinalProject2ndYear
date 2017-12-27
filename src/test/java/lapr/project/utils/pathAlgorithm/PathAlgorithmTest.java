@@ -50,6 +50,7 @@ public class PathAlgorithmTest {
         Segment segmentTest1 = new Segment(0, 250, 50, 2.5, 10, 2.5, 120, 50);
         Segment segmentTest3 = new Segment(0, 50, 250, 25, -30, 1.75, 90, 50);
         Segment segmentTest5 = new Segment(0, 250, 50, 50, 10, 2.5, 90, 0);
+        Segment segmentTest6 = new Segment(0, 50, 400, 1, 10, 2.5, 90, 0);
 
         List<Segment> segmentsTest1 = new ArrayList<>();
         segmentsTest1.add(segmentTest1);
@@ -59,6 +60,7 @@ public class PathAlgorithmTest {
 
         List<Segment> segmentsTest3 = new ArrayList<>();
         segmentsTest3.add(segmentTest5);
+        segmentsTest3.add(segmentTest6);
 
         List<Double> tollFaresSectionTest = new ArrayList<>();
         tollFaresSectionTest.add(0.25);
@@ -135,7 +137,7 @@ public class PathAlgorithmTest {
         Analysis analysisResult = pathAlgorithmTest.fastestPath(projectTest, nodeTest1, nodeTest4, vehicle1);
 
         Analysis analysisExpected = new Analysis(projectTest, "N10 - Fastest Path",
-                sectionsExpected, new Measurable(770976, Unit.KILOJOULE), new Measurable(0.925, Unit.HOUR), new Measurable(4,Unit.EUROS));
+                sectionsExpected, new Measurable(826992, Unit.KILOJOULE), new Measurable(0.943, Unit.HOUR), new Measurable(4,Unit.EUROS));
 
         assertEquals(analysisExpected.getAlgorithmName(), analysisResult.getAlgorithmName());
         assertEquals(analysisExpected.getRequestingInstance(), analysisResult.getRequestingInstance());
