@@ -150,17 +150,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         Measurable wheelSize = new Measurable(quantity, unit);
 
         //creation of list of velocity limits
-        List<VelocityLimit> velocityLimitList = new LinkedList<>();
-        ResultSet velocitySet = statement.executeQuery(
-                "SELECT * FROM VELOCITYLIMIT WHERE VELOCITYLIMIT.ID = VEHICLE.VELOCITYLIMITSLISTSID AND VEHICLE.NAME = name;"
-        );
-        //getVelocitySet(name)
-        while(velocitySet.next()) {
-            String segmentType = velocitySet.getString("segmentType");
-            Measurable limit = createVelocityLimit(name, unitEnum);
-            VelocityLimit velocityLimit = new VelocityLimit(segmentType, limit);
-            velocityLimitList.add(velocityLimit);
-        }
+        List<VelocityLimit> velocityLimitList = fillVelocityLimitList(name, unitEnum);
 
         Energy energy = createEnergy(name);
 
@@ -242,6 +232,21 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         }
         double quantity = resultSet.getDouble("class");
         return new Measurable(quantity, unit);
+    }
+
+    private List<VelocityLimit> fillVelocityLimitList(String name, Unit[] unitEnum) throws SQLException {
+        List<VelocityLimit> velocityLimitList = new LinkedList<>();
+        ResultSet velocitySet = statement.executeQuery(
+                "SELECT * FROM VELOCITYLIMIT WHERE VELOCITYLIMIT.ID = VEHICLE.VELOCITYLIMITSLISTSID AND VEHICLE.NAME = name;"
+        );
+        //getVelocitySet(name)
+        while(velocitySet.next()) {
+            String segmentType = velocitySet.getString("segmentType");
+            Measurable limit = createVelocityLimit(name, unitEnum);
+            VelocityLimit velocityLimit = new VelocityLimit(segmentType, limit);
+            velocityLimitList.add(velocityLimit);
+        }
+        return velocityLimitList;
     }
 
 }
