@@ -75,16 +75,9 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             Road road = createRoad(sectionId);
 
             Collection<Segment> segments = fetchSectionSegments(sectionId);
-            //section needs list of tollfare
-            ResultSet sectionTollSet = statement.executeQuery(
-                    "SELECT * FROM TOLLFARESECTION WHERE SECTION.ID = sectionID AND SECTION.ID = TOLLFARESECTION.SECTIONID"
-            );
-            //getSectionTollSet(sectionID)
-            List<Double> tollFareSectionList = new LinkedList<>();
-            while (sectionTollSet.next()) {
-                Double tollFare = sectionTollSet.getDouble("tollFare");
-                tollFareSectionList.add(tollFare);
-            }
+
+            List<Double> tollFareSectionList = fillSectionTollFareList(sectionId);
+            
             Section section = new Section(beginningNode, endingNode, roadDirection, segments, road, tollFareSectionList);
             roadNetwork.addSection(beginningNode, endingNode, section);
         }
@@ -161,6 +154,19 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             segments.add(new Segment(index, initialHeight, finalHeight, length, windAngle, windSpeed, maxVelocity, minVelocity));
         }
         return segments;
+    }
+
+    private List<Double> fillSectionTollFareList(int sectionID) throws SQLException {
+        ResultSet sectionTollSet = statement.executeQuery(
+                "SELECT * FROM TOLLFARESECTION WHERE SECTION.ID = sectionID AND SECTION.ID = TOLLFARESECTION.SECTIONID"
+        );
+        //getSectionTollSet(sectionID)
+        List<Double> tollFareSectionList = new LinkedList<>();
+        while (sectionTollSet.next()) {
+            Double tollFare = sectionTollSet.getDouble("tollFare");
+            tollFareSectionList.add(tollFare);
+        }
+        return tollFareSectionList;
     }
 
 }
