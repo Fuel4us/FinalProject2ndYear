@@ -21,8 +21,12 @@ import java.util.List;
 public class DataBaseCommunicator {
 
     private DBAccessor dbAccessor;
-    private AnalysisDAO analysisStorage;
     private Connection connection;
+
+    /*/
+    Data Access Objects
+     */
+    private AnalysisDAO analysisStorage;
 
     /**
      * <p>
@@ -45,7 +49,7 @@ public class DataBaseCommunicator {
         }
     }
 
-    /** 
+    /**
      * Stores network analysis in a database
      * @param analysis The network analysis to be stored
      */
@@ -56,7 +60,6 @@ public class DataBaseCommunicator {
             connection.setAutoCommit(false);
 
             if (analysisStorage.connectTo(connection)) {
-                //ToDo Store analyzed sections (generated report) into respective table
                 analysisStorage.storeAnalysis(analysis);
                 connection.commit();
                 connection.close();
@@ -64,7 +67,7 @@ public class DataBaseCommunicator {
             }
 
         } catch (SQLException e) {
-            if (dbAccessor.hasActiveConnection()) {
+            if (connection != null) {
                 try {
                     connection.rollback();
                     DBAccessor.logSQLException(e);
