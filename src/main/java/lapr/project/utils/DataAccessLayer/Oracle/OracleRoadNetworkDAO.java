@@ -59,28 +59,8 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
         roadNetwork.setId(networkID);
 
         addNodesToRoadNetwork(networkID, roadNetwork);
+        addSectionsToRoadNetwork(networkID, roadNetwork);
 
-        ResultSet sectionSet = statement.executeQuery(
-                "SELECT * FROM section WHERE SECTION.ID = NETWORKSECTION.SECTIONID AND NETWORKSECTION.NETWORKID = ROADNETWORK.ID AND ROADNETWORK.ID = networkID;"
-        );
-        //getSectionSet(networkID)
-        while(sectionSet.next()){
-            int sectionId = sectionSet.getInt("ID");
-
-            Node beginningNode = new Node(sectionSet.getString("beginningNodeID"));
-            Node endingNode = new Node(sectionSet.getString("endingNodeID"));
-
-            Direction roadDirection = determineDirection(sectionSet);
-
-            Road road = createRoad(sectionId);
-
-            Collection<Segment> segments = fetchSectionSegments(sectionId);
-
-            List<Double> tollFareSectionList = fillSectionTollFareList(sectionId);
-            
-            Section section = new Section(beginningNode, endingNode, roadDirection, segments, road, tollFareSectionList);
-            roadNetwork.addSection(beginningNode, endingNode, section);
-        }
         return roadNetwork;
     }
 
@@ -167,6 +147,30 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             tollFareSectionList.add(tollFare);
         }
         return tollFareSectionList;
+    }
+
+    private void addSectionsToRoadNetwork(String networkID, RoadNetwork roadNetwork) throws SQLException {
+        ResultSet sectionSet = statement.executeQuery(
+                "SELECT * FROM section WHERE SECTION.ID = NETWORKSECTION.SECTIONID AND NETWORKSECTION.NETWORKID = ROADNETWORK.ID AND ROADNETWORK.ID = networkID;"
+        );
+        //getSectionSet(networkID)
+        while(sectionSet.next()){
+            int sectionId = sectionSet.getInt("ID");
+
+            Node beginningNode = new Node(sectionSet.getString("beginningNodeID"));
+            Node endingNode = new Node(sectionSet.getString("endingNodeID"));
+
+            Direction roadDirection = determineDirection(sectionSet);
+
+            Road road = createRoad(sectionId);
+
+            Collection<Segment> segments = fetchSectionSegments(sectionId);
+
+            List<Double> tollFareSectionList = fillSectionTollFareList(sectionId);
+
+            Section section = new Section(beginningNode, endingNode, roadDirection, segments, road, tollFareSectionList);
+            roadNetwork.addSection(beginningNode, endingNode, section);
+        }
     }
 
 }
