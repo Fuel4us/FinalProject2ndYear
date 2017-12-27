@@ -81,15 +81,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             }
         }
 
-        //creation of fuel
-        Fuel fuel = null;
-        Fuel[] fuelEnum = Fuel.values();
-        for (Fuel fuelType : fuelEnum) {
-            String fuelStr = resultSet.getString("fuelType");
-            if (fuelStr.equals(fuelType.toString())) {
-                fuel = fuelType;
-            }
-        }
+        Fuel fuel = createFuel(resultSet);
 
         Unit[] unitEnum = Unit.values();
         Measurable mass = createMass(name, unitEnum);
@@ -230,6 +222,18 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         //getMassSet(name)
 
         return createMeasurable(massSet, unitEnum);
+    }
+
+    private Fuel createFuel(ResultSet resultSet) throws SQLException {
+        Fuel fuel = null;
+        Fuel[] fuelEnum = Fuel.values();
+        for (Fuel fuelType : fuelEnum) {
+            String fuelStr = resultSet.getString("fuelType");
+            if (fuelStr.equals(fuelType.toString())) {
+                fuel = fuelType;
+            }
+        }
+        return fuel;
     }
 
 }
