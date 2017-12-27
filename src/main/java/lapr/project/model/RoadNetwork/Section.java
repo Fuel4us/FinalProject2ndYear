@@ -24,7 +24,8 @@ public class Section extends Edge<String, Direction> {
     /*
     Auto generated ID
      */
-    private static int id = 0;
+    private final int id;
+    private static int sectionCounter = 0;
 
     /*
     File Exporting templates
@@ -48,7 +49,7 @@ public class Section extends Edge<String, Direction> {
         this.direction = direction;
         this.owningRoad = road;
         this.tollFare = tollFare;
-        ++id;
+        this.id = ++sectionCounter;
     }
 
     /**
