@@ -92,10 +92,14 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     }
 
     private List<Double> fillRoadTollFareList(String roadID) throws SQLException {
-        ResultSet roadTollSet = statement.executeQuery(
-                "SELECT * FROM TOLLFAREROAD WHERE ROAD.ID = roadID AND ROAD.ID = TOLLFAREROAD.ROADID"
-        );
-        //getRoadTollSet(roadID)
+        ResultSet roadTollSet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getRoadTollSet(?)")) {
+            callableStatement.setString(1, roadID);
+            roadTollSet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         List<Double> tollFareRoadList = new LinkedList<>();
         while (roadTollSet.next()) {
             Double tollFare = roadTollSet.getDouble("tollFare");
