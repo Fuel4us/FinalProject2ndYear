@@ -45,8 +45,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
                 Vehicle vehicle = retrieveVehicle(vehicleSet);
                 vehicles.add(vehicle);
             }
-        } catch (SQLException e) {
-            DBAccessor.logSQLException(e);
         }
 
         return vehicles;
@@ -95,8 +93,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
                 Regime regime = new Regime(regimeSet.getInt("torqueLow"), regimeSet.getInt("torqueHigh"), regimeSet.getInt("rpmLow"), regimeSet.getInt("rpmHigh"), regimeSet.getInt("SFC"));
                 regimeList.add(regime);
             }
-        } catch (SQLException e) {
-            DBAccessor.logSQLException(e);
         }
 
         return regimeList;
@@ -114,8 +110,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
                 Throttle throttle = new Throttle(throttleID, regimeList);
                 throttleList.add(throttle);
             }
-        } catch (SQLException e) {
-            DBAccessor.logSQLException(e);
         }
 
         return throttleList;
@@ -131,8 +125,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
                 Gears gear = new Gears(gearsSet.getInt("id"), gearsSet.getFloat("ratio"));
                 gearList.add(gear);
             }
-        } catch (SQLException e) {
-            DBAccessor.logSQLException(e);
         }
 
         return gearList;
@@ -146,10 +138,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             List<Gears> gearList = fillGearList(energyID);
             List<Throttle> throttleList = fillThrottleList(energyID);
             return new Energy(energySet.getInt("rpmLow"), energySet.getInt("rpmHigh"), energySet.getFloat("finalDriveRatio"), gearList, throttleList);
-        } catch (SQLException e) {
-            DBAccessor.logSQLException(e);
         }
-        return null;
     }
 
     private Measurable createMeasurable(ResultSet resultSet, Unit[] unitEnum) throws SQLException {
@@ -177,8 +166,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
                 VelocityLimit velocityLimit = new VelocityLimit(segmentType, limit);
                 velocityLimitList.add(velocityLimit);
             }
-        } catch (SQLException e) {
-            DBAccessor.logSQLException(e);
         }
 
         return velocityLimitList;
@@ -189,10 +176,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             callableStatement.setInt(1, velocityLimitID);
             ResultSet limitSet = callableStatement.executeQuery();
             return createMeasurable(limitSet, unitEnum);
-        } catch (SQLException e) {
-            DBAccessor.logSQLException(e);
         }
-        return null;
     }
 
 
@@ -201,8 +185,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getWheelSize(?)")) {
             callableStatement.setString(1, name);
             wheelSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            DBAccessor.logSQLException(e);
         }
         return createMeasurable(wheelSet, unitEnum);
     }
@@ -212,8 +194,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getFrontalAreaSet(?)")) {
             callableStatement.setString(1, name);
             areaSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            DBAccessor.logSQLException(e);
         }
 
         return createMeasurable(areaSet, unitEnum);
@@ -224,8 +204,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getLoadSet(?)")) {
             callableStatement.setString(1, name);
             loadSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            DBAccessor.logSQLException(e);
         }
 
         return createMeasurable(loadSet, unitEnum);
@@ -236,8 +214,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getMassSet(?)")) {
             callableStatement.setString(1, name);
             massSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            DBAccessor.logSQLException(e);
         }
 
         return createMeasurable(massSet, unitEnum);
