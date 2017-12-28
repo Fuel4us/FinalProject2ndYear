@@ -18,6 +18,8 @@ import lapr.project.model.RoadNetwork.RoadNetwork;
  */
 public class ChangeDataUI extends javax.swing.JFrame {
 
+
+    private static final long serialVersionUID = -4862991771890138038L;
     private ChangeDataController controller;
     private static Project project;
     
