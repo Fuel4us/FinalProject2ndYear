@@ -24,8 +24,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author TOSHIBA
+ *Test class for XMLImporterVehicles class
+ * 
+ * @author Pedro and Gonçalo
  */
 public class
 XMLImporterVehiclesTest {
