@@ -5,6 +5,7 @@
  */
 package lapr.project.utils.DataAccessLayer.Oracle;
 
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -150,10 +151,15 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     }
 
     private void addSectionsToRoadNetwork(String networkID, RoadNetwork roadNetwork) throws SQLException {
-        ResultSet sectionSet = statement.executeQuery(
-                "SELECT * FROM section WHERE SECTION.ID = NETWORKSECTION.SECTIONID AND NETWORKSECTION.NETWORKID = ROADNETWORK.ID AND ROADNETWORK.ID = networkID;"
-        );
-        //getSectionSet(networkID)
+
+        ResultSet sectionSet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getSectionSet(?)")) {
+            callableStatement.setString(1, networkID);
+            sectionSet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         while(sectionSet.next()){
             int sectionId = sectionSet.getInt("ID");
 
