@@ -119,10 +119,15 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
     private Collection<Segment> fetchSectionSegments(int sectionID) throws SQLException {
         Collection<Segment> segments = new ArrayList<>();
-        ResultSet segmentSet = statement.executeQuery(
-                "SELECT * FROM SEGMENT WHERE SECTION.ID = sectionId AND SEGMENT.SECTIONID = SECTION.ID"
-        );
-        //getSegmentsSet(sectionID)
+       
+        ResultSet segmentSet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getSegmentsSet(?)")) {
+            callableStatement.setInt(1, sectionID);
+            segmentSet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         while(segmentSet.next()) {
             int index = segmentSet.getInt("index");
             double initialHeight = segmentSet.getDouble("initialHeight");
@@ -138,10 +143,14 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     }
 
     private List<Double> fillSectionTollFareList(int sectionID) throws SQLException {
-        ResultSet sectionTollSet = statement.executeQuery(
-                "SELECT * FROM TOLLFARESECTION WHERE SECTION.ID = sectionID AND SECTION.ID = TOLLFARESECTION.SECTIONID"
-        );
-        //getSectionTollSet(sectionID)
+        ResultSet sectionTollSet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getSectionTollSet(?)")) {
+            callableStatement.setInt(1, sectionID);
+            sectionTollSet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         List<Double> tollFareSectionList = new LinkedList<>();
         while (sectionTollSet.next()) {
             Double tollFare = sectionTollSet.getDouble("tollFare");
