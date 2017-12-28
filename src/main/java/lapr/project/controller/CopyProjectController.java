@@ -6,7 +6,6 @@
 
 package lapr.project.controller;
 
-import java.sql.SQLException;
 import lapr.project.model.Project;
 import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 
@@ -31,17 +30,8 @@ public class CopyProjectController {
     /**
      * Create new project from the active project  
      */
-    public void cloneProject() throws CloneNotSupportedException {
-        project = project.cloneProject();
+    public void cloneProject(Project projectToClone) throws CloneNotSupportedException {
+        project = projectToClone.cloneProject();
         dbCom.addProject(project);
-    }
-    
-    /**
-     * Save the project and its data in the database 
-     * @throws SQLException
-     */
-    public void saveProject() throws SQLException{
-       
-    }
-    
+    }    
 }
