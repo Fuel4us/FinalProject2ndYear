@@ -38,7 +38,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
     public List<Vehicle> retrieveVehicles(String projectName) throws SQLException {
 
         ResultSet vehicleSet = null;
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getLimitSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call fetchVehiclesFromProject(?)")) {
             callableStatement.setString(1, projectName);
             vehicleSet = callableStatement.executeQuery();
         } catch (SQLException e) {
@@ -88,7 +88,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
     private List<Regime> fillRegimeList(int throttleID) throws SQLException {
         ResultSet regimeSet = null;
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getGearSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getRegimeSet(?)")) {
             callableStatement.setInt(1, throttleID);
             regimeSet = callableStatement.executeQuery();
         } catch (SQLException e) {
@@ -107,7 +107,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         List<Throttle> throttleList = new LinkedList<>();
 
         ResultSet throttleSet = null;
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getGearSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getThrottleSet(?)")) {
             callableStatement.setInt(1, energyID);
             throttleSet = callableStatement.executeQuery();
         } catch (SQLException e) {
@@ -143,7 +143,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
     private Energy createEnergy(String name) throws SQLException {
         ResultSet energySet = null;
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getLimitSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getEnergySet(?)")) {
             callableStatement.setString(1, name);
             energySet = callableStatement.executeQuery();
         } catch (SQLException e) {
