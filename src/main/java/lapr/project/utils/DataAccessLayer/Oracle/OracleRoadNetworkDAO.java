@@ -29,8 +29,6 @@ import lapr.project.utils.DataAccessLayer.Abstraction.RoadNetworkDAO;
  */
 public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
-    private PreparedStatement statement;
-
     public OracleRoadNetworkDAO() {}
 
     /**
@@ -41,10 +39,14 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      */
     @Override
     public RoadNetwork retrieveRoadNetwork(String projectName) throws SQLException {
-        ResultSet networkSet = statement.executeQuery(
-                "SELECT * FROM ROADNETWORK, PROJECT WHERE ROADNETWORK.PROJECTNAME = PROJECT.NAME AND PROJECT.NAME = projectName;"
-        );
-        //retrieveRoadNetworkFromProject(projectName)
+        ResultSet networkSet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call retrieveRoadNetworkFromProject(?)")) {
+            callableStatement.setString(1, projectName);
+            networkSet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return retrieveRoadNetwork(networkSet);
     }
 
