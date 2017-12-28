@@ -17,6 +17,6 @@ public interface VehicleDAO extends DataAccessObject {
      * @return list of {@link Vehicle}
      * @throws SQLException
      */
-    List<Vehicle> retrieveVehicle(String projectName) throws SQLException;
+    List<Vehicle> retrieveVehicles(String projectName) throws SQLException;
 
 }

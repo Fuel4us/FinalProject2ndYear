@@ -5,6 +5,7 @@
  */
 package lapr.project.utils.DataAccessLayer.Oracle;
 
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,8 +29,6 @@ import lapr.project.utils.DataAccessLayer.Abstraction.RoadNetworkDAO;
  */
 public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
-    private PreparedStatement statement;
-
     public OracleRoadNetworkDAO() {}
 
     /**
@@ -40,10 +39,14 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      */
     @Override
     public RoadNetwork retrieveRoadNetwork(String projectName) throws SQLException {
-        ResultSet networkSet = statement.executeQuery(
-                "SELECT * FROM ROADNETWORK, PROJECT WHERE ROADNETWORK.PROJECTNAME = PROJECT.NAME AND PROJECT.NAME = projectName;"
-        );
-        //retrieveRoadNetworkFromProject(projectName)
+        ResultSet networkSet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call retrieveRoadNetworkFromProject(?)")) {
+            callableStatement.setString(1, projectName);
+            networkSet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return retrieveRoadNetwork(networkSet);
     }
 
@@ -65,10 +68,14 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     }
 
     private void addNodesToRoadNetwork(String networkID, RoadNetwork roadNetwork) throws SQLException {
-        ResultSet nodeSet = statement.executeQuery(
-                "SELECT * FROM NODE WHERE NODE.ID = NETWORKNODE.NODEID AND NETWORKNODE.NETWORKID = ROADNETWORK.ID AND ROADNETWORK.ID = networkID;"
-        );
-        //getNodeSet(networkID)
+        ResultSet nodeSet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getNodeSet(?)")) {
+            callableStatement.setString(1, networkID);
+            nodeSet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         while (nodeSet.next()) {
             String nodeName;
             Node node;
@@ -91,10 +98,14 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     }
 
     private List<Double> fillRoadTollFareList(String roadID) throws SQLException {
-        ResultSet roadTollSet = statement.executeQuery(
-                "SELECT * FROM TOLLFAREROAD WHERE ROAD.ID = roadID AND ROAD.ID = TOLLFAREROAD.ROADID"
-        );
-        //getRoadTollSet(roadID)
+        ResultSet roadTollSet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getRoadTollSet(?)")) {
+            callableStatement.setString(1, roadID);
+            roadTollSet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         List<Double> tollFareRoadList = new LinkedList<>();
         while (roadTollSet.next()) {
             Double tollFare = roadTollSet.getDouble("tollFare");
@@ -104,10 +115,14 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     }
 
     private Road createRoad(int sectionID) throws SQLException {
-        ResultSet roadSet = statement.executeQuery(
-                "SELECT * FROM ROAD WHERE SECTION.ID = sectionId AND ROAD.ID = SECTION.OWNINGROAD"
-        );
-        //getRoadSet(sectionID)
+        ResultSet roadSet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getRoadSet(?)")) {
+            callableStatement.setInt(1, sectionID);
+            roadSet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         String roadID = roadSet.getString("ID");
         String roadName = roadSet.getString("name");
         String typology = roadSet.getString("typology");
@@ -118,10 +133,15 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
     private Collection<Segment> fetchSectionSegments(int sectionID) throws SQLException {
         Collection<Segment> segments = new ArrayList<>();
-        ResultSet segmentSet = statement.executeQuery(
-                "SELECT * FROM SEGMENT WHERE SECTION.ID = sectionId AND SEGMENT.SECTIONID = SECTION.ID"
-        );
-        //getSegmentsSet(sectionID)
+
+        ResultSet segmentSet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getSegmentsSet(?)")) {
+            callableStatement.setInt(1, sectionID);
+            segmentSet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         while(segmentSet.next()) {
             int index = segmentSet.getInt("index");
             double initialHeight = segmentSet.getDouble("initialHeight");
@@ -137,10 +157,14 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     }
 
     private List<Double> fillSectionTollFareList(int sectionID) throws SQLException {
-        ResultSet sectionTollSet = statement.executeQuery(
-                "SELECT * FROM TOLLFARESECTION WHERE SECTION.ID = sectionID AND SECTION.ID = TOLLFARESECTION.SECTIONID"
-        );
-        //getSectionTollSet(sectionID)
+        ResultSet sectionTollSet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getSectionTollSet(?)")) {
+            callableStatement.setInt(1, sectionID);
+            sectionTollSet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         List<Double> tollFareSectionList = new LinkedList<>();
         while (sectionTollSet.next()) {
             Double tollFare = sectionTollSet.getDouble("tollFare");
@@ -150,10 +174,15 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     }
 
     private void addSectionsToRoadNetwork(String networkID, RoadNetwork roadNetwork) throws SQLException {
-        ResultSet sectionSet = statement.executeQuery(
-                "SELECT * FROM section WHERE SECTION.ID = NETWORKSECTION.SECTIONID AND NETWORKSECTION.NETWORKID = ROADNETWORK.ID AND ROADNETWORK.ID = networkID;"
-        );
-        //getSectionSet(networkID)
+
+        ResultSet sectionSet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getSectionSet(?)")) {
+            callableStatement.setString(1, networkID);
+            sectionSet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         while(sectionSet.next()){
             int sectionId = sectionSet.getInt("ID");
 
