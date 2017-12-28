@@ -6,10 +6,13 @@
 package lapr.project.ui;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import lapr.project.controller.CopyProjectController;
+import lapr.project.model.Project;
+import lapr.project.model.RoadNetwork.RoadNetwork;
 import static lapr.project.ui.Main.dbCom;
 
 /**
@@ -19,11 +22,12 @@ import static lapr.project.ui.Main.dbCom;
 public class PopUp1 extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 8060730009198569465L;
-
+    private Project project;
     /**
      * Creates new form PopUp1
      */
-    public PopUp1() {
+    public PopUp1(Project project) {
+        this.project=project;
         initComponents();
     }
 
@@ -130,8 +134,9 @@ public class PopUp1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonChangeDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonChangeDataActionPerformed
-//        EditProjectUI epui = new EditProjectUI(register);
-//        setVisible(false);
+        ChangeDataUI epui = new ChangeDataUI(project);
+        this.setVisible(false);
+        epui.setVisible(true);
     }//GEN-LAST:event_jButtonChangeDataActionPerformed
 
     private void jButtonSetActiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetActiveActionPerformed
@@ -173,7 +178,7 @@ public class PopUp1 extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PopUp1().setVisible(true);
+                new PopUp1(new Project("test", "description", new RoadNetwork(), new ArrayList<>())).setVisible(true);
             }
         });
     }
