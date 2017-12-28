@@ -156,19 +156,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
     }
 
-    private Measurable createVelocityLimit(String name, Unit[] unitEnum) throws SQLException {
-        //ToDo esta qualquer coisa mal
-        ResultSet limitSet = null;
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getLimitSet(?)")) {
-            callableStatement.setString(1, name);
-            limitSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return createMeasurable(limitSet, unitEnum);
-    }
-
     private Measurable createMeasurable(ResultSet resultSet, Unit[] unitEnum) throws SQLException {
         Unit unit = null;
         for (Unit unitType : unitEnum) {
@@ -193,13 +180,27 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         }
 
         while (velocitySet.next()) {
+            int velocityLimitID = velocitySet.getInt("id");
             String segmentType = velocitySet.getString("segmentType");
-            Measurable limit = createVelocityLimit(name, unitEnum);
+            Measurable limit = createVelocityLimit(velocityLimitID, unitEnum);
             VelocityLimit velocityLimit = new VelocityLimit(segmentType, limit);
             velocityLimitList.add(velocityLimit);
         }
         return velocityLimitList;
     }
+
+    private Measurable createVelocityLimit(int velocityLimitID, Unit[] unitEnum) throws SQLException {
+        ResultSet limitSet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getLimitSet(?)")) {
+            callableStatement.setInt(1, velocityLimitID);
+            limitSet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return createMeasurable(limitSet, unitEnum);
+    }
+
 
     private Measurable createWheelSize(String name, Unit[] unitEnum) throws SQLException {
         ResultSet wheelSet = null;
