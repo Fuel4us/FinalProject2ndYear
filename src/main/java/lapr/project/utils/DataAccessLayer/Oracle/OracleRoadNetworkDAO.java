@@ -20,6 +20,7 @@ import lapr.project.model.RoadNetwork.Node;
 import lapr.project.model.RoadNetwork.Road;
 import lapr.project.model.RoadNetwork.Section;
 import lapr.project.model.RoadNetwork.Segment;
+import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.Abstraction.RoadNetworkDAO;
 
 
@@ -44,7 +45,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             callableStatement.setString(1, projectName);
             networkSet = callableStatement.executeQuery();
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBAccessor.logSQLException(e);
         }
 
         return retrieveRoadNetwork(networkSet);
@@ -80,7 +81,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
                 roadNetwork.addNode(node);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBAccessor.logSQLException(e);
         }
 
     }
@@ -108,7 +109,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
                 tollFareRoadList.add(tollFare);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBAccessor.logSQLException(e);
         }
 
         return tollFareRoadList;
@@ -125,7 +126,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             List<Double> tollFareRoadList = fillRoadTollFareList(roadID);
             return new Road(roadID, roadName, typology, tollFareRoadList);
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBAccessor.logSQLException(e);
         }
         return null;
     }
@@ -148,7 +149,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
                 segments.add(new Segment(index, initialHeight, finalHeight, length, windAngle, windSpeed, maxVelocity, minVelocity));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBAccessor.logSQLException(e);
         }
 
         return segments;
@@ -164,7 +165,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
                 tollFareSectionList.add(tollFare);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBAccessor.logSQLException(e);
         }
 
         return tollFareSectionList;
@@ -193,7 +194,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
                 roadNetwork.addSection(beginningNode, endingNode, section);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBAccessor.logSQLException(e);
         }
 
     }
