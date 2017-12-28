@@ -113,10 +113,15 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
     private List<Gears> fillGearList(int energyID) throws SQLException {
         List<Gears> gearList = new LinkedList<>(); //creation of gears needed by energy
-        ResultSet gearsSet = statement.executeQuery(
-                "SELECT * FROM GEARS WHERE GEARS.ENERGY_ID = ENERGY.ID AND ENERGY.ID = energyID;"
-        );
-        //getGearSet(energyID)
+
+        ResultSet gearsSet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getGearSet(?)")) {
+            callableStatement.setInt(1, energyID);
+            gearsSet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         while (gearsSet.next()) {
             Gears gear = new Gears(gearsSet.getInt("id"), gearsSet.getFloat("ratio"));
             gearList.add(gear);
@@ -125,10 +130,14 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
     }
 
     private Energy createEnergy(String name) throws SQLException {
-        ResultSet energySet = statement.executeQuery(
-                "SELECT * FROM ENERGY WHERE ENERGY.ID = VEHICLE.ENERGY_ID AND VEHICLE.NAME = name;"
-        );
-        //getEnergySet(name)
+        ResultSet energySet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getLimitSet(?)")) {
+            callableStatement.setString(1, name);
+            energySet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         int energyID = energySet.getInt("id");
         List<Gears> gearList = fillGearList(energyID);
         List<Throttle> throttleList = fillThrottleList(energyID);
@@ -163,10 +172,15 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
     private List<VelocityLimit> fillVelocityLimitList(String name, Unit[] unitEnum) throws SQLException {
         List<VelocityLimit> velocityLimitList = new LinkedList<>();
-        ResultSet velocitySet = statement.executeQuery(
-                "SELECT * FROM VELOCITYLIMIT WHERE VELOCITYLIMIT.ID = VEHICLE.VELOCITYLIMITSLISTSID AND VEHICLE.NAME = name;"
-        );
-        //getVelocitySet(name)
+
+        ResultSet velocitySet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getVelocitySet(?)")) {
+            callableStatement.setString(1, name);
+            velocitySet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         while (velocitySet.next()) {
             String segmentType = velocitySet.getString("segmentType");
             Measurable limit = createVelocityLimit(name, unitEnum);
