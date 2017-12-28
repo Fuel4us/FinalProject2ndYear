@@ -46,7 +46,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
                 vehicles.add(vehicle);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBAccessor.logSQLException(e);
         }
 
         return vehicles;
@@ -96,7 +96,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
                 regimeList.add(regime);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBAccessor.logSQLException(e);
         }
 
         return regimeList;
@@ -115,7 +115,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
                 throttleList.add(throttle);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBAccessor.logSQLException(e);
         }
 
         return throttleList;
@@ -132,7 +132,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
                 gearList.add(gear);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBAccessor.logSQLException(e);
         }
 
         return gearList;
@@ -147,7 +147,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             List<Throttle> throttleList = fillThrottleList(energyID);
             return new Energy(energySet.getInt("rpmLow"), energySet.getInt("rpmHigh"), energySet.getFloat("finalDriveRatio"), gearList, throttleList);
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBAccessor.logSQLException(e);
         }
         return null;
     }
@@ -178,7 +178,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
                 velocityLimitList.add(velocityLimit);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBAccessor.logSQLException(e);
         }
 
         return velocityLimitList;
@@ -190,7 +190,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             ResultSet limitSet = callableStatement.executeQuery();
             return createMeasurable(limitSet, unitEnum);
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBAccessor.logSQLException(e);
         }
         return null;
     }
@@ -202,7 +202,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             callableStatement.setString(1, name);
             wheelSet = callableStatement.executeQuery();
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBAccessor.logSQLException(e);
         }
         return createMeasurable(wheelSet, unitEnum);
     }
@@ -213,7 +213,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             callableStatement.setString(1, name);
             areaSet = callableStatement.executeQuery();
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBAccessor.logSQLException(e);
         }
 
         return createMeasurable(areaSet, unitEnum);
@@ -225,7 +225,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             callableStatement.setString(1, name);
             loadSet = callableStatement.executeQuery();
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBAccessor.logSQLException(e);
         }
 
         return createMeasurable(loadSet, unitEnum);
@@ -237,7 +237,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             callableStatement.setString(1, name);
             massSet = callableStatement.executeQuery();
         } catch (SQLException e) {
-            e.printStackTrace();
+            DBAccessor.logSQLException(e);
         }
 
         return createMeasurable(massSet, unitEnum);
