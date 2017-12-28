@@ -16,14 +16,6 @@ public interface RoadNetworkDAO extends DataAccessObject {
      * @return instance of {@link RoadNetwork}
      * @throws SQLException
      */
-    RoadNetwork createRoadNetwork(String projectName) throws SQLException;
-
-    /**
-     * Creates an instance of {@link RoadNetwork} from a given ResultSet of project entities
-     * @param resultSet ResultSet object
-     * @return instance of {@link RoadNetwork}
-     * @throws SQLException
-     */
-    RoadNetwork createRoadNetwork(ResultSet resultSet) throws SQLException;
+    RoadNetwork retrieveRoadNetwork(String projectName) throws SQLException;
 
 }

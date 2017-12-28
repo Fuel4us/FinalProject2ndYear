@@ -4,7 +4,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * ToDo
+ * An Oracle Data Access Object
+ * This class should be extended by
  */
 public class OracleDAO {
 
@@ -24,6 +25,14 @@ public class OracleDAO {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Verifies if an Oracle Data Access Object has an active connection
+     * @return true if connection is not null
+     */
+    boolean isConnected() {
+        return this.oracleConnection != null;
     }
 
 }

@@ -8,18 +8,16 @@ package lapr.project.ui;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
-import lapr.project.controller.CreateProjectController;
 import lapr.project.controller.SelectProjectController;
 import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork.*;
 import lapr.project.model.Vehicle.*;
-import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 
 /**
  *
- * @author anily
+ * @author anily, antelo
  */
 public class SelectProjectUI extends javax.swing.JFrame {
 
@@ -46,14 +44,20 @@ public class SelectProjectUI extends javax.swing.JFrame {
     /**
      * Creates new form SelectProjectUI
      */
-    public SelectProjectUI() {
-        super("Select Project");
-        spc = new SelectProjectController(Main.dbCom);
+    public SelectProjectUI(SelectProjectController controller) {
+//        super("Select Project");
+//        spc = new SelectProjectController(Main.dbCom);
+
+        this.spc = controller;
         initComponents();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         setVisible(true);
         setLocationRelativeTo(null);
+        
+        for (Project p : controller.fetchProjectsList()) {
+            jComboBox1.addItem(p);
+        }
     }
 
     /**
@@ -372,9 +376,9 @@ public class SelectProjectUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(SelectProjectUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
-       java.awt.EventQueue.invokeLater(() -> new SelectProjectUI().setVisible(true));
+       //java.awt.EventQueue.invokeLater(() -> new SelectProjectUI(spc).setVisible(true));
     }
 
 

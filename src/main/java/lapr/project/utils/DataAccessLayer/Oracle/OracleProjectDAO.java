@@ -4,61 +4,65 @@ package lapr.project.utils.DataAccessLayer.Oracle;
 import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.Vehicle.Vehicle;
-import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.Abstraction.ProjectDAO;
-import oracle.jdbc.pool.OracleDataSource;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * ToDo
+ * Handles Data Access via OracleDB
  */
 public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
 
-    private PreparedStatement statement;
-
-    public OracleProjectDAO() {}
-
     /**
-     * Stores instances of Project from database in a List
-     *
-     * @return List<Project> a list of instances {@link Project}
-     * @throws SQLException
+     * Retrieves all Project entities from the database and creates a list of instances
+     * @return a {@link List} of instances of {@link Project}
      */
     @Override
     public List<Project> fetchProjects() throws SQLException {
 
-        List<Project> projects = new LinkedList<>();
-        ResultSet resultSet = statement.executeQuery(
-                "SELECT * FROM PROJECT;"
-        );
+        if (this.isConnected()) {
 
-        String projectName;
-        String projectDescription;
-        List<Vehicle> vehicles;
-        RoadNetwork roadNetwork;
-//        OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO();
-        OracleRoadNetworkDAO oracleRoadNetworkDAO = new OracleRoadNetworkDAO();
-        Project project;
-        while (resultSet.next()) {
-            projectName = resultSet.getString("name");
-            projectDescription = resultSet.getString("description");
-//            vehicles = oracleVehicleDAO.createVehicle(projectName);
-            roadNetwork = oracleRoadNetworkDAO.createRoadNetwork(projectName);
+            List<Project> projects = new LinkedList<>();
 
-//            project = new Project(projectName, projectDescription, roadNetwork, vehicles);
-//            projects.add(project);
+            try (PreparedStatement preparedStatement = super.oracleConnection.prepareStatement("SELECT * FROM PROJECT")) {
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                Project project;
+                String projectName;
+                String projectDescription;
+
+                List<Vehicle> vehicles;
+                RoadNetwork roadNetwork;
+
+                OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO();
+                OracleRoadNetworkDAO oracleRoadNetworkDAO = new OracleRoadNetworkDAO();
+
+                while (resultSet.next()) {
+                    projectName = resultSet.getString("name");
+                    projectDescription = resultSet.getString("description");
+                    vehicles = oracleVehicleDAO.retrieveVehicles(projectName);
+                    roadNetwork = oracleRoadNetworkDAO.retrieveRoadNetwork(projectName);
+
+                    project = new Project(projectName, projectDescription, roadNetwork, vehicles);
+                    projects.add(project);
+                }
+
+            }
+
+            return projects;
         }
 
-        return projects;
+        return new ArrayList<>();
     }
 
     /**
      * Stores a project into the data layer
-     *
      * @param project The project to be stored
      */
     @Override

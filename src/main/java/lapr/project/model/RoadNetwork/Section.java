@@ -7,36 +7,31 @@ import lapr.project.utils.Unit;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
-import javax.xml.bind.annotation.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
-
-@XmlRootElement(name = "road_section")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Section extends Edge<String, Direction> {
 
-    private static String HTML_STRUCTURE_SEGMENT = "html_structure_segment";
-    private static String CSV_STRUCTURE_SEGMENT = "csv_structure_segment";
-
-    @XmlAttribute(name = "begin")
     private Node beginningNode;
-
-    @XmlAttribute(name = "end")
     private Node endingNode;
-
-    @XmlElement
     private Direction direction;
-
-    @XmlElementWrapper(name = "segment_list")
-    @XmlElement(name = "segment")
     private Collection<Segment> segments;
-
     private Road owningRoad;
-
     private List<Double> tollFare;
+
+    /*
+    Auto generated ID
+     */
+    private final int id;
+    private static int sectionCounter = 0;
+
+    /*
+    File Exporting templates
+     */
+    private static final String HTML_STRUCTURE_SEGMENT = "html_structure_segment";
+    private static final String CSV_STRUCTURE_SEGMENT = "csv_structure_segment";
 
     /**
      * Creates a Section with a beginning and ending node, direction and collection of segments
@@ -54,6 +49,7 @@ public class Section extends Edge<String, Direction> {
         this.direction = direction;
         this.owningRoad = road;
         this.tollFare = tollFare;
+        this.id = ++sectionCounter;
     }
 
     /**
@@ -201,4 +197,12 @@ public class Section extends Edge<String, Direction> {
     public Collection<Segment> getSegments() {
         return segments;
     }
+
+    /**
+     * @return this sections auto generated id
+     */
+    public int getID() {
+        return id;
+    }
+
 }
