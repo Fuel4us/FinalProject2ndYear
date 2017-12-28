@@ -142,15 +142,15 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
     }
 
     private Measurable createMeasurable(ResultSet resultSet, Unit[] unitEnum) throws SQLException {
-        Unit unit = null;
         for (Unit unitType : unitEnum) {
             String unitStr = resultSet.getString("unit");
             if (unitStr.equals(unitType.toString())) {
-                unit = unitType;
+                Unit unit = unitType;
+                double quantity = resultSet.getDouble("class");
+                return new Measurable(quantity, unit);
             }
         }
-        double quantity = resultSet.getDouble("class");
-        return new Measurable(quantity, unit);
+        return null;
     }
 
     private List<VelocityLimit> fillVelocityLimitList(String name, Unit[] unitEnum) throws SQLException {

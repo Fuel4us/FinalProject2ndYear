@@ -40,13 +40,11 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      */
     @Override
     public RoadNetwork retrieveRoadNetwork(String projectName) throws SQLException {
-        ResultSet networkSet = null;
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call retrieveRoadNetworkFromProject(?)")) {
             callableStatement.setString(1, projectName);
-            networkSet = callableStatement.executeQuery();
+            ResultSet networkSet = callableStatement.executeQuery();
+            return retrieveRoadNetwork(networkSet);
         }
-
-        return retrieveRoadNetwork(networkSet);
     }
 
     /**
@@ -179,7 +177,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
                 Section section = new Section(beginningNode, endingNode, roadDirection, segments, road, tollFareSectionList);
                 roadNetwork.addSection(beginningNode, endingNode, section);
             }
-        } 
+        }
 
     }
 
