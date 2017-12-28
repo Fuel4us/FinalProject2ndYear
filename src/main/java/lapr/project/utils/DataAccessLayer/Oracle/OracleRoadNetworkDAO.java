@@ -66,10 +66,14 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     }
 
     private void addNodesToRoadNetwork(String networkID, RoadNetwork roadNetwork) throws SQLException {
-        ResultSet nodeSet = statement.executeQuery(
-                "SELECT * FROM NODE WHERE NODE.ID = NETWORKNODE.NODEID AND NETWORKNODE.NETWORKID = ROADNETWORK.ID AND ROADNETWORK.ID = networkID;"
-        );
-        //getNodeSet(networkID)
+        ResultSet nodeSet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getNodeSet(?)")) {
+            callableStatement.setString(1, networkID);
+            nodeSet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         while (nodeSet.next()) {
             String nodeName;
             Node node;
