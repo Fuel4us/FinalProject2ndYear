@@ -11,11 +11,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * ToDo
+ * Retrieves all Project entities from the database and creates a list of instances
  */
 public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
-
-    private PreparedStatement statement;
 
     public OracleProjectDAO() {}
 
@@ -29,10 +27,13 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
     public List<Project> fetchProjects() throws SQLException {
 
         List<Project> projects = new LinkedList<>();
-        ResultSet resultSet = statement.executeQuery(
-                "SELECT * FROM PROJECT;"
-        );
-        //fetchAllProjects
+
+        ResultSet resultSet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call fetchAllProjects")) {
+            resultSet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         String projectName;
         String projectDescription;
@@ -44,7 +45,7 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
         while (resultSet.next()) {
             projectName = resultSet.getString("name");
             projectDescription = resultSet.getString("description");
-            vehicles = oracleVehicleDAO.retrieveVehicle(projectName);
+            vehicles = oracleVehicleDAO.retrieveVehicles(projectName);
             roadNetwork = oracleRoadNetworkDAO.retrieveRoadNetwork(projectName);
 
             project = new Project(projectName, projectDescription, roadNetwork, vehicles);
