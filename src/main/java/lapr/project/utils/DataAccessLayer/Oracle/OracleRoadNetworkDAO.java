@@ -105,10 +105,14 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     }
 
     private Road createRoad(int sectionID) throws SQLException {
-        ResultSet roadSet = statement.executeQuery(
-                "SELECT * FROM ROAD WHERE SECTION.ID = sectionId AND ROAD.ID = SECTION.OWNINGROAD"
-        );
-        //getRoadSet(sectionID)
+        ResultSet roadSet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getRoadSet(?)")) {
+            callableStatement.setInt(1, sectionID);
+            roadSet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         String roadID = roadSet.getString("ID");
         String roadName = roadSet.getString("name");
         String typology = roadSet.getString("typology");
@@ -119,7 +123,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
     private Collection<Segment> fetchSectionSegments(int sectionID) throws SQLException {
         Collection<Segment> segments = new ArrayList<>();
-       
+
         ResultSet segmentSet = null;
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getSegmentsSet(?)")) {
             callableStatement.setInt(1, sectionID);
