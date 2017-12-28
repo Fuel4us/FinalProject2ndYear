@@ -4,6 +4,7 @@ import lapr.project.model.Analysis;
 import lapr.project.model.Project;
 import lapr.project.utils.DataAccessLayer.Abstraction.AnalysisDAO;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
+import lapr.project.utils.DataAccessLayer.Abstraction.ProjectDAO;
 import lapr.project.utils.DataAccessLayer.Oracle.OracleAnalysisDAO;
 import lapr.project.utils.DataAccessLayer.Oracle.OracleDBAccessor;
 import oracle.jdbc.pool.OracleDataSource;
@@ -11,8 +12,8 @@ import oracle.jdbc.pool.OracleDataSource;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-import lapr.project.utils.DataAccessLayer.Abstraction.ProjectDAO;
 
 /**
  * <p>
@@ -23,12 +24,12 @@ public class DataBaseCommunicator {
 
     private DBAccessor dbAccessor;
     private Connection connection;
-    private ProjectDAO projectStorage;
 
     /*/
     Data Access Objects
      */
     private AnalysisDAO analysisStorage;
+    private ProjectDAO projectStorage;
 
     /**
      * <p>
@@ -42,7 +43,6 @@ public class DataBaseCommunicator {
      * DataSource instance, which means multiple types of databases may be
      * supported in the future without alterations in this class.
      * </p>
-     *
      * @param dataSource Indicates the database to which to connect
      */
     public DataBaseCommunicator(DataSource dataSource) {
@@ -53,8 +53,23 @@ public class DataBaseCommunicator {
     }
 
     /**
+     * Attempts rolling back on transaction failure
+     * @param connection the connection on which the exception was generated
+     * @param e the exception that caused the transaction failure
+     */
+    private void attemptFailSafeRecovery(Connection connection, SQLException e) {
+        if (connection != null) {
+            try {
+                connection.rollback();
+                DBAccessor.logSQLException(e);
+            } catch (SQLException ex) {
+                DBAccessor.logSQLException(ex);
+            }
+        }
+    }
+
+    /**
      * Stores network analysis in a database
-     *
      * @param analysis The network analysis to be stored
      */
     public boolean storeNetworkAnalysis(Analysis analysis) {
@@ -63,6 +78,7 @@ public class DataBaseCommunicator {
             connection = dbAccessor.openConnexion();
             connection.setAutoCommit(false);
 
+            //Allow Data Access Object behaviour through newly opened connexion
             if (analysisStorage.connectTo(connection)) {
                 analysisStorage.storeAnalysis(analysis);
                 connection.commit();
@@ -71,26 +87,59 @@ public class DataBaseCommunicator {
             }
 
         } catch (SQLException e) {
-            if (connection != null) {
-                try {
-                    connection.rollback();
-                    DBAccessor.logSQLException(e);
-                } catch (SQLException ex) {
-                    DBAccessor.logSQLException(ex);
-                }
-            }
+            attemptFailSafeRecovery(connection, e);
         }
         return false;
     }
 
+    /**
+     * Fetches the list of projects stored in the database
+     * @return a {@link List} containing all stored instances of {@link Project}
+     */
     public List<Project> fetchProjectList() {
-        //ToDo return all projects through ProjectDAO
-        throw new UnsupportedOperationException();
+
+        List<Project> projects = new ArrayList<>();
+        try {
+            //Start Transaction
+            connection = dbAccessor.openConnexion();
+            connection.setAutoCommit(false);
+
+            //Allow Data Access Object behaviour through newly opened connexion
+            if (projectStorage.connectTo(connection)) {
+                projects = projectStorage.fetchProjects();
+                connection.commit();
+                connection.close();
+            }
+
+        } catch (SQLException e) {
+            attemptFailSafeRecovery(connection, e);
+        }
+        return projects;
     }
 
-    public boolean storeProject(Project p) {
-        //ToDo Store project through ProjectDAO
-        throw new UnsupportedOperationException();
+    /**
+     * Adds a given project passed by parameter to the database
+     * @param project The project to store in the database
+     */
+    public boolean addProject(Project project) {
+
+        try {
+            //Start Transaction
+            Connection connection = dbAccessor.openConnexion();
+            connection.setAutoCommit(false);
+
+            //Allow Data Access Object behaviour through newly opened connexion
+            if (projectStorage.connectTo(connection)) {
+                projectStorage.storeProject(project);
+                connection.commit();
+                connection.close();
+                return true;
+            }
+
+        } catch (SQLException e) {
+            attemptFailSafeRecovery(connection, e);
+        }
+        return false;
     }
 
     /**
@@ -113,36 +162,5 @@ public class DataBaseCommunicator {
      */
     void setAnalysisStorage(AnalysisDAO analysisStorage) {
         this.analysisStorage = analysisStorage;
-    }
-
-    /**
-     * Adds the project passed by parameter to the list
-     *
-     * @param project
-     */
-    public boolean addProject(Project project) {
-
-        try {
-            //Start Transaction
-            Connection connection = dbAccessor.openConnexion();
-            connection.setAutoCommit(false);
-
-            if (projectStorage.connectTo(connection)) {
-                projectStorage.storeProject(project);
-                connection.commit();
-                return true;
-            }
-
-        } catch (SQLException e) {
-            if (dbAccessor.hasActiveConnection()) {
-                try {
-                    connection.rollback();
-                    DBAccessor.logSQLException(e);
-                } catch (SQLException ex) {
-                    DBAccessor.logSQLException(ex);
-                }
-            }
-        }
-        return false;
     }
 }
