@@ -100,10 +100,34 @@ public class Project {
     public List<Vehicle> getVehicles() {
         return vehicles;
     }
-
+    /**
+    * Setter for the list of Vehicles
+    * 
+    * @param vehicles 
+    */
     public void setVehicles(List<Vehicle> vehicles) {
         this.vehicles = vehicles;
     }
+
+    /**
+     * Setter for the project name
+     * 
+     * @param name 
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Setter for the project description
+     * 
+     * @param description 
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    
     
     /**
      * Clone project
