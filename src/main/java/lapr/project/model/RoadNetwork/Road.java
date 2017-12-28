@@ -111,4 +111,11 @@ public class Road {
         result = 31 * result + (tollFare != null ? tollFare.hashCode() : 0);
         return result;
     }
+
+    /**
+     * @return the road's id
+     */
+    public String getId() {
+        return id;
+    }
 }
