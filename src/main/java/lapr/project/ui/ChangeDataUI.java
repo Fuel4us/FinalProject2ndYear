@@ -28,8 +28,8 @@ public class ChangeDataUI extends javax.swing.JFrame {
      * 
      * @param project instance of project
      */
-    public ChangeDataUI(Project project) {
-        this.project=project;
+    public ChangeDataUI(Project prjct) {
+        project=prjct;
         this.controller=new ChangeDataController(project);
         initComponents();
     }
@@ -195,7 +195,6 @@ public class ChangeDataUI extends javax.swing.JFrame {
         controller.setName(jTextFieldName.getText());
         controller.setDescription(jTextFieldDescription.getText());
         JOptionPane.showMessageDialog(null,"Alterações efetuadas com sucesso");
-        System.out.println(project.getName()+"|"+project.getDescription());
         dispose();
     }//GEN-LAST:event_jButtonCreateActionPerformed
 
