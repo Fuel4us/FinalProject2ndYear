@@ -22,7 +22,6 @@ import lapr.project.utils.Unit;
  */
 public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
-    private PreparedStatement statement;
 
     public OracleVehicleDAO() {
     }
