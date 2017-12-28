@@ -174,7 +174,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
     }
 
     private Measurable createWheelSize(String name, Unit[] unitEnum) throws SQLException {
-
         ResultSet wheelSet = null;
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getWheelSize(?)")) {
             callableStatement.setString(1, name);
@@ -198,10 +197,13 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
     }
 
     private Measurable createLoad(String name, Unit[] unitEnum) throws SQLException {
-        ResultSet loadSet = statement.executeQuery(
-                "SELECT * FROM MEASURABLE WHERE MEASURABLE.ID = VEHICLE.LOAD_ID AND VEHICLE.NAME = name;"
-        );
-        //getLoadSet(name)
+        ResultSet loadSet = null;
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getLoadaSet(?)")) {
+            callableStatement.setString(1, name);
+            loadSet = callableStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         return createMeasurable(loadSet, unitEnum);
     }
