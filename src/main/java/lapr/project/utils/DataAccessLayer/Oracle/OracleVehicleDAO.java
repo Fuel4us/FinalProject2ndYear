@@ -5,17 +5,16 @@
  */
 package lapr.project.utils.DataAccessLayer.Oracle;
 
+import lapr.project.model.Vehicle.*;
+import lapr.project.utils.DataAccessLayer.Abstraction.VehicleDAO;
+import lapr.project.utils.Measurable;
+import lapr.project.utils.Unit;
+
 import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
-
-import lapr.project.model.Vehicle.*;
-import lapr.project.utils.DataAccessLayer.Abstraction.*;
-import lapr.project.utils.Measurable;
-import lapr.project.utils.Unit;
 
 /**
  * Retrieves instances of Vehicle for a given project
@@ -23,8 +22,6 @@ import lapr.project.utils.Unit;
 public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
 
-    public OracleVehicleDAO() {
-    }
 
     /**
      * Creates a list of instances of {@link Vehicle} from a given project name

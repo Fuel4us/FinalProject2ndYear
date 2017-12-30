@@ -5,23 +5,16 @@
  */
 package lapr.project.utils.DataAccessLayer.Oracle;
 
+import lapr.project.model.RoadNetwork.*;
+import lapr.project.utils.DataAccessLayer.Abstraction.RoadNetworkDAO;
+
 import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-
-import lapr.project.model.RoadNetwork.Direction;
-import lapr.project.model.RoadNetwork.RoadNetwork;
-import lapr.project.model.RoadNetwork.Node;
-import lapr.project.model.RoadNetwork.Road;
-import lapr.project.model.RoadNetwork.Section;
-import lapr.project.model.RoadNetwork.Segment;
-import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
-import lapr.project.utils.DataAccessLayer.Abstraction.RoadNetworkDAO;
 
 
 /**
@@ -30,7 +23,6 @@ import lapr.project.utils.DataAccessLayer.Abstraction.RoadNetworkDAO;
  */
 public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
-    public OracleRoadNetworkDAO() {}
 
     /**
      * Creates an instance of {@link RoadNetwork} from a given project name
