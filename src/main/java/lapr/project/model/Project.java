@@ -34,6 +34,18 @@ public class Project {
         this.description = description;
         this.roadNetwork = roadNetwork;
         this.vehicles = new ArrayList<Vehicle>();
+        
+        if (id > countEquals) {
+            countEquals = id++;
+        }
+    }
+    
+    public Project(String name, String description, RoadNetwork roadNetwork, List<Vehicle> vehicles) {
+        this.id = countEquals++;
+        this.name = name;
+        this.description = description;
+        this.roadNetwork = roadNetwork;
+        this.vehicles = new ArrayList<Vehicle>();
     }
 
     /**
@@ -145,7 +157,7 @@ public class Project {
      * @throws CloneNotSupportedException
      */
     public Project cloneProject() throws CloneNotSupportedException {
-       return new Project(getName() + " (Copy)", getDescription() + " (Copy)", getRoadNetwork(), getVehicles());
+       return new Project(getId(), getName() + " (Copy)", getDescription() + " (Copy)", getRoadNetwork(), getVehicles());
     }
    
 }
