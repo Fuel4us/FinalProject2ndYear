@@ -14,6 +14,8 @@ import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
  */
 public class Project {
 
+    private int id;
+    private int countEquals;
     private String name;
     private String description;
     private RoadNetwork roadNetwork;
@@ -26,7 +28,8 @@ public class Project {
      * @param roadNetwork The graph view of the network of roads associated with this project
      * @param vehicles the list of vehicles in the project
      */
-    public Project(String name, String description, RoadNetwork roadNetwork, List<Vehicle> vehicles) {
+    public Project(int id,String name, String description, RoadNetwork roadNetwork, List<Vehicle> vehicles) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.roadNetwork = roadNetwork;
@@ -37,6 +40,7 @@ public class Project {
      * Build a Project instance with default data
      */
     public Project() {
+        id = 0;
         name = "";
         description = "";
         roadNetwork = new RoadNetwork();
@@ -126,8 +130,14 @@ public class Project {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     
     /**
      * Clone project
