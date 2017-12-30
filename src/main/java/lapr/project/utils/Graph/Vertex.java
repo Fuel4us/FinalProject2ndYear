@@ -1,9 +1,6 @@
 package lapr.project.utils.Graph;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @param <V>
@@ -93,44 +90,16 @@ public class Vertex<V, E> {
     }
 
     @Override
-    public boolean equals(Object otherObj) {
-
-        if (this == otherObj) {
-            return true;
-        }
-
-        if (otherObj == null || this.getClass() != otherObj.getClass())
-            return false;
-
-        @SuppressWarnings("unchecked")
-        Vertex<V, E> otherVertex = (Vertex<V, E>) otherObj;
-
-        if (this.element != null && otherVertex.element != null &&
-                !this.element.equals(otherVertex.element))
-            return false;
-
-        //adjacency vertices should be equal
-        if (this.numAdjVerts() != otherVertex.numAdjVerts())
-            return false;
-
-        //and edges also
-        Iterator<Edge<V, E>> it1 = this.getAllOutEdges().iterator();
-        while (it1.hasNext()) {
-            Iterator<Edge<V, E>> it2 = otherVertex.getAllOutEdges().iterator();
-            boolean exists = false;
-            while (it2.hasNext()) {
-                if (it1.next().equals(it2.next()))
-                    exists = true;
-            }
-            if (!exists)
-                return false;
-        }
-        return true;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vertex<?, ?> vertex = (Vertex<?, ?>) o;
+        return Objects.equals(element, vertex.element);
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hash(element);
     }
 
     @Override
