@@ -18,7 +18,6 @@ import java.util.List;
  */
 public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
 
-    public OracleProjectDAO() {}
 
     /**
      * Retrieves all Project entities from the database and creates a list of instances
