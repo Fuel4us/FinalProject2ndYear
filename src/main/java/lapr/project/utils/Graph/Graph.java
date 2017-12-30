@@ -198,29 +198,27 @@ public class Graph<V, E> implements Graphable<V, E> {
         if (getEdge(vOrig, vDest) != null)
             return false;
 
-        if (!validVertex(vOrig))
-            insertVertex(vOrig);
+        if (validVertex(vOrig) && validVertex(vDest)) {
+            Vertex<V, E> vorig = vertices.get(vOrig);
+            Vertex<V, E> vdest = vertices.get(vDest);
 
-        if (!validVertex(vDest))
-            insertVertex(vDest);
+            Edge<V, E> newEdge = new Edge<>(eInf, eWeight, vorig, vdest);
+            vorig.addAdjVert(vDest, newEdge);
+            numEdge++;
 
-        Vertex<V, E> vorig = vertices.get(vOrig);
-        Vertex<V, E> vdest = vertices.get(vDest);
+            //if graph is not direct insert other edge in the opposite direction
+            if (!isDirected)
+                // if vDest different vOrig
+                if (getEdge(vDest, vOrig) == null) {
+                    Edge<V, E> otherEdge = new Edge<>(eInf, eWeight, vdest, vorig);
+                    vdest.addAdjVert(vOrig, otherEdge);
+                    numEdge++;
+                }
 
-        Edge<V, E> newEdge = new Edge<>(eInf, eWeight, vorig, vdest);
-        vorig.addAdjVert(vDest, newEdge);
-        numEdge++;
+            return true;
+        }
 
-        //if graph is not direct insert other edge in the opposite direction
-        if (!isDirected)
-            // if vDest different vOrig
-            if (getEdge(vDest, vOrig) == null) {
-                Edge<V, E> otherEdge = new Edge<>(eInf, eWeight, vdest, vorig);
-                vdest.addAdjVert(vOrig, otherEdge);
-                numEdge++;
-            }
-
-        return true;
+        return false;
     }
 
     public boolean removeVertex(V vert) {
@@ -300,42 +298,15 @@ public class Graph<V, E> implements Graphable<V, E> {
         return newObject;
     }
 
-    /* equals implementation
-     * @param the other graph to test for equality
-     * @return true if both objects represent the same graph
-     */
-    public boolean equals(Object otherObj) {
-
-        if (this == otherObj)
-            return true;
-
-        if (otherObj == null || this.getClass() != otherObj.getClass())
-            return false;
-
-        if (otherObj instanceof Graph) {
-            @SuppressWarnings("unchecked")
-            Graph<V,E> otherGraph = (Graph<V,E>) otherObj;
-
-            if (numVert != otherGraph.numVertices() || numEdge != otherGraph.numEdges()) {
-                return false;
-            }
-
-            //graph must have same vertices
-            boolean eqvertex;
-            for (V v1 : this.vertices()) {
-                eqvertex = false;
-                for (V v2 : otherGraph.vertices())
-                    if (v1.equals(v2)) {
-                        eqvertex = true;
-                    }
-
-                if (!eqvertex) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Graph<?, ?> graph = (Graph<?, ?>) o;
+        return numVert == graph.numVert &&
+                numEdge == graph.numEdge &&
+                isDirected == graph.isDirected &&
+                Objects.equals(vertices, graph.vertices);
     }
 
     @Override
