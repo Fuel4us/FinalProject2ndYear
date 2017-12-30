@@ -1,9 +1,8 @@
 package lapr.project.utils.FileParser;
 
-import lapr.project.model.RoadNetwork.Road;
-import lapr.project.model.RoadNetwork.RoadNetwork;
-import lapr.project.model.RoadNetwork.Section;
-import lapr.project.model.RoadNetwork.Segment;
+import lapr.project.model.RoadNetwork.*;
+import lapr.project.utils.Measurable;
+import lapr.project.utils.Unit;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -47,7 +46,7 @@ public class XMLImporterRoads {
      * @return the road network updated
      * @throws Exception
      */
-    public RoadNetwork importNetwork() throws JAXBException, IOException, SAXException, ParserConfigurationException {  
+    public RoadNetwork importNetwork() throws JAXBException, IOException, SAXException, ParserConfigurationException {
 
         completeNetworkInformationDOMParsing();
 
@@ -65,9 +64,9 @@ public class XMLImporterRoads {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(file);
 
-        List<lapr.project.model.RoadNetwork.Node> nodeList = addNodes(doc);
+        addNodes(doc);
         List<Road> roadList = addRoads(doc);
-        addSections(roadList, nodeList, doc);
+        addSections(roadList, doc);
     }
 
     /**
@@ -75,7 +74,7 @@ public class XMLImporterRoads {
      * @param doc the document
      * @return the list of roads imported from the file
      */
-    public List<Road> addRoads(Document doc) {
+    private List<Road> addRoads(Document doc) {
 
         List<Road> roadList = new ArrayList<>();
 
@@ -127,11 +126,8 @@ public class XMLImporterRoads {
     /**
      * Adds nodes from the file in the RoadNetwork graph
      * @param doc the document
-     * @return a Node list
      */
-    private List<lapr.project.model.RoadNetwork.Node> addNodes(Document doc) {
-
-        List<lapr.project.model.RoadNetwork.Node> nodeList = new ArrayList<>();
+    private void addNodes(Document doc) {
 
         NodeList nodes = doc.getElementsByTagName("node");
 
@@ -148,23 +144,18 @@ public class XMLImporterRoads {
 
                 roadNetwork.addNode(roadNetworkNode);
 
-                nodeList.add(roadNetworkNode);
-
             }
 
         }
-
-        return nodeList;
 
     }
 
     /**
      * Adds sections from the file in the RoadNetwork graph
      * @param roadList the list of roads
-     * @param roadNetworkNodeList the node list
      * @param doc the document
      */
-    private void addSections(List<Road> roadList, List<lapr.project.model.RoadNetwork.Node> roadNetworkNodeList, Document doc) {
+    private void addSections(List<Road> roadList, Document doc) {
 
         NodeList sections = doc.getElementsByTagName("road_section");
 
@@ -176,34 +167,75 @@ public class XMLImporterRoads {
 
                 Element element = (Element) node;
 
-//                lapr.project.model.RoadNetwork.Node beginningNode = null;
-//                lapr.project.model.RoadNetwork.Node endingNode = null;
-//                Road road = null;
-//
-//                for (lapr.project.model.RoadNetwork.Node roadNetworkNode : roadNetworkNodeList) {
-//
-//                    String nodeId = roadNetworkNode.toString();
-//
-//                    if (element.getAttribute("begin").equals(nodeId)) {
-//                        beginningNode = new lapr.project.model.RoadNetwork.Node(nodeId);
-//                    }
-//
-//                    if (element.getAttribute("end").equals(nodeId)) {
-//                        endingNode = new lapr.project.model.RoadNetwork.Node(nodeId);
-//                    }
-//
-//                }
-//
-//                // if the nodes in the file don't exist, we don't add the section
-//                if (beginningNode == null || endingNode == null) {
-//                    continue;
-//                }
-//
-//                for (Road road : roadList) {
-//
-//                    road.getID()
-//
-//                }
+                lapr.project.model.RoadNetwork.Node beginningNode = null;
+                lapr.project.model.RoadNetwork.Node endingNode = null;
+
+                for (lapr.project.model.RoadNetwork.Node roadNetworkNode : roadNetwork.vertices()) {
+
+                    String nodeId = roadNetworkNode.toString();
+
+                    if (element.getAttribute("begin").equals(nodeId)) {
+                        beginningNode = roadNetworkNode;
+                    }
+
+                    if (element.getAttribute("end").equals(nodeId)) {
+                        endingNode = roadNetworkNode;
+                    }
+
+                }
+
+                // if the nodes in the file don't exist, we don't add the section
+                if (beginningNode == null || endingNode == null) {
+                    continue;
+                }
+
+                Road road = null;
+                for (Road roadNetworkRoad : roadList) {
+
+                    if (roadNetworkRoad.getId().equals(element.getElementsByTagName("road_id").item(0).getTextContent())) {
+                        road = roadNetworkRoad;
+                        break;
+                    }
+
+                }
+
+                // if the road in the file doesn't exist, we don't add the section
+                if (road == null) {
+                    continue;
+                }
+
+                List<Double> tollFare = new ArrayList<>();
+                if (road.getTypology().equalsIgnoreCase("gantry toll highway")) {
+                    NodeList nodeList = element.getElementsByTagName("toll").item(0).getChildNodes();
+                    for (int j = 0; j < nodeList.getLength(); j++) {
+                        if (nodeList.item(j) instanceof Element) {
+                            Element elementClass = (Element) nodeList.item(j);
+
+                            tollFare.add(Double.parseDouble(elementClass.getTextContent()));
+                        }
+                    }
+                }
+
+                Direction direction = null;
+                if (element.getElementsByTagName("direction").item(0).getTextContent().equals("bidirectional")) {
+                    direction = Direction.BIDIRECTIONAL;
+                }
+                if (element.getElementsByTagName("direction").item(0).getTextContent().equals("direct")) {
+                    direction = Direction.DIRECT;
+                }
+                if (element.getElementsByTagName("direction").item(0).getTextContent().equals("reverse")) {
+                    direction = Direction.REVERSE;
+                }
+
+                // if the direction is invalid, we don't add the section
+                if (direction == null) {
+                    continue;
+                }
+
+                List<Segment> segmentList = addSegments(element.getElementsByTagName("segment_list").item(0).getChildNodes());
+
+                Section section = new Section(beginningNode, endingNode, direction, segmentList, road, tollFare);
+                roadNetwork.addSection(beginningNode, endingNode, section);
 
             }
 
@@ -211,38 +243,46 @@ public class XMLImporterRoads {
 
     }
 
+    /**
+     * Creates a list with all the segments belonging to that section
+     * @param nodeList the node list of segments
+     * @return list of segments
+     */
+    private List<Segment> addSegments(NodeList nodeList) {
+        List<Segment> segmentList = new ArrayList<>();
 
-//    /**
-//     * Adds sections from file in the RoadNetwork graph
-//     *
-//     * @param roadNetwork
-//     * @param doc
-//     * @throws Exception
-//     */
-//    private void addSections(RoadNetwork roadNetwork, Document doc) {
-//
-//        NodeList sections = doc.getElementsByTagName("road_section");
-//
-//        for (int i = 0; i < sections.getLength(); i++) {
-//
-//            org.w3c.dom.Node node = sections.item(i);
-//
-//            if (node instanceof Element) {
-//
-//                Element element = (Element) node;
-//
-//            }
-//
-////            if (node.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
-//
-////                Element element = (Element) node;
-////                String str = node.getTextContent();
-////                Class cls = Class.forName(str);
-////                Section section = (Section) cls.newInstance();
-////                //roadNetwork.addSection(section);
-//
-////            }
-//        }
-//    }
+        for (int i = 0; i < nodeList.getLength(); i++) {
+
+            Node node = nodeList.item(i);
+
+            if (node instanceof Element) {
+
+                Element element = (Element) node;
+
+                int id = Integer.parseInt(element.getAttribute("id"));
+                Measurable initialHeight = new Measurable(Double.parseDouble(
+                        element.getElementsByTagName("init_height").item(0).getTextContent()), Unit.METER);
+                Measurable finalHeight = new Measurable(Double.parseDouble(
+                        element.getElementsByTagName("final_height").item(0).getTextContent()), Unit.METER);
+                Measurable length = new Measurable(Double.parseDouble(
+                        element.getElementsByTagName("length").item(0).getTextContent().split(" ")[0]), Unit.KILOMETER);
+                Measurable maxVelocity = new Measurable(Double.parseDouble(
+                        element.getElementsByTagName("max_velocity").item(0).getTextContent().split(" ")[0]), Unit.KILOMETERS_PER_HOUR);
+                Measurable minVelocity = new Measurable(Double.parseDouble(
+                        element.getElementsByTagName("min_velocity").item(0).getTextContent().split(" ")[0]), Unit.KILOMETERS_PER_HOUR);
+                Measurable windAngle = new Measurable(Double.parseDouble(
+                        element.getElementsByTagName("wind_direction").item(0).getTextContent()), Unit.DEGREE);
+                Measurable windSpeed = new Measurable(Double.parseDouble(
+                        element.getElementsByTagName("wind_speed").item(0).getTextContent().split(" ")[0]), Unit.METERS_PER_SECOND);
+
+                segmentList.add(new Segment(id, initialHeight.getQuantity(), finalHeight.getQuantity(), length.getQuantity(),
+                        windAngle.getQuantity(), windSpeed.getQuantity(), maxVelocity.getQuantity(), minVelocity.getQuantity()));
+
+            }
+
+        }
+
+        return segmentList;
+    }
 
 }
