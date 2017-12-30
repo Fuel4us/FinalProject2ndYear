@@ -65,9 +65,9 @@ public class XMLImporterRoads {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(file);
 
-        addNodes(doc);
+        List<lapr.project.model.RoadNetwork.Node> nodeList = addNodes(doc);
         List<Road> roadList = addRoads(doc);
-        addSections(roadList, doc);
+        addSections(roadList, nodeList, doc);
     }
 
     /**
@@ -127,8 +127,11 @@ public class XMLImporterRoads {
     /**
      * Adds nodes from the file in the RoadNetwork graph
      * @param doc the document
+     * @return a Node list
      */
-    private void addNodes(Document doc) {
+    private List<lapr.project.model.RoadNetwork.Node> addNodes(Document doc) {
+
+        List<lapr.project.model.RoadNetwork.Node> nodeList = new ArrayList<>();
 
         NodeList nodes = doc.getElementsByTagName("node");
 
@@ -140,21 +143,28 @@ public class XMLImporterRoads {
 
                 Element element = (Element) node;
 
-                roadNetwork.addNode(new lapr.project.model.RoadNetwork.Node(
-                        element.getAttribute("id")));
+                lapr.project.model.RoadNetwork.Node roadNetworkNode =
+                        new lapr.project.model.RoadNetwork.Node(element.getAttribute("id"));
+
+                roadNetwork.addNode(roadNetworkNode);
+
+                nodeList.add(roadNetworkNode);
 
             }
 
         }
+
+        return nodeList;
 
     }
 
     /**
      * Adds sections from the file in the RoadNetwork graph
      * @param roadList the list of roads
+     * @param roadNetworkNodeList the node list
      * @param doc the document
      */
-    private void addSections(List<Road> roadList, Document doc) {
+    private void addSections(List<Road> roadList, List<lapr.project.model.RoadNetwork.Node> roadNetworkNodeList, Document doc) {
 
         NodeList sections = doc.getElementsByTagName("road_section");
 
@@ -166,7 +176,34 @@ public class XMLImporterRoads {
 
                 Element element = (Element) node;
 
-
+//                lapr.project.model.RoadNetwork.Node beginningNode = null;
+//                lapr.project.model.RoadNetwork.Node endingNode = null;
+//                Road road = null;
+//
+//                for (lapr.project.model.RoadNetwork.Node roadNetworkNode : roadNetworkNodeList) {
+//
+//                    String nodeId = roadNetworkNode.toString();
+//
+//                    if (element.getAttribute("begin").equals(nodeId)) {
+//                        beginningNode = new lapr.project.model.RoadNetwork.Node(nodeId);
+//                    }
+//
+//                    if (element.getAttribute("end").equals(nodeId)) {
+//                        endingNode = new lapr.project.model.RoadNetwork.Node(nodeId);
+//                    }
+//
+//                }
+//
+//                // if the nodes in the file don't exist, we don't add the section
+//                if (beginningNode == null || endingNode == null) {
+//                    continue;
+//                }
+//
+//                for (Road road : roadList) {
+//
+//                    road.getID()
+//
+//                }
 
             }
 
