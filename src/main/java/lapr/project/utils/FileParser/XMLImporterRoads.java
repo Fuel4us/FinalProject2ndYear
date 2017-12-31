@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import lapr.project.model.Project;
 
 import lapr.project.utils.ClassCast;
 import org.xml.sax.SAXException;
@@ -25,7 +26,7 @@ import org.xml.sax.SAXException;
 /**
  * Handles importation of a RoadNetwork through a XML file
  */
-public class XMLImporterRoads {
+public class XMLImporterRoads implements FileParser {
 
     private final File file;
     private RoadNetwork roadNetwork;
@@ -290,6 +291,16 @@ public class XMLImporterRoads {
         }
 
         return segmentList;
+    }
+
+    @Override
+    public boolean importVehicles(Project object, String filename) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean importNetwork(Project object, String filename) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
