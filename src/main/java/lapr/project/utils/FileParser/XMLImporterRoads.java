@@ -35,9 +35,8 @@ public class XMLImporterRoads {
      *
      * @param file xmlFile
      */
-    public XMLImporterRoads(File file, boolean directed) {
+    public XMLImporterRoads(File file) {
         this.file = file;
-        this.roadNetwork = new RoadNetwork(directed);
     }
 
     /**
@@ -64,9 +63,17 @@ public class XMLImporterRoads {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(file);
 
+        createRoadNetwork(doc);
         addNodes(doc);
         List<Road> roadList = addRoads(doc);
         addSections(roadList, doc);
+    }
+
+    private void createRoadNetwork(Document doc) {
+        String id = doc.getElementsByTagName("Network").item(0).getAttributes().item(0).getTextContent();
+        String description = doc.getElementsByTagName("Network").item(0).getAttributes().item(1).getTextContent();
+
+        roadNetwork = new RoadNetwork(false, id, description);
     }
 
     /**
