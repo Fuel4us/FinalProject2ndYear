@@ -31,7 +31,7 @@ public class XMLImporterRoadsTest {
 
     public XMLImporterRoadsTest() throws JAXBException, IOException, SAXException, ParserConfigurationException {
         file = new File("src/test/resources/TestSet02_Network_v2.xml");
-        fileParser = new XMLImporterRoads(file, false);
+        fileParser = new XMLImporterRoads(file);
 
         roadNetworkResult = fileParser.importNetwork();
 
@@ -48,7 +48,7 @@ public class XMLImporterRoadsTest {
     @Test
     public void ensureImportNetworkCreatesCorrectRoadNetwork() throws Exception {
 
-        RoadNetwork roadNetworkExpected = new RoadNetwork(false);
+        RoadNetwork roadNetworkExpected = new RoadNetwork(false, "TestSet01", "5 node test set");
 
         Node nodeExpected1 = new Node("n0");
         Node nodeExpected2 = new Node("n1");
