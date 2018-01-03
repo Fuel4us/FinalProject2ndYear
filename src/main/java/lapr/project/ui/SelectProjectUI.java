@@ -43,21 +43,11 @@ public class SelectProjectUI extends javax.swing.JFrame {
 
     /**
      * Creates new form SelectProjectUI
+     * @param controller
      */
     public SelectProjectUI(SelectProjectController controller) {
-//        super("Select Project");
-//        spc = new SelectProjectController(Main.dbCom);
-
         this.spc = controller;
         initComponents();
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setResizable(false);
-        setVisible(true);
-        setLocationRelativeTo(null);
-        
-        for (Project p : controller.fetchProjectsList()) {
-            jComboBox1.addItem(p);
-        }
     }
 
     /**
@@ -347,7 +337,8 @@ public class SelectProjectUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonPathFormActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        
+        PopUp1 pop = new PopUp1((Project)(jComboBox1.getSelectedItem()));
+        pop.setVisible(true);
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
@@ -378,7 +369,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
         //</editor-fold>
         
         /* Create and display the form */
-       //java.awt.EventQueue.invokeLater(() -> new SelectProjectUI(spc).setVisible(true));
+//       java.awt.EventQueue.invokeLater(() -> new SelectProjectUI(new SelectProjectController(null)).setVisible(true));
     }
 
 
