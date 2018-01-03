@@ -2,7 +2,6 @@ package lapr.project.utils.DataAccessLayer.Abstraction;
 
 import lapr.project.model.Project;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -18,9 +17,8 @@ public interface ProjectDAO extends DataAccessObject {
     List<Project> fetchProjects() throws SQLException;
 
     /**
-     * Stores a project into the data layer
-     * @param project The project to be stored
+     * Stores instance of {@link Project} in the database
+     * @param project instance of {@link Project}
      */
-    void storeProject(Project project);
-
+    boolean storeProject(Project project);
 }

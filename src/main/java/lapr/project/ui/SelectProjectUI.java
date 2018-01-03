@@ -241,7 +241,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
 
     private void jButtonPathFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPathFormActionPerformed
 
-        //ToDo Test only; Replace when XML importing is available
+        //ToDo Test only; Replace when 'select existing project' is available
 
         RoadNetwork roadNetworkTest = new RoadNetwork("1", "the road network");
 

@@ -32,7 +32,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      */
     @Override
     public RoadNetwork retrieveRoadNetwork(String projectName) throws SQLException {
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("call retrieveRoadNetworkFromProject(?)")) {
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL retrieveRoadNetworkFromProject(?)")) {
             callableStatement.setString(1, projectName);
             ResultSet networkSet = callableStatement.executeQuery();
             return retrieveRoadNetwork(networkSet);
@@ -58,7 +58,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
     private void addNodesToRoadNetwork(String networkID, RoadNetwork roadNetwork) throws SQLException {
 
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getNodeSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getNodeSet(?)")) {
             callableStatement.setString(1, networkID);
             ResultSet nodeSet = callableStatement.executeQuery();
             while (nodeSet.next()) {
@@ -87,7 +87,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     private List<Double> fillRoadTollFareList(String roadID) throws SQLException {
         List<Double> tollFareRoadList = new LinkedList<>();
 
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getRoadTollSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getRoadTollSet(?)")) {
             callableStatement.setString(1, roadID);
             ResultSet roadTollSet = callableStatement.executeQuery();
             while (roadTollSet.next()) {
@@ -100,7 +100,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     }
 
     private Road createRoad(int sectionID) throws SQLException {
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getRoadSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getRoadSet(?)")) {
             callableStatement.setInt(1, sectionID);
             ResultSet roadSet = callableStatement.executeQuery();
             String roadID = roadSet.getString("ID");
@@ -115,7 +115,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     private Collection<Segment> fetchSectionSegments(int sectionID) throws SQLException {
         Collection<Segment> segments = new ArrayList<>();
 
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getSegmentsSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getSegmentsSet(?)")) {
             callableStatement.setInt(1, sectionID);
             ResultSet segmentSet = callableStatement.executeQuery();
             while(segmentSet.next()) {
@@ -135,7 +135,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
     private List<Double> fillSectionTollFareList(int sectionID) throws SQLException {
         List<Double> tollFareSectionList = new LinkedList<>();
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getSectionTollSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getSectionTollSet(?)")) {
             callableStatement.setInt(1, sectionID);
             ResultSet sectionTollSet = callableStatement.executeQuery();
             while (sectionTollSet.next()) {
@@ -149,7 +149,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
     private void addSectionsToRoadNetwork(String networkID, RoadNetwork roadNetwork) throws SQLException {
 
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("call getSectionSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getSectionSet(?)")) {
             callableStatement.setString(1, networkID);
             ResultSet sectionSet = callableStatement.executeQuery();
             while(sectionSet.next()){

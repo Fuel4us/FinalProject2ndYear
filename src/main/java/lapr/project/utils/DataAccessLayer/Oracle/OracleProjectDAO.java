@@ -4,14 +4,16 @@ package lapr.project.utils.DataAccessLayer.Oracle;
 import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.Abstraction.ProjectDAO;
 
-import java.sql.PreparedStatement;
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Handles Data Access via OracleDB
@@ -29,9 +31,8 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
 
             List<Project> projects = new LinkedList<>();
 
-            try (PreparedStatement preparedStatement = super.oracleConnection.prepareStatement("SELECT * FROM PROJECT")) {
-
-                ResultSet resultSet = preparedStatement.executeQuery();
+            try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL fetchAllProjects")) {
+                ResultSet resultSet = callableStatement.executeQuery();
 
                 Project project;
                 String projectName;
@@ -62,12 +63,19 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
     }
 
     /**
-     * Stores a project into the data layer
-     * @param project The project to be stored
+     * Stores instance of {@link Project} in the database
+     * @param project instance of {@link Project}
      */
     @Override
-    public void storeProject(Project project) {
+    public boolean storeProject(Project project) {
+        if (this.isConnected()) {
+            DBAccessor.DB_ACCESS_LOG.log(Level.INFO, "No connection found in " + this.getClass());
+            return false;
+        }
+
         //ToDo
+
+        return true;
     }
 
 
