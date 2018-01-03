@@ -16,7 +16,7 @@ public class Node extends Vertex<String,Direction> {
 
     /**
      * Constructor.
-     * @param id
+     * @param id the node's id
      */
     public Node(String id){
         super((++key), id);
