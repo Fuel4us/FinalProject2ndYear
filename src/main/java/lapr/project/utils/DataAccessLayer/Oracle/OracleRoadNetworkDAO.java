@@ -177,21 +177,19 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * Stores information of RoadNetwork
      * @param roadNetwork the {@link RoadNetwork} to store
      */
-    public int storeRoadNetworkInfo(RoadNetwork roadNetwork) throws SQLException {
+    public String storeRoadNetworkInfo(RoadNetwork roadNetwork, String projectName) throws SQLException {
 
-        try (CallableStatement storeRoadNetworkInfoFunction = oracleConnection.prepareCall("{? = call storeRoadNetworkInfo(?,?)}")) {
+        try (CallableStatement storeRoadNetworkInfoFunction = oracleConnection.prepareCall("CALL storeRoadNetworkInfo(?,?,?)")) {
 
             String id = roadNetwork.getId();
             String description = roadNetwork.getDescription();
-
-//            storeRoadNetworkInfoFunction.registerOutParameter(1, );
-
-            storeRoadNetworkInfoFunction.setString(2, id);
-            storeRoadNetworkInfoFunction.setString(3, description);
+            storeRoadNetworkInfoFunction.setString("ID", id);
+            storeRoadNetworkInfoFunction.setString("description", description);
+            storeRoadNetworkInfoFunction.setString("projectName", projectName);
 
             storeRoadNetworkInfoFunction.executeUpdate();
 
-            return storeRoadNetworkInfoFunction.getInt(1);
+            return storeRoadNetworkInfoFunction.getString(1);
         }
 
     }
