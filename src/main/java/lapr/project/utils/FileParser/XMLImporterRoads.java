@@ -74,7 +74,7 @@ public class XMLImporterRoads implements FileParser {
         String id = doc.getElementsByTagName("Network").item(0).getAttributes().item(0).getTextContent();
         String description = doc.getElementsByTagName("Network").item(0).getAttributes().item(1).getTextContent();
 
-        roadNetwork = new RoadNetwork(false, id, description);
+        roadNetwork = new RoadNetwork(id, description);
     }
 
     /**

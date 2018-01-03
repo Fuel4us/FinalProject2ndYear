@@ -1,9 +1,12 @@
 package lapr.project.ui;
 
+import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lapr.project.controller.CreateProjectController;
 import lapr.project.model.Project;
-
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -14,7 +17,7 @@ public class CreateProjectUI extends javax.swing.JFrame {
     private static final long serialVersionUID = -1818083907306250629L;
     private CreateProjectController createProjectController;
     private Project p;
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
     private javax.swing.JButton jButtonBack;
@@ -36,13 +39,7 @@ public class CreateProjectUI extends javax.swing.JFrame {
     public CreateProjectUI() {
         super("Create Project");
         createProjectController = new CreateProjectController(Main.dbCom);
-
         initComponents();
-
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setResizable(false);
-        setVisible(true);
-        setLocationRelativeTo(null);
     }
 
     /**
@@ -54,8 +51,6 @@ public class CreateProjectUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-
-        InitializeUIElements initializer = new InitializeUIElements();
         jPanel1 = new javax.swing.JPanel();
         imgLateral = new javax.swing.JLabel();
         orangeBorder = new javax.swing.JPanel();
@@ -88,43 +83,69 @@ public class CreateProjectUI extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        jButtonCreate.setBackground(new java.awt.Color(45, 46, 45));
+        jButtonCreate.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jButtonCreate.setForeground(new java.awt.Color(45, 46, 45));
-        initializer.initializeJButton(jButtonCreate, Main.EIGHTEEN_SEGOE_FONT, "Create Project", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonCreate.addActionListener(evt -> jButtonCreateActionPerformed(evt));
+        jButtonCreate.setText("Create project");
+        jButtonCreate.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        jButtonCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCreateActionPerformed(evt);
+            }
+        });
 
+        jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
+        jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
-        initializer.initializeJButton(jButtonBack, Main.FORTY_EIGHT_SEGOE_FONT, "«", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
+        jButtonBack.setText("«");
+        jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBackActionPerformed(evt);
+            }
+        });
 
         jTextFieldName.setBackground(new java.awt.Color(87, 89, 87));
         jTextFieldName.setForeground(new java.awt.Color(45, 46, 45));
         jTextFieldName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        jTextFieldName.setText("<sample name>");
 
-        initializer.initializeLabels(jLabelPageTitle, Main.TV_POSTER_FONT,"Insert the data of your project", SwingConstants.CENTER, Main.LIGHT_BLUE);
+        jLabelPageTitle.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
+        jLabelPageTitle.setForeground(new java.awt.Color(155, 177, 189));
+        jLabelPageTitle.setText("Insert the data of your project");
 
-        initializer.initializeLabels(jLabelPName, Main.TWELVE_SEGOE_FONT, "PROJECT NAME", SwingConstants.LEADING, Main.DARK_BLUE);
+        jLabelPName.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
+        jLabelPName.setForeground(new java.awt.Color(97, 122, 133));
+        jLabelPName.setText("PROJECT NAME:");
 
         jTextFieldDescription.setBackground(new java.awt.Color(87, 89, 87));
         jTextFieldDescription.setForeground(new java.awt.Color(45, 46, 45));
         jTextFieldDescription.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        jTextFieldDescription.setText("<sample DESCRIPTION>");
 
-        initializer.initializeLabels(jLabelPDesc, Main.TWELVE_SEGOE_FONT, "DESCRIPTION", SwingConstants.LEADING, Main.DARK_BLUE);
+        jLabelPDesc.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
+        jLabelPDesc.setForeground(new java.awt.Color(97, 122, 133));
+        jLabelPDesc.setText("DESCRIPTION:");
 
         jButtonRoad.setBackground(new java.awt.Color(45, 46, 45));
         jButtonRoad.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jButtonRoad.setForeground(new java.awt.Color(72, 89, 97));
         jButtonRoad.setText("Import roads configuration file");
         jButtonRoad.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
-        jButtonRoad.addActionListener(evt -> jButtonRoadActionPerformed(evt));
+        jButtonRoad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRoadActionPerformed(evt);
+            }
+        });
 
         jButtonVehicle.setBackground(new java.awt.Color(45, 46, 45));
         jButtonVehicle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jButtonVehicle.setForeground(new java.awt.Color(72, 89, 97));
         jButtonVehicle.setText("Import vehicles configuration file");
         jButtonVehicle.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
-        jButtonVehicle.addActionListener(evt -> jButtonVehicleActionPerformed(evt));
+        jButtonVehicle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVehicleActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -210,7 +231,30 @@ public class CreateProjectUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateActionPerformed
-        // TODO add your handling code here:
+        if (jTextFieldName.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Insert a Name for your project");
+        } else if (jTextFieldDescription.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Insert a Description for your project");
+        } else if (createProjectController.getRoadsFile() == null) {
+            JOptionPane.showMessageDialog(null, "Import a XML File that contains the Roads in your project");
+        } else if (createProjectController.getVehiclesFile() == null) {
+            JOptionPane.showMessageDialog(null, "Import a XML File that contains the Vehicles in your project");
+        } else {
+            try {
+                createProjectController.createProject(jTextFieldName.getText(), jTextFieldDescription.getText());
+                System.out.println(createProjectController.getProject().getName());
+                System.out.println(createProjectController.getProject().getDescription());
+                if(createProjectController.getProject().getRoadNetwork()!=null){
+                   System.out.println("roads loaded"); 
+                }
+                if(createProjectController.getProject().getVehicles()!=null){
+                   System.out.println("vehicles loaded"); 
+                }
+                
+            } catch (Exception ex) {
+                Logger.getLogger(CreateProjectUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_jButtonCreateActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
@@ -219,11 +263,33 @@ public class CreateProjectUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonRoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRoadActionPerformed
-        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setDialogTitle("Select your RoadNetwork file");
+        FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter(
+                "xml files (*.xml)", "xml");
+        fileChooser.setFileFilter(xmlfilter);
+        int returnVal = fileChooser.showOpenDialog(jButtonRoad);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File roads = fileChooser.getSelectedFile();
+            createProjectController.setRoads(roads);
+            JOptionPane.showMessageDialog(null, "Your file has been loaded.");
+        }
     }//GEN-LAST:event_jButtonRoadActionPerformed
 
     private void jButtonVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVehicleActionPerformed
-        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setDialogTitle("Select your Vehicles file");
+        FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter(
+                "xml files (*.xml)", "xml");
+        fileChooser.setFileFilter(xmlfilter);
+        int returnVal = fileChooser.showOpenDialog(jButtonRoad);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File vehicles = fileChooser.getSelectedFile();
+            createProjectController.setVehicles(vehicles);
+            JOptionPane.showMessageDialog(null, "Your file has been loaded.");
+        }
     }//GEN-LAST:event_jButtonVehicleActionPerformed
 
     /**

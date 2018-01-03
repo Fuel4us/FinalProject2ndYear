@@ -26,7 +26,7 @@ public class PathAlgorithmTest {
     @Test
     public void ensureFastestPathReturnsCorrectAnalysis() throws Exception {
 
-        RoadNetwork roadNetworkTest = new RoadNetwork(false, "1", "the road network");
+        RoadNetwork roadNetworkTest = new RoadNetwork("1", "the road network");
 
         Node nodeTest1 = new Node("n01");
         Node nodeTest2 = new Node("n02");
@@ -132,9 +132,12 @@ public class PathAlgorithmTest {
         sectionsExpected.add(sectionTest2);
         sectionsExpected.add(sectionTest3);
 
+        Measurable load1 = new Measurable(0.0, Unit.KILOMETER);
+        Measurable load2 = new Measurable(0.0, Unit.KILOMETER);
+
         PathAlgorithm pathAlgorithmTest = new PathAlgorithm();
 
-        Analysis analysisResult = pathAlgorithmTest.fastestPath(projectTest, nodeTest1, nodeTest4, vehicle1);
+        Analysis analysisResult = pathAlgorithmTest.fastestPath(projectTest, nodeTest1, nodeTest4, vehicle1, load1);
 
         Analysis analysisExpected = new Analysis(projectTest, "N10 - Fastest Path",
                 sectionsExpected, new Measurable(826992, Unit.KILOJOULE), new Measurable(0.943, Unit.HOUR), new Measurable(4,Unit.EUROS));
@@ -146,7 +149,7 @@ public class PathAlgorithmTest {
         assertEquals(analysisExpected.getTravelTime().getQuantity(), analysisResult.getTravelTime().getQuantity(), 0.1);
         assertEquals(analysisExpected.getTravelCost().getQuantity(), analysisResult.getTravelCost().getQuantity(), 0.1);
 
-        assertThrows(IllegalArgumentException.class, () -> pathAlgorithmTest.fastestPath(projectTest, nodeTest1, nodeTest4, vehicle2));
+        assertThrows(IllegalArgumentException.class, () -> pathAlgorithmTest.fastestPath(projectTest, nodeTest1, nodeTest4, vehicle2, load2));
 
     }
 

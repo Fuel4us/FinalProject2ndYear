@@ -41,7 +41,7 @@ public class PathAlgorithm {
      * velocity is allowed in the speed limit of a segment
      * @return The Analysis containing the results
      */
-    public Analysis fastestPath(Project project, Node start, Node end, Vehicle vehicle) {
+    public Analysis fastestPath(Project project, Node start, Node end, Vehicle vehicle, Measurable load) {
 
         if (vehicle.getMotorType() != Vehicle.MotorType.COMBUSTION) {
             throw new IllegalArgumentException("This operation doesn't support electric vehicles");

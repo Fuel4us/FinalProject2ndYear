@@ -2,95 +2,97 @@ package lapr.project.controller;
 
 import java.io.File;
 import lapr.project.model.*;
-import lapr.project.model.RoadNetwork.*;
-import lapr.project.model.Vehicle.*;
 import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
-
-import java.util.ArrayList;
-import java.util.List;
-import lapr.project.utils.FileParser.FileParser;
-import lapr.project.utils.FileParser.ImportFile;
 import lapr.project.utils.FileParser.XMLImporterRoads;
 import lapr.project.utils.FileParser.XMLImporterVehicles;
-
 
 /**
  * Class that represents the Controller for the UC2 - Create Project
  */
 public class CreateProjectController {
 
-    private DataBaseCommunicator dbCom;
-    private Project project;
-
-    private List<Vehicle> vehicles;
-    private RoadNetwork roadNetwork;
+    private final DataBaseCommunicator dbCom;
+    private static Project project;
+    private File roadsFile;
+    private File vehiclesFile;
 
     /**
      * Full constructor for the class CreateProjectController
+     * @param dbCom
      */
     public CreateProjectController(DataBaseCommunicator dbCom) {
         this.dbCom = dbCom;
-        this.project = new Project();
+        project = new Project();
+        this.roadsFile = null;
+        this.vehiclesFile = null;
     }
 
+    /**
+     * Getter of the current instance of project
+     * 
+     * @return The current instance of project
+     */
     public Project getProject() {
         return project;
     }
 
+    /**
+     * Getter of the DataBase Communicator
+     * 
+     * @return dbCom
+     */
     public DataBaseCommunicator getDbCom() {
         return dbCom;
     }
-    
-     /**
-     * Validate the project file integrity
+
+    /**
+     * Setter for RoadNetwork File
      *
-     * @param filename
-     * @param type
-     * @return
+     * @param roads
      */
-    public boolean validate(String filename, String type) {
-        File file = new File(filename);
-        if (file.exists()) {
-            return true;
-        }
-        return false;
-    }
-    
-    public boolean newProject(String fileType, String inputType, String fileName) {
-        
-        ImportFile file = new ImportFile();
-        FileParser type;
-        FileParser type2;
-        
-        switch(inputType) {
-            case ".xml":
-                type = new XMLImporterVehicles();
-                type2 = new XMLImporterRoads(null); // String cannot be converted to File
-                break;
-            default:
-                return false;
-        }
-        
-        if(fileType.equalsIgnoreCase("vehicles")) {
-            file.importVehicles(type, project, fileName);
-        } else {
-            System.out.println("Didn't find");
-        }
-        if(fileType.equalsIgnoreCase("network")) {
-            file.importNetwork(type2, project, fileName);
-        } else {
-            System.out.println("Didn't find");
-        }
-        
-        return false;
-        
+    public void setRoads(File roads) {
+        this.roadsFile = roads;
     }
 
-    public void setProject(int id, String name, String description) {
-        project.setId(id);
-        project.setName(name);
-        project.setDescription(description);
+    /**
+     * Setter for the Vehicles File
+     *
+     * @param vehicles
+     */
+    public void setVehicles(File vehicles) {
+        this.vehiclesFile = vehicles;
     }
-    
-    
+
+    /**
+     * Getter for the RoadNetwork File
+     * 
+     * @return The XML File relative to the RoadNetwork
+     */
+    public File getRoadsFile() {
+        return roadsFile;
+    }
+
+    /**
+     * Getter for the Vehicles File
+     * 
+     * @return The XML File relative to the vehicles
+     */
+    public File getVehiclesFile() {
+        return vehiclesFile;
+    }
+
+    /**
+     * Method called by the UI that creates a new instance of project with the
+     * user submitted data
+     * 
+     * @param name Project name
+     * @param description Proect description
+     * @throws java.lang.Exception
+     */
+    public void createProject(String name, String description) throws Exception {
+        XMLImporterRoads roadImporter = new XMLImporterRoads(roadsFile);
+        project = new Project(name, description, roadImporter.importNetwork(), null);
+        new XMLImporterVehicles().importVehicles(project, vehiclesFile.getAbsolutePath());
+    }
+
 }

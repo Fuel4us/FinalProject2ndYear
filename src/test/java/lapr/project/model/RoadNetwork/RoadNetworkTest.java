@@ -5,14 +5,10 @@
  */
 package lapr.project.model.RoadNetwork;
 
-import java.util.Collection;
-import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -46,7 +42,7 @@ public class RoadNetworkTest {
     public void testSetId() {
         System.out.println("setId");
         String id = "iddif";
-        RoadNetwork instance = new RoadNetwork(true,"id","desc");
+        RoadNetwork instance = new RoadNetwork("id","desc");
         instance.setId(id);
         assertEquals(instance.getId(),id);
     }
@@ -69,7 +65,7 @@ public class RoadNetworkTest {
     @Test
     public void testGetId() {
         System.out.println("getId");
-        RoadNetwork instance = new RoadNetwork(true,"id","desc");
+        RoadNetwork instance = new RoadNetwork("id","desc");
         String expResult = "id";
         String result = instance.getId();
         assertEquals(expResult, result);
