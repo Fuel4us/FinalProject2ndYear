@@ -3,36 +3,29 @@ package lapr.project.model.RoadNetwork;
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.Graph.Edge;
 import lapr.project.utils.Measurable;
-
 import lapr.project.utils.Physics;
 import lapr.project.utils.Unit;
 import org.antlr.stringtemplate.StringTemplate;
 
-import javax.xml.bind.annotation.*;
 import java.io.FileWriter;
 import java.io.IOException;
 
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Segment {
 
-    @XmlElement(name = "id")
     private int index;
-    @XmlElement(name = "init_height")
+
     private double initialHeight;
-    @XmlElement(name = "final_height")
+
     private double finalHeight;
 
-    //private double slope;
-    @XmlElement
     private double length;
-    @XmlElement(name = "wind_direction")
+
     private double windAngle;
-    @XmlElement(name = "wind_speed")
+
     private double windSpeed;
-    @XmlElement(name = "max_velocity")
+
     private double maxVelocity;
-    @XmlElement(name = "min_velocity")
+    
     private double minVelocity;
 
 

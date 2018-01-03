@@ -5,22 +5,16 @@
  */
 package lapr.project.utils.DataAccessLayer.Oracle;
 
+import lapr.project.model.RoadNetwork.*;
+import lapr.project.utils.DataAccessLayer.Abstraction.RoadNetworkDAO;
+
 import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-
-import lapr.project.model.RoadNetwork.Direction;
-import lapr.project.model.RoadNetwork.RoadNetwork;
-import lapr.project.model.RoadNetwork.Node;
-import lapr.project.model.RoadNetwork.Road;
-import lapr.project.model.RoadNetwork.Section;
-import lapr.project.model.RoadNetwork.Segment;
-import lapr.project.utils.DataAccessLayer.Abstraction.RoadNetworkDAO;
 
 
 /**
@@ -29,7 +23,6 @@ import lapr.project.utils.DataAccessLayer.Abstraction.RoadNetworkDAO;
  */
 public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
-    public OracleRoadNetworkDAO() {}
 
     /**
      * Creates an instance of {@link RoadNetwork} from a given project name
@@ -39,15 +32,11 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      */
     @Override
     public RoadNetwork retrieveRoadNetwork(String projectName) throws SQLException {
-        ResultSet networkSet = null;
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call retrieveRoadNetworkFromProject(?)")) {
             callableStatement.setString(1, projectName);
-            networkSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            ResultSet networkSet = callableStatement.executeQuery();
+            return retrieveRoadNetwork(networkSet);
         }
-
-        return retrieveRoadNetwork(networkSet);
     }
 
     /**
@@ -68,21 +57,19 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     }
 
     private void addNodesToRoadNetwork(String networkID, RoadNetwork roadNetwork) throws SQLException {
-        ResultSet nodeSet = null;
+
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getNodeSet(?)")) {
             callableStatement.setString(1, networkID);
-            nodeSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            ResultSet nodeSet = callableStatement.executeQuery();
+            while (nodeSet.next()) {
+                String nodeName;
+                Node node;
+                nodeName = nodeSet.getString("ID");
+                node = new Node(nodeName);
+                roadNetwork.addNode(node);
+            }
         }
 
-        while (nodeSet.next()) {
-            String nodeName;
-            Node node;
-            nodeName = nodeSet.getString("ID");
-            node = new Node(nodeName);
-            roadNetwork.addNode(node);
-        }
     }
 
     private Direction determineDirection(ResultSet sectionSet) throws SQLException {
@@ -98,108 +85,92 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     }
 
     private List<Double> fillRoadTollFareList(String roadID) throws SQLException {
-        ResultSet roadTollSet = null;
+        List<Double> tollFareRoadList = new LinkedList<>();
+
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getRoadTollSet(?)")) {
             callableStatement.setString(1, roadID);
-            roadTollSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            ResultSet roadTollSet = callableStatement.executeQuery();
+            while (roadTollSet.next()) {
+                Double tollFare = roadTollSet.getDouble("tollFare");
+                tollFareRoadList.add(tollFare);
+            }
         }
 
-        List<Double> tollFareRoadList = new LinkedList<>();
-        while (roadTollSet.next()) {
-            Double tollFare = roadTollSet.getDouble("tollFare");
-            tollFareRoadList.add(tollFare);
-        }
         return tollFareRoadList;
     }
 
     private Road createRoad(int sectionID) throws SQLException {
-        ResultSet roadSet = null;
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getRoadSet(?)")) {
             callableStatement.setInt(1, sectionID);
-            roadSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            ResultSet roadSet = callableStatement.executeQuery();
+            String roadID = roadSet.getString("ID");
+            String roadName = roadSet.getString("name");
+            String typology = roadSet.getString("typology");
+
+            List<Double> tollFareRoadList = fillRoadTollFareList(roadID);
+            return new Road(roadID, roadName, typology, tollFareRoadList);
         }
-
-        String roadID = roadSet.getString("ID");
-        String roadName = roadSet.getString("name");
-        String typology = roadSet.getString("typology");
-
-        List<Double> tollFareRoadList = fillRoadTollFareList(roadID);
-        return new Road(roadID, roadName, typology, tollFareRoadList);
     }
 
     private Collection<Segment> fetchSectionSegments(int sectionID) throws SQLException {
         Collection<Segment> segments = new ArrayList<>();
 
-        ResultSet segmentSet = null;
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getSegmentsSet(?)")) {
             callableStatement.setInt(1, sectionID);
-            segmentSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        while(segmentSet.next()) {
-            int index = segmentSet.getInt("index");
-            double initialHeight = segmentSet.getDouble("initialHeight");
-            double finalHeight = segmentSet.getDouble("finalHeight");
-            double length = segmentSet.getDouble("length");
-            double windAngle = segmentSet.getDouble("windAngle");
-            double windSpeed = segmentSet.getDouble("windSpeed");
-            double maxVelocity = segmentSet.getDouble("maxVelocity");
-            double minVelocity = segmentSet.getDouble("minVelocity");
-            segments.add(new Segment(index, initialHeight, finalHeight, length, windAngle, windSpeed, maxVelocity, minVelocity));
+            ResultSet segmentSet = callableStatement.executeQuery();
+            while(segmentSet.next()) {
+                int index = segmentSet.getInt("index");
+                double initialHeight = segmentSet.getDouble("initialHeight");
+                double finalHeight = segmentSet.getDouble("finalHeight");
+                double length = segmentSet.getDouble("length");
+                double windAngle = segmentSet.getDouble("windAngle");
+                double windSpeed = segmentSet.getDouble("windSpeed");
+                double maxVelocity = segmentSet.getDouble("maxVelocity");
+                double minVelocity = segmentSet.getDouble("minVelocity");
+                segments.add(new Segment(index, initialHeight, finalHeight, length, windAngle, windSpeed, maxVelocity, minVelocity));
+            }
         }
         return segments;
     }
 
     private List<Double> fillSectionTollFareList(int sectionID) throws SQLException {
-        ResultSet sectionTollSet = null;
+        List<Double> tollFareSectionList = new LinkedList<>();
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getSectionTollSet(?)")) {
             callableStatement.setInt(1, sectionID);
-            sectionTollSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            ResultSet sectionTollSet = callableStatement.executeQuery();
+            while (sectionTollSet.next()) {
+                Double tollFare = sectionTollSet.getDouble("tollFare");
+                tollFareSectionList.add(tollFare);
+            }
         }
 
-        List<Double> tollFareSectionList = new LinkedList<>();
-        while (sectionTollSet.next()) {
-            Double tollFare = sectionTollSet.getDouble("tollFare");
-            tollFareSectionList.add(tollFare);
-        }
         return tollFareSectionList;
     }
 
     private void addSectionsToRoadNetwork(String networkID, RoadNetwork roadNetwork) throws SQLException {
 
-        ResultSet sectionSet = null;
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getSectionSet(?)")) {
             callableStatement.setString(1, networkID);
-            sectionSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            ResultSet sectionSet = callableStatement.executeQuery();
+            while(sectionSet.next()){
+                int sectionId = sectionSet.getInt("ID");
+
+                Node beginningNode = new Node(sectionSet.getString("beginningNodeID"));
+                Node endingNode = new Node(sectionSet.getString("endingNodeID"));
+
+                Direction roadDirection = determineDirection(sectionSet);
+
+                Road road = createRoad(sectionId);
+
+                Collection<Segment> segments = fetchSectionSegments(sectionId);
+
+                List<Double> tollFareSectionList = fillSectionTollFareList(sectionId);
+
+                Section section = new Section(beginningNode, endingNode, roadDirection, segments, road, tollFareSectionList);
+                roadNetwork.addSection(beginningNode, endingNode, section);
+            }
         }
 
-        while(sectionSet.next()){
-            int sectionId = sectionSet.getInt("ID");
-
-            Node beginningNode = new Node(sectionSet.getString("beginningNodeID"));
-            Node endingNode = new Node(sectionSet.getString("endingNodeID"));
-
-            Direction roadDirection = determineDirection(sectionSet);
-
-            Road road = createRoad(sectionId);
-
-            Collection<Segment> segments = fetchSectionSegments(sectionId);
-
-            List<Double> tollFareSectionList = fillSectionTollFareList(sectionId);
-
-            Section section = new Section(beginningNode, endingNode, roadDirection, segments, road, tollFareSectionList);
-            roadNetwork.addSection(beginningNode, endingNode, section);
-        }
     }
 
 }

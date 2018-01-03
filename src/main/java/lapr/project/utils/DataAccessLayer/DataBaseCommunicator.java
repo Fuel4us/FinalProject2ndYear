@@ -7,6 +7,7 @@ import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.Abstraction.ProjectDAO;
 import lapr.project.utils.DataAccessLayer.Oracle.OracleAnalysisDAO;
 import lapr.project.utils.DataAccessLayer.Oracle.OracleDBAccessor;
+import lapr.project.utils.DataAccessLayer.Oracle.OracleProjectDAO;
 import oracle.jdbc.pool.OracleDataSource;
 
 import javax.sql.DataSource;
@@ -49,6 +50,7 @@ public class DataBaseCommunicator {
         if (dataSource instanceof OracleDataSource) {
             this.dbAccessor = new OracleDBAccessor();
             this.analysisStorage = new OracleAnalysisDAO();
+            this.projectStorage = new OracleProjectDAO();
         }
     }
 

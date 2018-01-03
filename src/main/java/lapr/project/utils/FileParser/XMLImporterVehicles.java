@@ -492,4 +492,9 @@ public class XMLImporterVehicles implements FileParser {
 
     }
 
+    @Override
+    public boolean importNetwork(Project object, String filename) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

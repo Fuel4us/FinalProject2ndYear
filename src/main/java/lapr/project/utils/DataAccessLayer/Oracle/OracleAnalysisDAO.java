@@ -17,9 +17,6 @@ import java.util.logging.Level;
  */
 public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
 
-    public OracleAnalysisDAO() {
-    }
-
     /**
      * Store an analysis into data layer
      * @param analysis an instance of {@link Analysis}
@@ -27,7 +24,7 @@ public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
     @Override
     public boolean storeAnalysis(Analysis analysis) throws SQLException {
 
-        if (super.oracleConnection == null) {
+        if (this.isConnected()) {
             DBAccessor.DB_ACCESS_LOG.log(Level.INFO, "No connection found in " + this.getClass());
             return false;
         }

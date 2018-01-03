@@ -6,4 +6,5 @@ import lapr.project.model.Project;
  */
 public interface FileParser {
     public boolean importVehicles(Project object, String filename);
+    public boolean importNetwork(Project object, String filename);
 }

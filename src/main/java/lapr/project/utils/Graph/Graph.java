@@ -314,7 +314,7 @@ public class Graph<V, E> implements Graphable<V, E> {
 
         if (otherObj instanceof Graph) {
             @SuppressWarnings("unchecked")
-            Graph<V,E> otherGraph = (Graph<V,E>) otherObj;
+            Graph<V, E> otherGraph = (Graph<V, E>) otherObj;
 
             if (numVert != otherGraph.numVertices() || numEdge != otherGraph.numEdges()) {
                 return false;

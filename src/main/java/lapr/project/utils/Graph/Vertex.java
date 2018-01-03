@@ -1,9 +1,6 @@
 package lapr.project.utils.Graph;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @param <V>
@@ -130,7 +127,7 @@ public class Vertex<V, E> {
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hash(element);
     }
 
     @Override

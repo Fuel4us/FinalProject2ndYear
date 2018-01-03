@@ -16,5 +16,9 @@ public class ImportFile {
      public boolean importVehicles(FileParser input, Project object, String filename) {
         return input.importVehicles(object, filename);
     }
+     
+     public boolean importNetwork(FileParser input, Project object, String filename) {
+         return input.importNetwork(object, filename);
+     }
     
 }

@@ -5,17 +5,16 @@
  */
 package lapr.project.utils.DataAccessLayer.Oracle;
 
+import lapr.project.model.Vehicle.*;
+import lapr.project.utils.DataAccessLayer.Abstraction.VehicleDAO;
+import lapr.project.utils.Measurable;
+import lapr.project.utils.Unit;
+
 import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
-
-import lapr.project.model.Vehicle.*;
-import lapr.project.utils.DataAccessLayer.Abstraction.*;
-import lapr.project.utils.Measurable;
-import lapr.project.utils.Unit;
 
 /**
  * Retrieves instances of Vehicle for a given project
@@ -23,8 +22,6 @@ import lapr.project.utils.Unit;
 public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
 
-    public OracleVehicleDAO() {
-    }
 
     /**
      * Creates a list of instances of {@link Vehicle} from a given project name
@@ -36,19 +33,17 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
     @Override
     public List<Vehicle> retrieveVehicles(String projectName) throws SQLException {
 
-        ResultSet vehicleSet = null;
+        List<Vehicle> vehicles = new LinkedList<>();
+
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call fetchVehiclesFromProject(?)")) {
             callableStatement.setString(1, projectName);
-            vehicleSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            ResultSet vehicleSet = callableStatement.executeQuery();
+            while (vehicleSet.next()) {
+                Vehicle vehicle = retrieveVehicle(vehicleSet);
+                vehicles.add(vehicle);
+            }
         }
 
-        List<Vehicle> vehicles = new LinkedList<>();
-        while (vehicleSet.next()) {
-            Vehicle vehicle = retrieveVehicle(vehicleSet);
-            vehicles.add(vehicle);
-        }
         return vehicles;
     }
 
@@ -86,119 +81,99 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
     }
 
     private List<Regime> fillRegimeList(int throttleID) throws SQLException {
-        ResultSet regimeSet = null;
+        List<Regime> regimeList = new LinkedList<>();
+
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getRegimeSet(?)")) {
             callableStatement.setInt(1, throttleID);
-            regimeSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            ResultSet regimeSet = callableStatement.executeQuery();
+            while (regimeSet.next()) {
+                Regime regime = new Regime(regimeSet.getInt("torqueLow"), regimeSet.getInt("torqueHigh"), regimeSet.getInt("rpmLow"), regimeSet.getInt("rpmHigh"), regimeSet.getInt("SFC"));
+                regimeList.add(regime);
+            }
         }
 
-        List<Regime> regimeList = new LinkedList<>();
-        while (regimeSet.next()) {
-            Regime regime = new Regime(regimeSet.getInt("torqueLow"), regimeSet.getInt("torqueHigh"), regimeSet.getInt("rpmLow"), regimeSet.getInt("rpmHigh"), regimeSet.getInt("SFC"));
-            regimeList.add(regime);
-        }
         return regimeList;
     }
 
     private List<Throttle> fillThrottleList(int energyID) throws SQLException {
         List<Throttle> throttleList = new LinkedList<>();
 
-        ResultSet throttleSet = null;
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getThrottleSet(?)")) {
             callableStatement.setInt(1, energyID);
-            throttleSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            ResultSet throttleSet = callableStatement.executeQuery();
+            while (throttleSet.next()) {
+                int throttleID = throttleSet.getInt("id");
+                List<Regime> regimeList = fillRegimeList(throttleID);
+                Throttle throttle = new Throttle(throttleID, regimeList);
+                throttleList.add(throttle);
+            }
         }
 
-        while (throttleSet.next()) {
-            int throttleID = throttleSet.getInt("id");
-            List<Regime> regimeList = fillRegimeList(throttleID);
-            Throttle throttle = new Throttle(throttleID, regimeList);
-            throttleList.add(throttle);
-        }
         return throttleList;
     }
 
     private List<Gears> fillGearList(int energyID) throws SQLException {
         List<Gears> gearList = new LinkedList<>(); //creation of gears needed by energy
 
-        ResultSet gearsSet = null;
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getGearSet(?)")) {
             callableStatement.setInt(1, energyID);
-            gearsSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            ResultSet gearsSet = callableStatement.executeQuery();
+            while (gearsSet.next()) {
+                Gears gear = new Gears(gearsSet.getInt("id"), gearsSet.getFloat("ratio"));
+                gearList.add(gear);
+            }
         }
 
-        while (gearsSet.next()) {
-            Gears gear = new Gears(gearsSet.getInt("id"), gearsSet.getFloat("ratio"));
-            gearList.add(gear);
-        }
         return gearList;
     }
 
     private Energy createEnergy(String name) throws SQLException {
-        ResultSet energySet = null;
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getEnergySet(?)")) {
             callableStatement.setString(1, name);
-            energySet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            ResultSet energySet = callableStatement.executeQuery();
+            int energyID = energySet.getInt("id");
+            List<Gears> gearList = fillGearList(energyID);
+            List<Throttle> throttleList = fillThrottleList(energyID);
+            return new Energy(energySet.getInt("rpmLow"), energySet.getInt("rpmHigh"), energySet.getFloat("finalDriveRatio"), gearList, throttleList);
         }
-
-        int energyID = energySet.getInt("id");
-        List<Gears> gearList = fillGearList(energyID);
-        List<Throttle> throttleList = fillThrottleList(energyID);
-        return new Energy(energySet.getInt("rpmLow"), energySet.getInt("rpmHigh"), energySet.getFloat("finalDriveRatio"), gearList, throttleList);
-
     }
 
     private Measurable createMeasurable(ResultSet resultSet, Unit[] unitEnum) throws SQLException {
-        Unit unit = null;
         for (Unit unitType : unitEnum) {
             String unitStr = resultSet.getString("unit");
             if (unitStr.equals(unitType.toString())) {
-                unit = unitType;
+                Unit unit = unitType;
+                double quantity = resultSet.getDouble("class");
+                return new Measurable(quantity, unit);
             }
         }
-        double quantity = resultSet.getDouble("class");
-        return new Measurable(quantity, unit);
+        return null;
     }
 
     private List<VelocityLimit> fillVelocityLimitList(String name, Unit[] unitEnum) throws SQLException {
         List<VelocityLimit> velocityLimitList = new LinkedList<>();
 
-        ResultSet velocitySet = null;
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getVelocitySet(?)")) {
             callableStatement.setString(1, name);
-            velocitySet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            ResultSet velocitySet = callableStatement.executeQuery();
+            while (velocitySet.next()) {
+                int velocityLimitID = velocitySet.getInt("id");
+                String segmentType = velocitySet.getString("segmentType");
+                Measurable limit = createVelocityLimit(velocityLimitID, unitEnum);
+                VelocityLimit velocityLimit = new VelocityLimit(segmentType, limit);
+                velocityLimitList.add(velocityLimit);
+            }
         }
 
-        while (velocitySet.next()) {
-            int velocityLimitID = velocitySet.getInt("id");
-            String segmentType = velocitySet.getString("segmentType");
-            Measurable limit = createVelocityLimit(velocityLimitID, unitEnum);
-            VelocityLimit velocityLimit = new VelocityLimit(segmentType, limit);
-            velocityLimitList.add(velocityLimit);
-        }
         return velocityLimitList;
     }
 
     private Measurable createVelocityLimit(int velocityLimitID, Unit[] unitEnum) throws SQLException {
-        ResultSet limitSet = null;
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getLimitSet(?)")) {
             callableStatement.setInt(1, velocityLimitID);
-            limitSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            ResultSet limitSet = callableStatement.executeQuery();
+            return createMeasurable(limitSet, unitEnum);
         }
-
-        return createMeasurable(limitSet, unitEnum);
     }
 
 
@@ -207,8 +182,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getWheelSize(?)")) {
             callableStatement.setString(1, name);
             wheelSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return createMeasurable(wheelSet, unitEnum);
     }
@@ -218,8 +191,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getFrontalAreaSet(?)")) {
             callableStatement.setString(1, name);
             areaSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return createMeasurable(areaSet, unitEnum);
@@ -230,8 +201,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getLoadSet(?)")) {
             callableStatement.setString(1, name);
             loadSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return createMeasurable(loadSet, unitEnum);
@@ -242,8 +211,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         try (CallableStatement callableStatement = oracleConnection.prepareCall("call getMassSet(?)")) {
             callableStatement.setString(1, name);
             massSet = callableStatement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return createMeasurable(massSet, unitEnum);

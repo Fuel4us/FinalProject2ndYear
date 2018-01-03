@@ -3,6 +3,7 @@ package lapr.project.utils.Graph;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @param <V>
@@ -132,15 +133,7 @@ public class Edge<V, E> implements Comparable<Edge<V, E>> {
                 (this.vDest != null && otherEdge.vDest == null))
             return false;
 
-        if (this.vOrig != null && otherEdge.vOrig != null &&
-                !this.vOrig.equals(otherEdge.vOrig))
-            return false;
-
-        if (this.vDest != null && otherEdge.vDest != null &&
-                !this.vDest.equals(otherEdge.vDest))
-            return false;
-        
-        if (Math.abs(this.weight - otherEdge.weight) > test) 
+        if (Math.abs(this.weight - otherEdge.weight) > test)
             return false;
 
         if (this.element != null && otherEdge.element != null)
