@@ -5,7 +5,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import lapr.project.controller.CreateProjectController;
 import lapr.project.model.Project;
-
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
