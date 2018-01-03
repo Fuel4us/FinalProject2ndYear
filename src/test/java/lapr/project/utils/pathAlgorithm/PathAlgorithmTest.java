@@ -113,8 +113,8 @@ public class PathAlgorithmTest {
         throttlesTest.add(new Throttle(50, regimes50Test));
         throttlesTest.add(new Throttle(100, regimes100Test));
 
-        Vehicle vehicle1 = new Vehicle("Toyota", "Vehicle 1", VehicleType.Car, 1, Vehicle.MotorType.COMBUSTION, Fuel.Diesel, new Measurable(2000, Unit.KILOGRAM),
-                new Measurable(0, Unit.KILOGRAM), 0.320f, new Measurable(1.9, Unit.METER_SQUARED), 0.01f, new Measurable(0.6, Unit.METER),
+        Vehicle vehicle1 = new Vehicle("Toyota", "Vehicle 1", VehicleType.Car, 1, Vehicle.MotorType.COMBUSTION, Fuel.Diesel, new Measurable(1500, Unit.KILOGRAM),
+                new Measurable(7500, Unit.KILOGRAM), 0.320f, new Measurable(1.9, Unit.METER_SQUARED), 0.01f, new Measurable(0.6, Unit.METER),
                 velocityLimitListTest, new Energy(900, 5500, 4f, gearsTest, throttlesTest));
 
         Vehicle vehicle2 = new Vehicle("BMW", "Vehicle 2", VehicleType.Car, 1, Vehicle.MotorType.NONCOMBUSTION, Fuel.Electric, new Measurable(2000, Unit.KILOGRAM),
@@ -132,8 +132,7 @@ public class PathAlgorithmTest {
         sectionsExpected.add(sectionTest2);
         sectionsExpected.add(sectionTest3);
 
-        Measurable load1 = new Measurable(0.0, Unit.KILOMETER);
-        Measurable load2 = new Measurable(0.0, Unit.KILOMETER);
+        Measurable load1 = new Measurable(500, Unit.KILOMETER);
 
         PathAlgorithm pathAlgorithmTest = new PathAlgorithm();
 
@@ -149,7 +148,7 @@ public class PathAlgorithmTest {
         assertEquals(analysisExpected.getTravelTime().getQuantity(), analysisResult.getTravelTime().getQuantity(), 0.1);
         assertEquals(analysisExpected.getTravelCost().getQuantity(), analysisResult.getTravelCost().getQuantity(), 0.1);
 
-        assertThrows(IllegalArgumentException.class, () -> pathAlgorithmTest.fastestPath(projectTest, nodeTest1, nodeTest4, vehicle2, load2));
+        assertThrows(IllegalArgumentException.class, () -> pathAlgorithmTest.fastestPath(projectTest, nodeTest1, nodeTest4, vehicle2, load1));
 
     }
 
