@@ -8,10 +8,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * ToDo add JavaDoc
  */
-@XmlRootElement
 public class Node extends Vertex<String,Direction> {
 
-    @XmlAttribute
     private String id;
 
     private static int key = 0;
