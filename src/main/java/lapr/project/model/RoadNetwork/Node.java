@@ -2,9 +2,6 @@ package lapr.project.model.RoadNetwork;
 
 import lapr.project.utils.Graph.Vertex;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  * Represents the nodes that connect sections
  */
