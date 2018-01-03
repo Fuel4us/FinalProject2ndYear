@@ -6,6 +6,7 @@ import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.DataAccessLayer.Abstraction.ProjectDAO;
 
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,9 +30,8 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
 
             List<Project> projects = new LinkedList<>();
 
-            try (PreparedStatement preparedStatement = super.oracleConnection.prepareStatement("SELECT * FROM PROJECT")) {
-
-                ResultSet resultSet = preparedStatement.executeQuery();
+            try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL fetchAllProjects")) {
+                ResultSet resultSet = callableStatement.executeQuery();
 
                 Project project;
                 String projectName;
@@ -61,14 +61,6 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
         return new ArrayList<>();
     }
 
-    /**
-     * Stores a project into the data layer
-     * @param project The project to be stored
-     */
-    @Override
-    public void storeProject(Project project) {
-        //ToDo
-    }
 
 
 }
