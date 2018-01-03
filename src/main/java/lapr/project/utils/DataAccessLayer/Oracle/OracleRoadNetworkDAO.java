@@ -47,8 +47,8 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      */
     private RoadNetwork retrieveRoadNetwork(ResultSet resultSet) throws SQLException {
         String networkID = resultSet.getString("ID");
-        RoadNetwork roadNetwork = new RoadNetwork(true);
-        roadNetwork.setId(networkID);
+        String description = resultSet.getString("description");
+        RoadNetwork roadNetwork = new RoadNetwork(networkID, description);
 
         addNodesToRoadNetwork(networkID, roadNetwork);
         addSectionsToRoadNetwork(networkID, roadNetwork);
@@ -169,6 +169,29 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
                 Section section = new Section(beginningNode, endingNode, roadDirection, segments, road, tollFareSectionList);
                 roadNetwork.addSection(beginningNode, endingNode, section);
             }
+        }
+
+    }
+
+    /**
+     * Stores information of RoadNetwork
+     * @param roadNetwork the {@link RoadNetwork} to store
+     */
+    public int storeRoadNetworkInfo(RoadNetwork roadNetwork) throws SQLException {
+
+        try (CallableStatement storeRoadNetworkInfoFunction = oracleConnection.prepareCall("{? = call storeRoadNetworkInfo(?,?)}")) {
+
+            String id = roadNetwork.getId();
+            String description = roadNetwork.getDescription();
+
+//            storeRoadNetworkInfoFunction.registerOutParameter(1, );
+
+            storeRoadNetworkInfoFunction.setString(2, id);
+            storeRoadNetworkInfoFunction.setString(3, description);
+
+            storeRoadNetworkInfoFunction.executeUpdate();
+
+            return storeRoadNetworkInfoFunction.getInt(1);
         }
 
     }
