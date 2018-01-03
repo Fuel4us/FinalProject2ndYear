@@ -4,6 +4,7 @@ import lapr.project.utils.Graph.Graph;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Objects;
 
 /**
  * Graph view of a network of roads
@@ -92,4 +93,28 @@ public class RoadNetwork extends Graph<Node, Section> {
         return flag;
     }
 
+    /**
+     * Equals for objects of the class RoadNetwork
+     * @param o other object
+     * @return true if the objects are equal
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        RoadNetwork that = (RoadNetwork) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(description, that.description);
+    }
+
+    /**
+     * Hash code for objects of the class RoadNetwork
+     * @return the hash code
+     */
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(super.hashCode(), id, description);
+    }
 }
