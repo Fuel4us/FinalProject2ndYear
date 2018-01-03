@@ -26,7 +26,7 @@ public class PathAlgorithmTest {
     @Test
     public void ensureFastestPathReturnsCorrectAnalysis() throws Exception {
 
-        RoadNetwork roadNetworkTest = new RoadNetwork(false, "1", "the road network");
+        RoadNetwork roadNetworkTest = new RoadNetwork("1", "the road network");
 
         Node nodeTest1 = new Node("n01");
         Node nodeTest2 = new Node("n02");

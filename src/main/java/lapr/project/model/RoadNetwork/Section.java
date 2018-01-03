@@ -165,7 +165,7 @@ public class Section extends Edge<String, Direction> {
 
     /**
      * Prints data from a given segment filling the information missing in a given HTML file template
-     * @param segment
+     * @param segment the segment
      */
     private void printDataFromSegmentHTML(Segment segment, FileWriter file) throws IOException {
         StringTemplateGroup groupSegment = new StringTemplateGroup("src\\main\\resources");
@@ -175,7 +175,7 @@ public class Section extends Edge<String, Direction> {
 
     /**
      * Prints data from a given segment filling the information missing in a given CSV file template
-     * @param segment
+     * @param segment the segment
      */
     private void printDataFromSegmentCSV(Segment segment, FileWriter file) throws IOException {
         StringTemplateGroup groupSegment = new StringTemplateGroup("src\\main\\resources");
@@ -184,7 +184,6 @@ public class Section extends Edge<String, Direction> {
     }
 
     /**
-     * ToDo
      * @return owning road
      */
     public Road getOwningRoad() {

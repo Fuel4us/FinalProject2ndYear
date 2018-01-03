@@ -48,7 +48,7 @@ public class XMLImporterRoadsTest {
     @Test
     public void ensureImportNetworkCreatesCorrectRoadNetwork() throws Exception {
 
-        RoadNetwork roadNetworkExpected = new RoadNetwork(false, "TestSet01", "5 node test set");
+        RoadNetwork roadNetworkExpected = new RoadNetwork("TestSet01", "5 node test set");
 
         Node nodeExpected1 = new Node("n0");
         Node nodeExpected2 = new Node("n1");
