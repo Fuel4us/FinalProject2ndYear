@@ -14,7 +14,7 @@ public class ChangeDataController {
     /**
      * Getter for project name
      * 
-     * @return 
+     * @return Name of Project
      */
     public String getName(){
         return project.getName();
@@ -23,7 +23,7 @@ public class ChangeDataController {
     /**
      * Getter for project description
      * 
-     * @return 
+     * @return Description of project
      */
     public String getDescription(){
         return project.getDescription();
@@ -45,6 +45,15 @@ public class ChangeDataController {
      */
     public void setDescription(String description){
         project.setDescription(description);
+    }
+    
+    /**
+     * Getter for project
+     * 
+     * @return project
+     */
+    public Project getProject(){
+        return project;
     }
 
 }
