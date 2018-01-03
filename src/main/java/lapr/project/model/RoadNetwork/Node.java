@@ -22,7 +22,11 @@ public class Node extends Vertex<String,Direction> {
         super((++key), id);
         this.id=id;
     }
-    
+
+    /**
+     * String format of the class Node
+     * @return a String that represents the Node
+     */
     @Override
     public String toString(){
         return String.format("%s",id);
