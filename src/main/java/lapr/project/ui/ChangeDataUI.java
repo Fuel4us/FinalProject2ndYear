@@ -26,7 +26,7 @@ public class ChangeDataUI extends javax.swing.JFrame {
     /**
      * Creates new form ChangeDataUI
      * 
-     * @param project instance of project
+     * @param prjct instance of project
      */
     public ChangeDataUI(Project prjct) {
         project=prjct;
