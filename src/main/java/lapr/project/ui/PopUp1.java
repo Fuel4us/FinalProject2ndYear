@@ -22,12 +22,12 @@ import static lapr.project.ui.Main.dbCom;
 public class PopUp1 extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 8060730009198569465L;
-    private Project project;
+    private static Project project;
     /**
      * Creates new form PopUp1
      */
-    public PopUp1(Project project) {
-        this.project=project;
+    public PopUp1(Project prjct) {
+        project=prjct;
         initComponents();
     }
 
