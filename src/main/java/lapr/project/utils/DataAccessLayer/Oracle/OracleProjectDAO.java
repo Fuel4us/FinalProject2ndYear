@@ -7,6 +7,7 @@ import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.Abstraction.ProjectDAO;
+import lapr.project.utils.DataAccessLayer.Abstraction.RoadNetworkDAO;
 
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
@@ -74,16 +75,21 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
             return false;
         }
 
-        try (CallableStatement storeAnalysisProcedure = super.oracleConnection.prepareCall("CALL STORE_PROJECT(?,?,?,?,?,?)")) {
+        try (CallableStatement storeProjectProcedure = super.oracleConnection.prepareCall("CALL STORE_PROJECT(?,?)")) {
 
             String projectName = project.getName();
             String description = project.getDescription();
+            storeProjectProcedure.setString("name", projectName);
+            storeProjectProcedure.setString("description", description);
+
             RoadNetwork roadNetwork = project.getRoadNetwork();
             List<Vehicle> vehicles = project.getVehicles();
+            OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO();
+            OracleRoadNetworkDAO oracleRoadNetworkDAO = new OracleRoadNetworkDAO();
+            oracleRoadNetworkDAO.storeRoadNetworkInfo(roadNetwork, projectName);
+//ToDo same to store vehicles
 
-            //ToDo
-            
-            storeAnalysisProcedure.executeUpdate();
+            storeProjectProcedure.executeUpdate();
         }
 
         return true;
