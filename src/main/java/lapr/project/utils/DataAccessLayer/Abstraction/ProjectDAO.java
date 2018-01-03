@@ -17,5 +17,9 @@ public interface ProjectDAO extends DataAccessObject {
      */
     List<Project> fetchProjects() throws SQLException;
 
-
+    /**
+     * Stores instance of {@link Project} in the database
+     * @param project instance of {@link Project}
+     */
+    void storeProject(Project project);
 }
