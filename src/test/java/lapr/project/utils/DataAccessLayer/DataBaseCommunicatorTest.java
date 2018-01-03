@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +20,6 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class DataBaseCommunicatorTest {
 
@@ -52,7 +49,7 @@ public class DataBaseCommunicatorTest {
 
 
         //Test elements for analysis
-        RoadNetwork roadNetworkTest = new RoadNetwork(false, "1", "the road network");
+        RoadNetwork roadNetworkTest = new RoadNetwork("1", "the road network");
 
         Node nodeTest1 = new Node("n01");
         Node nodeTest2 = new Node("n02");
