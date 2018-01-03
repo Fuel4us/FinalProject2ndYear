@@ -2,6 +2,7 @@ package lapr.project.utils.DataAccessLayer.Oracle;
 
 
 import lapr.project.model.Project;
+import lapr.project.model.RoadNetwork.Road;
 import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
@@ -67,13 +68,23 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
      * @param project instance of {@link Project}
      */
     @Override
-    public boolean storeProject(Project project) {
+    public boolean storeProject(Project project) throws SQLException {
         if (this.isConnected()) {
             DBAccessor.DB_ACCESS_LOG.log(Level.INFO, "No connection found in " + this.getClass());
             return false;
         }
 
-        //ToDo
+        try (CallableStatement storeAnalysisProcedure = super.oracleConnection.prepareCall("CALL STORE_PROJECT(?,?,?,?,?,?)")) {
+
+            String projectName = project.getName();
+            String description = project.getDescription();
+            RoadNetwork roadNetwork = project.getRoadNetwork();
+            List<Vehicle> vehicles = project.getVehicles();
+
+            //ToDo
+            
+            storeAnalysisProcedure.executeUpdate();
+        }
 
         return true;
     }
