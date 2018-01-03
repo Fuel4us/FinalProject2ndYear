@@ -31,7 +31,7 @@ public class Vehicle {
     private Fuel fuel;
 
     private Measurable mass;
-    private Measurable load;
+    private Measurable maxLoad;
 
     private double dragCoefficient;
     private Measurable frontalArea;
@@ -51,7 +51,7 @@ public class Vehicle {
      * @param motorType This vehicle's motor type
      * @param fuel This vehicle's fuel
      * @param mass This vehicle's mass
-     * @param load This vehicle's load
+     * @param maxLoad This vehicle's max load
      * @param dragCoefficient This vehicle's drag coefficient
      * @param frontalArea This vehicle's frontal area
      * @param rollingResistanceCoefficient This vehicle's rolling release
@@ -60,7 +60,7 @@ public class Vehicle {
      * @param velocityLimitList This vehicle's velocity limit list
      * @param energy This vehicle's energy
      */
-    public Vehicle(String name, String description, VehicleType type, int vehicleClass, MotorType motorType, Fuel fuel, Measurable mass, Measurable load, float dragCoefficient, Measurable frontalArea, float rollingResistanceCoefficient, Measurable wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
+    public Vehicle(String name, String description, VehicleType type, int vehicleClass, MotorType motorType, Fuel fuel, Measurable mass, Measurable maxLoad, float dragCoefficient, Measurable frontalArea, float rollingResistanceCoefficient, Measurable wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
         this.name = name;
         this.description = description;
         this.type = type;
@@ -75,7 +75,7 @@ public class Vehicle {
 
         this.fuel = fuel;
         this.mass = mass;
-        this.load = load;
+        this.maxLoad = maxLoad;
         this.dragCoefficient = dragCoefficient;
         this.frontalArea = frontalArea;
         this.rollingResistanceCoefficient = rollingResistanceCoefficient;
@@ -146,15 +146,16 @@ public class Vehicle {
      *
      * @param roadNetwork the road network
      * @param segment the segment
+     * @param load
      * @return the energy expenditure in KJ
      */
-    public Measurable determineEnergyExpenditure(RoadNetwork roadNetwork, Segment segment) {
+    public Measurable determineEnergyExpenditure(RoadNetwork roadNetwork, Segment segment, Measurable load) {
 
         int gearPosition = energy.getGears().size() - 1;
         int throttlePosition = 0;
         Measurable maxLinearVelocity = segment.calculateMaximumVelocityInterval(roadNetwork, this);
 
-        Measurable[] data = calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, maxLinearVelocity);
+        Measurable[] data = calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, maxLinearVelocity, load);
 
         Measurable power = calculatePowerGenerated(data[0], data[1]);
 
@@ -189,12 +190,13 @@ public class Vehicle {
      * @param gearPosition the gear position
      * @param throttlePosition the throttle position
      * @param maxLinearVelocity the maximum linear velocity
+     * @param load
      * @return an array with the engine speed in the first position, the torque
      * in the second position, the SFC in the third position and the velocity
      * in the forth position
      */
     private Measurable[] calculateEngineSpeedTorqueSFCVelocity(Segment segment,
-                                                               int gearPosition, int throttlePosition, Measurable maxLinearVelocity) {
+                                                               int gearPosition, int throttlePosition, Measurable maxLinearVelocity, Measurable load) {
 
         double engineSpeed
                 = (maxLinearVelocity.getQuantity() * 60 * energy.getFinalDriveRatio() * energy.getGears().get(gearPosition).getRatio())
@@ -217,7 +219,7 @@ public class Vehicle {
             maxLinearVelocity.setQuantity(maxLinearVelocity.getQuantity() - maxLinearVelocity.getQuantity() * 0.02d);
             gearPosition = energy.getGears().size() - 1;
             throttlePosition = 0;
-            return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, maxLinearVelocity);
+            return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, maxLinearVelocity, load);
         }
 
         double motorForce = (torque * energy.getFinalDriveRatio() * energy.getGears().get(gearPosition).getRatio())
@@ -240,12 +242,12 @@ public class Vehicle {
 
             // if the throttle position is not 100%, we increase the throttle position
             if (throttlePosition < 2) {
-                return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, ++throttlePosition, maxLinearVelocity);
+                return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, ++throttlePosition, maxLinearVelocity, load);
             }
 
             // if the throttle position is in 100%, we decrease the gear position and start the throttle as 25%
             throttlePosition = 0;
-            return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, maxLinearVelocity);
+            return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, maxLinearVelocity, load);
 
         }
 
@@ -295,6 +297,15 @@ public class Vehicle {
      */
     public MotorType getMotorType() {
         return motorType;
+    }
+
+    /**
+     * Checks that this vehicle is able to support a given load
+     * @param load an instance of {@link Measurable}
+     * @return true if the vehicle is able to support the given load
+     */
+    public boolean hasValidLoad(Measurable load) {
+        return load.getQuantity() <= maxLoad.getQuantity();
     }
 
     /**
