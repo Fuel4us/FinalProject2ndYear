@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * ToDo add JavaDoc
+ * Represents the nodes that connect sections
  */
 public class Node extends Vertex<String,Direction> {
 
