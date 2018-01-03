@@ -65,7 +65,7 @@ public class CreateProjectController {
         switch(inputType) {
             case ".xml":
                 type = new XMLImporterVehicles();
-                type2 = new XMLImporterRoads(null, true); // String cannot be converted to File
+                type2 = new XMLImporterRoads(null); // String cannot be converted to File
                 break;
             default:
                 return false;
