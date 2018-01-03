@@ -338,12 +338,14 @@ public class BestPathUI extends JFrame {
 //ToDo  Analyis generatedAnalysis = controller.executeAlgorithm(N10);
         Node startNode = jListNodes1.getSelectedValue();
         Node endNode = jListNodes2.getSelectedValue();
+
+        Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.valueOf("km"));
         Vehicle selectedVehicle = jListVehicles.getSelectedValue();
         if (startNode != null
                 && endNode != null
                 && selectedVehicle != null) {
 
-            new PathAlgorithm().fastestPath(project, startNode, endNode, selectedVehicle);
+            new PathAlgorithm().fastestPath(project, startNode, endNode, selectedVehicle, load);
 
             //TEST ONLY
             List<Section> bestPath = new ArrayList<>();
