@@ -177,21 +177,31 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * Stores information of RoadNetwork
      * @param roadNetwork the {@link RoadNetwork} to store
      */
-    public String storeRoadNetworkInfo(RoadNetwork roadNetwork, String projectName) throws SQLException {
+    public void storeRoadNetworkInfo(RoadNetwork roadNetwork, String projectName) throws SQLException {
 
-        try (CallableStatement storeRoadNetworkInfoFunction = oracleConnection.prepareCall("CALL storeRoadNetworkInfo(?,?,?)")) {
+        try (CallableStatement storeRoadNetworkInfoProcedure = oracleConnection.prepareCall("CALL storeRoadNetworkInfoProcedure(?,?,?)")) {
 
-            String id = roadNetwork.getId();
+            String networkID = roadNetwork.getId();
             String description = roadNetwork.getDescription();
-            storeRoadNetworkInfoFunction.setString("ID", id);
-            storeRoadNetworkInfoFunction.setString("description", description);
-            storeRoadNetworkInfoFunction.setString("projectName", projectName);
+            storeRoadNetworkInfoProcedure.setString("ID", networkID);
+            storeRoadNetworkInfoProcedure.setString("description", description);
+            storeRoadNetworkInfoProcedure.setString("projectName", projectName);
 
-            storeRoadNetworkInfoFunction.executeUpdate();
+            //ToDo - para cada node da network: storeNodes(node, networkID);
 
-            return storeRoadNetworkInfoFunction.getString(1);
+
+            storeRoadNetworkInfoProcedure.executeUpdate();
         }
+    }
 
+    private void storeNodes(Node node, String networkID) throws SQLException {
+        try (CallableStatement storeNodeProcedure = oracleConnection.prepareCall("CALL storeNodeProcedure(?,?)")) {
+
+            storeNodeProcedure.setString("ID", node.getId());
+            storeNodeProcedure.setString("networkID", networkID);
+
+            storeNodeProcedure.executeUpdate();
+        }
     }
 
 }
