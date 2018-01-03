@@ -2,17 +2,13 @@ package lapr.project.model.RoadNetwork;
 
 import lapr.project.utils.Graph.Graph;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
 
 /**
  * Graph view of a network of roads
  */
-@XmlRootElement(name = "Network")
 public class RoadNetwork extends Graph<Node, Section> {
 
-    @XmlElement(name = "id")
     private String id;
 
     private String description;
