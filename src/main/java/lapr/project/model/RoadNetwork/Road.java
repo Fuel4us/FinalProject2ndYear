@@ -2,27 +2,20 @@ package lapr.project.model.RoadNetwork;
 
 import lapr.project.model.Vehicle.Vehicle;
 
-import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Represents the roads
  */
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Road {
 
-    @XmlAttribute
     private String id;
 
-    @XmlElement(name = "road_name")
     private String name;
 
-    @XmlElement
     private String typology;
-    @XmlElementWrapper(name = "toll_fare")
-    @XmlElement(name = "class")
+
     private List<Double> tollFare;
 
     /**
