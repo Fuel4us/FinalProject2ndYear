@@ -5,7 +5,6 @@
  */
 package lapr.project.ui;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -141,8 +140,8 @@ public class PopUp1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonChangeDataActionPerformed
 
     private void jButtonSetActiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetActiveActionPerformed
-        currentProject = projectPop;
-        JOptionPane.showMessageDialog(null, currentProject.getName()+" is now your active project.");
+        // currentProject = projectPop;
+        JOptionPane.showMessageDialog(null, projectPop.getName()+" is now your active project.");
     }//GEN-LAST:event_jButtonSetActiveActionPerformed
 
     private void jButtonCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCopyActionPerformed
