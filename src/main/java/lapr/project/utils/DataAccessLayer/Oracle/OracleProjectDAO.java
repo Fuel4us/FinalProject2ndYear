@@ -6,7 +6,6 @@ import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.Abstraction.ProjectDAO;
-
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,6 +22,7 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
     /**
      * Retrieves all Project entities from the database and creates a list of instances
      * @return a {@link List} of instances of {@link Project}
+     * @throws java.sql.SQLException
      */
     @Override
     public List<Project> fetchProjects() throws SQLException {
@@ -65,15 +65,35 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
     /**
      * Stores instance of {@link Project} in the database
      * @param project instance of {@link Project}
+     * @return 
+     * @throws java.sql.SQLException
      */
     @Override
-    public boolean storeProject(Project project) {
+    public boolean storeProject(Project project) throws SQLException {
         if (this.isConnected()) {
-            DBAccessor.DB_ACCESS_LOG.log(Level.INFO, "No connection found in " + this.getClass());
+            DBAccessor.DB_ACCESS_LOG.log(Level.INFO, "No connection found in {0}", this.getClass());
             return false;
         }
 
-        //ToDo
+        try (CallableStatement storeProjectProcedure = super.oracleConnection.prepareCall("CALL STORE_PROJECT(?,?)")) {
+
+            String projectName = project.getName();
+            String description = project.getDescription();
+            storeProjectProcedure.setString("name", projectName);
+            storeProjectProcedure.setString("description", description);
+
+            RoadNetwork roadNetwork = project.getRoadNetwork();
+            OracleRoadNetworkDAO oracleRoadNetworkDAO = new OracleRoadNetworkDAO();
+            oracleRoadNetworkDAO.storeRoadNetworkInfo(roadNetwork, projectName);
+
+            List<Vehicle> vehicles = project.getVehicles();
+            OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO();
+            for (Vehicle vehicle : vehicles) {
+                oracleVehicleDAO.storeVehicleInfo(vehicle, projectName);
+            }
+
+            storeProjectProcedure.executeUpdate();
+        }
 
         return true;
     }

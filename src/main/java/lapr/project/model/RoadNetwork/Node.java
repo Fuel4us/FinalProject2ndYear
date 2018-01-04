@@ -28,4 +28,12 @@ public class Node extends Vertex<String,Direction> {
     public String toString(){
         return String.format("%s",id);
     }
+
+    /**
+     * Returns id
+     * @return id identifier
+     */
+    public String getId() {
+        return id;
+    }
 }

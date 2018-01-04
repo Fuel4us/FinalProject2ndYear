@@ -204,4 +204,18 @@ public class Section extends Edge<String, Direction> {
         return id;
     }
 
+    /**
+     *
+     * @return direction
+     */
+    public Direction getDirection() {
+        return direction;
+    }
+
+    /**
+     * @return {@link List} of instances {@link Double} tollFare
+     */
+    public List<Double> getTollFare() {
+        return tollFare;
+    }
 }

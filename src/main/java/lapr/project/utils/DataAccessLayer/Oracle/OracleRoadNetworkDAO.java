@@ -7,6 +7,7 @@ package lapr.project.utils.DataAccessLayer.Oracle;
 
 import lapr.project.model.RoadNetwork.*;
 import lapr.project.utils.DataAccessLayer.Abstraction.RoadNetworkDAO;
+import lapr.project.utils.Graph.Edge;
 
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
@@ -22,6 +23,9 @@ import java.util.List;
  * Retrieves the Road Network for a given project
  */
 public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
+    
+    private Double tollFare;
+    private static final String fare = "tollFare";
 
 
     /**
@@ -47,8 +51,8 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      */
     private RoadNetwork retrieveRoadNetwork(ResultSet resultSet) throws SQLException {
         String networkID = resultSet.getString("ID");
-        RoadNetwork roadNetwork = new RoadNetwork(true);
-        roadNetwork.setId(networkID);
+        String description = resultSet.getString("description");
+        RoadNetwork roadNetwork = new RoadNetwork(networkID, description);
 
         addNodesToRoadNetwork(networkID, roadNetwork);
         addSectionsToRoadNetwork(networkID, roadNetwork);
@@ -56,6 +60,12 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
         return roadNetwork;
     }
 
+    /**
+     * Retrieves node entities from database and creates objects {@link Node} to place in respective {@link RoadNetwork}
+     * @param networkID network identifier
+     * @param roadNetwork instance of {@link RoadNetwork}
+     * @throws SQLException
+     */
     private void addNodesToRoadNetwork(String networkID, RoadNetwork roadNetwork) throws SQLException {
 
         try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getNodeSet(?)")) {
@@ -69,9 +79,14 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
                 roadNetwork.addNode(node);
             }
         }
-
     }
 
+    /**
+     * Determines {@link Section} direction
+     * @param sectionSet instance of {@link ResultSet}
+     * @return instance of {@link Direction}
+     * @throws SQLException
+     */
     private Direction determineDirection(ResultSet sectionSet) throws SQLException {
         Direction roadDirection = null;
         Direction[] directionEnum = Direction.values();
@@ -84,6 +99,12 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
         return roadDirection;
     }
 
+    /**
+     * Retrieves from database and creates tollFareList of Road
+     * @param roadID Road identifier
+     * @return {@link List} of {@link Double} tollFare belonging to {@link Road}
+     * @throws SQLException
+     */
     private List<Double> fillRoadTollFareList(String roadID) throws SQLException {
         List<Double> tollFareRoadList = new LinkedList<>();
 
@@ -91,7 +112,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             callableStatement.setString(1, roadID);
             ResultSet roadTollSet = callableStatement.executeQuery();
             while (roadTollSet.next()) {
-                Double tollFare = roadTollSet.getDouble("tollFare");
+                tollFare = roadTollSet.getDouble(fare);
                 tollFareRoadList.add(tollFare);
             }
         }
@@ -99,6 +120,12 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
         return tollFareRoadList;
     }
 
+    /**
+     * 
+     * @param sectionID
+     * @return
+     * @throws SQLException
+     */
     private Road createRoad(int sectionID) throws SQLException {
         try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getRoadSet(?)")) {
             callableStatement.setInt(1, sectionID);
@@ -133,13 +160,19 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
         return segments;
     }
 
+    /**
+     * Retrieves from database and creates tollFareList of Section
+     * @param sectionID section identifier
+     * @return {@link List} of {@link Double} tollFare belonging to {@link Section}
+     * @throws SQLException
+     */
     private List<Double> fillSectionTollFareList(int sectionID) throws SQLException {
         List<Double> tollFareSectionList = new LinkedList<>();
         try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getSectionTollSet(?)")) {
             callableStatement.setInt(1, sectionID);
             ResultSet sectionTollSet = callableStatement.executeQuery();
             while (sectionTollSet.next()) {
-                Double tollFare = sectionTollSet.getDouble("tollFare");
+                tollFare = sectionTollSet.getDouble(fare);
                 tollFareSectionList.add(tollFare);
             }
         }
@@ -173,5 +206,174 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
     }
 
+    /**
+     * Stores information of RoadNetwork
+     * @param roadNetwork the {@link RoadNetwork} to store
+     * @param projectName
+     * @throws java.sql.SQLException
+     */
+    public void storeRoadNetworkInfo(RoadNetwork roadNetwork, String projectName) throws SQLException {
+
+        try (CallableStatement storeRoadNetworkInfoProcedure = oracleConnection.prepareCall("CALL storeRoadNetworkInfoProcedure(?,?,?)")) {
+
+            String networkID = roadNetwork.getId();
+            String description = roadNetwork.getDescription();
+            storeRoadNetworkInfoProcedure.setString("ID", networkID);
+            storeRoadNetworkInfoProcedure.setString("description", description);
+            storeRoadNetworkInfoProcedure.setString("projectName", projectName);
+
+            storeRoadNetworkGraph(roadNetwork, networkID);
+
+            storeRoadNetworkInfoProcedure.executeUpdate();
+        }
+    }
+
+    /**
+     * Stores edges and vertexes of RoadNetwork
+     * @param roadNetwork the {@link RoadNetwork} to store
+     * @param networkID roadNetwork identifier
+     * @throws SQLException
+     */
+    public void storeRoadNetworkGraph(RoadNetwork roadNetwork, String networkID) throws SQLException {
+
+        Iterable<Node> nodes = roadNetwork.vertices();
+        for (Node node : nodes) {storeNode(node, networkID);}
+
+        storeSections(roadNetwork, networkID);
+    }
+
+    /**
+     * Stores instances of {@link Section} and respective information
+     * @param roadNetwork the {@link RoadNetwork} to store
+     * @param networkID roadNetwork identifier
+     * @throws SQLException
+     */
+    private void storeSections(RoadNetwork roadNetwork, String networkID) throws SQLException {
+
+        List<Road> roadsToStore = new LinkedList<>();
+
+//        ToDo - List<Section> sections = (List<Section>) roadNetwork.getEdges();
+        List<Section> sections = new LinkedList<>();
+        for (Section section : sections) {
+            Road road = section.getOwningRoad();
+            if (!roadsToStore.contains(road)) {
+                roadsToStore.add(section.getOwningRoad());
+                storeRoad(road);
+                List<Double> tollFareList = road.getTollFare();
+                for (Double tollFare : tollFareList) {
+                    storeTollFareRoad(tollFare, road.getId());
+                }
+            }
+            storeSection(section, networkID);
+            List<Double> tollFareList = section.getTollFare();
+            for (Double tollFare : tollFareList) {
+                storeTollFareSection(tollFare, section.getID());
+            }
+            Collection<Segment> segments = section.getSegments();
+            for (Segment segment : segments) {
+                storeSegment(segment, section.getID());
+            }
+        }
+    }
+
+    /**
+     * Stores instances of {@link Node} from a given {@link RoadNetwork} in database
+     * @param node instance of {@link Node}
+     * @param networkID {@link RoadNetwork} identifier
+     * @throws SQLException
+     */
+    private void storeNode(Node node, String networkID) throws SQLException {
+        try (CallableStatement storeNodeProcedure = oracleConnection.prepareCall("CALL storeNodeProcedure(?,?)")) {
+
+            storeNodeProcedure.setString("ID", node.getId());
+            storeNodeProcedure.setString("networkID", networkID);
+
+            storeNodeProcedure.executeUpdate();
+        }
+    }
+
+    /**
+     * Stores instances of {@link Road} in database
+     * @param road instance of {@link Road}
+     * @throws SQLException
+     */
+    private void storeRoad(Road road) throws SQLException   {
+        try (CallableStatement storeRoadProcedure = oracleConnection.prepareCall("CALL storeRoadProcedure(?,?,?)")) {
+
+            storeRoadProcedure.setString("ID", road.getId());
+            storeRoadProcedure.setString("name", road.getName());
+            storeRoadProcedure.setString("typology", road.getTypology());
+
+            storeRoadProcedure.executeUpdate();
+        }
+    }
+
+    /**
+     * Stores instances of {@link Section} from a given {@link RoadNetwork} in database
+     * @param section instance of {@link Section}
+     * @param networkID {@link RoadNetwork} identifier
+     * @throws SQLException
+     */
+    private void storeSection(Section section, String networkID) throws SQLException   {
+        try (CallableStatement storeSectionProcedure = oracleConnection.prepareCall("CALL storeSectionProcedure(?,?,?,?,?,?)")) {
+
+            storeSectionProcedure.setInt("ID", section.getID());
+            storeSectionProcedure.setString("networkID", networkID);
+            storeSectionProcedure.setString("beginningNodeID", section.getOriginVertex().getElement());
+            storeSectionProcedure.setString("endingNodeID", section.getDestinyVertex().getElement());
+            storeSectionProcedure.setString("direction", section.getDirection().toString());
+            storeSectionProcedure.setString("owningRoadID", section.getOwningRoad().getId());
+
+            storeSectionProcedure.executeUpdate();
+        }
+    }
+
+    /**
+     * Stores a given road tollFare on database
+     * @param tollFare {@link Double} tollFare belonging to {@link Road}
+     * @param roadID road identifier
+     * @throws SQLException
+     */
+    private void storeTollFareRoad(Double tollFare, String roadID) throws SQLException   {
+        try (CallableStatement storeTollFareRoadProcedure = oracleConnection.prepareCall("CALL storeTollFareRoadProcedure(?,?)")) {
+
+            storeTollFareRoadProcedure.setString("roadID", roadID);
+            storeTollFareRoadProcedure.setDouble(fare, tollFare);
+
+            storeTollFareRoadProcedure.executeUpdate();
+        }
+    }
+
+    /**
+     * Stores a given section tollFare on database
+     * @param tollFare {@link Double} tollFare belonging to {@link Section}
+     * @param sectionID section identifier
+     * @throws SQLException
+     */
+    private void storeTollFareSection(Double tollFare, int sectionID) throws SQLException   {
+        try (CallableStatement storeTollFareSectionProcedure = oracleConnection.prepareCall("CALL storeTollFareSectionProcedure(?,?)")) {
+
+            storeTollFareSectionProcedure.setInt("sectionID", sectionID);
+            storeTollFareSectionProcedure.setDouble("tollFare", tollFare);
+
+            storeTollFareSectionProcedure.executeUpdate();
+        }
+    }
+
+    /**
+     * Stores instances of {@link Segment} from a given {@link Section} in database
+     * @param segment instance of {@link Segment}
+     * @param sectionID {@link Section} identifier
+     * @throws SQLException
+     */
+    private void storeSegment(Segment segment, int sectionID) throws SQLException   {
+        try (CallableStatement storeSegmentProcedure = oracleConnection.prepareCall("CALL storeSegmentProcedure(?,?)")) {
+
+            segment.storeSegmentInformation(storeSegmentProcedure);
+            storeSegmentProcedure.setInt("sectionID", sectionID);
+
+            storeSegmentProcedure.executeUpdate();
+        }
+    }
 }
 

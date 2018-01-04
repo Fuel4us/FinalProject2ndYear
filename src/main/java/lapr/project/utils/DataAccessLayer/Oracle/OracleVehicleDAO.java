@@ -252,4 +252,54 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         return vehicleType;
     }
 
+    /**
+     * Stores information of RoadNetwork
+     * @param vehicle the {@link Vehicle} to store
+     * @param projectName identifier of {@link lapr.project.model.Project}
+     * @throws SQLException
+     */
+    public void storeVehicleInfo(Vehicle vehicle, String projectName) throws SQLException {
+
+        try (CallableStatement storeVehicleInfoProcedure = oracleConnection.prepareCall("CALL storeVehicleInfoProcedure(?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
+
+            storeVehicleInfoProcedure.setString("name", vehicle.getName());
+            storeVehicleInfoProcedure.setString("projectName", projectName);
+
+            vehicle.storeVehicleInformation(storeVehicleInfoProcedure);
+
+            storeVehicleInfoProcedure.setInt("massID", storeStatisticalInfo(vehicle.getMass()));
+            storeVehicleInfoProcedure.setInt("maxLoadID", storeStatisticalInfo(vehicle.getMaxLoad()));
+            storeVehicleInfoProcedure.setInt("frontalAreaID", storeStatisticalInfo(vehicle.getFrontalArea()));
+            storeVehicleInfoProcedure.setInt("wheelSizeID", storeStatisticalInfo(vehicle.getWheelSize()));
+
+            storeVehicleInfoProcedure.setInt("energyID", storeEnergyInfo(vehicle.getEnergy()));
+
+            List<VelocityLimit> velocityLimitList = vehicle.getVelocityLimitList();
+            for (VelocityLimit velocityLimit : velocityLimitList) {
+                storeVelocityLimit(vehicle.getName(), velocityLimit);
+            }
+
+            storeVehicleInfoProcedure.executeUpdate();
+        }
+    }
+
+    //ToDo
+    private int storeEnergyInfo(Energy energy) {
+        return 0;
+    }
+
+    /**
+     * Stores information of {@link VelocityLimit}
+     * @param name vehicle name
+     */
+    private void storeVelocityLimit(String name, VelocityLimit velocityLimit) throws SQLException {
+        try (CallableStatement storeVelocityLimitProcedure = oracleConnection.prepareCall("CALL storeVelocityLimitProcedure(?,?,?)")) {
+            storeVelocityLimitProcedure.setString("segmentType", velocityLimit.getSegmentType());
+            storeVelocityLimitProcedure.setInt("limitID", storeStatisticalInfo(velocityLimit.getLimit()));
+            storeVelocityLimitProcedure.setString("vehicleName", name);
+
+            storeVelocityLimitProcedure.executeUpdate();
+        }
+    }
+
 }

@@ -59,7 +59,7 @@ public class DataBaseCommunicator {
      * @param connection the connection on which the exception was generated
      * @param e the exception that caused the transaction failure
      */
-    private void attemptFailSafeRecovery(Connection connection, SQLException e) {
+    private static void attemptFailSafeRecovery(Connection connection, SQLException e) {
         if (connection != null) {
             try {
                 connection.rollback();
@@ -164,5 +164,20 @@ public class DataBaseCommunicator {
      */
     void setAnalysisStorage(AnalysisDAO analysisStorage) {
         this.analysisStorage = analysisStorage;
+    }
+    
+    /**
+     * Returns the project by the name
+     * @param name
+     * @param listProjects
+     * @return
+     */
+    public Project getProjectByName(String name, List<Project> listProjects){
+        for(Project p : listProjects){
+            if(p.getName().equalsIgnoreCase(name)){
+                return p;
+            }
+        }
+        return null;
     }
 }

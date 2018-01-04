@@ -5,11 +5,9 @@ import lapr.project.model.RoadNetwork.Section;
 import lapr.project.utils.DataAccessLayer.Abstraction.AnalysisDAO;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.Measurable;
-import lapr.project.utils.Unit;
 
 import java.sql.CallableStatement;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.logging.Level;
 
 /**
@@ -33,31 +31,6 @@ public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
         storeAnalysedSections(analysis);
 
         return true;
-
-    }
-
-
-    /**
-     * Stores information that requires units
-     * @param measurable the {@link Measurable} to store
-     */
-    private int storeStatisticalInfo(Measurable measurable) throws SQLException {
-
-        try (CallableStatement storeMeasurableFunction = super.oracleConnection
-                .prepareCall("{? = call STORE_MEASURABLE(?,?)}")) {
-
-            double quantity = measurable.getQuantity();
-            Unit unit = measurable.getUnit();
-
-            storeMeasurableFunction.registerOutParameter(1, Types.INTEGER);
-
-            storeMeasurableFunction.setDouble(2, quantity);
-            storeMeasurableFunction.setString(3, unit.toString());
-
-            storeMeasurableFunction.executeUpdate();
-
-            return storeMeasurableFunction.getInt(1);
-        }
 
     }
 
