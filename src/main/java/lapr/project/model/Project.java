@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import lapr.project.model.RoadNetwork.*;
 import lapr.project.model.Vehicle.Vehicle;
 import java.util.List;
-import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 
 /**
  * <p>
@@ -14,17 +13,17 @@ import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
  */
 public class Project {
 
-    private int countEquals;
     private String name;
     private String description;
     private RoadNetwork roadNetwork;
     private List<Vehicle> vehicles;
+    private int idName = 1;
 
     public Project(String name, String description, RoadNetwork roadNetwork, List<Vehicle> vehicles) {
         this.name = name;
         this.description = description;
         this.roadNetwork = roadNetwork;
-        this.vehicles = new ArrayList<Vehicle>();
+        this.vehicles = vehicles;
     }
 
     /**
@@ -140,6 +139,17 @@ public class Project {
      */
     public Project cloneProject() throws CloneNotSupportedException {
         return new Project(getName() + " (Copy)", getDescription() + " (Copy)", getRoadNetwork(), getVehicles());
+    }
+    
+    public String addNameIfEquals(List<Project> project, String name) {
+        
+        for (Project p: project) {
+            if (p.getName().equalsIgnoreCase(name)) {
+                name += idName;
+                idName++;
+            }
+        }
+        return name;
     }
 
 }

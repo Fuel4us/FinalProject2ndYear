@@ -2,13 +2,10 @@ package lapr.project.utils.DataAccessLayer.Oracle;
 
 
 import lapr.project.model.Project;
-import lapr.project.model.RoadNetwork.Road;
 import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.Abstraction.ProjectDAO;
-import lapr.project.utils.DataAccessLayer.Abstraction.RoadNetworkDAO;
-
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,6 +22,7 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
     /**
      * Retrieves all Project entities from the database and creates a list of instances
      * @return a {@link List} of instances of {@link Project}
+     * @throws java.sql.SQLException
      */
     @Override
     public List<Project> fetchProjects() throws SQLException {
@@ -67,11 +65,13 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
     /**
      * Stores instance of {@link Project} in the database
      * @param project instance of {@link Project}
+     * @return 
+     * @throws java.sql.SQLException
      */
     @Override
     public boolean storeProject(Project project) throws SQLException {
         if (this.isConnected()) {
-            DBAccessor.DB_ACCESS_LOG.log(Level.INFO, "No connection found in " + this.getClass());
+            DBAccessor.DB_ACCESS_LOG.log(Level.INFO, "No connection found in {0}", this.getClass());
             return false;
         }
 

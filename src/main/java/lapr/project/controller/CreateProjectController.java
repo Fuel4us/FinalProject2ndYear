@@ -89,7 +89,7 @@ public class CreateProjectController {
      * @param description Proect description
      * @throws java.lang.Exception
      */
-    public void createProject(String name, String description) throws Exception {
+    public synchronized void createProject(String name, String description) throws Exception {
         XMLImporterRoads roadImporter = new XMLImporterRoads(roadsFile);
         project = new Project(name, description, roadImporter.importNetwork(), null);
         new XMLImporterVehicles().importVehicles(project, vehiclesFile.getAbsolutePath());

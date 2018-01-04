@@ -23,6 +23,9 @@ import java.util.List;
  * Retrieves the Road Network for a given project
  */
 public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
+    
+    private Double tollFare;
+    private static final String fare = "tollFare";
 
 
     /**
@@ -109,7 +112,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             callableStatement.setString(1, roadID);
             ResultSet roadTollSet = callableStatement.executeQuery();
             while (roadTollSet.next()) {
-                Double tollFare = roadTollSet.getDouble("tollFare");
+                tollFare = roadTollSet.getDouble(fare);
                 tollFareRoadList.add(tollFare);
             }
         }
@@ -169,7 +172,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             callableStatement.setInt(1, sectionID);
             ResultSet sectionTollSet = callableStatement.executeQuery();
             while (sectionTollSet.next()) {
-                Double tollFare = sectionTollSet.getDouble("tollFare");
+                tollFare = sectionTollSet.getDouble(fare);
                 tollFareSectionList.add(tollFare);
             }
         }
@@ -206,6 +209,8 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     /**
      * Stores information of RoadNetwork
      * @param roadNetwork the {@link RoadNetwork} to store
+     * @param projectName
+     * @throws java.sql.SQLException
      */
     public void storeRoadNetworkInfo(RoadNetwork roadNetwork, String projectName) throws SQLException {
 
@@ -333,7 +338,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
         try (CallableStatement storeTollFareRoadProcedure = oracleConnection.prepareCall("CALL storeTollFareRoadProcedure(?,?)")) {
 
             storeTollFareRoadProcedure.setString("roadID", roadID);
-            storeTollFareRoadProcedure.setDouble("tollFare", tollFare);
+            storeTollFareRoadProcedure.setDouble(fare, tollFare);
 
             storeTollFareRoadProcedure.executeUpdate();
         }

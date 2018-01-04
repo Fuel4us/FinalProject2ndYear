@@ -59,7 +59,7 @@ public class DataBaseCommunicator {
      * @param connection the connection on which the exception was generated
      * @param e the exception that caused the transaction failure
      */
-    private void attemptFailSafeRecovery(Connection connection, SQLException e) {
+    private static void attemptFailSafeRecovery(Connection connection, SQLException e) {
         if (connection != null) {
             try {
                 connection.rollback();
