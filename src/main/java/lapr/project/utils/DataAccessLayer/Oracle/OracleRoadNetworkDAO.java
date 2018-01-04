@@ -212,7 +212,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * @param projectName
      * @throws java.sql.SQLException
      */
-    public void storeRoadNetworkInfo(RoadNetwork roadNetwork, String projectName) throws SQLException {
+    void storeRoadNetworkInfo(RoadNetwork roadNetwork, String projectName) throws SQLException {
 
         try (CallableStatement storeRoadNetworkInfoProcedure = oracleConnection.prepareCall("CALL storeRoadNetworkInfoProcedure(?,?,?)")) {
 
@@ -234,7 +234,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * @param networkID roadNetwork identifier
      * @throws SQLException
      */
-    public void storeRoadNetworkGraph(RoadNetwork roadNetwork, String networkID) throws SQLException {
+    private void storeRoadNetworkGraph(RoadNetwork roadNetwork, String networkID) throws SQLException {
 
         Iterable<Node> nodes = roadNetwork.vertices();
         for (Node node : nodes) {storeNode(node, networkID);}
