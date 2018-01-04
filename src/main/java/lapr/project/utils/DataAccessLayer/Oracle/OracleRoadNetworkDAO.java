@@ -22,6 +22,9 @@ import java.util.List;
  * Retrieves the Road Network for a given project
  */
 public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
+    
+    private Double tollFare;
+    private final String fare = "tollFare";
 
 
     /**
@@ -91,7 +94,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             callableStatement.setString(1, roadID);
             ResultSet roadTollSet = callableStatement.executeQuery();
             while (roadTollSet.next()) {
-                Double tollFare = roadTollSet.getDouble("tollFare");
+                tollFare = roadTollSet.getDouble(fare);
                 tollFareRoadList.add(tollFare);
             }
         }
@@ -139,7 +142,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             callableStatement.setInt(1, sectionID);
             ResultSet sectionTollSet = callableStatement.executeQuery();
             while (sectionTollSet.next()) {
-                Double tollFare = sectionTollSet.getDouble("tollFare");
+                tollFare = sectionTollSet.getDouble(fare);
                 tollFareSectionList.add(tollFare);
             }
         }
@@ -176,6 +179,8 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     /**
      * Stores information of RoadNetwork
      * @param roadNetwork the {@link RoadNetwork} to store
+     * @param projectName
+     * @throws java.sql.SQLException
      */
     public void storeRoadNetworkInfo(RoadNetwork roadNetwork, String projectName) throws SQLException {
 
@@ -207,54 +212,54 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
         }
     }
 
-    private void storeRoad(Road road) throws SQLException   {
-        try (CallableStatement storeRoadProcedure = oracleConnection.prepareCall("CALL storeRoadProcedure(?,?,?)")) {
-
-            storeRoadProcedure.setString("ID", road.getId());
-            storeRoadProcedure.setString("name", road.getName());
-            storeRoadProcedure.setString("typology", road.getTypology());
-
-            storeRoadProcedure.executeUpdate();
-        }
-    }
-
-    private void storeSection(Section section, String networkID) throws SQLException   {
-        try (CallableStatement storeSectionProcedure = oracleConnection.prepareCall("CALL storeSectionProcedure(?,?,?,?,?,?)")) {
-
-            storeSectionProcedure.setInt("ID", section.getID());
-            storeSectionProcedure.setString("networkID", networkID);
-            storeSectionProcedure.setString("beginningNodeID", section.getOriginVertex().getElement());
-            storeSectionProcedure.setString("endingNodeID", section.getDestinyVertex().getElement());
-            storeSectionProcedure.setString("direction", section.getDirection().toString());
-            storeSectionProcedure.setString("owningRoadID", section.getOwningRoad().getId());
-
-            storeSectionProcedure.executeUpdate();
-        }
-    }
-
-    private void storeTollFareRoadProcedure(Double tollFare, String roadID) throws SQLException   {
-        try (CallableStatement storeTollFareRoadProcedure = oracleConnection.prepareCall("CALL storeTollFareRoadProcedure(?,?,?)")) {
-
-            //ToDo como crio identificador do toll fare?
-//            storeTollFareRoadProcedure.setString("ID", identificadordotollfare);
-            storeTollFareRoadProcedure.setString("roadID", roadID);
-            storeTollFareRoadProcedure.setDouble("tollFare", tollFare);
-
-            storeTollFareRoadProcedure.executeUpdate();
-        }
-    }
-
-    private void storeTollFareSectionProcedure(Double tollFare, String sectionID) throws SQLException   {
-        try (CallableStatement storeTollFareSectionProcedure = oracleConnection.prepareCall("CALL storeTollFareSectionProcedure(?,?,?)")) {
-
-            //ToDo como crio identificador do toll fare?
-//            storeTollFareRoadProcedure.setString("ID", identificadordotollfare);
-            storeTollFareSectionProcedure.setString("sectionID", sectionID);
-            storeTollFareSectionProcedure.setDouble("tollFare", tollFare);
-
-            storeTollFareSectionProcedure.executeUpdate();
-        }
-    }
+//    private void storeRoad(Road road) throws SQLException   {
+//        try (CallableStatement storeRoadProcedure = oracleConnection.prepareCall("CALL storeRoadProcedure(?,?,?)")) {
+//
+//            storeRoadProcedure.setString("ID", road.getId());
+//            storeRoadProcedure.setString("name", road.getName());
+//            storeRoadProcedure.setString("typology", road.getTypology());
+//
+//            storeRoadProcedure.executeUpdate();
+//        }
+//    }
+//
+//    private void storeSection(Section section, String networkID) throws SQLException   {
+//        try (CallableStatement storeSectionProcedure = oracleConnection.prepareCall("CALL storeSectionProcedure(?,?,?,?,?,?)")) {
+//
+//            storeSectionProcedure.setInt("ID", section.getID());
+//            storeSectionProcedure.setString("networkID", networkID);
+//            storeSectionProcedure.setString("beginningNodeID", section.getOriginVertex().getElement());
+//            storeSectionProcedure.setString("endingNodeID", section.getDestinyVertex().getElement());
+//            storeSectionProcedure.setString("direction", section.getDirection().toString());
+//            storeSectionProcedure.setString("owningRoadID", section.getOwningRoad().getId());
+//
+//            storeSectionProcedure.executeUpdate();
+//        }
+//    }
+//
+//    private void storeTollFareRoadProcedure(Double tollFare, String roadID) throws SQLException   {
+//        try (CallableStatement storeTollFareRoadProcedure = oracleConnection.prepareCall("CALL storeTollFareRoadProcedure(?,?,?)")) {
+//
+//            //ToDo como crio identificador do toll fare?
+////            storeTollFareRoadProcedure.setString("ID", identificadordotollfare);
+//            storeTollFareRoadProcedure.setString("roadID", roadID);
+//            storeTollFareRoadProcedure.setDouble(fare, tollFare);
+//
+//            storeTollFareRoadProcedure.executeUpdate();
+//        }
+//    }
+//
+//    private void storeTollFareSectionProcedure(Double tollFare, String sectionID) throws SQLException   {
+//        try (CallableStatement storeTollFareSectionProcedure = oracleConnection.prepareCall("CALL storeTollFareSectionProcedure(?,?,?)")) {
+//
+//            //ToDo como crio identificador do toll fare?
+////            storeTollFareRoadProcedure.setString("ID", identificadordotollfare);
+//            storeTollFareSectionProcedure.setString("sectionID", sectionID);
+//            storeTollFareSectionProcedure.setDouble(fare, tollFare);
+//
+//            storeTollFareSectionProcedure.executeUpdate();
+//        }
+//    }
 
 }
 

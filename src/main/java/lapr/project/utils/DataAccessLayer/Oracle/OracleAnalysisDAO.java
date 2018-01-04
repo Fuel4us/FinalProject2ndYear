@@ -5,11 +5,9 @@ import lapr.project.model.RoadNetwork.Section;
 import lapr.project.utils.DataAccessLayer.Abstraction.AnalysisDAO;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.Measurable;
-import lapr.project.utils.Unit;
 
 import java.sql.CallableStatement;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.logging.Level;
 
 /**
