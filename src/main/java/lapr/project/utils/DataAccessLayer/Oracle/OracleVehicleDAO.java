@@ -283,6 +283,12 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         }
     }
 
+    //ToDo
+    private int storeEnergyInfo(Energy energy) {
+        return 0;
+    }
+
+    //ToDo
     private void storeVelocityLimit(String name) {
     }
 
