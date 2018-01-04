@@ -187,15 +187,25 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             storeRoadNetworkInfoProcedure.setString("description", description);
             storeRoadNetworkInfoProcedure.setString("projectName", projectName);
 
-            Iterable<Node> nodes = roadNetwork.vertices();
-            for (Node node : nodes) {
-                storeNode(node, networkID);
-            }
-            //ToDo - para cada section da network: storeSections(section, networkID);
+            storeRoadNetworkGraph(roadNetwork, networkID);
 
             storeRoadNetworkInfoProcedure.executeUpdate();
         }
     }
+
+    /**
+     * Stores edges and vertexes of RoadNetwork
+     * @param roadNetwork the {@link RoadNetwork} to store
+     * @param networkID roadNetwork identifier
+     */
+    public void storeRoadNetworkGraph(RoadNetwork roadNetwork, String networkID) throws SQLException {
+
+        Iterable<Node> nodes = roadNetwork.vertices();
+        for (Node node : nodes) {storeNode(node, networkID);}
+
+//        storeSections(roadNetwork, networkID);
+    }
+
 
     private void storeNode(Node node, String networkID) throws SQLException {
         try (CallableStatement storeNodeProcedure = oracleConnection.prepareCall("CALL storeNodeProcedure(?,?)")) {
