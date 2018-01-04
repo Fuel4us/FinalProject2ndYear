@@ -146,7 +146,7 @@ public class Vehicle {
      *
      * @param roadNetwork the road network
      * @param segment the segment
-     * @param load
+     * @param load the vehicle's load
      * @return the energy expenditure in KJ
      */
     public Measurable determineEnergyExpenditure(RoadNetwork roadNetwork, Segment segment, Measurable load) {
@@ -190,7 +190,7 @@ public class Vehicle {
      * @param gearPosition the gear position
      * @param throttlePosition the throttle position
      * @param maxLinearVelocity the maximum linear velocity
-     * @param load
+     * @param load the vehicle's load
      * @return an array with the engine speed in the first position, the torque
      * in the second position, the SFC in the third position and the velocity
      * in the forth position
