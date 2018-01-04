@@ -36,6 +36,7 @@ public class PathAlgorithm {
      * @param vehicle The selected vehicle to which the analysis applies
      * The maximum velocity of the vehicle will be assumed if this
      * velocity is allowed in the speed limit of a segment
+     * @param load the vehicle's load
      * @return The Analysis containing the results
      */
     public Analysis fastestPath(Project project, Node start, Node end, Vehicle vehicle, Measurable load) {
