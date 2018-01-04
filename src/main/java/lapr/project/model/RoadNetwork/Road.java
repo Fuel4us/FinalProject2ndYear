@@ -111,4 +111,11 @@ public class Road {
     public String getId() {
         return id;
     }
+
+    /**
+     * @return {@link List} of instances {@link Double} tollFare
+     */
+    public List<Double> getTollFare() {
+        return tollFare;
+    }
 }
