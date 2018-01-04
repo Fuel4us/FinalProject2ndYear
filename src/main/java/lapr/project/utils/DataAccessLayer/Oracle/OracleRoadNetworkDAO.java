@@ -232,7 +232,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
         }
     }
 
-    private void storeTollFareRoadProcedure(Double tollFare, String roadID) throws SQLException   {
+    private void storeTollFareRoad(Double tollFare, String roadID) throws SQLException   {
         try (CallableStatement storeTollFareRoadProcedure = oracleConnection.prepareCall("CALL storeTollFareRoadProcedure(?,?,?)")) {
 
             //ToDo como crio identificador do toll fare?
@@ -244,7 +244,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
         }
     }
 
-    private void storeTollFareSectionProcedure(Double tollFare, String sectionID) throws SQLException   {
+    private void storeTollFareSection(Double tollFare, String sectionID) throws SQLException   {
         try (CallableStatement storeTollFareSectionProcedure = oracleConnection.prepareCall("CALL storeTollFareSectionProcedure(?,?,?)")) {
 
             //ToDo como crio identificador do toll fare?
@@ -256,5 +256,14 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
         }
     }
 
+    private void storeSegment(Segment segment, String sectionID) throws SQLException   {
+        try (CallableStatement storeSegmentProcedure = oracleConnection.prepareCall("CALL storeSegmentProcedure(?,?,?,?,?,?,?,?,?)")) {
+
+            segment.storeSegmentInformation(storeSegmentProcedure);
+            storeSegmentProcedure.setString("sectionID", sectionID);
+
+            storeSegmentProcedure.executeUpdate();
+        }
+    }
 }
 
