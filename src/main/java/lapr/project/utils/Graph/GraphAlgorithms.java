@@ -4,6 +4,9 @@ import lapr.project.utils.GeneralOperator;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.ToDoubleFunction;
 
 public class GraphAlgorithms {
 
@@ -139,6 +142,80 @@ public class GraphAlgorithms {
     }
 
     /**
+     * <p>
+     * Computes shortest-path distance from a source vertex to all reachable
+     * vertices of a graph g with non negative edge weights
+     * This implementation uses Dijkstra's algorithm, and applies cumulative dependency between outputs of previous iterations.
+     *
+     * </p>
+     * @param g Graph instance
+     * @param vOrig Vertex that will be the source of the path
+     * @param visited set of discovered vertices
+     * @param pathKeys minimum path vertices keys
+     * @param dist minimum distances
+     * ToDo
+     */
+    private static <V, E, R, A> void cumulativeDijkstra(Graph<V, E> g, V vOrig, List<V> vertices,
+                                                        boolean[] visited, int[] pathKeys, double[] dist,
+                                                        //use edge and P to produce a E
+                                                        BiFunction<Edge<V, E>, A, R> cumulativeApplier,
+                                                        //defines weight in terms of E
+                                                        ToDoubleFunction<R> weightExtractor, A seed,
+                                                        //extract P from E
+                                                        Function<R, A> cumulativeAttributeExtractor) {
+
+        //uma função que define a forma como o double (weight) é extraído da function principal
+        // O return da function principal será guardado
+        // um contentor do tipo do return type de function será passado para inicializar
+
+        //o return guardado será passado como parametro nas iterações seguintes
+
+        int vkey = g.getKey(vOrig);
+        dist[vkey] = 0;
+
+        while (vkey != -1) {
+            vOrig = vertices.get(vkey);
+            visited[vkey] = true;
+
+            //Initialize cumulative applier args
+            R product;
+            A attribute = seed;
+
+            for (Edge<V, E> edge : g.outgoingEdges(vOrig)) {
+
+                V vAdj = g.opposite(vOrig, edge);
+                int vkeyAdj = g.getKey(vAdj);
+
+                //product is the result of application of f(x) where initial x is the seed
+                product = cumulativeApplier.apply(edge, attribute);
+
+                //the definition of weight is extractable from the product
+                double definedWeight = weightExtractor.applyAsDouble(product);
+
+                //the cumulative attribute is extractable from the product
+                attribute = cumulativeAttributeExtractor.apply(product);
+
+                if (!visited[vkeyAdj] && dist[vkeyAdj] > dist[vkey] + definedWeight) {
+                    dist[vkeyAdj] = dist[vkey] + definedWeight;
+                    pathKeys[vkeyAdj] = vkey;
+                }
+
+            }
+            double minDist = Double.MAX_VALUE;
+            vkey = -1;
+
+            for (int i = 0; i < g.numVertices(); i++) {
+
+                if (!visited[i] && dist[i] < minDist) {
+                    minDist = dist[i];
+                    vkey = i;
+                }
+
+            }
+        }
+    }
+
+    /**
      * Extracts from pathKeys the minimum path between voInf and vdInf The path
      * is constructed from the end to the beginning
      * @param g Graph instance
@@ -171,7 +248,7 @@ public class GraphAlgorithms {
      * @return the weight of the shortestPath if weighted is set to true, 1 otherwise
      */
     public static <V, E> double shortestPath(Graph<V, E> g, V vOrig, V vDest, LinkedList<V> shortPath) {
-        return shortestPath(g, vOrig, vDest, shortPath, null);
+        return shortestPath(g, vOrig, vDest, shortPath, null, false, null, null, null,null);
     }
 
     /**
@@ -187,9 +264,58 @@ public class GraphAlgorithms {
      * @param vDest Destiny vertex
      * @param shortPath The list to be filled with the path
      * This condition only applies if weighted is set to false
+     * @param edgeOperator
      * @return the weight of the shortestPath if weighted is set to true, 1 otherwise
      */
     public static <V, E> double shortestPath(Graph<V, E> g, V vOrig, V vDest, LinkedList<V> shortPath, GeneralOperator<Edge<V, E>> edgeOperator) {
+        return shortestPath(g, vOrig, vDest, shortPath, edgeOperator, false, null, null, null,null);
+    }
+
+    /**
+     * <p>
+     * Uses Dijkstra's algorithm to compute the shortest path,
+     * allowing for a definition of edge weight
+     * via the implementation of a {@link FunctionalInterface} : {@link GeneralOperator} edgeOperator.
+     * If edgeOperator is null, the weight of the edge is assumed to be that of the attribute
+     * defined in the class attribute scope.
+     * </p>
+     * @param g Graph
+     * @param vOrig Origin vertex
+     * @param vDest Destiny vertex
+     * @param shortPath The list to be filled with the path
+     * This condition only applies if weighted is set to false
+     * @param cumulativeApplier
+     * @param weightExtractor
+     * @param seed @return the weight of the shortestPath if weighted is set to true, 1 otherwise
+     */
+    public static <I, S, E, P> double shortestPath(Graph<I, S> g, I vOrig, I vDest, LinkedList<I> shortPath,
+                                                   BiFunction<Edge<I, S>, P, E> cumulativeApplier,
+                                                   ToDoubleFunction<E> weightExtractor, P seed,
+                                                   Function<E, P> cumulativeAttributeExtractor) {
+
+        return shortestPath(g, vOrig, vDest, shortPath, null, true, cumulativeApplier, weightExtractor, seed, cumulativeAttributeExtractor);
+    }
+
+    /**
+     * <p>
+     * Uses Dijkstra's algorithm to compute the shortest path.
+     * This is the method where implementation is focused, but the overloads provided should be used instead.
+     * </p>
+     * @param g Graph
+     * @param vOrig Origin vertex
+     * @param vDest Destiny vertex
+     * @param shortPath The list to be filled with the path
+     * This condition only applies if weighted is set to false
+     * @return the weight of the shortestPath if weighted is set to true, 1 otherwise
+     */
+    private static <V, E, R, A> double shortestPath(Graph<V, E> g, V vOrig, V vDest, LinkedList<V> shortPath, GeneralOperator<Edge<V, E>> edgeOperator,
+                                                    boolean operateCumulatively,
+                                                    BiFunction<Edge<V, E>, A, R> cumulativeApplier,
+                                                    //defines weight in terms of E
+                                                    ToDoubleFunction<R> weightExtractor, A seed,
+                                                    //extract P from E
+                                                    Function<R, A> cumulativeAttributeExtractor) {
+
         if (!g.validVertex(vOrig) || !g.validVertex(vDest)) {
             return 0;
         }
@@ -205,12 +331,15 @@ public class GraphAlgorithms {
             pathKeys[i] = -1;
         }
 
-
-        shortestPathLength(g, vOrig, vertices, visited, pathKeys, dist, edgeOperator);
+        if (operateCumulatively) {
+            cumulativeDijkstra(g, vOrig, vertices, visited, pathKeys, dist, cumulativeApplier, weightExtractor, seed, cumulativeAttributeExtractor);
+        } else {
+            shortestPathLength(g, vOrig, vertices, visited, pathKeys, dist, edgeOperator);
+        }
 
         double lengthPath = dist[g.getKey(vDest)];
 
-        if (Math.abs(lengthPath - Double.MAX_VALUE) > 0) {  // had error because was [if (Math.abs(lengthPath - Double.MAX_VALUE) > 0 || Math.abs(lengthPath - Double.MAX_VALUE) < 0) {]
+        if (Math.abs(lengthPath - Double.MAX_VALUE) > 0) {
             getPath(g, vOrig, vDest, vertices, pathKeys, shortPath);
             return lengthPath;
         }
@@ -222,7 +351,7 @@ public class GraphAlgorithms {
      * Reverses the path
      * @param path stack with path
      */
-    private static <V, E> LinkedList<V> revPath(LinkedList<V> path) {
+    private static <V, E> LinkedList<V> Path(LinkedList<V> path) {
 
         LinkedList<V> pathcopy = new LinkedList<>(path);
         LinkedList<V> pathrev = new LinkedList<>();
@@ -233,4 +362,5 @@ public class GraphAlgorithms {
 
         return pathrev;
     }
+
 }
