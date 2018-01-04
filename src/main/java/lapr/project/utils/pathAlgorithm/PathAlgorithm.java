@@ -7,7 +7,6 @@ import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.RoadNetwork.Section;
 import lapr.project.model.RoadNetwork.Segment;
 import lapr.project.model.Vehicle.Vehicle;
-import lapr.project.model.Vehicle.VehicleType;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 
@@ -36,12 +35,17 @@ public class PathAlgorithm {
      * @param vehicle The selected vehicle to which the analysis applies
      * The maximum velocity of the vehicle will be assumed if this
      * velocity is allowed in the speed limit of a segment
+     * @param load the vehicle's load
      * @return The Analysis containing the results
      */
     public Analysis fastestPath(Project project, Node start, Node end, Vehicle vehicle, Measurable load) {
 
         if (vehicle.getMotorType() != Vehicle.MotorType.COMBUSTION) {
-            throw new IllegalArgumentException("This operation doesn't support electric vehicles");
+            throw new IllegalArgumentException("This operation does not support electric vehicles");
+        }
+
+        if (!vehicle.hasValidLoad(load)) {
+            throw new IllegalArgumentException("The selected vehicle does not support this load");
         }
 
         RoadNetwork roadNetwork = project.getRoadNetwork();
@@ -67,7 +71,7 @@ public class PathAlgorithm {
         for (Section section : sections) {
             for (Segment segment : section.getSegments()) {
                 expendedEnergy.setQuantity(expendedEnergy.getQuantity() +
-                        vehicle.determineEnergyExpenditure(roadNetwork, segment).getQuantity());
+                        vehicle.determineEnergyExpenditure(roadNetwork, segment, load).getQuantity());
             }
             tollCosts.setQuantity(tollCosts.getQuantity() + section.determineTollCosts(vehicle).getQuantity());
         }

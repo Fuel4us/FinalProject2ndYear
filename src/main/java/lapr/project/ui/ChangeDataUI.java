@@ -26,7 +26,7 @@ public class ChangeDataUI extends javax.swing.JFrame {
     /**
      * Creates new form ChangeDataUI
      * 
-     * @param project instance of project
+     * @param prjct instance of project
      */
     public ChangeDataUI(Project prjct) {
         project=prjct;
@@ -194,12 +194,15 @@ public class ChangeDataUI extends javax.swing.JFrame {
     private void jButtonCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateActionPerformed
         controller.setName(jTextFieldName.getText());
         controller.setDescription(jTextFieldDescription.getText());
-        JOptionPane.showMessageDialog(null,"Alterações efetuadas com sucesso");
+        JOptionPane.showMessageDialog(null,"Changes were successfully made in your project.");
+        PopUp1 pop = new PopUp1(controller.getProject());
+        pop.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButtonCreateActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        WelcomeUI.main(null);
+        PopUp1 pop = new PopUp1(controller.getProject());
+        pop.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 public static void main(String args[]) {

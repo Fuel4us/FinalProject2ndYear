@@ -8,6 +8,7 @@ package lapr.project.ui;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import lapr.project.controller.SelectProjectController;
 import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork.*;
@@ -29,11 +30,12 @@ public class SelectProjectUI extends javax.swing.JFrame {
     private javax.swing.JLabel imgLateral;
     private javax.swing.JButton jButtonBack;
     private javax.swing.JButton jButtonCompForm;
+    private javax.swing.JButton jButtonOK;
     private javax.swing.JButton jButtonPathForm;
     /**
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBoxProjetos;
     */
-    private javax.swing.JComboBox<Project> jComboBox1;
+    private javax.swing.JComboBox<Project> jComboBoxProjetos;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -43,21 +45,11 @@ public class SelectProjectUI extends javax.swing.JFrame {
 
     /**
      * Creates new form SelectProjectUI
+     * @param controller
      */
     public SelectProjectUI(SelectProjectController controller) {
-//        super("Select Project");
-//        spc = new SelectProjectController(Main.dbCom);
-
         this.spc = controller;
         initComponents();
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setResizable(false);
-        setVisible(true);
-        setLocationRelativeTo(null);
-        
-        for (Project p : controller.fetchProjectsList()) {
-            jComboBox1.addItem(p);
-        }
     }
 
     /**
@@ -78,7 +70,8 @@ public class SelectProjectUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<Project>();
+        jComboBoxProjetos = new javax.swing.JComboBox<Project>();
+        jButtonOK = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -149,14 +142,25 @@ public class SelectProjectUI extends javax.swing.JFrame {
         for (Project obj : projectsList) {
             projectsModel.addElement(obj);
         }
-        jComboBox1.setModel(projectsModel);
-        jComboBox1.setBackground(new java.awt.Color(204, 204, 204));
+        jComboBoxProjetos.setModel(projectsModel);
+        jComboBoxProjetos.setBackground(new java.awt.Color(204, 204, 204));
         /**
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxProjetos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         */
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        jComboBoxProjetos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                jComboBoxProjetosActionPerformed(evt);
+            }
+        });
+
+        jButtonOK.setBackground(new java.awt.Color(45, 46, 45));
+        jButtonOK.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        jButtonOK.setForeground(new java.awt.Color(45, 46, 45));
+        jButtonOK.setText("OK");
+        jButtonOK.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        jButtonOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonOKActionPerformed(evt);
             }
         });
 
@@ -170,22 +174,28 @@ public class SelectProjectUI extends javax.swing.JFrame {
                 .addComponent(orangeBorder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel3)
-                                .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(29, 29, 29))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel2)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel3)
+                                        .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(29, 29, 29))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButtonCompForm, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
+                            .addComponent(jButtonPathForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBoxProjetos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(63, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButtonCompForm, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
-                    .addComponent(jButtonPathForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(63, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(241, 241, 241))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,12 +210,14 @@ public class SelectProjectUI extends javax.swing.JFrame {
                         .addComponent(jLabel2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(69, 69, 69)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jComboBoxProjetos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jButtonPathForm, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -346,9 +358,31 @@ public class SelectProjectUI extends javax.swing.JFrame {
         setVisible(false);
     }//GEN-LAST:event_jButtonPathFormActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    private void jComboBoxProjetosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxProjetosActionPerformed
+        //ToReview
+    }//GEN-LAST:event_jComboBoxProjetosActionPerformed
+
+    private void jButtonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOKActionPerformed
+        try{
+            if(jComboBoxProjetos.getSelectedItem() == null){
+                JOptionPane.showMessageDialog(
+                            this,
+                            "Select a project!",
+                            "Open Project",
+                            JOptionPane.INFORMATION_MESSAGE);
+            } else{
+                spc.setProject((String)jComboBoxProjetos.getSelectedItem());
+                PopUp1 pop = new PopUp1(project);
+                dispose();
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(
+                        this,
+                        "Select a project!",
+                        "Open Project",
+                        JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonOKActionPerformed
 
     /**
      * @param args the command line arguments
@@ -378,7 +412,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
         //</editor-fold>
         
         /* Create and display the form */
-       //java.awt.EventQueue.invokeLater(() -> new SelectProjectUI(spc).setVisible(true));
+//       java.awt.EventQueue.invokeLater(() -> new SelectProjectUI(new SelectProjectController(null)).setVisible(true));
     }
 
 

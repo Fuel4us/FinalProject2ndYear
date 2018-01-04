@@ -14,6 +14,7 @@ import lapr.project.controller.CopyProjectController;
 import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork.RoadNetwork;
 import static lapr.project.ui.Main.dbCom;
+import static lapr.project.ui.Main.currentProject;
 
 /**
  *
@@ -22,12 +23,12 @@ import static lapr.project.ui.Main.dbCom;
 public class PopUp1 extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 8060730009198569465L;
-    private Project project;
+    private static Project projectPop;
     /**
      * Creates new form PopUp1
      */
-    public PopUp1(Project project) {
-        this.project=project;
+    public PopUp1(Project prjct) {
+        projectPop=prjct;
         initComponents();
     }
 
@@ -134,18 +135,39 @@ public class PopUp1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonChangeDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonChangeDataActionPerformed
-        ChangeDataUI epui = new ChangeDataUI(project);
+        ChangeDataUI epui = new ChangeDataUI(projectPop);
         this.setVisible(false);
         epui.setVisible(true);
     }//GEN-LAST:event_jButtonChangeDataActionPerformed
 
     private void jButtonSetActiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetActiveActionPerformed
-        // TODO add your handling code here:
+        currentProject = projectPop;
+        JOptionPane.showMessageDialog(null, currentProject.getName()+" is now your active project.");
     }//GEN-LAST:event_jButtonSetActiveActionPerformed
 
     private void jButtonCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCopyActionPerformed
+       
         CopyProjectController controller = new CopyProjectController(dbCom);
         
+        try {
+            if(!controller.cloneProject(projectPop)){
+                JOptionPane.showMessageDialog(
+                        this,
+                        "It's not possible to copy the actual project!",
+                        "Copy Project",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                dbCom.addProject(projectPop);
+                JOptionPane.showMessageDialog(
+                        this,
+                        "The actual project, " + projectPop.getName()
+                                + ", was cloned and stored successfully!",
+                        "Copy Project",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (CloneNotSupportedException ex) {
+            Logger.getLogger(SelectProjectUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonCopyActionPerformed
 
     /**

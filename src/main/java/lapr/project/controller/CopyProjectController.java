@@ -29,9 +29,12 @@ public class CopyProjectController {
     
     /**
      * Create new project from the active project  
+     * @param projectToClone
+     * @return 
+     * @throws java.lang.CloneNotSupportedException
      */
-    public void cloneProject(Project projectToClone) throws CloneNotSupportedException {
+    public boolean cloneProject(Project projectToClone) throws CloneNotSupportedException {
         project = projectToClone.cloneProject();
-        dbCom.addProject(project);
+        return dbCom.addProject(project);
     }    
 }

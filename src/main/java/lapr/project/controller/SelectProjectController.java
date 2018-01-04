@@ -25,8 +25,11 @@ public class SelectProjectController {
     }
     
     public List<Project> fetchProjectsList(){
-        List<Project> listProjects = dbCom.fetchProjectList();
-        return listProjects;
+        List<Project> list = dbCom.fetchProjectList();
+        return list;
     }
-    
+
+    public void setProject(String project) {
+        dbCom.getProjectByName(project, listProjects);
+    }  
 }

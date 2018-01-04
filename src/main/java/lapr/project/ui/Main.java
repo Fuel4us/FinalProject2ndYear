@@ -23,7 +23,7 @@ class Main {
     ToDo Refactor this so as not to be static,
     ToDo temporary solution for testing purposes only
      */
-    private static Project currentProject;
+    static Project currentProject;
     static DataBaseCommunicator dbCom;
 
     static final String SEGOE_FONT = "Segoe UI Semibold";
