@@ -146,29 +146,49 @@ public class GraphAlgorithms {
      * Computes shortest-path distance from a source vertex to all reachable
      * vertices of a graph g with non negative edge weights
      * This implementation uses Dijkstra's algorithm, and applies cumulative dependency between outputs of previous iterations.
+     * <br>
+     * <br>
+     * <em>This means that this algorithm can be used to compute the shortest path, whenever the weight of an edge depends upon the weight of the previous visited edge.</em>
+     * <br>
+     * <br>
+     * It abstracts from implementation details since it is coupled to functional interfaces via the use of functional programming oriented techniques.
+     * <br>
+     * <br>
+     * However, effective use of this method requires awareness of the envisioned use for these functions.
+     * <br>
+     * <br>
+     * The algorithm invokes a given function of type {@link BiFunction} named {@code cumulativeApplier}
+     * on an {@link Edge} instance or subclass instance, applying it and regarding a generic argument.
+     * The contract for the call of this method is such that the implementation of {@code cumulativeApplier} calls a method that returns some type T through which
+     * both weigth and the argument for the next functional call can be inferred, either through identity or some other functional mechanism.
+     * <br>
+     * <br>
+     * Subsequent calls to the {@code cumulativeApplier} are made on each visited edge, the definition of weight is used to determine the shortest path
+     * and the <em>derived output</em> (the next argument, extracted from the output of the invoked function via the use of a {@code cumulativeAttributeExtractor})
+     * of the previous call is passed on as an argument to the {@code cumulativeApplier} so that a transformation can take place iteratively,
+     * which is to mean, simply, <em>that the weight of an edge is dependent upon the weight of the previous edge</em>, and a specific type,
+     * which can be resolved into an argument, can be passed on to be used to the next iteration, in the calculation of the weight of the next edge being visited.
+     * The function that transforms the output of the method called by the implementation of {@code cumulativeApplier} is the functional interface instance ({@link Function}) {@code weightExtractor}
      *
+     * The starting value for the iterative application performed by {@code cumulativeApplier} is given by a {@code seed},
+     * which must be of the same type as the one returned by the implementation of {@code cumulativeAttributeExtractor}, since this is the one that will be used for every edge after the first.
      * </p>
      * @param g Graph instance
      * @param vOrig Vertex that will be the source of the path
      * @param visited set of discovered vertices
      * @param pathKeys minimum path vertices keys
      * @param dist minimum distances
-     * ToDo
+     * @param cumulativeApplier Defines a function wherein input can be the result of a previous call to this function, given a seed
+     * @param seed The starting value for the transformation/cumulative function
+     * @param cumulativeAttributeExtractor Extracts the information of the input to pass on to the next call by invoking a method on the return type of the function
+     * This can be the identity function (x -> x) in case return type is the same as the transformed input.
+     * @param weightExtractor Extracts the definition of weigth of an edge to be used from the output of the method called by the cumulativeApplier implementation (lambda/anonymous class/method reference)
      */
     private static <V, E, R, A> void cumulativeDijkstra(Graph<V, E> g, V vOrig, List<V> vertices,
                                                         boolean[] visited, int[] pathKeys, double[] dist,
-                                                        //use edge and P to produce a E
                                                         BiFunction<Edge<V, E>, A, R> cumulativeApplier,
-                                                        //defines weight in terms of E
                                                         ToDoubleFunction<R> weightExtractor, A seed,
-                                                        //extract P from E
                                                         Function<R, A> cumulativeAttributeExtractor) {
-
-        //uma função que define a forma como o double (weight) é extraído da function principal
-        // O return da function principal será guardado
-        // um contentor do tipo do return type de function será passado para inicializar
-
-        //o return guardado será passado como parametro nas iterações seguintes
 
         int vkey = g.getKey(vOrig);
         dist[vkey] = 0;
@@ -177,7 +197,7 @@ public class GraphAlgorithms {
             vOrig = vertices.get(vkey);
             visited[vkey] = true;
 
-            //Initialize cumulative applier args
+            //Initialize cumulative applier args and output
             R product;
             A attribute = seed;
 
@@ -248,7 +268,7 @@ public class GraphAlgorithms {
      * @return the weight of the shortestPath if weighted is set to true, 1 otherwise
      */
     public static <V, E> double shortestPath(Graph<V, E> g, V vOrig, V vDest, LinkedList<V> shortPath) {
-        return shortestPath(g, vOrig, vDest, shortPath, null, false, null, null, null,null);
+        return shortestPath(g, vOrig, vDest, shortPath, null, false, null, null, null, null);
     }
 
     /**
@@ -268,7 +288,7 @@ public class GraphAlgorithms {
      * @return the weight of the shortestPath if weighted is set to true, 1 otherwise
      */
     public static <V, E> double shortestPath(Graph<V, E> g, V vOrig, V vDest, LinkedList<V> shortPath, GeneralOperator<Edge<V, E>> edgeOperator) {
-        return shortestPath(g, vOrig, vDest, shortPath, edgeOperator, false, null, null, null,null);
+        return shortestPath(g, vOrig, vDest, shortPath, edgeOperator, false, null, null, null, null);
     }
 
     /**
