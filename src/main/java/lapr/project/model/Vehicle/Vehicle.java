@@ -312,6 +312,7 @@ public class Vehicle {
 
     public void storeVehicleInformation(CallableStatement storeVehicleInfoProcedure) throws SQLException {
         storeVehicleInfoProcedure.setString("vehicleType", type.name());
+        storeVehicleInfoProcedure.setInt("vehicleTollClass", vehicleClass);
         storeVehicleInfoProcedure.setString("motorType", motorType.name());
         storeVehicleInfoProcedure.setString("fuelType", fuel.name());
         storeVehicleInfoProcedure.setDouble("dragCoefficient", dragCoefficient);
