@@ -309,6 +309,17 @@ public class Vehicle {
     }
 
     /**
+     * Calculates the acceleration force acting in the vehicle depending on the acceleration and
+     * the load the car takes
+     * @param load the load the car takes
+     * @param acceleration the acceleration used
+     * @return the acceleration force in N
+     */
+    public Measurable calculateAccelerationForce(Measurable load, Measurable acceleration) {
+        return new Measurable((mass.getQuantity() + load.getQuantity()) * acceleration.getQuantity(), Unit.NEWTON);
+    }
+
+    /**
      * Indicates motor type Assists in the instantiation of the correct
      * motorization
      */
