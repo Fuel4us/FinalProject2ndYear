@@ -187,14 +187,17 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             storeRoadNetworkInfoProcedure.setString("description", description);
             storeRoadNetworkInfoProcedure.setString("projectName", projectName);
 
-            //ToDo - para cada node da network: storeNodes(node, networkID);
-
+            Iterable<Node> nodes = roadNetwork.vertices();
+            for (Node node : nodes) {
+                storeNode(node, networkID);
+            }
+            //ToDo - para cada section da network: storeSections(section, networkID);
 
             storeRoadNetworkInfoProcedure.executeUpdate();
         }
     }
 
-    private void storeNodes(Node node, String networkID) throws SQLException {
+    private void storeNode(Node node, String networkID) throws SQLException {
         try (CallableStatement storeNodeProcedure = oracleConnection.prepareCall("CALL storeNodeProcedure(?,?)")) {
 
             storeNodeProcedure.setString("ID", node.getId());
@@ -203,6 +206,33 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             storeNodeProcedure.executeUpdate();
         }
     }
+
+    private void storeRoad(Road road) throws SQLException   {
+        try (CallableStatement storeRoadProcedure = oracleConnection.prepareCall("CALL storeRoadProcedure(?,?,?)")) {
+
+            storeRoadProcedure.setString("ID", road.getId());
+            storeRoadProcedure.setString("name", road.getName());
+            storeRoadProcedure.setString("typology", road.getTypology());
+
+            storeRoadProcedure.executeUpdate();
+        }
+    }
+
+    private void storeSection(Section section, String networkID) throws SQLException   {
+        try (CallableStatement storeSectionProcedure = oracleConnection.prepareCall("CALL storeSectionProcedure(?,?,?,?,?,?)")) {
+
+            storeSectionProcedure.setInt("ID", section.getID());
+            storeSectionProcedure.setString("networkID", networkID);
+            storeSectionProcedure.setString("beginningNodeID", section.getOriginVertex().getElement());
+            storeSectionProcedure.setString("endingNodeID", section.getDestinyVertex().getElement());
+            storeSectionProcedure.setString("direction", section.getDirection().toString());
+            storeSectionProcedure.setString("owningRoadID", section.getOwningRoad().getId());
+
+            storeSectionProcedure.executeUpdate();
+        }
+    }
+
+    
 
 }
 
