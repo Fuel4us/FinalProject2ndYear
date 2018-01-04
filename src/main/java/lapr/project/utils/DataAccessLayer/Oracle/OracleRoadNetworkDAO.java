@@ -214,7 +214,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * @param networkID roadNetwork identifier
      * @throws SQLException
      */
-    public void storeSections(RoadNetwork roadNetwork, String networkID) throws SQLException {
+    private void storeSections(RoadNetwork roadNetwork, String networkID) throws SQLException {
 
         List<Road> roadsToStore = new LinkedList<>();
 
@@ -230,8 +230,15 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
                 }
             }
             storeSection(section, networkID);
+            List<Double> tollFareList = section.getTollFare();
+            for (Double tollFare : tollFareList) {
+                storeTollFareSection(tollFare, section.getID());
+            }
+            Collection<Segment> segments = section.getSegments();
+            for (Segment segment : segments) {
+                storeSegment(segment, section.getID());
+            }
         }
-
     }
 
     private void storeNode(Node node, String networkID) throws SQLException {
@@ -281,23 +288,23 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
         }
     }
 
-    private void storeTollFareSection(Double tollFare, String sectionID) throws SQLException   {
+    private void storeTollFareSection(Double tollFare, int sectionID) throws SQLException   {
         try (CallableStatement storeTollFareSectionProcedure = oracleConnection.prepareCall("CALL storeTollFareSectionProcedure(?,?,?)")) {
 
             //ToDo como crio identificador do toll fare?
 //            storeTollFareRoadProcedure.setString("ID", identificadordotollfare);
-            storeTollFareSectionProcedure.setString("sectionID", sectionID);
+            storeTollFareSectionProcedure.setInt("sectionID", sectionID);
             storeTollFareSectionProcedure.setDouble("tollFare", tollFare);
 
             storeTollFareSectionProcedure.executeUpdate();
         }
     }
 
-    private void storeSegment(Segment segment, String sectionID) throws SQLException   {
-        try (CallableStatement storeSegmentProcedure = oracleConnection.prepareCall("CALL storeSegmentProcedure(?,?,?,?,?,?,?,?,?)")) {
+    private void storeSegment(Segment segment, int sectionID) throws SQLException   {
+        try (CallableStatement storeSegmentProcedure = oracleConnection.prepareCall("CALL storeSegmentProcedure(?,?)")) {
 
             segment.storeSegmentInformation(storeSegmentProcedure);
-            storeSegmentProcedure.setString("sectionID", sectionID);
+            storeSegmentProcedure.setInt("sectionID", sectionID);
 
             storeSegmentProcedure.executeUpdate();
         }
