@@ -7,7 +7,6 @@ import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.RoadNetwork.Section;
 import lapr.project.model.RoadNetwork.Segment;
 import lapr.project.model.Vehicle.Vehicle;
-import lapr.project.model.Vehicle.VehicleType;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 
