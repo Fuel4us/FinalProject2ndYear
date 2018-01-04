@@ -7,6 +7,7 @@ package lapr.project.utils.DataAccessLayer.Oracle;
 
 import lapr.project.model.RoadNetwork.*;
 import lapr.project.utils.DataAccessLayer.Abstraction.RoadNetworkDAO;
+import lapr.project.utils.Graph.Edge;
 
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
@@ -197,15 +198,41 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * Stores edges and vertexes of RoadNetwork
      * @param roadNetwork the {@link RoadNetwork} to store
      * @param networkID roadNetwork identifier
+     * @throws SQLException
      */
     public void storeRoadNetworkGraph(RoadNetwork roadNetwork, String networkID) throws SQLException {
 
         Iterable<Node> nodes = roadNetwork.vertices();
         for (Node node : nodes) {storeNode(node, networkID);}
 
-//        storeSections(roadNetwork, networkID);
+        storeSections(roadNetwork, networkID);
     }
 
+    /**
+     * Stores instances of {@link Section} and respective information
+     * @param roadNetwork the {@link RoadNetwork} to store
+     * @param networkID roadNetwork identifier
+     * @throws SQLException
+     */
+    public void storeSections(RoadNetwork roadNetwork, String networkID) throws SQLException {
+
+        List<Road> roadsToStore = new LinkedList<>();
+
+//        List<Section> sections = (List<Section>) roadNetwork.getEdges();
+        for (Section section : sections) {
+            Road road = section.getOwningRoad();
+            if (!roadsToStore.contains(road)) {
+                roadsToStore.add(section.getOwningRoad());
+                storeRoad(road);
+                List<Double> tollFareList = road.getTollFare();
+                for (Double tollFare : tollFareList) {
+                    storeTollFareRoad(tollFare, road.getId());
+                }
+            }
+            storeSection(section, networkID);
+        }
+
+    }
 
     private void storeNode(Node node, String networkID) throws SQLException {
         try (CallableStatement storeNodeProcedure = oracleConnection.prepareCall("CALL storeNodeProcedure(?,?)")) {
