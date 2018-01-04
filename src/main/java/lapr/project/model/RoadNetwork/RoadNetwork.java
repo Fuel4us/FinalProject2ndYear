@@ -52,12 +52,20 @@ public class RoadNetwork extends Graph<Node, Section> {
     }
 
     /**
-     *Returns the id
+     * Returns the id
      * 
      * @return id
      */
     public String getId() {
         return id;
+    }
+
+    /**
+     * Returns description
+     * @return description
+     */
+    public String getDescription() {
+        return description;
     }
 
     /**

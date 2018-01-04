@@ -20,5 +20,5 @@ public interface ProjectDAO extends DataAccessObject {
      * Stores instance of {@link Project} in the database
      * @param project instance of {@link Project}
      */
-    boolean storeProject(Project project);
+    boolean storeProject(Project project) throws SQLException;
 }

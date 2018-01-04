@@ -36,31 +36,6 @@ public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
 
     }
 
-
-    /**
-     * Stores information that requires units
-     * @param measurable the {@link Measurable} to store
-     */
-    private int storeStatisticalInfo(Measurable measurable) throws SQLException {
-
-        try (CallableStatement storeMeasurableFunction = super.oracleConnection
-                .prepareCall("{? = call STORE_MEASURABLE(?,?)}")) {
-
-            double quantity = measurable.getQuantity();
-            Unit unit = measurable.getUnit();
-
-            storeMeasurableFunction.registerOutParameter(1, Types.INTEGER);
-
-            storeMeasurableFunction.setDouble(2, quantity);
-            storeMeasurableFunction.setString(3, unit.toString());
-
-            storeMeasurableFunction.executeUpdate();
-
-            return storeMeasurableFunction.getInt(1);
-        }
-
-    }
-
     /**
      * Stores information that has direct mapping to the database
      * @param analysis the {@link Analysis} to store

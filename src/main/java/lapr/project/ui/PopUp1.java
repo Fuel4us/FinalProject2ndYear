@@ -5,7 +5,10 @@
  */
 package lapr.project.ui;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import lapr.project.controller.CopyProjectController;
 import lapr.project.model.Project;
@@ -143,8 +146,28 @@ public class PopUp1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSetActiveActionPerformed
 
     private void jButtonCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCopyActionPerformed
+       
         CopyProjectController controller = new CopyProjectController(dbCom);
-        JOptionPane.showMessageDialog(null, "Project cloned and stored.");
+        
+        try {
+            if(!controller.cloneProject(projectPop)){
+                JOptionPane.showMessageDialog(
+                        this,
+                        "It's not possible to copy the actual project!",
+                        "Copy Project",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                dbCom.addProject(projectPop);
+                JOptionPane.showMessageDialog(
+                        this,
+                        "The actual project, " + projectPop.getName()
+                                + ", was cloned and stored successfully!",
+                        "Copy Project",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (CloneNotSupportedException ex) {
+            Logger.getLogger(SelectProjectUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonCopyActionPerformed
 
     /**
