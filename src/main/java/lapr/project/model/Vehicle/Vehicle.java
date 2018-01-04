@@ -147,9 +147,9 @@ public class Vehicle {
      * @param roadNetwork the road network
      * @param segment the segment
      * @param load the vehicle's load
-     * @return the energy expenditure in KJ
+     * @return the energy expenditure in KJ and the gear position used in the segment
      */
-    public Measurable determineEnergyExpenditure(RoadNetwork roadNetwork, Segment segment, Measurable load) {
+    public Measurable[] determineEnergyExpenditure(RoadNetwork roadNetwork, Segment segment, Measurable load) {
 
         int gearPosition = energy.getGears().size() - 1;
         int throttlePosition = 0;
@@ -164,7 +164,7 @@ public class Vehicle {
 
         double fuelQuantity = power.getQuantity() * Physics.KILOMETERS_METERS_CONVERSION_RATIO * SFC * timeSpent;
 
-        return new Measurable(fuelQuantity * fuel.getSpecificEnergy().getQuantity(), Unit.KILOJOULE);
+        return new Measurable[]{new Measurable(fuelQuantity * fuel.getSpecificEnergy().getQuantity(), Unit.KILOJOULE), data[4]};
     }
 
     /**
@@ -192,10 +192,10 @@ public class Vehicle {
      * @param maxLinearVelocity the maximum linear velocity
      * @param load the vehicle's load
      * @return an array with the engine speed in the first position, the torque
-     * in the second position, the SFC in the third position and the velocity
-     * in the forth position
+     * in the second position, the SFC in the third position, the velocity
+     * in the forth position and the gear position in the fifth position
      */
-    private Measurable[] calculateEngineSpeedTorqueSFCVelocity(Segment segment,
+    public Measurable[] calculateEngineSpeedTorqueSFCVelocity(Segment segment,
                                                                int gearPosition, int throttlePosition, Measurable maxLinearVelocity, Measurable load) {
 
         double engineSpeed
@@ -252,7 +252,7 @@ public class Vehicle {
         }
 
         return new Measurable[]{new Measurable(engineSpeed, Unit.ROTATIONS_PER_MINUTE), new Measurable(torque, Unit.NEWTON_METER),
-            new Measurable(SFC, Unit.GRAM_PER_KILOWATT_HOUR), maxLinearVelocity};
+            new Measurable(SFC, Unit.GRAM_PER_KILOWATT_HOUR), maxLinearVelocity, new Measurable(gearPosition, null)};
     }
 
     @Override
