@@ -29,7 +29,7 @@ public class Segment {
     private double windSpeed;
 
     private double maxVelocity;
-    
+
     private double minVelocity;
 
 
@@ -89,7 +89,7 @@ public class Segment {
      *
      * @param roadNetwork the road network of the current project
      * @param vehicle     the vehicle
-     * @param length
+     * @param length      the length used
      * @return the minimum time interval
      */
     public double calculateMinimumTimeInterval(RoadNetwork roadNetwork, Vehicle vehicle, double length) {
@@ -163,7 +163,6 @@ public class Segment {
         Measurable convertedVelocity = new Measurable(maxLinearVelocity.getQuantity() / Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO, Unit.METERS_PER_SECOND);
 
 
-
         //conversion km/h -> m/s
         double airRelatedVelocity = Math.sqrt(Math.pow(windSpeed * Math.cos(Math.toRadians(windAngle)) - convertedVelocity.getQuantity(), 2)
                 + Math.pow(windSpeed * Math.sin(Math.toRadians(windAngle)), 2));
@@ -171,6 +170,20 @@ public class Segment {
         return new Measurable(airRelatedVelocity, Unit.METERS_PER_SECOND);
     }
 
+    /**
+     * Calculates the energy expenditure, the time spent, the final velocity and the gear position this segment
+     * given the vehicle, the initial velocity, the load, the max acceleration abd braking and the information
+     * about this being the last segment of the path or not
+     * @param roadNetwork the road network
+     * @param initialVelocity the initial velocity of the vehicle
+     * @param vehicle the vehicle
+     * @param load the load the vehicle takes
+     * @param maxAcceleration the max acceleration
+     * @param maxBraking the max braking
+     * @param lastSegment true if this is the last segment of the path
+     * @return an instance of the type EnergyExpenditureAccelResults with the information about this algorithm
+     * (energy expenditure, time spent, final velocity and gear position)
+     */
     public EnergyExpenditureAccelResults calculateEnergyExpenditureAccel(RoadNetwork roadNetwork, Measurable initialVelocity, Vehicle vehicle,
                                                                          Measurable load, Measurable maxAcceleration, Measurable maxBraking, boolean lastSegment) {
 
@@ -330,7 +343,7 @@ public class Segment {
         } else {
             if (usedAcceleration.getQuantity() < 0) {
                 energyExpenditure.setQuantity(energyExpenditure.getQuantity() - accelerationWork);
-            }else{
+            } else {
                 energyExpenditure.setQuantity(energyExpenditure.getQuantity() + accelerationWork);
             }
         }
@@ -369,6 +382,7 @@ public class Segment {
 
     /**
      * Defines parameters to be used by callable statement
+     *
      * @param storeSegmentProcedure callable statement
      * @throws SQLException
      */
