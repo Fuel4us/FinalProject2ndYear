@@ -16,4 +16,11 @@ public class Gears {
     public float getRatio() {
         return ratio;
     }
+
+    /**
+     * @return id
+     */
+    public int getId() {
+        return id;
+    }
 }

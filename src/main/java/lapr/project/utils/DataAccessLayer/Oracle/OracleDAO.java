@@ -44,7 +44,7 @@ public class OracleDAO {
      * Stores information that requires units
      * @param measurable the {@link Measurable} to store
      */
-    public int storeStatisticalInfo(Measurable measurable) throws SQLException {
+    int storeStatisticalInfo(Measurable measurable) throws SQLException {
 
         try (CallableStatement storeMeasurableFunction = oracleConnection
                 .prepareCall("{? = call STORE_MEASURABLE(?,?)}")) {

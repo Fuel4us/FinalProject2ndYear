@@ -9,7 +9,6 @@ public class Energy {
     private float finalDriveRatio;
     private List<Gears> gears;
     private List<Throttle> throttles;
-    private float energyFinalRatio;
 
     /**
      * Constructor
@@ -51,6 +50,22 @@ public class Energy {
      */
     public List<Throttle> getThrottles() {
         return throttles;
+    }
+
+    /**
+     *
+     * @return minRPM
+     */
+    public int getMinRpm() {
+        return minRpm;
+    }
+
+    /**
+     *
+     * @return maxRMP
+     */
+    public int getMaxRpm() {
+        return maxRpm;
     }
 
     @Override

@@ -21,7 +21,13 @@ public class Throttle {
 
     @Override
     public String toString() {
-        return "Throttle "+id;
+        return "Throttle "+ id;
     }
-    
+
+    /**
+     * @return id
+     */
+    public int getId() {
+        return id;
     }
+}

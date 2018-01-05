@@ -327,6 +327,7 @@ public class Vehicle {
     }
 
     public void storeVehicleInformation(CallableStatement storeVehicleInfoProcedure) throws SQLException {
+        storeVehicleInfoProcedure.setString("name", name);
         storeVehicleInfoProcedure.setString("vehicleType", type.name());
         storeVehicleInfoProcedure.setInt("vehicleTollClass", vehicleClass);
         storeVehicleInfoProcedure.setString("motorType", motorType.name());
