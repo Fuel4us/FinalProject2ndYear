@@ -232,7 +232,8 @@ public class Section extends Edge<String, Direction> {
      * @param maxBraking the max braking
      * @param pathEndingNode the ending node of the path
      * @return an instance of the class EnergyExpenditureAccelResults containing the energy expenditure, the final velocity,
-     * the time spent in this section and an array of instances of the Gears used in each segment
+     * the time spent in this section, an array of instances of the Gears used in each segment and the toll costs for
+     * the section
      */
     public EnergyExpenditureAccelResults calculateEnergyExpenditureAccel(RoadNetwork roadNetwork, Measurable initialVelocity, Vehicle vehicle,
                                                                          Measurable load, Measurable maxAcceleration, Measurable maxBraking, Node pathEndingNode) {
@@ -241,6 +242,8 @@ public class Section extends Edge<String, Direction> {
         Measurable totalTimeSpent = new Measurable(0, Unit.HOUR);
         Gears[] gearsForEachSegment = new Gears[segments.size()];
         int gearsIndex = 0;
+
+        Measurable tollCosts = new Measurable(determineTollCosts(vehicle).getQuantity(), Unit.EUROS);
 
         boolean lastSection = false;
         if (endingNode.equals(pathEndingNode)) {
@@ -268,7 +271,7 @@ public class Section extends Edge<String, Direction> {
 
         }
 
-        return new EnergyExpenditureAccelResults(totalEnergyExpenditure, initialVelocity, totalTimeSpent, gearsForEachSegment);
+        return new EnergyExpenditureAccelResults(totalEnergyExpenditure, initialVelocity, totalTimeSpent, gearsForEachSegment, tollCosts);
 
     }
 }
