@@ -331,7 +331,15 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * @param gear instance of {@link Gears}
      * @param energyID identifier of Energy entity
      */
-    private void storeGear(Gears gear, int energyID) {
+    private void storeGear(Gears gear, int energyID) throws SQLException {
+        try (CallableStatement storeGearsProcedure = oracleConnection.prepareCall("CALL storeGearsProcedure(?,?,?)")) {
+            storeGearsProcedure.setInt("id", gear.getId());
+            storeGearsProcedure.setFloat("ratio", gear.getRatio());
+            storeGearsProcedure.setInt("energyID", energyID);
+
+            storeGearsProcedure.executeUpdate();
+        }
+
     }
 
     /**
@@ -339,7 +347,16 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * @param throttle instance of {@link Throttle}
      * @param energyID identifier of Energy entity
      */
-    private void storeThrottle(Throttle throttle, int energyID) {
+    private void storeThrottle(Throttle throttle, int energyID) throws SQLException {
+        try (CallableStatement storeThrottleProcedure = oracleConnection.prepareCall("CALL storeThrottleProcedure(?,?)")) {
+
+            storeThrottleProcedure.setInt("ID", throttle.getId());
+            storeThrottleProcedure.setInt("energyID", energyID);
+
+            
+
+            storeThrottleProcedure.executeUpdate();
+        }
     }
 
 }
