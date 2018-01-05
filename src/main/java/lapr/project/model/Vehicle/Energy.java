@@ -68,14 +68,6 @@ public class Energy {
         return maxRpm;
     }
 
-    /**
-     *
-     * @return energyFinalRatio
-     */
-    public float getEnergyFinalRatio() {
-        return energyFinalRatio;
-    }
-
     @Override
     public String toString() {
         return "Energy{"

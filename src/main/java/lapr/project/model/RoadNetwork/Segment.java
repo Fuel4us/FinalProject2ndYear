@@ -1,7 +1,9 @@
 package lapr.project.model.RoadNetwork;
 
+import lapr.project.model.Vehicle.Gears;
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.FileParser.ExportableHTML;
+import lapr.project.utils.EnergyExpenditureAccelResults;
 import lapr.project.utils.Graph.Edge;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Physics;
@@ -168,6 +170,55 @@ public class Segment {
 
         return new Measurable(airRelatedVelocity, Unit.METERS_PER_SECOND);
     }
+
+//    public EnergyExpenditureAccelResults calculateEnergyExpenditureAccel(RoadNetwork roadNetwork, Measurable initialVelocity, Vehicle vehicle, Measurable load, Measurable maxAcceleration, Measurable maxBraking, double maxVelocity) {
+//
+//        Measurable finalVelocity = new Measurable(0, Unit.KILOMETERS_PER_HOUR);
+//        Measurable energyExpenditure = new Measurable(0, Unit.KILOJOULE);
+//        int gearPosition = -1;
+//        Measurable timeSpent = new Measurable(0, Unit.HOUR);
+//
+//        // if the vehicle enters the segment with the same speed as the speed allowed
+//        if (initialVelocity.getQuantity() == maxVelocity) {
+//
+//            Measurable[] data = vehicle.determineEnergyExpenditure(roadNetwork, this, load);
+//            energyExpenditure = data[0];
+//            gearPosition = (int) data[1].getQuantity();
+//
+//            finalVelocity = calculateMaximumVelocityInterval(roadNetwork, vehicle);
+//            timeSpent.setQuantity(length / finalVelocity.getQuantity());
+//
+//            // if the vehicle enters the segment with bigger speed than the speed allowed
+//        } else if (initialVelocity.getQuantity() > maxVelocity) {
+//
+//            Measurable travelledDistance = calculateTravelledDistance(finalVelocity, initialVelocity, maxAcceleration);
+//
+//            // if the vehicle enters the segment with lesser speed than the speed allowed
+//        } else if (initialVelocity.getQuantity() < maxVelocity) {
+//
+//            Measurable travelledDistance = calculateTravelledDistance(finalVelocity, initialVelocity, maxBraking);
+//
+//        }
+//
+//        return new EnergyExpenditureAccelResults(energyExpenditure, finalVelocity, timeSpent,
+//                new Gears[]{new Gears(gearPosition, 0f)});
+//    }
+
+    /**
+     * Calculates the travelled distance accelerating or breaking
+     * @param finalVelocity the final velocity the vehicle has to reach
+     * @param initialVelocity the velocity of the vehicle when it enters the segment
+     * @param acceleration the value of the acceleration (positive for acceleration, negative for braking)
+     * @return the travelled distance in km
+     */
+    private Measurable calculateTravelledDistance(Measurable finalVelocity, Measurable initialVelocity, Measurable acceleration) {
+
+        double time = (finalVelocity.getQuantity() - initialVelocity.getQuantity()) / acceleration.getQuantity();
+
+        return new Measurable(initialVelocity.getQuantity() * time + 0.5 * acceleration.getQuantity() * Math.pow(time, 2), Unit.KILOMETER);
+
+    }
+
 
     /**
      * Defines parameters to be used by callable statement

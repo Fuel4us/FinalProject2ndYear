@@ -18,6 +18,7 @@ public enum Fuel {
      * @param specificEnergy the specific energy
      */
     Fuel(Measurable specificEnergy) {
+
         this.specificEnergy = specificEnergy;
     }
 
