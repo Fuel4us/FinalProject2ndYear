@@ -367,20 +367,4 @@ public class GraphAlgorithms {
         return 0;
     }
 
-    /**
-     * Reverses the path
-     * @param path stack with path
-     */
-    private static <V, E> LinkedList<V> Path(LinkedList<V> path) {
-
-        LinkedList<V> pathcopy = new LinkedList<>(path);
-        LinkedList<V> pathrev = new LinkedList<>();
-
-        while (!pathcopy.isEmpty()) {
-            pathrev.push(pathcopy.pop());
-        }
-
-        return pathrev;
-    }
-
 }
