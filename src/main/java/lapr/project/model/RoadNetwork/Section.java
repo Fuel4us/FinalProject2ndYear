@@ -1,6 +1,8 @@
 package lapr.project.model.RoadNetwork;
 
+import lapr.project.model.Vehicle.Gears;
 import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.utils.EnergyExpenditureAccelResults;
 import lapr.project.utils.Graph.Edge;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
@@ -122,7 +124,7 @@ public class Section extends Edge<String, Direction> {
 
         for (Segment segment : segments) {
 
-            totalMinimumTimeInterval += segment.calculateMinimumTimeInterval(roadNetwork, vehicle);
+            totalMinimumTimeInterval += segment.calculateMinimumTimeInterval(roadNetwork, vehicle, segment.getLength());
 
         }
 
@@ -217,5 +219,56 @@ public class Section extends Edge<String, Direction> {
      */
     public List<Double> getTollFare() {
         return tollFare;
+    }
+
+    /**
+     * Calculates the energy expenditure of a vehicle, considering the max acceleration and braking, its load and
+     * its initial velocity in this section
+     * @param roadNetwork the road network
+     * @param initialVelocity the initial velocity
+     * @param vehicle the vehicle
+     * @param load the load the vehicle takes
+     * @param maxAcceleration the max acceleration
+     * @param maxBraking the max braking
+     * @param pathEndingNode the ending node of the path
+     * @return an instance of the class EnergyExpenditureAccelResults containing the energy expenditure, the final velocity,
+     * the time spent in this section and an array of instances of the Gears used in each segment
+     */
+    public EnergyExpenditureAccelResults calculateEnergyExpenditureAccel(RoadNetwork roadNetwork, Measurable initialVelocity, Vehicle vehicle,
+                                                                         Measurable load, Measurable maxAcceleration, Measurable maxBraking, Node pathEndingNode) {
+
+        Measurable totalEnergyExpenditure = new Measurable(0, Unit.KILOJOULE);
+        Measurable totalTimeSpent = new Measurable(0, Unit.HOUR);
+        Gears[] gearsForEachSegment = new Gears[segments.size()];
+        int gearsIndex = 0;
+
+        boolean lastSection = false;
+        if (endingNode.equals(pathEndingNode)) {
+            lastSection = true;
+        }
+
+        int segmentsIndex = 0;
+
+        for (Segment segment : segments) {
+
+            // if this is the last section, we check if this is the last segment also
+            boolean lastSegment = false;
+            segmentsIndex++;
+            if (lastSection && segments.size() == segmentsIndex) {
+                lastSegment = true;
+            }
+
+            EnergyExpenditureAccelResults segmentResults =
+                    segment.calculateEnergyExpenditureAccel(roadNetwork, initialVelocity, vehicle, load, maxAcceleration, maxBraking, lastSegment);
+
+            initialVelocity = segmentResults.getFinalVelocity();
+            totalEnergyExpenditure.setQuantity(totalEnergyExpenditure.getQuantity() + segmentResults.getEnergyExpenditure().getQuantity());
+            totalTimeSpent.setQuantity(totalTimeSpent.getQuantity() + segmentResults.getTimeSpent().getQuantity());
+            gearsForEachSegment[gearsIndex] = segmentResults.getGearForEachSegment()[0];
+
+        }
+
+        return new EnergyExpenditureAccelResults(totalEnergyExpenditure, initialVelocity, totalTimeSpent, gearsForEachSegment);
+
     }
 }
