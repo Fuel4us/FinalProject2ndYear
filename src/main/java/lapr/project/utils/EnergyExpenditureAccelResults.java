@@ -32,6 +32,21 @@ public class EnergyExpenditureAccelResults {
     }
 
     /**
+     * Constructor with the parameters energyExpenditure, finalVelocity, timeSpent and gearForEachSegment
+     * @param energyExpenditure the energy expenditure in the section
+     * @param finalVelocity the velocity that the vehicle reached at the end of the section
+     * @param timeSpent the time spent in the section
+     * @param gearForEachSegment the gear used for each segment
+     */
+    public EnergyExpenditureAccelResults(Measurable energyExpenditure, Measurable finalVelocity, Measurable timeSpent, Gears[] gearForEachSegment) {
+        this.energyExpenditure = energyExpenditure;
+        this.finalVelocity = finalVelocity;
+        this.timeSpent = timeSpent;
+        this.gearForEachSegment = gearForEachSegment;
+        tollCosts = new Measurable(0, Unit.EUROS);
+    }
+
+    /**
      * @return the energy expenditure
      */
     public Measurable getEnergyExpenditure() {
