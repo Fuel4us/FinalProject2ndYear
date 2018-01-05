@@ -254,8 +254,8 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
         List<Edge<Node, Section>> edges = roadNetwork.getEdges();
         List<Section> sections = new LinkedList<>();
-        for (Edge edge : edges) {
-            sections.add((Section) edge.getElement());
+        for (Edge<Node, Section> edge : edges) {
+            sections.add(edge.getElement());
         }
 
         for (Section section : sections) {
