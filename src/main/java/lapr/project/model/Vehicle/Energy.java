@@ -9,7 +9,6 @@ public class Energy {
     private float finalDriveRatio;
     private List<Gears> gears;
     private List<Throttle> throttles;
-    private float energyFinalRatio;
 
     /**
      * Constructor
