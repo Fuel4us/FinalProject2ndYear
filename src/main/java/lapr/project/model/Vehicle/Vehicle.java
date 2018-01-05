@@ -149,19 +149,18 @@ public class Vehicle {
      * Calculates the energy expenditure for this vehicle in this segment
      * without taking into account the acceleration and breaking
      *
-     * @param roadNetwork the road network
      * @param segment the segment
      * @param load the vehicle's load
      * @param length the length to be used
-     * @return the energy expenditure in KJ and the gear position used in the segment
+     * @param velocity the velocity to be used
+     * @return the energy expenditure in KJ, the gear position used in the segment and the velocity the vehicle used
      */
-    public Measurable[] determineEnergyExpenditure(RoadNetwork roadNetwork, Segment segment, Measurable load, double length) {
+    public Measurable[] determineEnergyExpenditure(Segment segment, Measurable load, double length, Measurable velocity) {
 
         int gearPosition = energy.getGears().size() - 1;
         int throttlePosition = 0;
-        Measurable maxLinearVelocity = segment.calculateMaximumVelocityInterval(roadNetwork, this, length);
 
-        Measurable[] data = calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, maxLinearVelocity, load);
+        Measurable[] data = calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, velocity, load);
 
         Measurable power = calculatePowerGenerated(data[0], data[1]);
 
@@ -170,7 +169,7 @@ public class Vehicle {
 
         double fuelQuantity = power.getQuantity() * Physics.KILOMETERS_METERS_CONVERSION_RATIO * SFC * timeSpent;
 
-        return new Measurable[]{new Measurable(fuelQuantity * fuel.getSpecificEnergy().getQuantity(), Unit.KILOJOULE), data[4]};
+        return new Measurable[]{new Measurable(fuelQuantity * fuel.getSpecificEnergy().getQuantity(), Unit.KILOJOULE), data[4], data[3]};
     }
 
     /**
@@ -195,17 +194,17 @@ public class Vehicle {
      * @param segment the segment
      * @param gearPosition the gear position
      * @param throttlePosition the throttle position
-     * @param maxLinearVelocity the maximum linear velocity
+     * @param velocity the maximum linear velocity
      * @param load the vehicle's load
      * @return an array with the engine speed in the first position, the torque
      * in the second position, the SFC in the third position, the velocity
      * in the forth position and the gear position in the fifth position
      */
     private Measurable[] calculateEngineSpeedTorqueSFCVelocity(Segment segment,
-                                                               int gearPosition, int throttlePosition, Measurable maxLinearVelocity, Measurable load) {
+                                                               int gearPosition, int throttlePosition, Measurable velocity, Measurable load) {
 
         double engineSpeed
-                = (maxLinearVelocity.getQuantity() * 60 * energy.getFinalDriveRatio() * energy.getGears().get(gearPosition).getRatio())
+                = (velocity.getQuantity() * 60 * energy.getFinalDriveRatio() * energy.getGears().get(gearPosition).getRatio())
                 / (2 * Math.PI * (wheelSize.getQuantity() / 2) * Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO);
 
         double torque = 0;
@@ -222,10 +221,10 @@ public class Vehicle {
 
         // if engine speed isn't inside the limits of this velocity, we reduce the velocity
         if (BigDecimal.valueOf(torque).compareTo(BigDecimal.ZERO) == 0) {
-            maxLinearVelocity.setQuantity(maxLinearVelocity.getQuantity() - maxLinearVelocity.getQuantity() * 0.02d);
+            velocity.setQuantity(velocity.getQuantity() - velocity.getQuantity() * 0.02d);
             gearPosition = energy.getGears().size() - 1;
             throttlePosition = 0;
-            return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, maxLinearVelocity, load);
+            return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, velocity, load);
         }
 
         double motorForce = (torque * energy.getFinalDriveRatio() * energy.getGears().get(gearPosition).getRatio())
@@ -236,7 +235,7 @@ public class Vehicle {
         double rollingResistance = rollingResistanceCoefficient * (mass.getQuantity() + load.getQuantity())
                 * Physics.GRAVITY_ACCELERATION.getQuantity() * Math.cos(segmentAngle.getQuantity());
 
-        Measurable maxAirRelatedVelocity = segment.calculateAirRelatedVelocity(maxLinearVelocity);
+        Measurable maxAirRelatedVelocity = segment.calculateAirRelatedVelocity(velocity);
         double airDrag = 0.5 * dragCoefficient * frontalArea.getQuantity() * Physics.AIR_DENSITY.getQuantity()
                 * Math.pow(maxAirRelatedVelocity.getQuantity(), 2);
 
@@ -248,17 +247,17 @@ public class Vehicle {
 
             // if the throttle position is not 100%, we increase the throttle position
             if (throttlePosition < 2) {
-                return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, ++throttlePosition, maxLinearVelocity, load);
+                return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, ++throttlePosition, velocity, load);
             }
 
             // if the throttle position is in 100%, we decrease the gear position and start the throttle as 25%
             throttlePosition = 0;
-            return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, maxLinearVelocity, load);
+            return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load);
 
         }
 
         return new Measurable[]{new Measurable(engineSpeed, Unit.ROTATIONS_PER_MINUTE), new Measurable(torque, Unit.NEWTON_METER),
-            new Measurable(SFC, Unit.GRAM_PER_KILOWATT_HOUR), maxLinearVelocity, new Measurable(gearPosition, null)};
+            new Measurable(SFC, Unit.GRAM_PER_KILOWATT_HOUR), velocity, new Measurable(gearPosition, null)};
     }
 
     /**
