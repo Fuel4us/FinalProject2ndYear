@@ -53,6 +53,30 @@ public class Energy {
         return throttles;
     }
 
+    /**
+     *
+     * @return minRPM
+     */
+    public int getMinRpm() {
+        return minRpm;
+    }
+
+    /**
+     *
+     * @return maxRMP
+     */
+    public int getMaxRpm() {
+        return maxRpm;
+    }
+
+    /**
+     *
+     * @return energyFinalRatio
+     */
+    public float getEnergyFinalRatio() {
+        return energyFinalRatio;
+    }
+
     @Override
     public String toString() {
         return "Energy{"
