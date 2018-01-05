@@ -326,4 +326,20 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         }
     }
 
+    /**
+     * Stores energy gears
+     * @param gear instance of {@link Gears}
+     * @param energyID identifier of Energy entity
+     */
+    private void storeGear(Gears gear, int energyID) {
+    }
+
+    /**
+     * Stores energy throttle
+     * @param throttle instance of {@link Throttle}
+     * @param energyID identifier of Energy entity
+     */
+    private void storeThrottle(Throttle throttle, int energyID) {
+    }
+
 }
