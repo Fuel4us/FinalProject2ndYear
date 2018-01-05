@@ -302,14 +302,13 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
     private int storeEnergyInfo(Energy energy) throws SQLException {
 
         try (CallableStatement storeEnergyFunction = oracleConnection
-                .prepareCall("{? = call STOREENERGYFUNCTION(?,?,?,?)}")) {
+                .prepareCall("{? = call STOREENERGYFUNCTION(?,?,?)}")) {
 
             storeEnergyFunction.registerOutParameter(1, Types.INTEGER);
 
             storeEnergyFunction.setInt("rpmLow", energy.getMinRpm());
             storeEnergyFunction.setInt("rpmHigh", energy.getMaxRpm());
             storeEnergyFunction.setFloat("finalDriveRatio", energy.getFinalDriveRatio());
-            storeEnergyFunction.setFloat("energyFinalRatio", energy.getEnergyFinalRatio());
 
             List<Gears> gears = energy.getGears();
             for (Gears gear : gears) {
@@ -353,9 +352,31 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             storeThrottleProcedure.setInt("ID", throttle.getId());
             storeThrottleProcedure.setInt("energyID", energyID);
 
-            
+            List<Regime> regimes = throttle.getRegimes();
+            for (Regime regime : regimes) {
+                storeRegime(regime, throttle.getId());
+            }
 
             storeThrottleProcedure.executeUpdate();
+        }
+    }
+
+    /**
+     * Stores throttle regime
+     * @param regime instance of {@link Regime}
+     * @param throttleID throttle identifier
+     */
+    private void storeRegime(Regime regime, int throttleID) throws SQLException {
+        try (CallableStatement storeRegimeProcedure = oracleConnection.prepareCall("CALL storeRegimeProcedure(?,?,?,?,?,?)")) {
+
+            storeRegimeProcedure.setInt("torqueLow", regime.getTorqueLow());
+            storeRegimeProcedure.setInt("torqueHigh", regime.getTorqueHigh());
+            storeRegimeProcedure.setInt("rpmLow", regime.getRpmLow());
+            storeRegimeProcedure.setInt("rpmHigh", regime.getRpmHigh());
+            storeRegimeProcedure.setDouble("SFC", regime.getSFC());
+            storeRegimeProcedure.setInt("throttleID", throttleID);
+
+            storeRegimeProcedure.executeUpdate();
         }
     }
 
