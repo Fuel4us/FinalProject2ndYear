@@ -13,6 +13,7 @@ import lapr.project.utils.Unit;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -279,17 +280,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         }
     }
 
-    //ToDo
-
-    /**
-     * Stores information of {@link Energy} and belonging objects information
-     * @param energy instance of {@link Energy}
-     * @return {@link int} identifier of entity
-     */
-    private int storeEnergyInfo(Energy energy) {
-        return 0;
-    }
-
     /**
      * Stores information of {@link VelocityLimit}
      * @param name vehicle name
@@ -301,6 +291,38 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             storeVelocityLimitProcedure.setString("vehicleName", name);
 
             storeVelocityLimitProcedure.executeUpdate();
+        }
+    }
+
+    /**
+     * Stores information of {@link Energy} and belonging objects information
+     * @param energy instance of {@link Energy}
+     * @return {@link int} identifier of entity
+     */
+    private int storeEnergyInfo(Energy energy) throws SQLException {
+
+        try (CallableStatement storeEnergyFunction = oracleConnection
+                .prepareCall("{? = call STOREENERGYFUNCTION(?,?,?,?)}")) {
+
+            storeEnergyFunction.registerOutParameter(1, Types.INTEGER);
+
+            storeEnergyFunction.setInt("rpmLow", energy.getMinRpm());
+            storeEnergyFunction.setInt("rpmHigh", energy.getMaxRpm());
+            storeEnergyFunction.setFloat("finalDriveRatio", energy.getFinalDriveRatio());
+            storeEnergyFunction.setFloat("energyFinalRatio", energy.getEnergyFinalRatio());
+
+            List<Gears> gears = energy.getGears();
+            for (Gears gear : gears) {
+                storeGear(gear, storeEnergyFunction.getInt(1));
+            }
+            List<Throttle> throttles = energy.getThrottles();
+            for (Throttle throttle : throttles) {
+                storeThrottle(throttle, storeEnergyFunction.getInt(1));
+            }
+
+            storeEnergyFunction.executeUpdate();
+
+            return storeEnergyFunction.getInt(1);
         }
     }
 
