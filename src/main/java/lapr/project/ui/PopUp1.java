@@ -140,7 +140,7 @@ public class PopUp1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonChangeDataActionPerformed
 
     private void jButtonSetActiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetActiveActionPerformed
-        // currentProject = projectPop;
+
         JOptionPane.showMessageDialog(null, projectPop.getName()+" is now your active project.");
     }//GEN-LAST:event_jButtonSetActiveActionPerformed
 

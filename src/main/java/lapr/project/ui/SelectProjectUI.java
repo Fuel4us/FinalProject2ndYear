@@ -5,6 +5,7 @@
  */
 package lapr.project.ui;
 
+import java.awt.HeadlessException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -24,7 +25,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
 
     InitializeUIElements initializer = new InitializeUIElements();
     private static final long serialVersionUID = -5188965937946662366L;
-    private SelectProjectController spc;
+    private final SelectProjectController spc;
     private Project project;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
@@ -352,9 +353,9 @@ public class SelectProjectUI extends javax.swing.JFrame {
         vehiclesTest.add(vehicle1);
         vehiclesTest.add(vehicle2);
 
-        Project project = new Project("New Project", "Add a description", roadNetworkTest, vehiclesTest);
+        Project pjt = new Project("New Project", "Add a description", roadNetworkTest, vehiclesTest);
 
-        new BestPathUI(project);
+        new BestPathUI(pjt);
         setVisible(false);
     }//GEN-LAST:event_jButtonPathFormActionPerformed
 
@@ -375,7 +376,7 @@ public class SelectProjectUI extends javax.swing.JFrame {
                 PopUp1 pop = new PopUp1(project);
                 dispose();
             }
-        }catch(Exception e){
+        }catch(HeadlessException e){
             JOptionPane.showMessageDialog(
                         this,
                         "Select a project!",

@@ -21,6 +21,9 @@ import static lapr.project.utils.Graph.GraphAlgorithms.shortestPath;
  */
 public class PathAlgorithm {
 
+    private static final String N10_ALGORITHM_NAME = "N10 - Fastest Path";
+    private static final String N11_ALGORITHM_NAME = "N11 - Theoretical Most Energy Efficient Path";
+
     /**
      * <p>
      * Calculates the fastest path between two nodes, given a vehicle, for a given project.
@@ -76,7 +79,7 @@ public class PathAlgorithm {
             tollCosts.setQuantity(tollCosts.getQuantity() + section.determineTollCosts(vehicle).getQuantity());
         }
 
-        return new Analysis(project, "N10 - Fastest Path", sections, expendedEnergy,
+        return new Analysis(project, N10_ALGORITHM_NAME, sections, expendedEnergy,
                 new Measurable(travelTime, Unit.HOUR), tollCosts);
 
     }
@@ -95,7 +98,6 @@ public class PathAlgorithm {
                 //Take into account the travelling time each section requires
                 eachSection -> eachSection.getElement().calculateTotalMinimumTimeInterval(roadNetwork, vehicle));
     }
-
 
     /**
      * <p>
@@ -119,9 +121,12 @@ public class PathAlgorithm {
      */
     public Analysis efficientPathRealConditions(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking) {
 
+        //ToDo Calculate **energy expenditure** in a section, considering energy variations when changing segments due to acceleration and braking :: Section
+        //ToDo Find out shortest path considering **energy expenditure** (return energy and path) :: Dijkstra with the new definition of weight
+        //ToDo Calculate Toll costs for the given path
+        //ToDo Total Travelling time for the given path (may use bruno's method but we have to add the time spent in changing segments??) :: Section
 
-
-        return null;
+        return new Analysis(project, N11_ALGORITHM_NAME,null,null,null,null);
     }
 
 }

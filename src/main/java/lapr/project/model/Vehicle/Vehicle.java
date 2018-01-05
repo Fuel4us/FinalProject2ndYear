@@ -7,6 +7,8 @@ import lapr.project.utils.Measurable;
 import lapr.project.utils.Physics;
 import lapr.project.utils.Unit;
 
+import java.sql.CallableStatement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -306,6 +308,57 @@ public class Vehicle {
      */
     public boolean hasValidLoad(Measurable load) {
         return load.getQuantity() <= maxLoad.getQuantity();
+    }
+
+    public void storeVehicleInformation(CallableStatement storeVehicleInfoProcedure) throws SQLException {
+        storeVehicleInfoProcedure.setString("vehicleType", type.name());
+        storeVehicleInfoProcedure.setInt("vehicleTollClass", vehicleClass);
+        storeVehicleInfoProcedure.setString("motorType", motorType.name());
+        storeVehicleInfoProcedure.setString("fuelType", fuel.name());
+        storeVehicleInfoProcedure.setDouble("dragCoefficient", dragCoefficient);
+        storeVehicleInfoProcedure.setDouble("rollingResistanceCoefficient", rollingResistanceCoefficient);
+    }
+
+    /**
+     * @return {@link Measurable} mass
+     */
+    public Measurable getMass() {
+        return mass;
+    }
+
+    /**
+     * @return {@link Measurable} maxLoad
+     */
+    public Measurable getMaxLoad() {
+        return maxLoad;
+    }
+
+    /**
+     * @return {@link Measurable} frontalArea
+     */
+    public Measurable getFrontalArea() {
+        return frontalArea;
+    }
+
+    /**
+     * @return {@link Measurable} wheelSize
+     */
+    public Measurable getWheelSize() {
+        return wheelSize;
+    }
+
+    /**
+     * @return {@link List} of instances {@link VelocityLimit}
+     */
+    public List<VelocityLimit> getVelocityLimitList() {
+        return velocityLimitList;
+    }
+
+    /**
+     * @return {@link Energy} energy
+     */
+    public Energy getEnergy() {
+        return energy;
     }
 
     /**

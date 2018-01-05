@@ -11,6 +11,8 @@ import org.antlr.stringtemplate.StringTemplate;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.CallableStatement;
+import java.sql.SQLException;
 
 public class Segment {
 
@@ -216,4 +218,20 @@ public class Segment {
 
     }
 
+
+    /**
+     * Defines parameters to be used by callable statement
+     * @param storeSegmentProcedure callable statement
+     * @throws SQLException
+     */
+    public void storeSegmentInformation(CallableStatement storeSegmentProcedure) throws SQLException {
+        storeSegmentProcedure.setInt("ID", index);
+        storeSegmentProcedure.setDouble("initialHeight", initialHeight);
+        storeSegmentProcedure.setDouble("finalHeight", finalHeight);
+        storeSegmentProcedure.setDouble("length", length);
+        storeSegmentProcedure.setDouble("windAngle", windAngle);
+        storeSegmentProcedure.setDouble("windSpeed", windSpeed);
+        storeSegmentProcedure.setDouble("maxVelocity", maxVelocity);
+        storeSegmentProcedure.setDouble("minVelocity", minVelocity);
+    }
 }
