@@ -18,8 +18,8 @@ import java.util.Objects;
  * </p>
  */
 public class Vehicle {
-
     private String name;
+
     private String description;
 
     private VehicleType type;
@@ -42,6 +42,9 @@ public class Vehicle {
 
     private List<VelocityLimit> velocityLimitList;
     private Energy energy;
+
+    public Vehicle() {
+    }
 
     /**
      * Creates a new vehicle
@@ -149,20 +152,21 @@ public class Vehicle {
      * @param roadNetwork the road network
      * @param segment the segment
      * @param load the vehicle's load
+     * @param length the length to be used
      * @return the energy expenditure in KJ and the gear position used in the segment
      */
-    public Measurable[] determineEnergyExpenditure(RoadNetwork roadNetwork, Segment segment, Measurable load) {
+    public Measurable[] determineEnergyExpenditure(RoadNetwork roadNetwork, Segment segment, Measurable load, double length) {
 
         int gearPosition = energy.getGears().size() - 1;
         int throttlePosition = 0;
-        Measurable maxLinearVelocity = segment.calculateMaximumVelocityInterval(roadNetwork, this);
+        Measurable maxLinearVelocity = segment.calculateMaximumVelocityInterval(roadNetwork, this, length);
 
         Measurable[] data = calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, maxLinearVelocity, load);
 
         Measurable power = calculatePowerGenerated(data[0], data[1]);
 
         double SFC = data[2].getQuantity();
-        double timeSpent = segment.getLength() / data[3].getQuantity();
+        double timeSpent = length / data[3].getQuantity();
 
         double fuelQuantity = power.getQuantity() * Physics.KILOMETERS_METERS_CONVERSION_RATIO * SFC * timeSpent;
 
@@ -197,7 +201,7 @@ public class Vehicle {
      * in the second position, the SFC in the third position, the velocity
      * in the forth position and the gear position in the fifth position
      */
-    public Measurable[] calculateEngineSpeedTorqueSFCVelocity(Segment segment,
+    private Measurable[] calculateEngineSpeedTorqueSFCVelocity(Segment segment,
                                                                int gearPosition, int throttlePosition, Measurable maxLinearVelocity, Measurable load) {
 
         double engineSpeed
@@ -257,6 +261,11 @@ public class Vehicle {
             new Measurable(SFC, Unit.GRAM_PER_KILOWATT_HOUR), maxLinearVelocity, new Measurable(gearPosition, null)};
     }
 
+    /**
+     * Equals for objects of the class Vehicle
+     * @param obj the other object
+     * @return true if the objects are equal
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -275,6 +284,10 @@ public class Vehicle {
         return true;
     }
 
+    /**
+     * Hash code for instances of the class Vehicle
+     * @return
+     */
     @Override
     public int hashCode() {
         int hash = 3;
@@ -282,16 +295,19 @@ public class Vehicle {
         return hash;
     }
 
+    /**
+     * @return the string format of instances of the class Vehicle
+     */
     @Override
     public String toString() {
         return String.format("%s - %s.", name, description);
     }
 
+    /**
+     * @return the vehicle's name
+     */
     public String getName() {
         return name;
-    }
-
-    public Vehicle() {
     }
 
     /**
