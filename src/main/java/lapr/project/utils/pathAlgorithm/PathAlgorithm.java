@@ -74,7 +74,7 @@ public class PathAlgorithm {
         for (Section section : sections) {
             for (Segment segment : section.getSegments()) {
                 expendedEnergy.setQuantity(expendedEnergy.getQuantity() +
-                        vehicle.determineEnergyExpenditure(roadNetwork, segment, load)[0].getQuantity());
+                        vehicle.determineEnergyExpenditure(roadNetwork, segment, load, segment.getLength())[0].getQuantity());
             }
             tollCosts.setQuantity(tollCosts.getQuantity() + section.determineTollCosts(vehicle).getQuantity());
         }
