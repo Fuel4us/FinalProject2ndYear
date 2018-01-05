@@ -1,6 +1,7 @@
 package lapr.project.model.RoadNetwork;
 
 import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.utils.FileParser.ExportableHTML;
 import lapr.project.utils.Graph.Edge;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Physics;
