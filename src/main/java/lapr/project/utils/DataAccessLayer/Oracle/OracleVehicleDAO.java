@@ -178,42 +178,38 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
 
     private Measurable createWheelSize(String name, Unit[] unitEnum) throws SQLException {
-        ResultSet wheelSet = null;
         try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getWheelSize(?)")) {
             callableStatement.setString(1, name);
-            wheelSet = callableStatement.executeQuery();
+            ResultSet wheelSet = callableStatement.executeQuery();
+            return createMeasurable(wheelSet, unitEnum);
         }
-        return createMeasurable(wheelSet, unitEnum);
     }
 
     private Measurable createFrontalArea(String name, Unit[] unitEnum) throws SQLException {
-        ResultSet areaSet = null;
         try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getFrontalAreaSet(?)")) {
             callableStatement.setString(1, name);
-            areaSet = callableStatement.executeQuery();
+            ResultSet areaSet = callableStatement.executeQuery();
+            return createMeasurable(areaSet, unitEnum);
         }
 
-        return createMeasurable(areaSet, unitEnum);
     }
 
     private Measurable createLoad(String name, Unit[] unitEnum) throws SQLException {
-        ResultSet loadSet = null;
         try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getLoadSet(?)")) {
             callableStatement.setString(1, name);
-            loadSet = callableStatement.executeQuery();
+            ResultSet loadSet = callableStatement.executeQuery();
+            return createMeasurable(loadSet, unitEnum);
         }
 
-        return createMeasurable(loadSet, unitEnum);
     }
 
     private Measurable createMass(String name, Unit[] unitEnum) throws SQLException {
-        ResultSet massSet = null;
         try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getMassSet(?)")) {
             callableStatement.setString(1, name);
-            massSet = callableStatement.executeQuery();
+            ResultSet massSet = callableStatement.executeQuery();
+            return createMeasurable(massSet, unitEnum);
         }
 
-        return createMeasurable(massSet, unitEnum);
     }
 
     private Fuel determineFuel(ResultSet resultSet) throws SQLException {
@@ -258,7 +254,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * @param projectName identifier of {@link lapr.project.model.Project}
      * @throws SQLException
      */
-    public void storeVehicleInfo(Vehicle vehicle, String projectName) throws SQLException {
+    void storeVehicleInfo(Vehicle vehicle, String projectName) throws SQLException {
 
         try (CallableStatement storeVehicleInfoProcedure = oracleConnection.prepareCall("CALL storeVehicleInfoProcedure(?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
 
@@ -284,6 +280,12 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
     }
 
     //ToDo
+
+    /**
+     * Stores information of {@link Energy} and belonging objects information
+     * @param energy instance of {@link Energy}
+     * @return {@link int} identifier of entity
+     */
     private int storeEnergyInfo(Energy energy) {
         return 0;
     }
