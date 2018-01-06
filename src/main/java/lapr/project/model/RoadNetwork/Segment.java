@@ -377,10 +377,12 @@ public class Segment {
      */
     private Measurable[] calculateTravelledDistanceAndTimeSpent(Measurable finalVelocity, Measurable initialVelocity, Measurable acceleration) {
 
-        double time = (finalVelocity.getQuantity() - initialVelocity.getQuantity()) / acceleration.getQuantity();
+        double time = (finalVelocity.getQuantity() / Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO -
+                initialVelocity.getQuantity() / Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO) / acceleration.getQuantity();
 
-        return new Measurable[]{new Measurable(initialVelocity.getQuantity() * time + 0.5 * acceleration.getQuantity() * Math.pow(time, 2), Unit.KILOMETER),
-                new Measurable(time, Unit.HOUR)};
+        return new Measurable[]{new Measurable((initialVelocity.getQuantity() / Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO
+                * time + 0.5 * acceleration.getQuantity() * Math.pow(time, 2)) * Physics.KILOMETERS_METERS_CONVERSION_RATIO, Unit.KILOMETER),
+                new Measurable(time / 3600, Unit.HOUR)};
 
     }
 
