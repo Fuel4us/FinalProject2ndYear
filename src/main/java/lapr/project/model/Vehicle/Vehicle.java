@@ -153,7 +153,8 @@ public class Vehicle {
      * @param load the vehicle's load
      * @param length the length to be used
      * @param velocity the velocity to be used
-     * @return the energy expenditure in KJ, the gear position used in the segment and the velocity the vehicle used
+     * @return the energy expenditure in KJ taking into account the fuel of the vehicle, the gear position used in
+     * the segment, the velocity the vehicle used and the energy expenditure using the formula "Power * timeSpent"
      */
     public Measurable[] determineEnergyExpenditure(Segment segment, Measurable load, double length, Measurable velocity) {
 
@@ -169,7 +170,8 @@ public class Vehicle {
 
         double fuelQuantity = power.getQuantity() * Physics.KILOMETERS_METERS_CONVERSION_RATIO * SFC * timeSpent;
 
-        return new Measurable[]{new Measurable(fuelQuantity * fuel.getSpecificEnergy().getQuantity(), Unit.KILOJOULE), data[4], data[3]};
+        return new Measurable[]{new Measurable(fuelQuantity * fuel.getSpecificEnergy().getQuantity(), Unit.KILOJOULE), data[4], data[3],
+        new Measurable(power.getQuantity() * timeSpent, Unit.KILOJOULE)};
     }
 
     /**
