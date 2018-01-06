@@ -252,7 +252,7 @@ public class Segment {
         if (initialVelocity.getQuantity() == finalVelocity.getQuantity()) {
 
             Measurable[] data = vehicle.determineEnergyExpenditure(this, load, remainingLength.getQuantity(), initialVelocity);
-            energyExpenditure.setQuantity(energyExpenditure.getQuantity() + data[0].getQuantity());
+            energyExpenditure.setQuantity(energyExpenditure.getQuantity() + data[3].getQuantity());
             gearPosition = (int) data[1].getQuantity();
 
             timeSpent.setQuantity(timeSpent.getQuantity() + remainingLength.getQuantity() / finalVelocity.getQuantity());
@@ -310,7 +310,7 @@ public class Segment {
 
                 if (remainingLength.getQuantity() > 0) {
                     Measurable[] data = vehicle.determineEnergyExpenditure(this, load, remainingLength.getQuantity(), finalVelocity);
-                    energyExpenditure.setQuantity(energyExpenditure.getQuantity() + data[0].getQuantity());
+                    energyExpenditure.setQuantity(energyExpenditure.getQuantity() + data[3].getQuantity());
                     timeSpent.setQuantity(timeSpent.getQuantity() + remainingLength.getQuantity() / finalVelocity.getQuantity());
                     gearPosition = (int) data[1].getQuantity();
                 }
@@ -321,7 +321,7 @@ public class Segment {
             }
 
             Measurable[] data = vehicle.determineEnergyExpenditure(this, load, remainingLength.getQuantity(), initialVelocity);
-            energyExpenditure.setQuantity(energyExpenditure.getQuantity() + data[0].getQuantity());
+            energyExpenditure.setQuantity(energyExpenditure.getQuantity() + data[3].getQuantity());
             timeSpent.setQuantity(timeSpent.getQuantity() + remainingLength.getQuantity() / initialVelocity.getQuantity());
             gearPosition = (int) data[1].getQuantity();
 
@@ -358,7 +358,7 @@ public class Segment {
         if (remainingLength.getQuantity() > 0) {
             Measurable[] data = vehicle.determineEnergyExpenditure(this, load, remainingLength.getQuantity(), finalVelocity);
             timeSpent.setQuantity(timeSpent.getQuantity() + remainingLength.getQuantity() / finalVelocity.getQuantity());
-            energyExpenditure.setQuantity(energyExpenditure.getQuantity() + data[0].getQuantity());
+            energyExpenditure.setQuantity(energyExpenditure.getQuantity() + data[3].getQuantity());
             gearPosition = (int) data[1].getQuantity();
         }
 
