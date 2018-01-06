@@ -270,6 +270,7 @@ public class Section extends Edge<String, Direction> {
             totalEnergyExpenditure.setQuantity(totalEnergyExpenditure.getQuantity() + segmentResults.getEnergyExpenditure().getQuantity());
             totalTimeSpent.setQuantity(totalTimeSpent.getQuantity() + segmentResults.getTimeSpent().getQuantity());
             gearsForEachSegment[gearsIndex] = segmentResults.getGearForEachSegment()[0];
+            gearsIndex++;
 
         }
 
