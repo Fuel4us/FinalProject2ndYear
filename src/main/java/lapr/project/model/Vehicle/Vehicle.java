@@ -259,7 +259,7 @@ public class Vehicle {
         }
 
         return new Measurable[]{new Measurable(engineSpeed, Unit.ROTATIONS_PER_MINUTE), new Measurable(torque, Unit.NEWTON_METER),
-            new Measurable(SFC, Unit.GRAM_PER_KILOWATT_HOUR), velocity, new Measurable(gearPosition, null)};
+            new Measurable(SFC, Unit.GRAM_PER_KILOWATT_HOUR), velocity, new Measurable(gearPosition, Unit.POSITION)};
     }
 
     /**
