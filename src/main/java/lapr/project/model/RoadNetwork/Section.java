@@ -254,7 +254,7 @@ public class Section extends Edge<String, Direction> {
 
         for (Segment segment : segments) {
 
-            // if this is the last section, we check if this is the last segment also
+            // if this is the last section, we check if this is also the last segment
             boolean lastSegment = false;
             segmentsIndex++;
             if (lastSection && segments.size() == segmentsIndex) {
@@ -264,7 +264,9 @@ public class Section extends Edge<String, Direction> {
             EnergyExpenditureAccelResults segmentResults =
                     segment.calculateEnergyExpenditureAccel(roadNetwork, initialVelocity, vehicle, load, maxAcceleration, maxBraking, lastSegment);
 
+            // the initial velocity is always being updated
             initialVelocity = segmentResults.getFinalVelocity();
+
             totalEnergyExpenditure.setQuantity(totalEnergyExpenditure.getQuantity() + segmentResults.getEnergyExpenditure().getQuantity());
             totalTimeSpent.setQuantity(totalTimeSpent.getQuantity() + segmentResults.getTimeSpent().getQuantity());
             gearsForEachSegment[gearsIndex] = segmentResults.getGearForEachSegment()[0];
