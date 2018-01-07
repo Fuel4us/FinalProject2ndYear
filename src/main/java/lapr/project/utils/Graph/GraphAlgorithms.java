@@ -204,19 +204,19 @@ public class GraphAlgorithms {
                                                            ToDoubleFunction<R> weightExtractor, A seed,
                                                            Function<R, A> cumulativeAttributeExtractor) {
 
-        int vkey = graph.getKey(originVertex);
-        dist[vkey] = 0;
+        int vKey = graph.getKey(originVertex);
+        dist[vKey] = 0;
 
         HashMap<Edge<V, E>, A> attributesMap = new HashMap<>();
 
         //this is only true for the outgoing edges of the first origin node
         A attribute = seed;
 
-        while (vkey != -1) {
+        while (vKey != -1) {
             //next vertex to visit
-            originVertex = vertices.get(vkey);
+            originVertex = vertices.get(vKey);
             //mark vertex as visited and explore its outgoing edges
-            visited[vkey] = true;
+            visited[vKey] = true;
 
             //Initialize cumulative applier args and output
             R product;
@@ -230,8 +230,9 @@ public class GraphAlgorithms {
 
                 //<editor-fold desc="findArgument">
                 //If this origin vertex is not the first origin vertex
-                if (vkey > 0) {
-                    findNextTransformedArgument(graph, vertices, vkey, edge, attributesMap, attribute);
+                if (vKey > 0) {
+                    A nextTransformedArgument = findNextTransformedArgument(graph, vertices, vKey, originVertex, attributesMap);
+                    attribute = nextTransformedArgument != null ? nextTransformedArgument : attribute;
                 }
                 //</editor-fold>
 
@@ -247,22 +248,22 @@ public class GraphAlgorithms {
                 //map this attribute to the current edge, so that it can be used to compute the weight of edges that had this edge as its predecessor
                 attributesMap.put(edge, cumulativeAttributeExtractor.apply(product));
 
-                if (!visited[vkeyAdj] && dist[vkeyAdj] > dist[vkey] + definedWeight) {
-                    dist[vkeyAdj] = dist[vkey] + definedWeight;
-                    pathKeys[vkeyAdj] = vkey;
+                if (!visited[vkeyAdj] && dist[vkeyAdj] > dist[vKey] + definedWeight) {
+                    dist[vkeyAdj] = dist[vKey] + definedWeight;
+                    pathKeys[vkeyAdj] = vKey;
                 }
 
             }
 
             //BEGIN Rank paths
             double minDist = Double.MAX_VALUE;
-            vkey = -1;
+            vKey = -1;
 
             for (int i = 0; i < graph.numVertices(); i++) {
 
                 if (!visited[i] && dist[i] < minDist) {
                     minDist = dist[i];
-                    vkey = i;
+                    vKey = i;
                 }
 
             }
@@ -270,17 +271,37 @@ public class GraphAlgorithms {
         }
     }
 
-
-    private static <V, E, A> void findNextTransformedArgument(Graph<V, E> graph, List<V> vertices, int vkey, Edge<V, E> currentEdge, HashMap<Edge<V, E>, A> attributesMap, A attribute) {
+    //    I'm on edge2 and I want to know that the edge I used to get here was edge0
+    //    after that I want to know the output of the application of the cumulative applier on edge0 and pass it as an argument to the cumulative applier of edge2
+    private static <V, E, A> A findNextTransformedArgument(Graph<V, E> graph, List<V> vertices, int vkey, V currentVertex, HashMap<Edge<V, E>, A> attributesMap) {
         V previousVertex = vertices.get(vkey - 1);
         Iterable<Edge<V, E>> previousNodeEdges = graph.outgoingEdges(previousVertex);
         List<Edge<V, E>> previousNodesEdgeList = new LinkedList<>((Collection<? extends Edge<V, E>>) previousNodeEdges);
 
-        //Search in the list of outgoing edges of the previous visited node for the edge that was used to reach this edge
-        //This information is required so that the weight of the current edge can be calculated
-        Optional<Edge<V, E>> predecessor = previousNodesEdgeList.stream().filter(previousEdge -> graph.opposite(previousVertex, previousEdge).equals(currentEdge)).findFirst();
+        //Search in the list of outgoing edges of the previously visited node for the edge that was used to reach this edge
+        //When you find that edge, find it's calculated attribute in the attributes map
 
-        if (predecessor.isPresent()) attribute = attributesMap.get(predecessor.get());
+        //This information is required so that the weight of the current edge can be calculated
+
+//        ArrayList<Edge<V,E>> candidateEdges = new ArrayList<>();
+        for (Edge<V, E> edge : previousNodesEdgeList) {
+            V opposite = graph.opposite(previousVertex, edge);
+            if (opposite.equals(currentVertex)) {
+//                candidateEdges.add(edge);
+                return attributesMap.get(edge);
+            }
+        }
+
+        //determine which of the candidate edges to use. Always use the shortest
+        //In other words, always assume the edge used to get to this edge was the shortest available
+
+
+//        Optional<Edge<V, E>> predecessor = previousNodesEdgeList.stream()
+//                .filter(previousEdge -> graph.opposite(previousVertex, previousEdge).equals(currentEdge))
+//                .findFirst();
+//
+//        if (predecessor.isPresent()) attribute = attributesMap.get(predecessor.get());
+        return null;
     }
 
     /**
