@@ -218,7 +218,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
             String networkID = roadNetwork.getId();
             String description = roadNetwork.getDescription();
-            storeRoadNetworkInfoProcedure.setString("ID", networkID);
+            storeRoadNetworkInfoProcedure.setString("id", networkID);
             storeRoadNetworkInfoProcedure.setString("description", description);
             storeRoadNetworkInfoProcedure.setString("projectName", projectName);
 
@@ -289,7 +289,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     private void storeNode(Node node, String networkID) throws SQLException {
         try (CallableStatement storeNodeProcedure = oracleConnection.prepareCall("CALL storeNodeProcedure(?,?)")) {
 
-            storeNodeProcedure.setString("ID", node.getId());
+            storeNodeProcedure.setString("id", node.getId());
             storeNodeProcedure.setString("networkID", networkID);
 
             storeNodeProcedure.executeUpdate();
@@ -304,7 +304,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     private void storeRoad(Road road) throws SQLException   {
         try (CallableStatement storeRoadProcedure = oracleConnection.prepareCall("CALL storeRoadProcedure(?,?,?)")) {
 
-            storeRoadProcedure.setString("ID", road.getId());
+            storeRoadProcedure.setString("id", road.getId());
             storeRoadProcedure.setString("name", road.getName());
             storeRoadProcedure.setString("typology", road.getTypology());
 
@@ -321,7 +321,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     private void storeSection(Section section, String networkID) throws SQLException   {
         try (CallableStatement storeSectionProcedure = oracleConnection.prepareCall("CALL storeSectionProcedure(?,?,?,?,?,?)")) {
 
-            storeSectionProcedure.setInt("ID", section.getID());
+            storeSectionProcedure.setInt("id", section.getID());
             storeSectionProcedure.setString("networkID", networkID);
             storeSectionProcedure.setString("beginningNodeID", section.getOriginVertex().getElement());
             storeSectionProcedure.setString("endingNodeID", section.getDestinyVertex().getElement());
@@ -371,7 +371,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * @throws SQLException
      */
     private void storeSegment(Segment segment, int sectionID) throws SQLException   {
-        try (CallableStatement storeSegmentProcedure = oracleConnection.prepareCall("CALL storeSegmentProcedure(?,?)")) {
+        try (CallableStatement storeSegmentProcedure = oracleConnection.prepareCall("CALL storeSegmentProcedure(?,?,?,?,?,?,?,?,?)")) {
 
             segment.storeSegmentInformation(storeSegmentProcedure);
             storeSegmentProcedure.setInt("sectionID", sectionID);
