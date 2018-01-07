@@ -353,9 +353,9 @@ public class SelectProjectUI extends javax.swing.JFrame {
         vehiclesTest.add(vehicle1);
         vehiclesTest.add(vehicle2);
 
-        Project pjt = new Project("New Project", "Add a description", roadNetworkTest, vehiclesTest);
+        Project project = new Project("New Project", "Add a description", roadNetworkTest, vehiclesTest);
 
-        new BestPathUI(pjt);
+        new BestPathUI(project);
         setVisible(false);
     }//GEN-LAST:event_jButtonPathFormActionPerformed
 
