@@ -349,7 +349,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
     private void storeThrottle(Throttle throttle, int energyID) throws SQLException {
         try (CallableStatement storeThrottleProcedure = oracleConnection.prepareCall("CALL storeThrottleProcedure(?,?)")) {
 
-            storeThrottleProcedure.setInt("ID", throttle.getId());
+            storeThrottleProcedure.setInt("id", throttle.getId());
             storeThrottleProcedure.setInt("energyID", energyID);
 
             List<Regime> regimes = throttle.getRegimes();
