@@ -121,9 +121,9 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     }
 
     /**
-     * 
-     * @param sectionID
-     * @return
+     * Retrieves from database and creates {@link Road} object
+     * @param sectionID identifier of {@link Section} contained in {@link Road}
+     * @return instance of {@link Road}
      * @throws SQLException
      */
     private Road createRoad(int sectionID) throws SQLException {
@@ -139,6 +139,12 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
         }
     }
 
+    /**
+     * Retrieves instances of {@link Segment} contained on a given {@link Section} from database
+     * @param sectionID identifier of {@link Section}
+     * @return {@link Collection} of instances of {@link Segment}
+     * @throws SQLException
+     */
     private Collection<Segment> fetchSectionSegments(int sectionID) throws SQLException {
         Collection<Segment> segments = new ArrayList<>();
 
@@ -180,6 +186,12 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
         return tollFareSectionList;
     }
 
+    /**
+     * Retrieves and creates instances of {@link Section} from database, adding them to a given {@link RoadNetwork}
+     * @param networkID identifier of {@link RoadNetwork}
+     * @param roadNetwork instance of {@link RoadNetwork}
+     * @throws SQLException
+     */
     private void addSectionsToRoadNetwork(String networkID, RoadNetwork roadNetwork) throws SQLException {
 
         try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getSectionSet(?)")) {
@@ -209,7 +221,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     /**
      * Stores information of RoadNetwork
      * @param roadNetwork the {@link RoadNetwork} to store
-     * @param projectName
+     * @param projectName identifier of {@link lapr.project.model.Project}
      * @throws java.sql.SQLException
      */
     void storeRoadNetworkInfo(RoadNetwork roadNetwork, String projectName) throws SQLException {
