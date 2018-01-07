@@ -112,7 +112,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             callableStatement.setString(1, roadID);
             ResultSet roadTollSet = callableStatement.executeQuery();
             while (roadTollSet.next()) {
-                tollFare = roadTollSet.getDouble(fare);
+                tollFare = roadTollSet.getDouble("tollFare");
                 tollFareRoadList.add(tollFare);
             }
         }
@@ -178,7 +178,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             callableStatement.setInt(1, sectionID);
             ResultSet sectionTollSet = callableStatement.executeQuery();
             while (sectionTollSet.next()) {
-                tollFare = sectionTollSet.getDouble(fare);
+                tollFare = sectionTollSet.getDouble("tollFare");
                 tollFareSectionList.add(tollFare);
             }
         }
@@ -354,7 +354,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
         try (CallableStatement storeTollFareRoadProcedure = oracleConnection.prepareCall("CALL storeTollFareRoadProcedure(?,?)")) {
 
             storeTollFareRoadProcedure.setString("roadID", roadID);
-            storeTollFareRoadProcedure.setDouble(fare, tollFare);
+            storeTollFareRoadProcedure.setDouble("tollFare", tollFare);
 
             storeTollFareRoadProcedure.executeUpdate();
         }
