@@ -226,7 +226,7 @@ public class Segment {
      * @throws SQLException
      */
     public void storeSegmentInformation(CallableStatement storeSegmentProcedure) throws SQLException {
-        storeSegmentProcedure.setInt("ID", index);
+        storeSegmentProcedure.setInt("id", index);
         storeSegmentProcedure.setDouble("initialHeight", initialHeight);
         storeSegmentProcedure.setDouble("finalHeight", finalHeight);
         storeSegmentProcedure.setDouble("length", length);
