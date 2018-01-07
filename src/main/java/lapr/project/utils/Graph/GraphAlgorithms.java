@@ -2,7 +2,9 @@ package lapr.project.utils.Graph;
 
 import lapr.project.utils.GeneralOperator;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.ToDoubleFunction;
@@ -93,8 +95,8 @@ public class GraphAlgorithms {
      * This method allows a flexible definition of the weight of an edge
      * via the use of a functional interface {@link GeneralOperator}
      * </p>
-     * @param g Graph instance
-     * @param vOrig Vertex that will be the source of the path
+     * @param graph Graph instance
+     * @param originVertex Vertex that will be the source of the path
      * @param visited set of discovered vertices
      * @param pathKeys minimum path vertices keys
      * @param dist minimum distances
@@ -104,39 +106,29 @@ public class GraphAlgorithms {
      * but allows for various different definitions of weight.
      * If this value is null, the definition of weight in the edge class is used instead.
      */
-    private static <V, E> void shortestPathLength(Graph<V, E> g, V vOrig, List<V> vertices,
+    private static <V, E> void shortestPathLength(Graph<V, E> graph, V originVertex, List<V> vertices,
                                                   boolean[] visited, int[] pathKeys, double[] dist, GeneralOperator<Edge<V, E>> edgeOperator) {
-        int vkey = g.getKey(vOrig);
-        dist[vkey] = 0;
+        int vKey = graph.getKey(originVertex);
+        dist[vKey] = 0;
 
-        while (vkey != -1) {
-            vOrig = vertices.get(vkey);
-            visited[vkey] = true;
+        while (vKey != -1) {
+            originVertex = vertices.get(vKey);
+            visited[vKey] = true;
 
-            for (Edge<V, E> edge : g.outgoingEdges(vOrig)) {
+            for (Edge<V, E> edge : graph.outgoingEdges(originVertex)) {
 
-                V vAdj = g.opposite(vOrig, edge);
-                int vkeyAdj = g.getKey(vAdj);
+                V vAdj = graph.opposite(originVertex, edge);
+                int vkeyAdj = graph.getKey(vAdj);
 
                 double definedWeight = edgeOperator != null ? edgeOperator.apply(edge) : edge.getWeight();
 
-                if (!visited[vkeyAdj] && dist[vkeyAdj] > dist[vkey] + definedWeight) {
-                    dist[vkeyAdj] = dist[vkey] + definedWeight;
-                    pathKeys[vkeyAdj] = vkey;
+                if (!visited[vkeyAdj] && dist[vkeyAdj] > dist[vKey] + definedWeight) {
+                    dist[vkeyAdj] = dist[vKey] + definedWeight;
+                    pathKeys[vkeyAdj] = vKey;
                 }
 
             }
-            double minDist = Double.MAX_VALUE;
-            vkey = -1;
-
-            for (int i = 0; i < g.numVertices(); i++) {
-
-                if (!visited[i] && dist[i] < minDist) {
-                    minDist = dist[i];
-                    vkey = i;
-                }
-
-            }
+            vKey = findNextVertexInQueue(graph, visited, dist);
         }
     }
 
@@ -252,20 +244,28 @@ public class GraphAlgorithms {
 
             }
 
-            //BEGIN Rank paths Priority queue emulator
-            double minDist = Double.MAX_VALUE;
-            vKey = -1;
+            vKey = findNextVertexInQueue(graph, visited, dist);
 
-            for (int i = 0; i < graph.numVertices(); i++) {
-
-                if (!visited[i] && dist[i] < minDist) {
-                    minDist = dist[i];
-                    vKey = i;
-                }
-
-            }
-            //END Rank Paths
         }
+    }
+
+    /**
+     * Auxiliary method for Dijkstra based path finding implementations
+     * Simulates a priority queue, and retrieves the next element if the queue is not empty
+     */
+    private static <V,E> int findNextVertexInQueue(Graph<V,E> graph, boolean[] visited, double[] dist) {
+        double minDist = Double.MAX_VALUE;
+        int vKey = -1;
+
+        for (int i = 0; i < graph.numVertices(); i++) {
+
+            if (!visited[i] && dist[i] < minDist) {
+                minDist = dist[i];
+                vKey = i;
+            }
+
+        }
+        return vKey;
     }
 
     /**
