@@ -33,7 +33,7 @@ public class Segment {
 
     private double minVelocity;
     
-    private final double zero = 0.00000000000001;
+    private final double zero = 0.000000001;
 
 
     /**
@@ -251,7 +251,7 @@ public class Segment {
         }
 
         // if the vehicle enters the segment with the same speed as the speed allowed
-        if (initialVelocity.getQuantity() == finalVelocity.getQuantity()) { // Initial.getQuantity == Final.getQuantity
+        if ((initialVelocity.getQuantity() - finalVelocity.getQuantity()) < zero && (initialVelocity.getQuantity() - finalVelocity.getQuantity()) > -zero) { // Initial.getQuantity == Final.getQuantity
 
             Measurable[] data = vehicle.determineEnergyExpenditure(this, load, remainingLength.getQuantity(), initialVelocity);
             energyExpenditure.setQuantity(energyExpenditure.getQuantity() + data[3].getQuantity());
