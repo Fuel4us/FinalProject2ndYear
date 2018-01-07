@@ -1,7 +1,7 @@
 package lapr.project.model.Vehicle;
 
 import java.math.BigDecimal;
-import lapr.project.model.RoadNetwork.RoadNetwork;
+
 import lapr.project.model.RoadNetwork.Segment;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Physics;
@@ -153,15 +153,16 @@ public class Vehicle {
      * @param load the vehicle's load
      * @param length the length to be used
      * @param velocity the velocity to be used
+     * @param energySaving true if the vehicle is in energy saving mode
      * @return the energy expenditure in KJ taking into account the fuel of the vehicle, the gear position used in
      * the segment, the velocity the vehicle used and the energy expenditure using the formula "Power * timeSpent"
      */
-    public Measurable[] determineEnergyExpenditure(Segment segment, Measurable load, double length, Measurable velocity) {
+    public Measurable[] determineEnergyExpenditure(Segment segment, Measurable load, double length, Measurable velocity, boolean energySaving) {
 
         int gearPosition = energy.getGears().size() - 1;
         int throttlePosition = 0;
 
-        Measurable[] data = calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, velocity, load);
+        Measurable[] data = calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, velocity, load, energySaving);
 
         Measurable power = calculatePowerGenerated(data[0], data[1]);
 
@@ -198,12 +199,13 @@ public class Vehicle {
      * @param throttlePosition the throttle position
      * @param velocity the maximum linear velocity
      * @param load the vehicle's load
+     * @param energySaving true if the vehicle is in energy saving mode
      * @return an array with the engine speed in the first position, the torque
      * in the second position, the SFC in the third position, the velocity
      * in the forth position and the gear position in the fifth position
      */
-    private Measurable[] calculateEngineSpeedTorqueSFCVelocity(Segment segment,
-                                                               int gearPosition, int throttlePosition, Measurable velocity, Measurable load) {
+    private Measurable[] calculateEngineSpeedTorqueSFCVelocity(Segment segment, int gearPosition, int throttlePosition,
+                                                               Measurable velocity, Measurable load, boolean energySaving) {
 
         double engineSpeed
                 = (velocity.getQuantity() * 60 * energy.getFinalDriveRatio() * energy.getGears().get(gearPosition).getRatio())
@@ -226,7 +228,7 @@ public class Vehicle {
             velocity.setQuantity(velocity.getQuantity() - velocity.getQuantity() * 0.02d);
             gearPosition = energy.getGears().size() - 1;
             throttlePosition = 0;
-            return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, velocity, load);
+            return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, velocity, load, energySaving);
         }
 
         double motorForce = (torque * energy.getFinalDriveRatio() * energy.getGears().get(gearPosition).getRatio())
@@ -249,12 +251,12 @@ public class Vehicle {
 
             // if the throttle position is not 100%, we increase the throttle position
             if (throttlePosition < 2) {
-                return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, ++throttlePosition, velocity, load);
+                return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, ++throttlePosition, velocity, load, energySaving);
             }
 
             // if the throttle position is in 100%, we decrease the gear position and start the throttle as 25%
             throttlePosition = 0;
-            return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load);
+            return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, energySaving);
 
         }
 
