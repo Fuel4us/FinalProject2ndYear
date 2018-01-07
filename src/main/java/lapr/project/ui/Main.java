@@ -9,10 +9,8 @@ import oracle.jdbc.pool.OracleDataSource;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import lapr.project.model.Analysis;
 
 /**
  * Triggers UI events
@@ -56,32 +54,22 @@ class Main {
                 new ArrayList<>()
         );
         try {
-            LOGGER.log(Level.INFO, "Attempting connection to database...");
+            LOGGER.log(Level.INFO, "Initializing connection to database...");
             dbCom = new DataBaseCommunicator(new OracleDataSource());
         } catch (SQLException e) {
             DBAccessor.logSQLException(e);
-            LOGGER.log(Level.SEVERE, "Connection to the database failed, falling back to memory");
+            LOGGER.log(Level.SEVERE, "Connection to the database failed, some operations may not be available.");
         }
     }
 
     /**
      * Application main method.
-     *
      * @param args the command line arguments
      */
     public static void main(String[] args) throws SQLException {
         setLook();
         new Main();
-
-        //<editor-fold desc="Demonstration purposes" default=collapsed>
         WelcomeUI.main(null);
-        //Testing purposes only
-        
-       // new BestPathUI(currentProject, dbCom).setVisible(true);
-
-
-//        new StoreNetworkAnalysisUI(currentProject, dbCom, generatedAnalysis).setVisible(true);
-        //</editor-fold>
     }
 
     private static void setLook() {
