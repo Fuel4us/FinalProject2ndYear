@@ -204,21 +204,24 @@ public class GraphAlgorithms {
                                                            ToDoubleFunction<R> weightExtractor, A seed,
                                                            Function<R, A> cumulativeAttributeExtractor) {
 
+        //The keys are the indexes that correspond to
+        // the vertices in the arrays visited and dist
         int vKey = graph.getKey(originVertex);
         dist[vKey] = 0;
 
+        //Keeps track of extracted attributes in respect to the weight of the current shortest path
         HashMap<Double, A> attributesMap = new HashMap<>();
 
-        //this is only true for the outgoing edges of the first origin node
+        //Initialize attribute with the seed value
         A attribute = seed;
 
+        //The key is set to -1 if the priority queue is empty, which means the shortest path is known
         while (vKey != -1) {
             //next vertex to visit
             originVertex = vertices.get(vKey);
             //mark vertex as visited and explore its outgoing edges
             visited[vKey] = true;
 
-            //Initialize cumulative applier args and output
             R product;
             for (Edge<V, E> edge : graph.outgoingEdges(originVertex)) {
 
@@ -227,14 +230,9 @@ public class GraphAlgorithms {
 
                 //If this origin vertex is not the first origin vertex
                 if (vKey > 0) {
-//                    A nextTransformedArgument = findNextTransformedArgument(graph, vertices, vKey, originVertex, attributesMap);
-//                    attribute = nextTransformedArgument != null ? nextTransformedArgument : attribute;
-
                     // the attribute of the last edge corresponding to the current shortest path to this vertex
                     A nextArgument = attributesMap.get(dist[vKey]);
-                    if (nextArgument != null) {
-                        attribute = nextArgument;
-                    }
+                    attribute = nextArgument != null ? nextArgument : attribute;
                 }
 
                 //product is the result of application of f(x) where initial x is the seed
@@ -243,12 +241,12 @@ public class GraphAlgorithms {
                 //the definition of weight is extractable from the product
                 double definedWeight = weightExtractor.applyAsDouble(product);
 
-                //the cumulative attribute is extractable from the product
-                //map this attribute to the current edge, so that it can be used to compute the weight of edges that had this edge as its predecessor
-
                 if (!visited[vKeyAdj] && dist[vKeyAdj] > dist[vKey] + definedWeight) {
                     dist[vKeyAdj] = dist[vKey] + definedWeight;
                     pathKeys[vKeyAdj] = vKey;
+                    //cumulativeAttributeExtractor.apply(product) -> the cumulative attribute is extractable from the product
+                    //map this attribute to the weight of the current shortest path to this vertex,
+                    //so that it can be used to compute the weight of edges that used this path
                     attributesMap.put(dist[vKeyAdj], cumulativeAttributeExtractor.apply(product));
                 }
 
@@ -268,48 +266,6 @@ public class GraphAlgorithms {
             }
             //END Rank Paths
         }
-    }
-
-    //    I'm on edge2 and I want to know that the edge I used to get here was edge0
-    //    after that I want to know the output of the application of the cumulative applier on edge0 and pass it as an argument to the cumulative applier of edge2
-    private static <V, E, A> A findNextTransformedArgument(Graph<V, E> graph, List<V> vertices, int vkey, V currentVertex, HashMap<Double, A> attributesMap) {
-        V previousVertex = vertices.get(vkey - 1);
-        Iterable<Edge<V, E>> previousNodeEdges = graph.outgoingEdges(previousVertex);
-        List<Edge<V, E>> previousNodesEdgeList = new LinkedList<>((Collection<? extends Edge<V, E>>) previousNodeEdges);
-
-        //Search in the list of outgoing edges of the previously visited node for the edge that was used to reach this edge
-        //When you find that edge, find it's calculated attribute in the attributes map
-
-        //This information is required so that the weight of the current edge can be calculated
-
-        //Replace by java 8
-//        List<Edge<V,E>> candidateEdges = new ArrayList<>();
-//        for (Edge<V, E> edge : previousNodesEdgeList) {
-//            V opposite = graph.opposite(previousVertex, edge);
-//            if (opposite.equals(currentVertex)) {
-//                candidateEdges.add(edge);
-//            }
-//        }
-
-        //if list only has one element, return it's attribute
-//        if (candidateEdges.size() == 1) {
-//            return attributesMap.get(candidateEdges.get(0));
-//        } else {
-            //return the shortest to the moment
-            //ToDo the attribute of the last edge of the current shortest path to C
-
-//        }
-
-        //determine which of the candidate edges to use. Always use the shortest
-        //In other words, always assume the edge used to get to this edge was the shortest available
-
-
-//        Optional<Edge<V, E>> predecessor = previousNodesEdgeList.stream()
-//                .filter(previousEdge -> graph.opposite(previousVertex, previousEdge).equals(currentEdge))
-//                .findFirst();
-//
-//        if (predecessor.isPresent()) attribute = attributesMap.get(predecessor.get());
-        return null;
     }
 
     /**
