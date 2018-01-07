@@ -12,7 +12,7 @@ public class UnitTest {
     Unit[] expResult = {Unit.KILOGRAM, Unit.GRAM, Unit.KILOMETERS_PER_HOUR, Unit.KILOMETER, Unit.METER, Unit.MILES_PER_HOUR, Unit.METERS_PER_SECOND,
     Unit.ROTATIONS_PER_MINUTE, Unit.DEGREE, Unit.METERS_PER_SECOND_SQUARED, Unit.METER_SQUARED,
     Unit.KILOGRAMS_PER_CUBIC_METER, Unit.NEWTON_METER, Unit.KILOJOULE_PER_GRAM, Unit.WATT, Unit.GRAM_PER_KILOWATT_HOUR,
-    Unit.KILOJOULE, Unit.EUROS, Unit.HOUR};
+    Unit.KILOJOULE, Unit.EUROS, Unit.HOUR, Unit.NEWTON, Unit.POSITION};
     String test = "Boas";
     
     public UnitTest() {
