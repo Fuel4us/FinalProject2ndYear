@@ -175,7 +175,7 @@ public class GraphAlgorithmsTest {
         double seed = 2d;
         Function<Double, Double> cumulativeAttributeExtractor = x -> x * 3;
 
-        Graph<String, TestEdge> graph = new Graph<>(true);
+        Graph<String, TestEdge<String,String>> graph = new Graph<>(true);
         String a = "A";
         String b = "B";
         String c = "C";
@@ -186,12 +186,12 @@ public class GraphAlgorithmsTest {
         graph.insertVertex(c);
         graph.insertVertex(d);
 
-        TestEdge edge0 = new TestEdge();
-        TestEdge edge1 = new TestEdge();
-        TestEdge edge2 = new TestEdge();
-        TestEdge edge3 = new TestEdge();
-        TestEdge edge4 = new TestEdge();
-        TestEdge edge5 = new TestEdge();
+        TestEdge<String,String> edge0 = new TestEdge<>();
+        TestEdge<String,String> edge1 = new TestEdge<>();
+        TestEdge<String,String> edge2 = new TestEdge<>();
+        TestEdge<String,String> edge3 = new TestEdge<>();
+        TestEdge<String,String> edge4 = new TestEdge<>();
+        TestEdge<String,String> edge5 = new TestEdge<>();
         //</editor-fold>
 
         //the weight is defined via the weight extractor, so the value of weight passed in insertEdge is irrelevant
@@ -259,7 +259,7 @@ public class GraphAlgorithmsTest {
     /**
      * Edge subclass for test purposes only
      */
-    private static class TestEdge extends Edge {
+    private static class TestEdge<V,E> extends Edge<V,E> {
 
         private int id;
 
@@ -290,7 +290,7 @@ public class GraphAlgorithmsTest {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             if (!super.equals(o)) return false;
-            TestEdge testEdge = (TestEdge) o;
+            TestEdge<?, ?> testEdge = (TestEdge<?, ?>) o;
             return id == testEdge.id;
         }
 
