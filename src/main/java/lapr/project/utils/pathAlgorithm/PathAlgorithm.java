@@ -44,7 +44,7 @@ public class PathAlgorithm {
      * @param load the vehicle's load
      * @return The Analysis containing the results
      */
-    public Analysis fastestPath(Project project, Node start, Node end, Vehicle vehicle, Measurable load) {
+    public static Analysis fastestPath(Project project, Node start, Node end, Vehicle vehicle, Measurable load) {
 
         if (vehicle.getMotorType() != Vehicle.MotorType.COMBUSTION) {
             throw new IllegalArgumentException("This operation does not support electric vehicles");
@@ -86,7 +86,7 @@ public class PathAlgorithm {
      * @param path A {@link List} of instances of {@link Node}
      * @return a {@link List} of instances of {@link Section}
      */
-    private List<Section> convertNodesListToSectionsList(List<Node> path) {
+    private static List<Section> convertNodesListToSectionsList(List<Node> path) {
         List<Section> sections = new ArrayList<>();
         int size = path.size();
         for (int i = 0; i < size; i++) {
@@ -107,7 +107,7 @@ public class PathAlgorithm {
      * @param vehicle The vehicle used in the travelling
      * @return the required time to travel
      */
-    double shortestPathLeastTime(RoadNetwork roadNetwork, Node start, Node end, LinkedList<Node> path, Vehicle vehicle) {
+    private static double shortestPathLeastTime(RoadNetwork roadNetwork, Node start, Node end, LinkedList<Node> path, Vehicle vehicle) {
         return shortestPath(roadNetwork, start, end, path,
                 //Take into account the travelling time each section requires
                 eachSection -> eachSection.getElement().calculateTotalMinimumTimeInterval(roadNetwork, vehicle));
@@ -133,7 +133,7 @@ public class PathAlgorithm {
      * @param maxBraking the maximum braking assumed by the vehicle
      * @return The Analysis containing the results
      */
-    public Analysis efficientPathEnergySavingMode(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking) {
+    public static Analysis efficientPathEnergySavingMode(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking) {
 
         return new Analysis(project, N12_ALGORITHM_NAME, null, null, null, null);
     }
@@ -160,7 +160,7 @@ public class PathAlgorithm {
      * @param load the load that the vehicle carries (optional)
      * @return The Analysis containing the results
      */
-    public Analysis theoreticalEfficientPath(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load) {
+    public static Analysis theoreticalEfficientPath(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load) {
 
         if (!vehicle.hasValidLoad(load)) {
             throw new IllegalArgumentException("The selected vehicle does not support this load");
@@ -204,7 +204,7 @@ public class PathAlgorithm {
      * @return an instance of {@link EnergyExpenditureAccelResults} containing
      * the final results corresponding to the travelling of a vehicle in a path.
      */
-    private EnergyExpenditureAccelResults determineAccumulatedResults(RoadNetwork roadNetwork, Vehicle vehicle, Measurable load, Measurable maxAcceleration, Measurable maxBraking, Node end, Measurable initialVelocity, List<Section> path) {
+    private static EnergyExpenditureAccelResults determineAccumulatedResults(RoadNetwork roadNetwork, Vehicle vehicle, Measurable load, Measurable maxAcceleration, Measurable maxBraking, Node end, Measurable initialVelocity, List<Section> path) {
         Measurable successiveVelocity = initialVelocity;
         double travelTime = 0;
         double tollCosts = 0;
