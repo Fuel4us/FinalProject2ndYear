@@ -157,29 +157,68 @@ public class PathAlgorithm {
      * velocity is allowed in the speed limit of a segment
      * @param maxAcceleration the maximum acceleration assumed by the vehicle
      * @param maxBraking the maximum braking assumed by the vehicle
+     * @param load the load that the vehicle carries (optional)
      * @return The Analysis containing the results
      */
     public Analysis theoreticalEfficientPath(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load) {
 
+        if (!vehicle.hasValidLoad(load)) {
+            throw new IllegalArgumentException("The selected vehicle does not support this load");
+        }
+
         LinkedList<Node> shortestPath = new LinkedList<>();
         RoadNetwork roadNetwork = project.getRoadNetwork();
 
+        Measurable initialVelocity = vehicle.determineInitialVelocity();
         double totalExpendedEnergy = GraphAlgorithms.shortestPath(roadNetwork, start, end, shortestPath,
                 //cumulative function from which both weight and the next attribute can be inferred
                 (sectionEdge, successiveVelocity) -> sectionEdge.getElement().calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration, maxBraking, end, false),
                 //initial value for successive velocity
-                vehicle.determineInitialVelocity(),
+                initialVelocity,
                 //the weigth of the graph is considered to be the expended energy
                 result -> result.getEnergyExpenditure().getQuantity(),
                 //the next value for successiveVelocity becomes the final velocity of the previous section
                 EnergyExpenditureAccelResults::getFinalVelocity);
 
-//        List<Section> sections = convertNodesListToSectionsList(shortestPath);
-        List<Section> sections = new ArrayList<>();
+        List<Section> sections = convertNodesListToSectionsList(shortestPath);
 
         Measurable expendedEnergy = new Measurable(totalExpendedEnergy, Unit.KILOJOULE);
 
-        return new Analysis(project, N12_ALGORITHM_NAME, sections, expendedEnergy, null, null);
+        determineAccumulatedResults(roadNetwork, vehicle, load, maxAcceleration, maxBraking, end, initialVelocity, sections);
+
+        return new Analysis(project, N11_ALGORITHM_NAME, sections, expendedEnergy, null, null);
+    }
+
+    /**
+     * Determines the final results corresponding to the travelling of a vehicle in a path.
+     * @param roadNetwork The {@link RoadNetwork} to which the sections of the path belong, and wherein vehicles travel
+     * @param vehicle The selected vehicle to which the analysis applies
+     * The maximum velocity of the vehicle will be assumed if this
+     * velocity is allowed in the speed limit of a segment
+     * @param load the load that the vehicle carries (optional)
+     * @param maxAcceleration the maximum acceleration assumed by the vehicle
+     * @param maxBraking the maximum braking assumed by the vehicle
+     * @param end The ending node
+     * @param initialVelocity The starting velocity of the vehicle
+     * @param path a {@link List} of instances of {@link Section} wherein the vehicle travels
+     * @return an instance of {@link EnergyExpenditureAccelResults} containing
+     * the final results corresponding to the travelling of a vehicle in a path.
+     */
+    private EnergyExpenditureAccelResults determineAccumulatedResults(RoadNetwork roadNetwork, Vehicle vehicle, Measurable load, Measurable maxAcceleration, Measurable maxBraking, Node end, Measurable initialVelocity, List<Section> path) {
+
+        Measurable successiveVelocity = initialVelocity;
+        double travelTime = 0;
+        double tollCosts = 0;
+
+        for (Section section : path) {
+            EnergyExpenditureAccelResults results = section.calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration, maxBraking, end, false);
+            successiveVelocity = results.getFinalVelocity();
+
+            travelTime += results.getTimeSpent().getQuantity();
+            tollCosts += results.getTollCosts().getQuantity();
+        }
+
+        return new EnergyExpenditureAccelResults(new Measurable(travelTime, Unit.HOUR), new Measurable(tollCosts, Unit.EUROS));
     }
 
 
