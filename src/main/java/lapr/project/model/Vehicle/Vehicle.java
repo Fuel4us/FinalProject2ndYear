@@ -249,6 +249,10 @@ public class Vehicle {
         // if motor force is lesser than the sum of the rolling resistance, air drag and gravitational force
         if (motorForce < rollingResistance + airDrag + gravitationalForce) {
 
+            if (energySaving) {
+                return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, energySaving);
+            }
+
             // if the throttle position is not 100%, we increase the throttle position
             if (throttlePosition < 2) {
                 return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, ++throttlePosition, velocity, load, energySaving);
