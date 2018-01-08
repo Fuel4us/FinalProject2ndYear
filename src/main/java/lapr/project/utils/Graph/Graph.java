@@ -33,6 +33,10 @@ public class Graph<V, E> implements Graphable<V, E> {
         return vertices.keySet();
     }
 
+    public List<V> getVertices() {
+        return new ArrayList<>(vertices.keySet());
+    }
+
     public boolean validVertex(V vert) {
 
         if (vertices.get(vert) == null)
