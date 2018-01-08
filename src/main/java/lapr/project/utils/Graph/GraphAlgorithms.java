@@ -253,7 +253,7 @@ public class GraphAlgorithms {
      * Auxiliary method for Dijkstra based path finding implementations
      * Simulates a priority queue, and retrieves the next element if the queue is not empty
      */
-    private static <V,E> int findNextVertexInQueue(Graph<V,E> graph, boolean[] visited, double[] dist) {
+    private static <V, E> int findNextVertexInQueue(Graph<V, E> graph, boolean[] visited, double[] dist) {
         double minDist = Double.MAX_VALUE;
         int vKey = -1;
 
@@ -378,8 +378,8 @@ public class GraphAlgorithms {
      * @author Pedro Lopes
      */
     public static <I, S, E, P> double shortestPath(Graph<I, S> g, I vOrig, I vDest, LinkedList<I> shortPath,
-                                                   BiFunction<Edge<I, S>, P, E> cumulativeApplier,
-                                                   ToDoubleFunction<E> weightExtractor, P seed,
+                                                   BiFunction<Edge<I, S>, P, E> cumulativeApplier, P seed,
+                                                   ToDoubleFunction<E> weightExtractor,
                                                    Function<E, P> cumulativeAttributeExtractor) {
 
         return shortestPath(g, vOrig, vDest, shortPath, null, true, cumulativeApplier, weightExtractor, seed, cumulativeAttributeExtractor);
