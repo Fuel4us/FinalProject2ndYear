@@ -19,4 +19,12 @@ public interface VehicleDAO extends DataAccessObject {
      */
     List<Vehicle> retrieveVehicles(String projectName) throws SQLException;
 
+    /**
+     * Stores information of RoadNetwork
+     * @param vehicle the {@link Vehicle} to store
+     * @param projectName identifier of {@link lapr.project.model.Project}
+     * @throws SQLException
+     */
+    void storeVehicleInfo(Vehicle vehicle, String projectName) throws SQLException;
+
 }
