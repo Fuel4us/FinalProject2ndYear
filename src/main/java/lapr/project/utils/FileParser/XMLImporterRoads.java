@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import lapr.project.model.Project;
 
 import org.xml.sax.SAXException;
@@ -29,7 +31,17 @@ public class XMLImporterRoads implements FileParser {
     private RoadNetwork roadNetwork;
 
     /**
-     * Constructor of class
+     * Constructor to update an existing road network
+     * @param file xml file
+     * @param roadNetwork the road network already created
+     */
+    public XMLImporterRoads(File file, RoadNetwork roadNetwork) {
+        this.file = file;
+        this.roadNetwork = roadNetwork;
+    }
+
+    /**
+     * Constructor to create a new road network
      *
      * @param file xmlFile
      */
@@ -39,29 +51,32 @@ public class XMLImporterRoads implements FileParser {
 
     /**
      * Reads RoadNetwork from file
-     *
+     * @param newNetwork true if the road network is to be created as new
      * @return the road network updated
      * @throws Exception
      */
-    public RoadNetwork importNetwork() throws JAXBException, IOException, SAXException, ParserConfigurationException {
+    public RoadNetwork importNetwork(boolean newNetwork) throws IOException, SAXException, ParserConfigurationException {
 
-        completeNetworkInformationDOMParsing();
+        completeNetworkInformationDOMParsing(newNetwork);
 
         return roadNetwork;
     }
 
     /**
      * Creates document in order to complete information in the RoadNetwork
+     * @param newNetwork true if the road network is to be created as new
      * @throws Exception
      */
-    private void completeNetworkInformationDOMParsing() throws ParserConfigurationException, IOException, SAXException {
+    private void completeNetworkInformationDOMParsing(boolean newNetwork) throws ParserConfigurationException, IOException, SAXException {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(file);
 
-        createRoadNetwork(doc);
+        if (newNetwork) {
+            createRoadNetwork(doc);
+        }
         addNodes(doc);
         List<Road> roadList = addRoads(doc);
         addSections(roadList, doc);
@@ -118,7 +133,13 @@ public class XMLImporterRoads implements FileParser {
 
                 }
 
-                roadList.add(new Road(id, name, typology, tollFaresList));
+//                List<Road> duplicateRoads = roadNetwork.retrieveAllRoads().stream()
+//                        .filter(road -> road.getName().equals(name) || road.getId().equals(id))
+//                        .collect(Collectors.toList());
+//
+//                if (duplicateRoads.isEmpty()) {
+//                    roadList.add(new Road(id, name, typology, tollFaresList));
+//                }
 
             }
 
