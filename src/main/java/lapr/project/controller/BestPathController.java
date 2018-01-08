@@ -52,12 +52,12 @@ public class BestPathController {
     }
     
     /**
-    * Method called by the UI that returns the Analysis of N10 algorythm
+    * Method called by the UI that returns the Analysis of N10 algorithm
     * 
-    * @return Analysis provided by the N10 algorythm 
+    * @return Analysis provided by the N10 algorithm
     */
-    public Analysis getAnalysisN10(Node startNode,Node endNode,Vehicle selectedVehicle,Measurable load){
-        return new PathAlgorithm().fastestPath(project, startNode, endNode, selectedVehicle, load);
+    public Analysis analyzeFastestPath(Node startNode, Node endNode, Vehicle selectedVehicle, Measurable load){
+        return PathAlgorithm.fastestPath(project, startNode, endNode, selectedVehicle, load);
     }
   
 }
