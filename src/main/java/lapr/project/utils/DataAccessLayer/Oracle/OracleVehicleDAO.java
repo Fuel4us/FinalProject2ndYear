@@ -342,13 +342,30 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
     }
 
     /**
-     * Stores information of RoadNetwork
+     * Stores information of current {@link Vehicle} and of associated objects
      * @param vehicle the {@link Vehicle} to store
      * @param projectName identifier of {@link lapr.project.model.Project}
      * @throws SQLException
      */
     @Override
     public void storeVehicleInfo(Vehicle vehicle, String projectName) throws SQLException {
+
+        storeVehicle(vehicle, projectName);
+
+        List<VelocityLimit> velocityLimitList = vehicle.getVelocityLimitList();
+        for (VelocityLimit velocityLimit : velocityLimitList) {
+            storeVelocityLimit(vehicle.getName(), velocityLimit);
+        }
+
+    }
+
+    /**
+     * Stores information of current {@link Vehicle}
+     * @param vehicle the {@link Vehicle} to store
+     * @param projectName identifier of {@link lapr.project.model.Project}
+     * @throws SQLException
+     */
+    private void storeVehicle(Vehicle vehicle, String projectName) throws SQLException {
 
         try (CallableStatement storeVehicleInfoProcedure = oracleConnection.prepareCall("CALL storeVehicleInfoProcedure(?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
 
@@ -363,11 +380,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             storeVehicleInfoProcedure.setInt("wheelSizeID", storeStatisticalInfo(vehicle.getWheelSize()));
 
             storeVehicleInfoProcedure.setInt("energyID", storeEnergyInfo(vehicle.getEnergy()));
-
-            List<VelocityLimit> velocityLimitList = vehicle.getVelocityLimitList();
-            for (VelocityLimit velocityLimit : velocityLimitList) {
-                storeVelocityLimit(vehicle.getName(), velocityLimit);
-            }
 
             storeVehicleInfoProcedure.executeUpdate();
         }
@@ -394,6 +406,25 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * @return {@link int} identifier of entity
      */
     private int storeEnergyInfo(Energy energy) throws SQLException {
+        int energyID = storeEnergy(energy);
+
+        List<Gears> gears = energy.getGears();
+        for (Gears gear : gears) {
+            storeGear(gear, energyID);
+        }
+        List<Throttle> throttles = energy.getThrottles();
+        for (Throttle throttle : throttles) {
+            storeThrottle(throttle, energyID);
+        }
+        return energyID;
+    }
+
+    /**
+     * Stores {@link Energy}
+     * @param energy instance of {@link Energy}
+     * @return identifier of entity
+     */
+    private int storeEnergy(Energy energy) throws SQLException {
 
         try (CallableStatement storeEnergyFunction = oracleConnection
                 .prepareCall("{? = call STOREENERGYFUNCTION(?,?,?)}")) {
@@ -403,15 +434,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             storeEnergyFunction.setInt("rpmLow", energy.getMinRpm());
             storeEnergyFunction.setInt("rpmHigh", energy.getMaxRpm());
             storeEnergyFunction.setFloat("finalDriveRatio", energy.getFinalDriveRatio());
-
-            List<Gears> gears = energy.getGears();
-            for (Gears gear : gears) {
-                storeGear(gear, storeEnergyFunction.getInt(1));
-            }
-            List<Throttle> throttles = energy.getThrottles();
-            for (Throttle throttle : throttles) {
-                storeThrottle(throttle, storeEnergyFunction.getInt(1));
-            }
 
             storeEnergyFunction.executeUpdate();
 

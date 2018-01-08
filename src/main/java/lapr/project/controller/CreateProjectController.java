@@ -2,6 +2,7 @@ package lapr.project.controller;
 
 import java.io.File;
 import lapr.project.model.*;
+import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 import lapr.project.utils.FileParser.XMLImporterRoads;
 import lapr.project.utils.FileParser.XMLImporterVehicles;
@@ -91,7 +92,8 @@ public class CreateProjectController {
      */
     public void createProject(String name, String description) throws Exception {
         XMLImporterRoads roadImporter = new XMLImporterRoads(roadsFile);
-        project = new Project(name, description, roadImporter.importNetwork(true), null);
+        RoadNetwork roadNetwork = roadImporter.importNetwork(true);
+        project = new Project(name, description, roadNetwork, null);
         new XMLImporterVehicles().importVehicles(project, vehiclesFile.getAbsolutePath());
         dbCom.addProject(project);
     }
