@@ -23,6 +23,7 @@ public class PathAlgorithm {
 
     private static final String N10_ALGORITHM_NAME = "N10 - Fastest Path";
     private static final String N11_ALGORITHM_NAME = "N11 - Theoretical Most Energy Efficient Path";
+    private static final String N12_ALGORITHM_NAME = "N12 - Efficient Path in Energy Saving Mode";
 
     /**
      * <p>
@@ -127,7 +128,7 @@ public class PathAlgorithm {
         //ToDo Calculate Toll costs for the given path
         //ToDo Total Travelling time for the given path (may use bruno's method but we have to add the time spent in changing segments??) :: Section
 
-        return new Analysis(project, N11_ALGORITHM_NAME,null,null,null,null);
+        return new Analysis(project, N12_ALGORITHM_NAME,null,null,null,null);
     }
 
 }
