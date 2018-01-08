@@ -345,7 +345,7 @@ public class BestPathUI extends JFrame {
             } else if (startNode.equals(endNode)) {
                 JOptionPane.showMessageDialog(null, "Please select diferent start and end nodes.");
             } else {
-                generatedAnalysis = controller.getAnalysisN10(startNode, endNode, selectedVehicle, load);
+                generatedAnalysis = controller.analyzeFastestPath(startNode, endNode, selectedVehicle, load);
                 StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(project, generatedAnalysis);
                 storeNetworkAnalysisUI.setVisible(true);
                 setVisible(false);
