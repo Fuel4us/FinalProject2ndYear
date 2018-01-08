@@ -414,7 +414,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         }
         List<Throttle> throttles = energy.getThrottles();
         for (Throttle throttle : throttles) {
-            storeThrottle(throttle, energyID);
+            storeThrottleInfo(throttle, energyID);
         }
         return energyID;
     }
@@ -458,7 +458,21 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
     }
 
     /**
-     * Stores energy throttle
+     * Stores energy {@link Throttle} information and information of associated objects
+     * @param throttle instance of {@link Throttle}
+     * @param energyID identifier of Energy entity
+     */
+    private void storeThrottleInfo(Throttle throttle, int energyID) throws SQLException {
+        storeThrottle(throttle, energyID);
+
+        List<Regime> regimes = throttle.getRegimes();
+        for (Regime regime : regimes) {
+            storeRegime(regime, throttle.getId());
+        }
+    }
+
+    /**
+     * Stores energy {@link Throttle}
      * @param throttle instance of {@link Throttle}
      * @param energyID identifier of Energy entity
      */
@@ -467,11 +481,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
             storeThrottleProcedure.setInt("id", throttle.getId());
             storeThrottleProcedure.setInt("energyID", energyID);
-
-            List<Regime> regimes = throttle.getRegimes();
-            for (Regime regime : regimes) {
-                storeRegime(regime, throttle.getId());
-            }
 
             storeThrottleProcedure.executeUpdate();
         }
