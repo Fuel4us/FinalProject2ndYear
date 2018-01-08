@@ -7,12 +7,16 @@ import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.RoadNetwork.Section;
 import lapr.project.model.RoadNetwork.Segment;
 import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.utils.EnergyExpenditureAccelResults;
+import lapr.project.utils.Graph.Edge;
+import lapr.project.utils.Graph.GraphAlgorithms;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiFunction;
 
 import static lapr.project.utils.Graph.GraphAlgorithms.shortestPath;
 
@@ -103,7 +107,7 @@ public class PathAlgorithm {
 
     /**
      * <p>
-     * Performs calculation of the most efficient path in real conditions between two nodes, given two maximum acceleration values
+     * Performs calculation of the most efficient path in energy saving mode between two nodes, given two maximum acceleration values
      * (both accelerating and braking).
      * </p>
      * <br>
@@ -121,14 +125,65 @@ public class PathAlgorithm {
      * @param maxBraking the maximum braking assumed by the vehicle
      * @return The Analysis containing the results
      */
-    public Analysis efficientPathRealConditions(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking) {
+    public Analysis efficientPathEnergySavingMode(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking) {
 
-        //ToDo Calculate **energy expenditure** in a section, considering energy variations when changing segments due to acceleration and braking :: Section
-        //ToDo Find out shortest path considering **energy expenditure** (return energy and path) :: Dijkstra with the new definition of weight
+        return new Analysis(project, N12_ALGORITHM_NAME, null, null, null, null);
+    }
+
+    /**
+     * <p>
+     * Performs calculation of the theoretical most energy efficient path between two nodes, given two maximum acceleration values
+     * (both accelerating and braking).
+     * </p>
+     * <br>
+     * <p>
+     * , the vehicle can be regarded as a particle and wind effect is to be considered, but traffic is to be ignored.
+     * The vehicle will be assumed to be travelling, whenever possible, at the maximum speed allowed on the road or for the vehicle,
+     * respecting the acceleration limits when accelerating/breaking and taking into account the wind effect, albeit ignoring traffic.
+     * </p>
+     * @param project The project to which the analysis belongs
+     * @param start The starting node
+     * @param end The ending node
+     * @param vehicle The selected vehicle to which the analysis applies
+     * The maximum velocity of the vehicle will be assumed if this
+     * velocity is allowed in the speed limit of a segment
+     * @param maxAcceleration the maximum acceleration assumed by the vehicle
+     * @param maxBraking the maximum braking assumed by the vehicle
+     * @return The Analysis containing the results
+     */
+    public Analysis theoreticalEfficientPath(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load) {
+
+        LinkedList<Node> shortestPath = new LinkedList<>();
+        RoadNetwork roadNetwork = project.getRoadNetwork();
+
+        Measurable seed = new Measurable(0, Unit.KILOMETERS_PER_HOUR);
+
+        GraphAlgorithms.shortestPath(roadNetwork, start, end, shortestPath,
+                new BiFunction<Edge<Node,Section>,Measurable,EnergyExpenditureAccelResults>() {
+                    /**
+                     * Applies this function to the given arguments.
+                     * @param edge the first function argument
+                     * @param velocity the second function argument
+                     * @return the function result
+                     */
+                    @Override
+                    public EnergyExpenditureAccelResults apply(Edge<Node,Section> edge, Measurable velocity) {
+                        return edge.getElement().calculateEnergyExpenditureAccel(roadNetwork,velocity,vehicle,load,maxAcceleration,maxBraking,end);
+                    }
+                },
+                result -> result.getEnergyExpenditure().getQuantity(),
+                seed,
+                EnergyExpenditureAccelResults::getFinalVelocity);
+
+
+
+
+
         //ToDo Calculate Toll costs for the given path
         //ToDo Total Travelling time for the given path (may use bruno's method but we have to add the time spent in changing segments??) :: Section
 
-        return new Analysis(project, N12_ALGORITHM_NAME,null,null,null,null);
+        return new Analysis(project, N12_ALGORITHM_NAME, null, null, null, null);
     }
+
 
 }
