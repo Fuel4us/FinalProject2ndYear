@@ -82,7 +82,7 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
             RoadNetwork roadNetwork = project.getRoadNetwork();
             OracleRoadNetworkDAO oracleRoadNetworkDAO = new OracleRoadNetworkDAO();
             oracleRoadNetworkDAO.connectTo(this.oracleConnection);
-            oracleRoadNetworkDAO.storeRoadNetworkInfo(roadNetwork, projectName);
+            oracleRoadNetworkDAO.storeRoadNetwork(roadNetwork, projectName);
 
             List<Vehicle> vehicles = project.getVehicles();
             OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO();
