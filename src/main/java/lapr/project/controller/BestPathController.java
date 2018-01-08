@@ -2,9 +2,12 @@ package lapr.project.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import lapr.project.model.Analysis;
 import lapr.project.model.Project;
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.model.RoadNetwork.*;
+import lapr.project.utils.Measurable;
+import lapr.project.utils.pathAlgorithm.PathAlgorithm;
 
 
 
@@ -48,6 +51,13 @@ public class BestPathController {
         return nodeList;
     }
     
-//    public void pickMethod(){}
+    /**
+    * Method called by the UI that returns the Analysis of N10 algorithm
+    * 
+    * @return Analysis provided by the N10 algorithm
+    */
+    public Analysis analyzeFastestPath(Node startNode, Node endNode, Vehicle selectedVehicle, Measurable load){
+        return PathAlgorithm.fastestPath(project, startNode, endNode, selectedVehicle, load);
+    }
   
 }

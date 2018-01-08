@@ -5,11 +5,19 @@
  */
 package lapr.project.ui;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.parsers.ParserConfigurationException;
 import lapr.project.controller.ChangeDataController;
 import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork.RoadNetwork;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -53,6 +61,7 @@ public class ChangeDataUI extends javax.swing.JFrame {
         jLabelPName = new javax.swing.JLabel();
         jTextFieldDescription = new javax.swing.JTextField();
         jLabelPDesc = new javax.swing.JLabel();
+        jButtonRoad = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,6 +126,17 @@ public class ChangeDataUI extends javax.swing.JFrame {
         jLabelPDesc.setForeground(new java.awt.Color(97, 122, 133));
         jLabelPDesc.setText("DESCRIPTION:");
 
+        jButtonRoad.setBackground(new java.awt.Color(45, 46, 45));
+        jButtonRoad.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        jButtonRoad.setForeground(new java.awt.Color(72, 89, 97));
+        jButtonRoad.setText("Import new roads configuration file");
+        jButtonRoad.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
+        jButtonRoad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRoadActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -141,9 +161,11 @@ public class ChangeDataUI extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabelPDesc)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextFieldDescription, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jButtonCreate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)))))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButtonRoad, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jTextFieldDescription, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jButtonCreate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE))))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(100, 100, 100)
                         .addComponent(jLabelPageTitle)))
@@ -166,6 +188,8 @@ public class ChangeDataUI extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextFieldDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelPDesc))
+                .addGap(18, 18, 18)
+                .addComponent(jButtonRoad)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -205,6 +229,32 @@ public class ChangeDataUI extends javax.swing.JFrame {
         pop.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
+
+    private void jButtonRoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRoadActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setDialogTitle("Select your RoadNetwork file");
+        FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter(
+            "xml files (*.xml)", "xml");
+        fileChooser.setFileFilter(xmlfilter);
+        int returnVal = fileChooser.showOpenDialog(jButtonRoad);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File roads = fileChooser.getSelectedFile();
+            try {
+                controller.addNewRoads(roads);
+                JOptionPane.showMessageDialog(null, "Your file has been loaded.");
+            } catch (IOException ex) {
+                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "IOException rose there was a problem with your file");
+            } catch (SAXException ex) {
+                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "SAXException rose there was a problem with your file");
+            } catch (ParserConfigurationException ex) {
+                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "ParserConfigurationException rose there was a problem with your file");
+            }
+        }
+    }//GEN-LAST:event_jButtonRoadActionPerformed
 public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -238,6 +288,7 @@ public static void main(String args[]) {
     private javax.swing.JLabel imgLateral;
     private javax.swing.JButton jButtonBack;
     private javax.swing.JButton jButtonCreate;
+    private javax.swing.JButton jButtonRoad;
     private javax.swing.JLabel jLabelPDesc;
     private javax.swing.JLabel jLabelPName;
     private javax.swing.JLabel jLabelPageTitle;

@@ -12,12 +12,9 @@ import lapr.project.model.RoadNetwork.*;
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
-import lapr.project.utils.pathAlgorithm.PathAlgorithm;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -334,36 +331,27 @@ public class BestPathUI extends JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void executeAlgorithmN10(ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //Algorithm N10
-//ToDo  Analyis generatedAnalysis = controller.executeAlgorithm(N10);
-        Node startNode = jListNodes1.getSelectedValue();
-        Node endNode = jListNodes2.getSelectedValue();
+        try {
+            Node startNode = jListNodes1.getSelectedValue();
+            Node endNode = jListNodes2.getSelectedValue();
 
-        Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.valueOf("km"));
-        Vehicle selectedVehicle = jListVehicles.getSelectedValue();
-        if (startNode != null
-                && endNode != null
-                && selectedVehicle != null) {
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.valueOf("km"));
+            Vehicle selectedVehicle = jListVehicles.getSelectedValue();
+            if (startNode == null
+                    || endNode == null
+                    || selectedVehicle == null) {
+                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes, as well as a vehicle.");
 
-            new PathAlgorithm().fastestPath(project, startNode, endNode, selectedVehicle, load);
-
-            //TEST ONLY
-            List<Section> bestPath = new ArrayList<>();
-            Node n1 = new Node("n1");
-            Node n2 = new Node("n2");
-            List<Segment> segments = new ArrayList<>();
-            List<Double> tollFare = new ArrayList<>();
-            tollFare.add(30d);
-            Road road = new Road("3", "road1", "highway", tollFare);
-            List<Double> tollFare1 = new ArrayList<>();
-            tollFare1.add(50d);
-            bestPath.add(new Section(n1, n2, Direction.BIDIRECTIONAL, segments, road, tollFare1));
-            Analysis generatedAnalysis = new Analysis(project, "N10", bestPath, new Measurable(300, Unit.KILOJOULE), new Measurable(3, Unit.HOUR), new Measurable(50, Unit.EUROS));
-
-            new StoreNetworkAnalysisUI(project, generatedAnalysis);
-            setVisible(false);
-        } else {
-            JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes, as well as a vehicle.");
+            } else if (startNode.equals(endNode)) {
+                JOptionPane.showMessageDialog(null, "Please select diferent start and end nodes.");
+            } else {
+                generatedAnalysis = controller.analyzeFastestPath(startNode, endNode, selectedVehicle, load);
+                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(project, generatedAnalysis);
+                storeNetworkAnalysisUI.setVisible(true);
+                setVisible(false);
+            }
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, "Please insert a valid load value");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
