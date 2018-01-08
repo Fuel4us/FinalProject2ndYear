@@ -429,7 +429,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         try (CallableStatement storeEnergyFunction = oracleConnection
                 .prepareCall("{? = call STOREENERGYFUNCTION(?,?,?)}")) {
 
-            storeEnergyFunction.registerOutParameter(1, Types.INTEGER);
+            storeEnergyFunction.registerOutParameter("id", Types.INTEGER);
 
             storeEnergyFunction.setInt("rpmLow", energy.getMinRpm());
             storeEnergyFunction.setInt("rpmHigh", energy.getMaxRpm());
@@ -437,7 +437,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
             storeEnergyFunction.executeUpdate();
 
-            return storeEnergyFunction.getInt(1);
+            return storeEnergyFunction.getInt("id");
         }
     }
 
