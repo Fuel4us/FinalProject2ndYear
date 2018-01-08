@@ -74,6 +74,9 @@ public class EnergyExpenditureAccelResults {
         return gearForEachSegment;
     }
 
+    /**
+     * @return the toll costs
+     */
     public Measurable getTollCosts() {
         return tollCosts;
     }
