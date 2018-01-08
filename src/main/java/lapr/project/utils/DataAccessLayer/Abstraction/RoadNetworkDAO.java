@@ -18,4 +18,12 @@ public interface RoadNetworkDAO extends DataAccessObject {
      */
     RoadNetwork retrieveRoadNetwork(String projectName) throws SQLException;
 
+    /**
+     * Stores a {@link RoadNetwork} in database
+     * @param roadNetwork instance of {@link RoadNetwork}
+     * @param projectName identifier of {@link lapr.project.model.Project}
+     * @throws SQLException
+     */
+    void storeRoadNetwork(RoadNetwork roadNetwork, String projectName) throws SQLException;
+
 }
