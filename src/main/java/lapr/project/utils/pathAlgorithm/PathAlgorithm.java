@@ -8,7 +8,6 @@ import lapr.project.model.RoadNetwork.Section;
 import lapr.project.model.RoadNetwork.Segment;
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.EnergyExpenditureAccelResults;
-import lapr.project.utils.Graph.Edge;
 import lapr.project.utils.Graph.GraphAlgorithms;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
@@ -16,7 +15,6 @@ import lapr.project.utils.Unit;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.BiFunction;
 
 import static lapr.project.utils.Graph.GraphAlgorithms.shortestPath;
 
@@ -63,14 +61,7 @@ public class PathAlgorithm {
         double travelTime = shortestPathLeastTime(roadNetwork, start, end, (LinkedList<Node>) path, vehicle);
 
         //list of sections the vehicle used along the road network
-        List<Section> sections = new ArrayList<>();
-        int size = path.size();
-        for (int i = 0; i < size; i++) {
-            Node node = path.get(i);
-            if (i + 1 < size) {
-                sections.add((Section) node.getEdge(path.get(i + 1).getElement()));
-            }
-        }
+        List<Section> sections = convertNodesListToSectionsList(path);
 
         // the traveling time is already contained in the travelTime double
 
@@ -88,6 +79,23 @@ public class PathAlgorithm {
         return new Analysis(project, N10_ALGORITHM_NAME, sections, expendedEnergy,
                 new Measurable(travelTime, Unit.HOUR), tollCosts);
 
+    }
+
+    /**
+     * Converts a {@link List} of instances of {@link Node} to a {@link List} of instances of {@link Section}
+     * @param path A {@link List} of instances of {@link Node}
+     * @return a {@link List} of instances of {@link Section}
+     */
+    private List<Section> convertNodesListToSectionsList(List<Node> path) {
+        List<Section> sections = new ArrayList<>();
+        int size = path.size();
+        for (int i = 0; i < size; i++) {
+            Node node = path.get(i);
+            if (i + 1 < size) {
+                sections.add((Section) node.getEdge(path.get(i + 1).getElement()));
+            }
+        }
+        return sections;
     }
 
     /**
@@ -156,33 +164,22 @@ public class PathAlgorithm {
         LinkedList<Node> shortestPath = new LinkedList<>();
         RoadNetwork roadNetwork = project.getRoadNetwork();
 
-        Measurable seed = new Measurable(0, Unit.KILOMETERS_PER_HOUR);
-
-        GraphAlgorithms.shortestPath(roadNetwork, start, end, shortestPath,
-                new BiFunction<Edge<Node,Section>,Measurable,EnergyExpenditureAccelResults>() {
-                    /**
-                     * Applies this function to the given arguments.
-                     * @param edge the first function argument
-                     * @param velocity the second function argument
-                     * @return the function result
-                     */
-                    @Override
-                    public EnergyExpenditureAccelResults apply(Edge<Node,Section> edge, Measurable velocity) {
-                        return edge.getElement().calculateEnergyExpenditureAccel(roadNetwork,velocity,vehicle,load,maxAcceleration,maxBraking,end);
-                    }
-                },
+        double totalExpendedEnergy = GraphAlgorithms.shortestPath(roadNetwork, start, end, shortestPath,
+                //cumulative function from which both weight and the next attribute can be inferred
+                (sectionEdge, successiveVelocity) -> sectionEdge.getElement().calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration, maxBraking, end, false),
+                //initial value for successive velocity
+                vehicle.determineInitialVelocity(),
+                //the weigth of the graph is considered to be the expended energy
                 result -> result.getEnergyExpenditure().getQuantity(),
-                seed,
+                //the next value for successiveVelocity becomes the final velocity of the previous section
                 EnergyExpenditureAccelResults::getFinalVelocity);
 
+//        List<Section> sections = convertNodesListToSectionsList(shortestPath);
+        List<Section> sections = new ArrayList<>();
 
+        Measurable expendedEnergy = new Measurable(totalExpendedEnergy, Unit.KILOJOULE);
 
-
-
-        //ToDo Calculate Toll costs for the given path
-        //ToDo Total Travelling time for the given path (may use bruno's method but we have to add the time spent in changing segments??) :: Section
-
-        return new Analysis(project, N12_ALGORITHM_NAME, null, null, null, null);
+        return new Analysis(project, N12_ALGORITHM_NAME, sections, expendedEnergy, null, null);
     }
 
 
