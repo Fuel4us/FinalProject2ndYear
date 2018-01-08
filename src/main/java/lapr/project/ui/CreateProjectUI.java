@@ -1,5 +1,6 @@
 package lapr.project.ui;
 
+import java.awt.*;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -99,11 +100,7 @@ public class CreateProjectUI extends javax.swing.JFrame {
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack.setText("«");
         jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBackActionPerformed(evt);
-            }
-        });
+        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
 
         jTextFieldName.setBackground(new java.awt.Color(87, 89, 87));
         jTextFieldName.setForeground(new java.awt.Color(45, 46, 45));
@@ -127,25 +124,17 @@ public class CreateProjectUI extends javax.swing.JFrame {
 
         jButtonRoad.setBackground(new java.awt.Color(45, 46, 45));
         jButtonRoad.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButtonRoad.setForeground(new java.awt.Color(72, 89, 97));
+        jButtonRoad.setForeground(Color.white);
         jButtonRoad.setText("Import roads configuration file");
         jButtonRoad.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
-        jButtonRoad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRoadActionPerformed(evt);
-            }
-        });
+        jButtonRoad.addActionListener(evt -> jButtonRoadActionPerformed(evt));
 
         jButtonVehicle.setBackground(new java.awt.Color(45, 46, 45));
         jButtonVehicle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButtonVehicle.setForeground(new java.awt.Color(72, 89, 97));
+        jButtonVehicle.setForeground(Color.white);
         jButtonVehicle.setText("Import vehicles configuration file");
         jButtonVehicle.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
-        jButtonVehicle.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonVehicleActionPerformed(evt);
-            }
-        });
+        jButtonVehicle.addActionListener(evt -> jButtonVehicleActionPerformed(evt));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
