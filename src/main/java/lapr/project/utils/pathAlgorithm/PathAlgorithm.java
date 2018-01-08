@@ -7,6 +7,8 @@ import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.RoadNetwork.Section;
 import lapr.project.model.RoadNetwork.Segment;
 import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.utils.EnergyExpenditureAccelResults;
+import lapr.project.utils.Graph.GraphAlgorithms;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 
@@ -23,6 +25,7 @@ public class PathAlgorithm {
 
     private static final String N10_ALGORITHM_NAME = "N10 - Fastest Path";
     private static final String N11_ALGORITHM_NAME = "N11 - Theoretical Most Energy Efficient Path";
+    private static final String N12_ALGORITHM_NAME = "N12 - Efficient Path in Energy Saving Mode";
 
     /**
      * <p>
@@ -58,14 +61,7 @@ public class PathAlgorithm {
         double travelTime = shortestPathLeastTime(roadNetwork, start, end, (LinkedList<Node>) path, vehicle);
 
         //list of sections the vehicle used along the road network
-        List<Section> sections = new ArrayList<>();
-        int size = path.size();
-        for (int i = 0; i < size; i++) {
-            Node node = path.get(i);
-            if (i + 1 < size) {
-                sections.add((Section) node.getEdge(path.get(i + 1).getElement()));
-            }
-        }
+        List<Section> sections = convertNodesListToSectionsList(path);
 
         // the traveling time is already contained in the travelTime double
 
@@ -86,6 +82,23 @@ public class PathAlgorithm {
     }
 
     /**
+     * Converts a {@link List} of instances of {@link Node} to a {@link List} of instances of {@link Section}
+     * @param path A {@link List} of instances of {@link Node}
+     * @return a {@link List} of instances of {@link Section}
+     */
+    private List<Section> convertNodesListToSectionsList(List<Node> path) {
+        List<Section> sections = new ArrayList<>();
+        int size = path.size();
+        for (int i = 0; i < size; i++) {
+            Node node = path.get(i);
+            if (i + 1 < size) {
+                sections.add((Section) node.getEdge(path.get(i + 1).getElement()));
+            }
+        }
+        return sections;
+    }
+
+    /**
      * Fills a list with the nodes a vehicle uses
      * @param roadNetwork The roadNetwork
      * @param start The starting node
@@ -102,7 +115,7 @@ public class PathAlgorithm {
 
     /**
      * <p>
-     * Performs calculation of the most efficient path in real conditions between two nodes, given two maximum acceleration values
+     * Performs calculation of the most efficient path in energy saving mode between two nodes, given two maximum acceleration values
      * (both accelerating and braking).
      * </p>
      * <br>
@@ -120,14 +133,92 @@ public class PathAlgorithm {
      * @param maxBraking the maximum braking assumed by the vehicle
      * @return The Analysis containing the results
      */
-    public Analysis efficientPathRealConditions(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking) {
+    public Analysis efficientPathEnergySavingMode(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking) {
 
-        //ToDo Calculate **energy expenditure** in a section, considering energy variations when changing segments due to acceleration and braking :: Section
-        //ToDo Find out shortest path considering **energy expenditure** (return energy and path) :: Dijkstra with the new definition of weight
-        //ToDo Calculate Toll costs for the given path
-        //ToDo Total Travelling time for the given path (may use bruno's method but we have to add the time spent in changing segments??) :: Section
-
-        return new Analysis(project, N11_ALGORITHM_NAME,null,null,null,null);
+        return new Analysis(project, N12_ALGORITHM_NAME, null, null, null, null);
     }
+
+    /**
+     * <p>
+     * Performs calculation of the theoretical most energy efficient path between two nodes, given two maximum acceleration values
+     * (both accelerating and braking).
+     * </p>
+     * <br>
+     * <p>
+     * , the vehicle can be regarded as a particle and wind effect is to be considered, but traffic is to be ignored.
+     * The vehicle will be assumed to be travelling, whenever possible, at the maximum speed allowed on the road or for the vehicle,
+     * respecting the acceleration limits when accelerating/breaking and taking into account the wind effect, albeit ignoring traffic.
+     * </p>
+     * @param project The project to which the analysis belongs
+     * @param start The starting node
+     * @param end The ending node
+     * @param vehicle The selected vehicle to which the analysis applies
+     * The maximum velocity of the vehicle will be assumed if this
+     * velocity is allowed in the speed limit of a segment
+     * @param maxAcceleration the maximum acceleration assumed by the vehicle
+     * @param maxBraking the maximum braking assumed by the vehicle
+     * @param load the load that the vehicle carries (optional)
+     * @return The Analysis containing the results
+     */
+    public Analysis theoreticalEfficientPath(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load) {
+
+        if (!vehicle.hasValidLoad(load)) {
+            throw new IllegalArgumentException("The selected vehicle does not support this load");
+        }
+
+        LinkedList<Node> shortestPath = new LinkedList<>();
+        RoadNetwork roadNetwork = project.getRoadNetwork();
+
+        Measurable initialVelocity = vehicle.determineInitialVelocity();
+        double totalExpendedEnergy = GraphAlgorithms.shortestPath(roadNetwork, start, end, shortestPath,
+                //cumulative function from which both weight and the next attribute can be inferred
+                (sectionEdge, successiveVelocity) -> sectionEdge.getElement().calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration, maxBraking, end, false),
+                //initial value for successive velocity
+                initialVelocity,
+                //the weigth of the graph is considered to be the expended energy
+                result -> result.getEnergyExpenditure().getQuantity(),
+                //the next value for successiveVelocity becomes the final velocity of the previous section
+                EnergyExpenditureAccelResults::getFinalVelocity);
+
+        List<Section> sections = convertNodesListToSectionsList(shortestPath);
+
+        Measurable expendedEnergy = new Measurable(totalExpendedEnergy, Unit.KILOJOULE);
+
+        EnergyExpenditureAccelResults finalResults = determineAccumulatedResults(roadNetwork, vehicle, load, maxAcceleration, maxBraking, end, initialVelocity, sections);
+
+        return new Analysis(project, N11_ALGORITHM_NAME, sections, expendedEnergy, finalResults.getTimeSpent(), finalResults.getTollCosts());
+    }
+
+    /**
+     * Determines the final results corresponding to the travelling of a vehicle in a path.
+     * @param roadNetwork The {@link RoadNetwork} to which the sections of the path belong, and wherein vehicles travel
+     * @param vehicle The selected vehicle to which the analysis applies
+     * The maximum velocity of the vehicle will be assumed if this
+     * velocity is allowed in the speed limit of a segment
+     * @param load the load that the vehicle carries (optional)
+     * @param maxAcceleration the maximum acceleration assumed by the vehicle
+     * @param maxBraking the maximum braking assumed by the vehicle
+     * @param end The ending node
+     * @param initialVelocity The starting velocity of the vehicle
+     * @param path a {@link List} of instances of {@link Section} wherein the vehicle travels
+     * @return an instance of {@link EnergyExpenditureAccelResults} containing
+     * the final results corresponding to the travelling of a vehicle in a path.
+     */
+    private EnergyExpenditureAccelResults determineAccumulatedResults(RoadNetwork roadNetwork, Vehicle vehicle, Measurable load, Measurable maxAcceleration, Measurable maxBraking, Node end, Measurable initialVelocity, List<Section> path) {
+        Measurable successiveVelocity = initialVelocity;
+        double travelTime = 0;
+        double tollCosts = 0;
+
+        for (Section section : path) {
+            EnergyExpenditureAccelResults results = section.calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration, maxBraking, end, false);
+            successiveVelocity = results.getFinalVelocity();
+
+            travelTime += results.getTimeSpent().getQuantity();
+            tollCosts += results.getTollCosts().getQuantity();
+        }
+
+        return new EnergyExpenditureAccelResults(new Measurable(travelTime, Unit.HOUR), new Measurable(tollCosts, Unit.EUROS));
+    }
+
 
 }

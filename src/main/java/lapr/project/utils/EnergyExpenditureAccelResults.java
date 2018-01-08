@@ -7,11 +7,11 @@ import lapr.project.model.Vehicle.Gears;
  */
 public class EnergyExpenditureAccelResults {
 
-    private final Measurable energyExpenditure;
-    private final Measurable finalVelocity;
-    private final Measurable timeSpent;
-    private final Gears[] gearForEachSegment;
-    private final Measurable tollCosts;
+    private Measurable energyExpenditure;
+    private Measurable finalVelocity;
+    private Measurable timeSpent;
+    private Gears[] gearForEachSegment;
+    private Measurable tollCosts;
 
     /**
      * Constructor
@@ -47,6 +47,16 @@ public class EnergyExpenditureAccelResults {
     }
 
     /**
+     * Creates an instance of {@link EnergyExpenditureAccelResults} containing information about travelling time and toll costs.
+     * @param timeSpent the time spent in the section
+     * @param tollCosts the toll costs for the section
+     */
+    public EnergyExpenditureAccelResults(Measurable timeSpent, Measurable tollCosts) {
+        this.timeSpent = timeSpent;
+        this.tollCosts = tollCosts;
+    }
+
+    /**
      * @return the energy expenditure
      */
     public Measurable getEnergyExpenditure() {
@@ -74,6 +84,9 @@ public class EnergyExpenditureAccelResults {
         return gearForEachSegment;
     }
 
+    /**
+     * @return the toll costs
+     */
     public Measurable getTollCosts() {
         return tollCosts;
     }
