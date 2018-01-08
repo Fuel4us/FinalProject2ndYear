@@ -32,6 +32,8 @@ public class Segment {
     private double maxVelocity;
 
     private double minVelocity;
+    
+    private final double zero = 0.000000001;
 
 
     /**
@@ -250,7 +252,7 @@ public class Segment {
         }
 
         // if the vehicle enters the segment with the same speed as the speed allowed
-        if (initialVelocity.getQuantity() == finalVelocity.getQuantity()) {
+        if ((initialVelocity.getQuantity() - finalVelocity.getQuantity()) < zero && (initialVelocity.getQuantity() - finalVelocity.getQuantity()) > -zero) { // Initial.getQuantity == Final.getQuantity
 
             Measurable[] data = vehicle.determineEnergyExpenditure(this, load, remainingLength.getQuantity(), initialVelocity, energySaving);
             energyExpenditure.setQuantity(energyExpenditure.getQuantity() + data[3].getQuantity());
@@ -395,7 +397,7 @@ public class Segment {
      * @throws SQLException
      */
     public void storeSegmentInformation(CallableStatement storeSegmentProcedure) throws SQLException {
-        storeSegmentProcedure.setInt("ID", index);
+        storeSegmentProcedure.setInt("id", index);
         storeSegmentProcedure.setDouble("initialHeight", initialHeight);
         storeSegmentProcedure.setDouble("finalHeight", finalHeight);
         storeSegmentProcedure.setDouble("length", length);

@@ -81,6 +81,12 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         return vehicle;
     }
 
+    /**
+     * Retrieves {@link Regime} from database and adds them to a given {@link Throttle}
+     * @param throttleID identifier of {@link Throttle}
+     * @return {@link List} of {@link Regime}
+     * @throws SQLException
+     */
     private List<Regime> fillRegimeList(int throttleID) throws SQLException {
         List<Regime> regimeList = new LinkedList<>();
 
@@ -96,6 +102,12 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         return regimeList;
     }
 
+    /**
+     * Retrieves {@link Throttle} from database and adds them to a given {@link Energy}
+     * @param energyID identifier of {@link Energy}
+     * @return {@link List} of {@link Throttle}
+     * @throws SQLException
+     */
     private List<Throttle> fillThrottleList(int energyID) throws SQLException {
         List<Throttle> throttleList = new LinkedList<>();
 
@@ -113,6 +125,12 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         return throttleList;
     }
 
+    /**
+     * Retrieves {@link Gears} from database and adds them to a given {@link Energy}
+     * @param energyID identifier of {@link Energy}
+     * @return {@link List} of {@link Gears}
+     * @throws SQLException
+     */
     private List<Gears> fillGearList(int energyID) throws SQLException {
         List<Gears> gearList = new LinkedList<>(); //creation of gears needed by energy
 
@@ -128,6 +146,12 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         return gearList;
     }
 
+    /**
+     * Retrieves and creates {@link Energy} from database
+     * @param name identifier of {@link Vehicle}
+     * @return {@link Energy}
+     * @throws SQLException
+     */
     private Energy createEnergy(String name) throws SQLException {
         try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getEnergySet(?)")) {
             callableStatement.setString(1, name);
@@ -139,6 +163,13 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         }
     }
 
+    /**
+     * Retrieves any kind of {@link Measurable} from the database
+     * @param resultSet a {@link ResultSet}
+     * @param unitEnum {@link Unit} enum
+     * @return created {@link Measurable}
+     * @throws SQLException
+     */
     private Measurable createMeasurable(ResultSet resultSet, Unit[] unitEnum) throws SQLException {
         for (Unit unitType : unitEnum) {
             String unitStr = resultSet.getString("unit");
@@ -151,6 +182,13 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         return null;
     }
 
+    /**
+     * Retrieves from database and creates a {@link List} of {@link VelocityLimit}
+     * @param name identifier of {@link Vehicle}
+     * @param unitEnum {@link Unit} enum
+     * @return {@link List} of {@link VelocityLimit}
+     * @throws SQLException
+     */
     private List<VelocityLimit> fillVelocityLimitList(String name, Unit[] unitEnum) throws SQLException {
         List<VelocityLimit> velocityLimitList = new LinkedList<>();
 
@@ -169,6 +207,13 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         return velocityLimitList;
     }
 
+    /**
+     * Retrieves limit attribute from {@link VelocityLimit}
+     * @param velocityLimitID {@link VelocityLimit} identifier
+     * @param unitEnum {@link Unit} enum
+     * @return {@link Measurable}, limit of {@link VelocityLimit}
+     * @throws SQLException
+     */
     private Measurable createVelocityLimit(int velocityLimitID, Unit[] unitEnum) throws SQLException {
         try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getLimitSet(?)")) {
             callableStatement.setInt(1, velocityLimitID);
@@ -177,7 +222,13 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         }
     }
 
-
+    /**
+     * Retrieves wheelSize attribute from {@link Vehicle}
+     * @param name {@link Vehicle} identifier
+     * @param unitEnum {@link Unit} enum
+     * @return {@link Measurable}, wheelSize of {@link Vehicle}
+     * @throws SQLException
+     */
     private Measurable createWheelSize(String name, Unit[] unitEnum) throws SQLException {
         try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getWheelSize(?)")) {
             callableStatement.setString(1, name);
@@ -186,6 +237,13 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         }
     }
 
+    /**
+     * Retrieves frontalArea attribute from {@link Vehicle}
+     * @param name {@link Vehicle} identifier
+     * @param unitEnum {@link Unit} enum
+     * @return {@link Measurable}, frontalArea of {@link Vehicle}
+     * @throws SQLException
+     */
     private Measurable createFrontalArea(String name, Unit[] unitEnum) throws SQLException {
         try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getFrontalAreaSet(?)")) {
             callableStatement.setString(1, name);
@@ -195,6 +253,13 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
     }
 
+    /**
+     * Retrieves load attribute from {@link Vehicle}
+     * @param name {@link Vehicle} identifier
+     * @param unitEnum {@link Unit} enum
+     * @return {@link Measurable}, load of {@link Vehicle}
+     * @throws SQLException
+     */
     private Measurable createLoad(String name, Unit[] unitEnum) throws SQLException {
         try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getLoadSet(?)")) {
             callableStatement.setString(1, name);
@@ -204,6 +269,13 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
     }
 
+    /**
+     * Retrieves mass attribute from {@link Vehicle}
+     * @param name {@link Vehicle} identifier
+     * @param unitEnum {@link Unit} enum
+     * @return {@link Measurable}, mass of {@link Vehicle}
+     * @throws SQLException
+     */
     private Measurable createMass(String name, Unit[] unitEnum) throws SQLException {
         try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getMassSet(?)")) {
             callableStatement.setString(1, name);
@@ -213,6 +285,12 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
     }
 
+    /**
+     * Creates {@link Fuel} from {@link Vehicle} column "fuelType"
+     * @param resultSet {@link ResultSet}
+     * @return {@link Fuel}
+     * @throws SQLException
+     */
     private Fuel determineFuel(ResultSet resultSet) throws SQLException {
         Fuel fuel = null;
         Fuel[] fuelEnum = Fuel.values();
@@ -225,6 +303,12 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         return fuel;
     }
 
+    /**
+     * Creates {@link lapr.project.model.Vehicle.Vehicle.MotorType} from {@link Vehicle} column "motorType"
+     * @param resultSet {@link ResultSet}
+     * @return {@link lapr.project.model.Vehicle.Vehicle.MotorType}
+     * @throws SQLException
+     */
     private Vehicle.MotorType determineMotorType(ResultSet resultSet) throws SQLException {
         Vehicle.MotorType motorization = null;
         Vehicle.MotorType[] motorizationEnum = Vehicle.MotorType.values();
@@ -237,6 +321,12 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         return motorization;
     }
 
+    /**
+     * Creates {@link VehicleType} from {@link Vehicle} column "vehicleType"
+     * @param resultSet {@link ResultSet}
+     * @return {@link VehicleType}
+     * @throws SQLException
+     */
     private VehicleType determineVehicleType(ResultSet resultSet) throws SQLException {
         VehicleType vehicleType = null;
         VehicleType[] typesEnum = VehicleType.values();
@@ -282,7 +372,8 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
     /**
      * Stores information of {@link VelocityLimit}
-     * @param name vehicle name
+     * @param name {@link Vehicle} identifier
+     * @param velocityLimit {@link VelocityLimit}
      */
     private void storeVelocityLimit(String name, VelocityLimit velocityLimit) throws SQLException {
         try (CallableStatement storeVelocityLimitProcedure = oracleConnection.prepareCall("CALL storeVelocityLimitProcedure(?,?,?)")) {
@@ -349,7 +440,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
     private void storeThrottle(Throttle throttle, int energyID) throws SQLException {
         try (CallableStatement storeThrottleProcedure = oracleConnection.prepareCall("CALL storeThrottleProcedure(?,?)")) {
 
-            storeThrottleProcedure.setInt("ID", throttle.getId());
+            storeThrottleProcedure.setInt("id", throttle.getId());
             storeThrottleProcedure.setInt("energyID", energyID);
 
             List<Regime> regimes = throttle.getRegimes();
