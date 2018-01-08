@@ -39,7 +39,7 @@ public class OracleDAO {
      * Verifies if database is connected
      * @return true if is connected
      */
-    public boolean verifyConnection() {
+    boolean verifyConnection() {
         if (!this.isConnected()) {
             DBAccessor.DB_ACCESS_LOG.log(Level.INFO, "No connection found in {0}", this.getClass());
             return false;
@@ -69,14 +69,14 @@ public class OracleDAO {
             double quantity = measurable.getQuantity();
             Unit unit = measurable.getUnit();
 
-            storeMeasurableFunction.registerOutParameter(1, Types.INTEGER);
+            storeMeasurableFunction.registerOutParameter("id", Types.INTEGER);
 
-            storeMeasurableFunction.setDouble(2, quantity);
-            storeMeasurableFunction.setString(3, unit.toString());
+            storeMeasurableFunction.setDouble("quantity", quantity);
+            storeMeasurableFunction.setString("unit", unit.toString());
 
             storeMeasurableFunction.executeUpdate();
 
-            return storeMeasurableFunction.getInt(1);
+            return storeMeasurableFunction.getInt("id");
         }
 
     }
