@@ -219,14 +219,28 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     }
 
     /**
+     * Stores a {@link RoadNetwork} in database
+     * @param roadNetwork instance of {@link RoadNetwork}
+     * @param projectName identifier of {@link lapr.project.model.Project}
+     * @throws SQLException
+     */
+    @Override
+    public void storeRoadNetwork(RoadNetwork roadNetwork, String projectName) throws SQLException {
+        verifyConnection();
+
+        String networkID = storeRoadNetworkInfo(roadNetwork, projectName);
+        storeRoadNetworkGraph(roadNetwork, networkID);
+
+    }
+
+    /**
      * Stores information of RoadNetwork
      * @param roadNetwork the {@link RoadNetwork} to store
      * @param projectName identifier of {@link lapr.project.model.Project}
+     * @return String networkID
      * @throws java.sql.SQLException
      */
-    void storeRoadNetworkInfo(RoadNetwork roadNetwork, String projectName) throws SQLException {
-
-        verifyConnection();
+    private String storeRoadNetworkInfo(RoadNetwork roadNetwork, String projectName) throws SQLException {
 
         try (CallableStatement storeRoadNetworkInfoProcedure = oracleConnection.prepareCall("CALL storeRoadNetworkInfoProcedure(?,?,?)")) {
 
@@ -236,9 +250,8 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             storeRoadNetworkInfoProcedure.setString("description", description);
             storeRoadNetworkInfoProcedure.setString("projectName", projectName);
 
-            storeRoadNetworkGraph(roadNetwork, networkID);
-
             storeRoadNetworkInfoProcedure.executeUpdate();
+            return networkID;
         }
     }
 
@@ -274,6 +287,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             sections.add(edge.getElement());
         }
 
+        List<Integer> storedSections = new LinkedList<>();
         for (Section section : sections) {
             Road road = section.getOwningRoad();
             if (!roadsToStore.contains(road)) {
@@ -284,14 +298,17 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
                     storeTollFareRoad(tollFare, road.getId());
                 }
             }
-            storeSection(section, networkID);
-            List<Double> tollFareList = section.getTollFare();
-            for (Double tollFare : tollFareList) {
-                storeTollFareSection(tollFare, section.getID());
-            }
-            Collection<Segment> segments = section.getSegments();
-            for (Segment segment : segments) {
-                storeSegment(segment, section.getID());
+            if(!storedSections.contains(section.getID())) {
+                storeSection(section, networkID);
+                storedSections.add(section.getID());
+                List<Double> tollFareList = section.getTollFare();
+                for (Double tollFare : tollFareList) {
+                    storeTollFareSection(tollFare, section.getID());
+                }
+                Collection<Segment> segments = section.getSegments();
+                for (Segment segment : segments) {
+                    storeSegment(segment, section.getID());
+                }
             }
         }
     }
