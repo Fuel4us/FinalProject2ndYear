@@ -34,6 +34,8 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
     @Override
     public List<Vehicle> retrieveVehicles(String projectName) throws SQLException {
 
+        verifyConnection();
+
         List<Vehicle> vehicles = new LinkedList<>();
 
         try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL fetchVehiclesFromProject(?)")) {

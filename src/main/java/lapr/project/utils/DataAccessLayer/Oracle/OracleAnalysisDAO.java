@@ -22,10 +22,7 @@ public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
     @Override
     public boolean storeAnalysis(Analysis analysis) throws SQLException {
 
-        if (this.isConnected()) {
-            DBAccessor.DB_ACCESS_LOG.log(Level.INFO, "No connection found in " + this.getClass());
-            return false;
-        }
+        verifyConnection();
 
         storePrimitives(analysis);
         storeAnalysedSections(analysis);
