@@ -397,6 +397,16 @@ public class Vehicle {
     }
 
     /**
+     * Determines initial velocity of the vehicle, starting in the first gear and lowest throttle
+     * @return the initial velocity in km/h
+     */
+    public Measurable determineInitialVelocity() {
+        return new Measurable((2 * Math.PI * (wheelSize.getQuantity() / 2d) * energy.getMinRpm() /
+                (60 * energy.getFinalDriveRatio() * energy.getGears().get(0).getRatio())) *
+                Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO, Unit.KILOMETERS_PER_HOUR);
+    }
+
+    /**
      * Indicates motor type Assists in the instantiation of the correct
      * motorization
      */
