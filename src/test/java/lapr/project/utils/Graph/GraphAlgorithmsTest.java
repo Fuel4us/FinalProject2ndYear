@@ -236,10 +236,10 @@ public class GraphAlgorithmsTest {
                 //cumulative applier (transformation function)
                 (edge, argument) -> edge.getElement().computeUniqueValueSeedEdgeProperties(argument),
                 //weigth extractor - defines how weight is interpreted from the output of the transformation function
-                value -> value,
-                //initial value for the first edge, upon which the weigth of all other edges depends
                 seed,
                 //defines how the argument for the next call is interpreted/obtained/extracted from the output of the transformation function
+                value -> value,
+                //initial value for the first edge, upon which the weigth of all other edges depends
                 cumulativeAttributeExtractor);
 
         double min1 = Math.min(pathOneCost, pathTwoCost);
@@ -260,10 +260,10 @@ public class GraphAlgorithmsTest {
                 //cumulative applier (transformation function)
                 (edge, argument) -> edge.getElement().computeUniqueValueSeedEdgeProperties(argument),
                 //weigth extractor - defines how weight is interpreted from the output of the transformation function
-                value -> value,
-                //initial value for the first edge, upon which the weigth of all other edges depends
                 seed,
                 //defines how the argument for the next call is interpreted/obtained/extracted from the output of the transformation function
+                value -> value,
+                //initial value for the first edge, upon which the weigth of all other edges depends
                 cumulativeAttributeExtractor);
 
         assert totalCost == pathThreeCost;
