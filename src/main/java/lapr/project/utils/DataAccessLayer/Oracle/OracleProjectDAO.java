@@ -70,10 +70,7 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
      */
     @Override
     public boolean storeProject(Project project) throws SQLException {
-        if (this.isConnected()) {
-            DBAccessor.DB_ACCESS_LOG.log(Level.INFO, "No connection found in {0}", this.getClass());
-            return false;
-        }
+        verifyConnection();
 
         try (CallableStatement storeProjectProcedure = super.oracleConnection.prepareCall("CALL STORE_PROJECT(?,?)")) {
 
@@ -84,10 +81,12 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
 
             RoadNetwork roadNetwork = project.getRoadNetwork();
             OracleRoadNetworkDAO oracleRoadNetworkDAO = new OracleRoadNetworkDAO();
+            oracleRoadNetworkDAO.connectTo(this.oracleConnection);
             oracleRoadNetworkDAO.storeRoadNetworkInfo(roadNetwork, projectName);
 
             List<Vehicle> vehicles = project.getVehicles();
             OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO();
+            oracleVehicleDAO.connectTo(this.oracleConnection);
             for (Vehicle vehicle : vehicles) {
                 oracleVehicleDAO.storeVehicleInfo(vehicle, projectName);
             }
