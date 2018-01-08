@@ -75,7 +75,7 @@ public class PathAlgorithm {
             for (Segment segment : section.getSegments()) {
                 Measurable maxLinearVelocity = segment.calculateMaximumVelocityInterval(roadNetwork, vehicle, segment.getLength());
                 expendedEnergy.setQuantity(expendedEnergy.getQuantity() +
-                        vehicle.determineEnergyExpenditure(segment, load, segment.getLength(), maxLinearVelocity)[0].getQuantity());
+                        vehicle.determineEnergyExpenditure(segment, load, segment.getLength(), maxLinearVelocity, false)[0].getQuantity());
             }
             tollCosts.setQuantity(tollCosts.getQuantity() + section.determineTollCosts(vehicle).getQuantity());
         }

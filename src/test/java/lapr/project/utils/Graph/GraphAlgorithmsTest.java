@@ -7,6 +7,8 @@ import org.junit.Test;
 import java.util.*;
 import java.util.function.Function;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 public class GraphAlgorithmsTest {
@@ -215,7 +217,7 @@ public class GraphAlgorithmsTest {
         double pathTwoCost = edge3.computeUniqueValueSeedEdgeProperties(seed);
         List<String> pathTwo = Arrays.asList(a, d);
 
-        //path 3 : a-c-d, edges : 4-1 (the graph is directed)
+        //path three : a-c-d, edges : 4-1 (the graph is directed)
         graph.insertEdge(a, c, edge4, 1);
         graph.insertEdge(d, c, edge5, 1);
 
@@ -245,14 +247,27 @@ public class GraphAlgorithmsTest {
         double leastCost = Math.min(min1, min2);
 
         assert totalCost == leastCost;
+        assertEquals(shortestPath, pathTwo);
+        assertNotEquals(shortestPath, pathOne);
+        assertNotEquals(shortestPath, pathThree);
 
-        if (leastCost == pathOneCost) {
-            assert shortestPath.equals(pathOne);
-        } else if (leastCost == pathTwoCost) {
-            assert shortestPath.equals(pathTwo);
-        } else if (leastCost == pathThreeCost) {
-            assert shortestPath.equals(pathThree);
-        } else throw new AssertionError("Least cost path not found!");
+        //Remove pathTwo and check that shortest path is now path three
+        graph.removeEdge(a, d);
+
+        shortestPath.clear();
+
+        totalCost = GraphAlgorithms.shortestPath(graph, a, d, shortestPath,
+                //cumulative applier (transformation function)
+                (edge, argument) -> edge.getElement().computeUniqueValueSeedEdgeProperties(argument),
+                //weigth extractor - defines how weight is interpreted from the output of the transformation function
+                value -> value,
+                //initial value for the first edge, upon which the weigth of all other edges depends
+                seed,
+                //defines how the argument for the next call is interpreted/obtained/extracted from the output of the transformation function
+                cumulativeAttributeExtractor);
+
+        assert totalCost == pathThreeCost;
+        assertEquals(shortestPath, pathThree);
 
     }
 

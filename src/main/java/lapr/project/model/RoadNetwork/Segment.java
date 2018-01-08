@@ -33,7 +33,7 @@ public class Segment {
 
     private double minVelocity;
     
-    private final double zero = 0.00000000000001;
+    private final double zero = 0.000000001;
 
 
     /**
@@ -184,11 +184,12 @@ public class Segment {
      * @param maxAcceleration the max acceleration
      * @param maxBraking the max braking
      * @param lastSegment true if this is the last segment of the path
+     * @param energySaving true if the vehicle is in energy saving mode
      * @return an instance of the type EnergyExpenditureAccelResults with the information about this algorithm
      * (energy expenditure, time spent, final velocity and gear position)
      */
     public EnergyExpenditureAccelResults calculateEnergyExpenditureAccel(RoadNetwork roadNetwork, Measurable initialVelocity, Vehicle vehicle,
-                                                                         Measurable load, Measurable maxAcceleration, Measurable maxBraking, boolean lastSegment) {
+                                                                         Measurable load, Measurable maxAcceleration, Measurable maxBraking, boolean lastSegment, boolean energySaving) {
 
         Measurable energyExpenditure = new Measurable(0, Unit.KILOJOULE);
         int gearPosition = -1;
@@ -251,9 +252,9 @@ public class Segment {
         }
 
         // if the vehicle enters the segment with the same speed as the speed allowed
-        if (initialVelocity.getQuantity() == finalVelocity.getQuantity()) { // Initial.getQuantity == Final.getQuantity
+        if ((initialVelocity.getQuantity() - finalVelocity.getQuantity()) < zero && (initialVelocity.getQuantity() - finalVelocity.getQuantity()) > -zero) { // Initial.getQuantity == Final.getQuantity
 
-            Measurable[] data = vehicle.determineEnergyExpenditure(this, load, remainingLength.getQuantity(), initialVelocity);
+            Measurable[] data = vehicle.determineEnergyExpenditure(this, load, remainingLength.getQuantity(), initialVelocity, energySaving);
             energyExpenditure.setQuantity(energyExpenditure.getQuantity() + data[3].getQuantity());
             gearPosition = (int) data[1].getQuantity();
 
@@ -311,7 +312,7 @@ public class Segment {
                 }
 
                 if (remainingLength.getQuantity() > 0) {
-                    Measurable[] data = vehicle.determineEnergyExpenditure(this, load, remainingLength.getQuantity(), finalVelocity);
+                    Measurable[] data = vehicle.determineEnergyExpenditure(this, load, remainingLength.getQuantity(), finalVelocity, energySaving);
                     energyExpenditure.setQuantity(energyExpenditure.getQuantity() + data[3].getQuantity());
                     timeSpent.setQuantity(timeSpent.getQuantity() + remainingLength.getQuantity() / finalVelocity.getQuantity());
                     gearPosition = (int) data[1].getQuantity();
@@ -322,7 +323,7 @@ public class Segment {
 
             }
 
-            Measurable[] data = vehicle.determineEnergyExpenditure(this, load, remainingLength.getQuantity(), initialVelocity);
+            Measurable[] data = vehicle.determineEnergyExpenditure(this, load, remainingLength.getQuantity(), initialVelocity, energySaving);
             energyExpenditure.setQuantity(energyExpenditure.getQuantity() + data[3].getQuantity());
             timeSpent.setQuantity(timeSpent.getQuantity() + remainingLength.getQuantity() / initialVelocity.getQuantity());
             gearPosition = (int) data[1].getQuantity();
@@ -358,7 +359,7 @@ public class Segment {
         }
 
         if (remainingLength.getQuantity() > 0) {
-            Measurable[] data = vehicle.determineEnergyExpenditure(this, load, remainingLength.getQuantity(), finalVelocity);
+            Measurable[] data = vehicle.determineEnergyExpenditure(this, load, remainingLength.getQuantity(), finalVelocity, energySaving);
             timeSpent.setQuantity(timeSpent.getQuantity() + remainingLength.getQuantity() / finalVelocity.getQuantity());
             energyExpenditure.setQuantity(energyExpenditure.getQuantity() + data[3].getQuantity());
             gearPosition = (int) data[1].getQuantity();
