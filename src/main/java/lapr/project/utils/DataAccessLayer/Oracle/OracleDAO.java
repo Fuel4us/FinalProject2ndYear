@@ -1,5 +1,6 @@
 package lapr.project.utils.DataAccessLayer.Oracle;
 
+import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 
@@ -7,6 +8,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.logging.Level;
 
 /**
  * An Oracle Data Access Object
@@ -19,6 +21,7 @@ public class OracleDAO {
     /**
      * Connects this Data Access Object to a database
      * if the databaseProductName matches the database to which this DAO is an implementation of.
+     *
      * @param connection Connects this DAO to a database
      * @return true if obtaining connection was possible, and that connection refers to an OracleDB
      * @throws SQLException
@@ -33,7 +36,20 @@ public class OracleDAO {
     }
 
     /**
+     * Verifies if database is connected
+     * @return true if is connected
+     */
+    public boolean verifyConnection() {
+        if (!this.isConnected()) {
+            DBAccessor.DB_ACCESS_LOG.log(Level.INFO, "No connection found in {0}", this.getClass());
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Verifies if an Oracle Data Access Object has an active connection
+     *
      * @return true if connection is not null
      */
     boolean isConnected() {
@@ -42,6 +58,7 @@ public class OracleDAO {
 
     /**
      * Stores information that requires units
+     *
      * @param measurable the {@link Measurable} to store
      */
     int storeStatisticalInfo(Measurable measurable) throws SQLException {
