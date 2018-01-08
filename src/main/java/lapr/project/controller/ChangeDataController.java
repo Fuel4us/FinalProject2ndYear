@@ -1,6 +1,13 @@
 package lapr.project.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.parsers.ParserConfigurationException;
 import lapr.project.model.Project;
+import lapr.project.utils.FileParser.XMLImporterRoads;
+import org.xml.sax.SAXException;
 
 
 
@@ -55,5 +62,10 @@ public class ChangeDataController {
     public Project getProject(){
         return project;
     }
-
+    
+    public void addNewRoads(File roads) throws IOException, SAXException, ParserConfigurationException{
+        XMLImporterRoads xmlImporter = new XMLImporterRoads(roads,project.getRoadNetwork());
+            xmlImporter.importNetwork(false);
+    }
+            
 }
