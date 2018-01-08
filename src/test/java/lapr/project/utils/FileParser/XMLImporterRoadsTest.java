@@ -33,7 +33,7 @@ public class XMLImporterRoadsTest {
         file = new File("src/test/resources/TestSet02_Network_v2.xml");
         fileParser = new XMLImporterRoads(file);
 
-        roadNetworkResult = fileParser.importNetwork();
+        roadNetworkResult = fileParser.importNetwork(true);
 
         dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);

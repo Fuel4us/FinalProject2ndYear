@@ -1,8 +1,11 @@
 package lapr.project.model.RoadNetwork;
 
+import lapr.project.utils.Graph.Edge;
 import lapr.project.utils.Graph.Graph;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Graph view of a network of roads
@@ -94,6 +97,19 @@ public class RoadNetwork extends Graph<Node, Section> {
             flag = true;
         }
         return flag;
+    }
+
+    /**
+     * Retrieves the list of all roads if the road network
+     *
+     * @return a list of instances of the class Road
+     */
+    public List<Road> retrieveAllRoads() {
+        return getEdges().stream()
+                .map(Edge::getElement)
+                .map(Section::getOwningRoad)
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     /**

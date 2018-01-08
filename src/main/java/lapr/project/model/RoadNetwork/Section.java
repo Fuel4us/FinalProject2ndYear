@@ -222,6 +222,20 @@ public class Section extends Edge<String, Direction> {
     }
 
     /**
+     * @return beginning node
+     */
+    public Node getBeginningNode() {
+        return beginningNode;
+    }
+
+    /**
+     * @return ending node
+     */
+    public Node getEndingNode() {
+        return endingNode;
+    }
+
+    /**
      * Calculates the energy expenditure of a vehicle, considering the max acceleration and braking, its load and
      * its initial velocity in this section
      * @param roadNetwork the road network
