@@ -184,9 +184,9 @@ public class PathAlgorithm {
 
         Measurable expendedEnergy = new Measurable(totalExpendedEnergy, Unit.KILOJOULE);
 
-        determineAccumulatedResults(roadNetwork, vehicle, load, maxAcceleration, maxBraking, end, initialVelocity, sections);
+        EnergyExpenditureAccelResults finalResults = determineAccumulatedResults(roadNetwork, vehicle, load, maxAcceleration, maxBraking, end, initialVelocity, sections);
 
-        return new Analysis(project, N11_ALGORITHM_NAME, sections, expendedEnergy, null, null);
+        return new Analysis(project, N11_ALGORITHM_NAME, sections, expendedEnergy, finalResults.getTimeSpent(), finalResults.getTollCosts());
     }
 
     /**
@@ -205,7 +205,6 @@ public class PathAlgorithm {
      * the final results corresponding to the travelling of a vehicle in a path.
      */
     private EnergyExpenditureAccelResults determineAccumulatedResults(RoadNetwork roadNetwork, Vehicle vehicle, Measurable load, Measurable maxAcceleration, Measurable maxBraking, Node end, Measurable initialVelocity, List<Section> path) {
-
         Measurable successiveVelocity = initialVelocity;
         double travelTime = 0;
         double tollCosts = 0;
