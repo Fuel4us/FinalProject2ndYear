@@ -426,8 +426,8 @@
             <Property name="text" type="java.lang.String" value="add vehicle"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                <LineBorder thickness="3">
-                  <Color PropertyName="color" blue="3c" green="98" red="fa" type="rgb"/>
+                <LineBorder roundedCorners="true" thickness="3">
+                  <Color PropertyName="color" blue="85" green="7a" red="61" type="rgb"/>
                 </LineBorder>
               </Border>
             </Property>

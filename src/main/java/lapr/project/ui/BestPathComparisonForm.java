@@ -82,7 +82,6 @@ public class BestPathComparisonForm extends JFrame {
         jButtonBack.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 4));
         jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
 
-
         ListModel<Node> nodesModel2 = null;
         jListNodes2.setModel(nodesModel2);
         jListNodes2.setBackground(new java.awt.Color(97, 122, 133));
@@ -144,7 +143,7 @@ public class BestPathComparisonForm extends JFrame {
         jTextFieldLoad.setText("«sample number»");
 
         addVehicleButton.setText("add vehicle");
-        addVehicleButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 3));
+        addVehicleButton.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(97, 122, 133), 3, true));
         addVehicleButton.addActionListener(evt -> addVehicleButtonActionPerformed(evt));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
