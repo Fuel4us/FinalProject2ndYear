@@ -347,7 +347,8 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * @param projectName identifier of {@link lapr.project.model.Project}
      * @throws SQLException
      */
-    void storeVehicleInfo(Vehicle vehicle, String projectName) throws SQLException {
+    @Override
+    public void storeVehicleInfo(Vehicle vehicle, String projectName) throws SQLException {
 
         try (CallableStatement storeVehicleInfoProcedure = oracleConnection.prepareCall("CALL storeVehicleInfoProcedure(?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
 
