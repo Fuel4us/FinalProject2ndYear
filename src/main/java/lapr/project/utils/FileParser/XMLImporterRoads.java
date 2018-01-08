@@ -1,6 +1,7 @@
 package lapr.project.utils.FileParser;
 
 import lapr.project.model.RoadNetwork.*;
+import lapr.project.utils.Graph.Edge;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 import org.w3c.dom.Document;
@@ -133,13 +134,13 @@ public class XMLImporterRoads implements FileParser {
 
                 }
 
-//                List<Road> duplicateRoads = roadNetwork.retrieveAllRoads().stream()
-//                        .filter(road -> road.getName().equals(name) || road.getId().equals(id))
-//                        .collect(Collectors.toList());
-//
-//                if (duplicateRoads.isEmpty()) {
-//                    roadList.add(new Road(id, name, typology, tollFaresList));
-//                }
+                List<Road> duplicateRoads = roadNetwork.retrieveAllRoads().stream()
+                        .filter(road -> road.getName().equals(name) || road.getId().equals(id))
+                        .collect(Collectors.toList());
+
+                if (duplicateRoads.isEmpty()) {
+                    roadList.add(new Road(id, name, typology, tollFaresList));
+                }
 
             }
 
@@ -168,7 +169,13 @@ public class XMLImporterRoads implements FileParser {
                 lapr.project.model.RoadNetwork.Node roadNetworkNode =
                         new lapr.project.model.RoadNetwork.Node(element.getAttribute("id"));
 
-                roadNetwork.addNode(roadNetworkNode);
+                List<lapr.project.model.RoadNetwork.Node> duplicateNodes = roadNetwork.getVertices().stream()
+                        .filter(node1 -> node1.getId().equals(roadNetworkNode.getId()))
+                        .collect(Collectors.toList());
+
+                if (duplicateNodes.isEmpty()) {
+                    roadNetwork.addNode(roadNetworkNode);
+                }
 
             }
 
@@ -258,10 +265,19 @@ public class XMLImporterRoads implements FileParser {
                     continue;
                 }
 
-                List<Segment> segmentList = addSegments(element.getElementsByTagName("segment_list").item(0).getChildNodes());
+                lapr.project.model.RoadNetwork.Node finalBeginningNode = beginningNode;
+                lapr.project.model.RoadNetwork.Node finalEndingNode = endingNode;
+                List<Section> duplicateSections = roadNetwork.getEdges().stream()
+                        .filter(nodeSectionEdge -> nodeSectionEdge.getElement().getBeginningNode().equals(finalBeginningNode)
+                                && nodeSectionEdge.getElement().getEndingNode().equals(finalEndingNode))
+                        .map(Edge::getElement).collect(Collectors.toList());
 
-                Section section = new Section(beginningNode, endingNode, direction, segmentList, road, tollFare);
-                roadNetwork.addSection(beginningNode, endingNode, section);
+                if (duplicateSections.isEmpty()) {
+                    List<Segment> segmentList = addSegments(element.getElementsByTagName("segment_list").item(0).getChildNodes());
+
+                    Section section = new Section(beginningNode, endingNode, direction, segmentList, road, tollFare);
+                    roadNetwork.addSection(beginningNode, endingNode, section);
+                }
 
             }
 
