@@ -20,10 +20,7 @@ import java.util.logging.Logger;
  * Provides user interface components for the display and storage of a network
  * analysis
  */
-public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
-
-    private Project project;
-    private Analysis generatedAnalysis;
+class StoreNetworkAnalysisUI extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 606009290497975171L;
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -42,7 +39,7 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
     /**
      * Creates new form StoreNetworkAnalysisUI
      */
-    StoreNetworkAnalysisUI(Project project, Analysis generatedAnalysis) {
+    StoreNetworkAnalysisUI(Analysis generatedAnalysis) {
         initComponents();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -50,7 +47,7 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         analysisResultTextField.setEditable(false);
         analysisResultTextField.setText(generatedAnalysis.generateReport());
-        networkAnalysisController = new NetworkAnalysisController(project, Main.dbCom, generatedAnalysis);
+        networkAnalysisController = new NetworkAnalysisController(Main.currentProject, Main.dbCom, generatedAnalysis);
     }
 
     @SuppressWarnings("unchecked")
@@ -207,7 +204,7 @@ public class StoreNetworkAnalysisUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonGenerateFileActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        new BestPathUI(project);
+        BestPathUI.display();
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
