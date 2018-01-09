@@ -401,7 +401,7 @@ public class XMLImporterVehicles implements FileParser {
 
     public void addGearList(Node energyNode, int newGearId, float newRatio, Gears newGear, List<Gears> newGearList) {
         NodeList gearListList = energyNode.getChildNodes();
-        for (int k = 0; k < gearListList.getLength(); k++) {
+        for (int k = 1; k < gearListList.getLength(); k++) {
             Node gearListNode = gearListList.item(k);
             /**
              * ID
@@ -411,19 +411,18 @@ public class XMLImporterVehicles implements FileParser {
                 newGearId = Integer.parseInt(gearElement.getAttribute("id"));
 
                 NodeList gearList = gearListNode.getChildNodes();
-                for (int l = 0; l < gearList.getLength(); l++) {
+                for (int l = 1; l < gearList.getLength(); l++) {
                     Node gearNode = gearList.item(l);
                     /**
                      * Ratio
                      */
                     if (gearNode.getNodeType() == Node.ELEMENT_NODE) {
-                        if (energyNode.getNodeName().equalsIgnoreCase("ratio")) {
+                        if (gearNode.getNodeName().equalsIgnoreCase("ratio")) {
                             newRatio = Float.parseFloat(gearNode.getTextContent());
+                            newGear = new Gears(newGearId, newRatio);
+                            newGearList.add(newGear);
                         }
                     }
-                    newGear = new Gears(newGearId, newRatio);
-                    newGearList.add(newGear);
-
                 }
             }
 
