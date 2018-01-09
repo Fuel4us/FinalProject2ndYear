@@ -356,7 +356,8 @@ public class XMLImporterVehicles implements FileParser {
             Regime newRegime, List<Regime> newRegimeList, Throttle newThrottle,
             List<Throttle> newThrottleList, Node attribute) {
         NodeList energyList = attribute.getChildNodes();
-            Node energyNode = energyList.item(0);
+        for (int j = 0; j < energyList.getLength(); j++) {
+            Node energyNode = energyList.item(j);
             if (energyNode.getNodeType() == Node.ELEMENT_NODE) {
                 /**
                  * Min RPM
@@ -390,11 +391,12 @@ public class XMLImporterVehicles implements FileParser {
                             newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh,
                             newSfc, newRegime, newRegimeList,
                             newThrottle, newThrottleList);
+                    break;
                 }
 
             }
 
-        
+        }
         return new Energy(newMinRpm, newMaxRpm, newFinalDriveRatio, newGearList, newThrottleList);
     }
 
