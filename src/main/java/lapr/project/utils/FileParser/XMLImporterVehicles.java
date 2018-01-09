@@ -402,6 +402,7 @@ public class XMLImporterVehicles implements FileParser {
 
     public void addGearList(Node energyNode, int newGearId, float newRatio, Gears newGear, List<Gears> newGearList) {
         NodeList gearListList = energyNode.getChildNodes();
+        newGearList.clear();
         for (int k = 1; k < gearListList.getLength(); k++) {
             Node gearListNode = gearListList.item(k);
             /**
