@@ -467,7 +467,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
         List<Regime> regimes = throttle.getRegimes();
         for (Regime regime : regimes) {
-            storeRegime(regime, throttle.getId());
+            storeRegime(regime, throttle.getId(), energyID);
         }
     }
 
@@ -491,8 +491,8 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * @param regime instance of {@link Regime}
      * @param throttleID throttle identifier
      */
-    private void storeRegime(Regime regime, int throttleID) throws SQLException {
-        try (CallableStatement storeRegimeProcedure = oracleConnection.prepareCall("CALL storeRegimeProcedure(?,?,?,?,?,?)")) {
+    private void storeRegime(Regime regime, int throttleID, int energyID) throws SQLException {
+        try (CallableStatement storeRegimeProcedure = oracleConnection.prepareCall("CALL storeRegimeProcedure(?,?,?,?,?,?,?)")) {
 
             storeRegimeProcedure.setInt("torqueLow", regime.getTorqueLow());
             storeRegimeProcedure.setInt("torqueHigh", regime.getTorqueHigh());
@@ -500,6 +500,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             storeRegimeProcedure.setInt("rpmHigh", regime.getRpmHigh());
             storeRegimeProcedure.setDouble("SFC", regime.getSFC());
             storeRegimeProcedure.setInt("throttleID", throttleID);
+            storeRegimeProcedure.setInt("energyID", energyID);
 
             storeRegimeProcedure.executeUpdate();
         }
