@@ -10,6 +10,8 @@ import lapr.project.model.Vehicle.Vehicle;
 
 import javax.swing.*;
 import java.util.List;
+import lapr.project.controller.BestPathController;
+import lapr.project.model.Project;
 
 /**
  *
@@ -18,11 +20,17 @@ import java.util.List;
 public class BestPathComparisonForm extends JFrame {
 
     private static final long serialVersionUID = -8320152827152597624L;
+    private DefaultListModel<Vehicle> vehicleModel;
+    private DefaultListModel<Vehicle> selectedVehicles;
+    private BestPathController controller;
 
     /**
      * Creates new form BestPathComparisonForm
+     * 
+     * @param project
      */
-    public BestPathComparisonForm() {
+    public BestPathComparisonForm(Project project) {
+        controller = new BestPathController(project);
         initComponents();
     }
 
@@ -84,22 +92,43 @@ public class BestPathComparisonForm extends JFrame {
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack.setText("«");
         jButtonBack.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 4));
-        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
+        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBackActionPerformed(evt);
+            }
+        });
 
-        ListModel<Node> nodesModel2 = null;
+        List<Node> nodesList2 = controller.getAllNodes();
+        DefaultListModel<Node> nodesModel2 = new DefaultListModel<>();
+        for (Node obj : nodesList2) {
+            nodesModel2.addElement(obj);
+        }
         jListNodes2.setModel(nodesModel2);
         jListNodes2.setBackground(new java.awt.Color(97, 122, 133));
         jListNodes2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListNodes2.setForeground(new java.awt.Color(255, 255, 255));
+        /**
+        jListNodes2.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Node 1", "Node 2" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        */
         jListNodes2.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(jListNodes2);
 
-        ListModel<Node> nodesModel = null;
+        List<Node> nodesList = controller.getAllNodes();
+        DefaultListModel<Node> nodesModel = new DefaultListModel<>();
+        for (Node obj : nodesList) {
+            nodesModel.addElement(obj);
+        }
         jListNodes1.setModel(nodesModel);
         jListNodes1.setBackground(new java.awt.Color(97, 122, 133));
         jListNodes1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListNodes1.setForeground(new java.awt.Color(255, 255, 255));
+        /**
         jListNodes1.setModel(null);
+        */
         jListNodes1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(jListNodes1);
 
@@ -111,11 +140,21 @@ public class BestPathComparisonForm extends JFrame {
         jLabelNode2.setForeground(new java.awt.Color(97, 122, 133));
         jLabelNode2.setText("DESTINY NODE:");
 
-        ListModel<Vehicle> vehicleModel = null;
+        List<Vehicle> vehicleList = controller.getAllVehicles();
+        for (Vehicle obj : vehicleList) {
+            vehicleModel.addElement(obj);
+        }
         jListVehicles.setModel(vehicleModel);
         jListVehicles.setBackground(new java.awt.Color(97, 122, 133));
         jListVehicles.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListVehicles.setForeground(new java.awt.Color(255, 255, 255));
+        /**
+        jListVehicles.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "V1", "V2", "V3" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        */
         jListVehicles.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane4.setViewportView(jListVehicles);
 
@@ -129,11 +168,19 @@ public class BestPathComparisonForm extends JFrame {
 
         jButton1.setText("N10 - Fastest Path");
         jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 3));
-        jButton1.addActionListener(evt -> jButton1ActionPerformed(evt));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("N11 -  Theoretical most energy efficient path");
         jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 3));
-        jButton2.addActionListener(evt -> jButton2ActionPerformed(evt));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("N12 - Most efficient path in energy saving mode");
         jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 3));
@@ -144,23 +191,36 @@ public class BestPathComparisonForm extends JFrame {
 
         jTextFieldLoad.setBackground(new java.awt.Color(97, 122, 133));
         jTextFieldLoad.setForeground(new java.awt.Color(255, 255, 255));
-        jTextFieldLoad.setText("«sample number»");
 
         addVehicleButton.setText("add vehicle");
         addVehicleButton.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(97, 122, 133), 3, true));
-        addVehicleButton.addActionListener(evt -> addVehicleButtonActionPerformed(evt));
+        addVehicleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addVehicleButtonActionPerformed(evt);
+            }
+        });
 
-
-        jListVehicles1.setModel(vehicleModel);
+        jListVehicles.setModel(selectedVehicles);
         jListVehicles1.setBackground(new java.awt.Color(97, 122, 133));
         jListVehicles1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListVehicles1.setForeground(new java.awt.Color(255, 255, 255));
+        /**
+        jListVehicles1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "V1", "V2", "V3" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        */
         jListVehicles1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane5.setViewportView(jListVehicles1);
 
         removeVehicleButton.setText("remove vehicle");
         removeVehicleButton.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(97, 122, 133), 3, true));
-        removeVehicleButton.addActionListener(evt -> removeVehicleButtonActionPerformed(evt));
+        removeVehicleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeVehicleButtonActionPerformed(evt);
+            }
+        });
 
         jLabelAlgorithm2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         jLabelAlgorithm2.setForeground(new java.awt.Color(97, 122, 133));
@@ -291,11 +351,13 @@ public class BestPathComparisonForm extends JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void addVehicleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehicleButtonActionPerformed
-        // TODO add your handling code here:
+        selectedVehicles.addElement(jListVehicles.getSelectedValue());
+        vehicleModel.remove(jListVehicles.getSelectedIndex());
     }//GEN-LAST:event_addVehicleButtonActionPerformed
 
     private void removeVehicleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeVehicleButtonActionPerformed
-        // TODO add your handling code here:
+        vehicleModel.addElement(jListVehicles1.getSelectedValue());
+        jListVehicles1.remove(jListVehicles1.getSelectedIndex());
     }//GEN-LAST:event_removeVehicleButtonActionPerformed
 
     /**
@@ -326,7 +388,7 @@ public class BestPathComparisonForm extends JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new BestPathComparisonForm().setVisible(true));
+        //java.awt.EventQueue.invokeLater(() -> new BestPathComparisonForm().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
