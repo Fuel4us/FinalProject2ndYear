@@ -211,7 +211,7 @@ public class XMLImporterVehicles implements FileParser {
                                     newGearId, newRatio, newGear, newGearList,
                                     newThrottleId, newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh, newSfc,
                                     newRegime, newRegimeList, newThrottle,
-                                    newThrottleList, attribute);
+                                    newThrottleList, attribute, motorTypeValue);
                         }
                     }
 
@@ -351,10 +351,10 @@ public class XMLImporterVehicles implements FileParser {
     }
 
     public Energy addEnergy(int newMinRpm, int newMaxRpm, float newFinalDriveRatio,
-            int newGearId, float newRatio, Gears newGear, List<Gears> newGearList,
-            int newThrottleId, int newTorqueLow, int newTorqueHigh, int newRpmLow, int newRpmHigh, double newSfc,
-            Regime newRegime, List<Regime> newRegimeList, Throttle newThrottle,
-            List<Throttle> newThrottleList, Node attribute) {
+                            int newGearId, float newRatio, Gears newGear, List<Gears> newGearList,
+                            int newThrottleId, int newTorqueLow, int newTorqueHigh, int newRpmLow, int newRpmHigh, double newSfc,
+                            Regime newRegime, List<Regime> newRegimeList, Throttle newThrottle,
+                            List<Throttle> newThrottleList, Node attribute, MotorType motorTypeValue) {
         NodeList energyList = attribute.getChildNodes();
         for (int j = 0; j < energyList.getLength(); j++) {
             Node energyNode = energyList.item(j);
@@ -390,7 +390,8 @@ public class XMLImporterVehicles implements FileParser {
                     addThrottleList(energyNode, newThrottleId,
                             newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh,
                             newSfc, newRegime, newRegimeList,
-                            newThrottle, newThrottleList);
+                            newThrottle, newThrottleList, motorTypeValue);
+                    break;
                 }
 
             }
@@ -401,7 +402,8 @@ public class XMLImporterVehicles implements FileParser {
 
     public void addGearList(Node energyNode, int newGearId, float newRatio, Gears newGear, List<Gears> newGearList) {
         NodeList gearListList = energyNode.getChildNodes();
-        for (int k = 0; k < gearListList.getLength(); k++) {
+        newGearList.clear();
+        for (int k = 1; k < gearListList.getLength(); k++) {
             Node gearListNode = gearListList.item(k);
             /**
              * ID
@@ -411,19 +413,18 @@ public class XMLImporterVehicles implements FileParser {
                 newGearId = Integer.parseInt(gearElement.getAttribute("id"));
 
                 NodeList gearList = gearListNode.getChildNodes();
-                for (int l = 0; l < gearList.getLength(); l++) {
+                for (int l = 1; l < gearList.getLength(); l++) {
                     Node gearNode = gearList.item(l);
                     /**
                      * Ratio
                      */
                     if (gearNode.getNodeType() == Node.ELEMENT_NODE) {
-                        if (energyNode.getNodeName().equalsIgnoreCase("ratio")) {
+                        if (gearNode.getNodeName().equalsIgnoreCase("ratio")) {
                             newRatio = Float.parseFloat(gearNode.getTextContent());
+                            newGear = new Gears(newGearId, newRatio);
+                            newGearList.add(newGear);
                         }
                     }
-                    newGear = new Gears(newGearId, newRatio);
-                    newGearList.add(newGear);
-
                 }
             }
 
@@ -431,9 +432,9 @@ public class XMLImporterVehicles implements FileParser {
     }
 
     public void addThrottleList(Node energyNode, int newThrottleId,
-            int newTorqueLow, int newTorqueHigh, int newRpmLow, int newRpmHigh,
-            double newSfc, Regime newRegime, List<Regime> newRegimeList,
-            Throttle newThrottle, List<Throttle> newThrottleList) {
+                                int newTorqueLow, int newTorqueHigh, int newRpmLow, int newRpmHigh,
+                                double newSfc, Regime newRegime, List<Regime> newRegimeList,
+                                Throttle newThrottle, List<Throttle> newThrottleList, MotorType motorTypeValue) {
         NodeList throttleList = energyNode.getChildNodes();
         for (int k = 0; k < throttleList.getLength(); k++) {
             Node throttleNode = throttleList.item(k);
@@ -458,12 +459,20 @@ public class XMLImporterVehicles implements FileParser {
                         }
                         if (regimeChild.getNodeName().equalsIgnoreCase("rpm_high")) {
                             newRpmHigh = Integer.parseInt(regimeChild.getTextContent());
+                            if (motorTypeValue.equals(MotorType.NONCOMBUSTION)) {
+                                break;
+                            }
                         }
                         if (regimeChild.getNodeName().equalsIgnoreCase("SFC")) {
                             newSfc = Double.parseDouble(regimeChild.getTextContent());
+                            break;
                         }
                     }
-                    newRegime = new Regime(newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh, newSfc);
+                    if (newSfc == 0) {
+                        newRegime = new Regime(newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh);
+                    }else{
+                        newRegime = new Regime(newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh, newSfc);
+                    }
                     newRegimeList.add(newRegime);
 
                 }
