@@ -37,7 +37,7 @@ public class CreateProjectUI extends javax.swing.JFrame {
     /**
      * Creates new form CreateProjectUI
      */
-    public CreateProjectUI() {
+    private CreateProjectUI() {
         super("Create Project");
         createProjectController = new CreateProjectController(Main.dbCom);
         initComponents();
@@ -247,7 +247,7 @@ public class CreateProjectUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCreateActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        WelcomeUI.main(null);
+        WelcomeUI.display();
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
@@ -282,33 +282,10 @@ public class CreateProjectUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonVehicleActionPerformed
 
     /**
-     * @param args the command line arguments
+     * Triggers UI display
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CreateProjectUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CreateProjectUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CreateProjectUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CreateProjectUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
+    public static void display() {
+        Main.setLook();
         java.awt.EventQueue.invokeLater(() -> new CreateProjectUI().setVisible(true));
     }
 

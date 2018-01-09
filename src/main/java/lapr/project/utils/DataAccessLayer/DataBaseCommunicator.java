@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * <p>
@@ -164,20 +165,5 @@ public class DataBaseCommunicator {
      */
     void setAnalysisStorage(AnalysisDAO analysisStorage) {
         this.analysisStorage = analysisStorage;
-    }
-    
-    /**
-     * Returns the project by the name
-     * @param name
-     * @param listProjects
-     * @return
-     */
-    public Project getProjectByName(String name, List<Project> listProjects){
-        for(Project p : listProjects){
-            if(p.getName().equalsIgnoreCase(name)){
-                return p;
-            }
-        }
-        return null;
     }
 }

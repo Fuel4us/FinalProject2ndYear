@@ -7,7 +7,6 @@ package lapr.project.ui;
 
 import lapr.project.controller.BestPathController;
 import lapr.project.model.Analysis;
-import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork.*;
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.Measurable;
@@ -24,8 +23,6 @@ public class BestPathUI extends JFrame {
 
     private BestPathController controller;
     private static final long serialVersionUID = -8320152827152597623L;
-    private Project project;
-    private Analysis generatedAnalysis;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
     private javax.swing.JButton jButton1;
@@ -60,11 +57,10 @@ public class BestPathUI extends JFrame {
     /**
      * Creates new form RoadNetworkPathFormUI
      */
-    BestPathUI(Project project) {
+    private BestPathUI() {
         super("Best Path");
-        this.controller = new BestPathController(project);
+        this.controller = new BestPathController(Main.currentProject);
         initComponents();
-        this.project = project;
         setResizable(false);
         setVisible(true);
         setLocationRelativeTo(null);
@@ -322,7 +318,7 @@ public class BestPathUI extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonBackActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        SelectProjectUI.main(null);
+        SelectProjectUI.display();
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
@@ -343,10 +339,10 @@ public class BestPathUI extends JFrame {
                 JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes, as well as a vehicle.");
 
             } else if (startNode.equals(endNode)) {
-                JOptionPane.showMessageDialog(null, "Please select diferent start and end nodes.");
+                JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
             } else {
-                generatedAnalysis = controller.analyzeFastestPath(startNode, endNode, selectedVehicle, load);
-                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(project, generatedAnalysis);
+                Analysis generatedAnalysis = controller.analyzeFastestPath(startNode, endNode, selectedVehicle, load);
+                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis);
                 storeNetworkAnalysisUI.setVisible(true);
                 setVisible(false);
             }
@@ -354,5 +350,13 @@ public class BestPathUI extends JFrame {
             JOptionPane.showMessageDialog(null, "Please insert a valid load value");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    /**
+     * Triggers UI display
+     */
+    public static void display() {
+        Main.setLook();
+        java.awt.EventQueue.invokeLater(() -> new BestPathUI().setVisible(true));
+    }
 
 }
