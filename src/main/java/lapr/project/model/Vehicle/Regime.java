@@ -19,6 +19,14 @@ public class Regime {
         this.SFC = SFC;
     }
 
+    public Regime(int newTorqueLow, int newTorqueHigh, int newRpmLow, int newRpmHigh) {
+        torqueLow = newTorqueLow;
+        torqueHigh = newTorqueHigh;
+        rpmLow = newRpmLow;
+        rpmHigh = newRpmHigh;
+        SFC = 0;
+    }
+
     /**
      * Getter method for torqueLow
      * 
