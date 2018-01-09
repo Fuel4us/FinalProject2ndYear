@@ -63,20 +63,19 @@ public class OracleDAO {
      */
     int storeStatisticalInfo(Measurable measurable) throws SQLException {
 
-        try (CallableStatement storeMeasurableFunction = oracleConnection
-                .prepareCall("{? = call STORE_MEASURABLE(?,?)}")) {
+        try (CallableStatement storeMeasurableFunction = oracleConnection.prepareCall("{? = call STORE_MEASURABLE(?,?)}")) {
 
             double quantity = measurable.getQuantity();
             Unit unit = measurable.getUnit();
 
-            storeMeasurableFunction.registerOutParameter("id", Types.INTEGER);
+            storeMeasurableFunction.registerOutParameter(1, Types.INTEGER);
 
-            storeMeasurableFunction.setDouble("quantity", quantity);
-            storeMeasurableFunction.setString("unit", unit.toString());
+            storeMeasurableFunction.setDouble(2, quantity);
+            storeMeasurableFunction.setString(3, unit.toString());
 
             storeMeasurableFunction.executeUpdate();
 
-            return storeMeasurableFunction.getInt("id");
+            return storeMeasurableFunction.getInt(1);
         }
 
     }
