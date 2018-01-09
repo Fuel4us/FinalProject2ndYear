@@ -54,6 +54,10 @@ public class BestPathController {
     /**
     * Method called by the UI that returns the Analysis of N10 algorithm
     * 
+    * @param startNode
+    * @param endNode
+    * @param selectedVehicle
+    * @param load
     * @return Analysis provided by the N10 algorithm
     */
     public Analysis analyzeFastestPath(Node startNode, Node endNode, Vehicle selectedVehicle, Measurable load){
