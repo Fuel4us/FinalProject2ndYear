@@ -5,10 +5,11 @@
  */
 package lapr.project.ui;
 
-import javax.swing.*;
 import lapr.project.controller.SelectProjectController;
+
+import javax.swing.*;
+
 import static lapr.project.ui.Main.dbCom;
-import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 
 /**
  *
@@ -150,7 +151,7 @@ public class WelcomeUI extends javax.swing.JFrame {
     // </editor-fold>
 
     private void jButtonCreateActionPerformed(java.awt.event.ActionEvent evt) {
-        CreateProjectUI.main(null);
+        CreateProjectUI.display();
         setVisible(false);
     }
 
@@ -164,35 +165,17 @@ public class WelcomeUI extends javax.swing.JFrame {
                         "Open Project",
                         JOptionPane.INFORMATION_MESSAGE);
         }else {
-            SelectProjectUI.main(null);
+            SelectProjectUI.display();
             setVisible(false);
         }
 
     }
 
     /**
-     * @param args the command line arguments
+     * Triggers UI display
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(WelcomeUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
+    public static void display() {
+        Main.setLook();
         java.awt.EventQueue.invokeLater(() -> new WelcomeUI().setVisible(true));
     }
 
