@@ -29,7 +29,7 @@ public class WelcomeUI extends javax.swing.JFrame {
     /**
      * Creates new form Welcome
      */
-    public WelcomeUI() {
+    private WelcomeUI() {
         initComponents();
     }
 
@@ -164,9 +164,10 @@ public class WelcomeUI extends javax.swing.JFrame {
                         "Open Project",
                         JOptionPane.INFORMATION_MESSAGE);
         }else {
-            SelectProjectUI ui = new SelectProjectUI(controller);
+            SelectProjectUI.main(null);
             setVisible(false);
-        }  
+        }
+
     }
 
     /**
@@ -194,6 +195,5 @@ public class WelcomeUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new WelcomeUI().setVisible(true));
     }
-
 
 }
