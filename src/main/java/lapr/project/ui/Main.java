@@ -50,8 +50,7 @@ public class Main {
      */
     public static void main(String[] args) throws SQLException {
         initStatic();
-        setLook();
-        WelcomeUI.main(null);
+        WelcomeUI.display();
     }
 
     /**
@@ -75,8 +74,9 @@ public class Main {
 
     /**
      * Defines UI look and feel
+     * Access is package private so that it may be invoked by other UIs
      */
-    private static void setLook() {
+    static void setLook() {
 
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code">
