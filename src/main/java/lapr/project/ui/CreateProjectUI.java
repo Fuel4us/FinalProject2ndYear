@@ -13,7 +13,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * Provides user interface components for the creation of a project
  */
-public class CreateProjectUI extends javax.swing.JFrame {
+public final class CreateProjectUI extends javax.swing.JFrame {
 
     private static final long serialVersionUID = -1818083907306250629L;
     private CreateProjectController createProjectController;

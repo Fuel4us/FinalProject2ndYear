@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * @author anily
  */
-public class BestPathUI extends JFrame {
+public final class BestPathUI extends JFrame {
 
     private BestPathController controller;
     private static final long serialVersionUID = -8320152827152597623L;

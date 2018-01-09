@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author anily, antelo
  */
-public class SelectProjectUI extends javax.swing.JFrame {
+public final class SelectProjectUI extends javax.swing.JFrame {
 
     InitializeUIElements initializer = new InitializeUIElements();
     private static final long serialVersionUID = -5188965937946662366L;
