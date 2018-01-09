@@ -7,7 +7,6 @@ package lapr.project.ui;
 
 import lapr.project.controller.BestPathController;
 import lapr.project.model.Analysis;
-import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork.*;
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.Measurable;
@@ -319,7 +318,7 @@ public class BestPathUI extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonBackActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        SelectProjectUI.main(null);
+        SelectProjectUI.display();
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
