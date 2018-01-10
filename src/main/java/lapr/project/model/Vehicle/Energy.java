@@ -7,8 +7,27 @@ public class Energy {
     private int minRpm;
     private int maxRpm;
     private float finalDriveRatio;
+    private double energyRegenerationRatio;
     private List<Gears> gears;
     private List<Throttle> throttles;
+
+    /**
+     * Constructor
+     * @param minRpm the minimum value for the rpm
+     * @param maxRpm the maximum value for the rpm
+     * @param finalDriveRatio the final drive ration
+     * @param energyRegenerationRatio the energy regeneration ratio (for electric vehicles)
+     * @param gears the gears
+     * @param throttles the throttles
+     */
+    public Energy(int minRpm, int maxRpm, float finalDriveRatio, double energyRegenerationRatio, List<Gears> gears, List<Throttle> throttles) {
+        this.minRpm = minRpm;
+        this.maxRpm = maxRpm;
+        this.finalDriveRatio = finalDriveRatio;
+        this.energyRegenerationRatio = energyRegenerationRatio;
+        this.gears = gears;
+        this.throttles = throttles;
+    }
 
     /**
      * Constructor
