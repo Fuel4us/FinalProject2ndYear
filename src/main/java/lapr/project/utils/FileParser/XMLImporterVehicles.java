@@ -15,7 +15,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -23,8 +22,15 @@ import java.util.List;
  */
 public class XMLImporterVehicles implements FileParser {
 
-    private static final String byDefault = "Default";
+
     private int id = 1;
+
+    /**
+     * Floating point precision
+     */
+    private final double zero = 0.000000001;
+    
+    private static final String byDefault = "Default";
 
     @Override
     public boolean importVehicles(Project project, String filename) {
@@ -450,7 +456,7 @@ public class XMLImporterVehicles implements FileParser {
                         }
                     }
                     Regime newRegime;
-                    if (newSfc == 0) {
+                    if (newSfc < zero && newSfc > -zero) {
                         newRegime = new Regime(newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh);
                     } else {
                         newRegime = new Regime(newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh, newSfc);
