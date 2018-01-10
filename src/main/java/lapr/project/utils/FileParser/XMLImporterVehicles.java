@@ -236,7 +236,6 @@ public class XMLImporterVehicles implements FileParser {
         } else if (attribute.getTextContent().equalsIgnoreCase("electric")) {
             return Vehicle.MotorType.NONCOMBUSTION;
         }
-        System.out.println("Mass unit not correct the value is now the default (combustion)");
         return Vehicle.MotorType.COMBUSTION;
     }
 
@@ -248,7 +247,6 @@ public class XMLImporterVehicles implements FileParser {
                 return fuelType;
             }
         }
-        System.out.println("Fuel unit not correct the value is now the default (gasoline)");
         return Fuel.Gasoline;
     }
 
@@ -262,7 +260,6 @@ public class XMLImporterVehicles implements FileParser {
         } else if (massUnit.equalsIgnoreCase("g")) {
             return new Measurable(newMass, Unit.GRAM);
         }
-        System.out.println("Mass unit not correct the value is now the default (kg)");
         return new Measurable(newMass, Unit.KILOGRAM);
     }
 
@@ -276,7 +273,6 @@ public class XMLImporterVehicles implements FileParser {
         } else if (loadUnit.equalsIgnoreCase("g")) {
             return new Measurable(newLoad, Unit.GRAM);
         }
-        System.out.println("Load unit not correct the value is now the default (kg)");
         return new Measurable(newLoad, Unit.KILOGRAM);
     }
 
