@@ -1,9 +1,13 @@
 package lapr.project.utils;
 
-//ToDo
+/**
+ * A {@link Throwable} which may hold data related to an object which caused the exception
+ */
 public class FaultyInvocationException extends Throwable {
 
     private Object faultyObject;
+
+    private static final long serialVersionUID = 4858852335242794508L;
 
     /**
      * Constructs a new throwable with {@code null} as its detail message.
