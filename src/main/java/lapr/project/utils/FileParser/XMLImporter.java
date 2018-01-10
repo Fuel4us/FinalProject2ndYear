@@ -363,7 +363,7 @@ public class XMLImporter implements FileParser {
         // Initiate parser
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        Document doc = dBuilder.parse(roadsFile);
+        Document doc = dBuilder.parse(vehiclesFile);
 
         doc.getDocumentElement().normalize();
 

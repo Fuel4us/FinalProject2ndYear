@@ -2,11 +2,13 @@ package lapr.project.controller;
 
 import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork.RoadNetwork;
+import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 import lapr.project.utils.FileParser.FileParser;
 import lapr.project.utils.FileParser.XMLImporter;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Class that represents the Controller for the UC2 - Create Project
@@ -71,8 +73,8 @@ public class CreateProjectController {
     public Project createProject(String name, String description) throws Exception {
         FileParser importer = new XMLImporter(roadsFile, vehiclesFile);
         RoadNetwork roadNetwork = importer.importNetwork(true);
-        Project project = new Project(name, description, roadNetwork, null);
-        importer.importVehicles();
+        List<Vehicle> vehicles = importer.importVehicles();
+        Project project = new Project(name, description, roadNetwork, vehicles);
         dbCom.addProject(project);
         return project;
     }
