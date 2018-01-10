@@ -344,7 +344,8 @@ public class BestPathComparisonForm extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        // TODO add your handling code here:
+        SelectProjectUI.display();
+        dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -359,7 +360,7 @@ public class BestPathComparisonForm extends JFrame {
             }
             if (startNode == null
                     || endNode == null) {
-                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes, as well as a vehicle.");
+                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes");
 
             } else if (startNode.equals(endNode)) {
                 JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
