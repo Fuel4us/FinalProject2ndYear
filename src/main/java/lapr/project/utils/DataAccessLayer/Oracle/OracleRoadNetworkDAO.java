@@ -261,7 +261,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * @param networkID roadNetwork identifier
      * @throws SQLException
      */
-    private void storeRoadNetworkGraph(RoadNetwork roadNetwork, String networkID) throws SQLException {
+    void storeRoadNetworkGraph(RoadNetwork roadNetwork, String networkID) throws SQLException {
 
         Iterable<Node> nodes = roadNetwork.vertices();
         for (Node node : nodes) {
