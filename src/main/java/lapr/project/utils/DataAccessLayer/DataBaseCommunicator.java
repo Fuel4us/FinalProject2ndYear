@@ -132,7 +132,7 @@ public class DataBaseCommunicator {
 
             //Allow Data Access Object behaviour through newly opened connexion
             if (projectStorage.connectTo(connection)) {
-                projectStorage.storeProject(project);
+                projectStorage.storeProjectInformation(project);
                 connection.commit();
                 connection.close();
                 return true;
