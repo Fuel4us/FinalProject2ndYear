@@ -165,19 +165,4 @@ public class DataBaseCommunicator {
     void setAnalysisStorage(AnalysisDAO analysisStorage) {
         this.analysisStorage = analysisStorage;
     }
-    
-    /**
-     * Returns the project by the name
-     * @param name
-     * @param listProjects
-     * @return
-     */
-    public Project getProjectByName(String name, List<Project> listProjects){
-        for(Project p : listProjects){
-            if(p.getName().equalsIgnoreCase(name)){
-                return p;
-            }
-        }
-        return null;
-    }
 }

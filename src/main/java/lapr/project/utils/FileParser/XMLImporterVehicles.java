@@ -24,6 +24,7 @@ import lapr.project.utils.Unit;
  */
 public class XMLImporterVehicles implements FileParser {
 
+    private final double zero = 0.000000001;
     private static final String byDefault = "Default";
     private int id = 1;
 
@@ -41,7 +42,7 @@ public class XMLImporterVehicles implements FileParser {
             VehicleType vehicleType = null;
             String newVehicleType = byDefault;
 
-            int newTollClass = 0;
+            int newTollClass = 0; 
 
             String newMotorization = byDefault;
             MotorType motorTypeValue = null;
@@ -468,7 +469,7 @@ public class XMLImporterVehicles implements FileParser {
                             break;
                         }
                     }
-                    if (newSfc == 0) {
+                    if ( newSfc < zero && newSfc > -zero ) {
                         newRegime = new Regime(newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh);
                     }else{
                         newRegime = new Regime(newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh, newSfc);

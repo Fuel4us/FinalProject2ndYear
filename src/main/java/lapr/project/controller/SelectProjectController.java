@@ -6,30 +6,40 @@
 
 package lapr.project.controller;
 
-import java.util.List;
-import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 import lapr.project.model.Project;
+import lapr.project.ui.Main;
+import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
+
+import java.util.List;
 
 /**
- *
+ * Connects UI events to Model classes
  * @author Antelo
  */
 public class SelectProjectController {
-    
-    List<Project> listProjects;
+
     private DataBaseCommunicator dbCom;
-    
-    
-    public SelectProjectController(DataBaseCommunicator dbCom){
-        this.dbCom = dbCom;    
-    }
-    
-    public List<Project> fetchProjectsList(){
-        List<Project> list = dbCom.fetchProjectList();
-        return list;
+
+    public SelectProjectController(DataBaseCommunicator dbCom) {
+        this.dbCom = dbCom;
     }
 
-    public void setProject(String project) {
-        dbCom.getProjectByName(project, listProjects);
-    }  
+    /**
+     * @return the {@link List} of instances of {@link Project} stored in the data layer
+     */
+    public List<Project> fetchProjectsList() {
+        return dbCom.fetchProjectList();
+    }
+
+    /**
+     * Defines the current project as the project that corresponds to a given {@code projectName}
+     * If no project exists in the database, the current project remains unchanged.
+     * @param project The project to set as the current
+     */
+    public void setCurrentProject(Project project) {
+        if (fetchProjectsList().contains(project)) {
+            Main.setCurrentProject(project);
+        }
+    }
+
 }

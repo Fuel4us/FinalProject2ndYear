@@ -15,12 +15,8 @@ import java.util.logging.Logger;
 /**
  * Triggers UI events
  */
-class Main {
+public class Main {
 
-    /*
-    ToDo Refactor this so as not to be static,
-    ToDo temporary solution for testing purposes only
-     */
     static Project currentProject;
     static DataBaseCommunicator dbCom;
 
@@ -46,7 +42,21 @@ class Main {
     /**
      * Private constructor to hide implicit public one.
      */
-    private Main() {
+    private Main() {}
+
+    /**
+     * Application main method.
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) throws SQLException {
+        initStatic();
+        WelcomeUI.display();
+    }
+
+    /**
+     * Initializes objects which are unique during the lifecycle of the program.
+     */
+    private static void initStatic() {
         currentProject = new Project(
                 "New Project",
                 "Add a description",
@@ -63,16 +73,10 @@ class Main {
     }
 
     /**
-     * Application main method.
-     * @param args the command line arguments
+     * Defines UI look and feel
+     * Access is package private so that it may be invoked by other UIs
      */
-    public static void main(String[] args) throws SQLException {
-        setLook();
-        new Main();
-        WelcomeUI.main(null);
-    }
-
-    private static void setLook() {
+    static void setLook() {
 
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code">
@@ -91,6 +95,13 @@ class Main {
         }
         //</editor-fold>
 
+    }
+
+    /**
+     * Defines the current active project
+     */
+    public static void setCurrentProject(Project project) {
+        Main.currentProject = project;
     }
 
 }
