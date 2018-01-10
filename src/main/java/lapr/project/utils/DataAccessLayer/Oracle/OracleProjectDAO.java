@@ -63,38 +63,48 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
     }
 
     /**
-     * Stores instance of {@link Project} in the database
+     * Stores information of {@link Project} in the database
      * @param project instance of {@link Project}
-     * @return 
+     * @return
      * @throws java.sql.SQLException
      */
     @Override
-    public boolean storeProject(Project project) throws SQLException {
+    public void storeProjectInformation(Project project) throws SQLException {
         verifyConnection();
 
-        try (CallableStatement storeProjectProcedure = super.oracleConnection.prepareCall("CALL STORE_PROJECT(?,?)")) {
+        String projectName = storeProject(project);
+
+        RoadNetwork roadNetwork = project.getRoadNetwork();
+        OracleRoadNetworkDAO oracleRoadNetworkDAO = new OracleRoadNetworkDAO();
+        oracleRoadNetworkDAO.connectTo(this.oracleConnection);
+        oracleRoadNetworkDAO.storeRoadNetwork(roadNetwork, projectName);
+
+        List<Vehicle> vehicles = project.getVehicles();
+        OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO();
+        oracleVehicleDAO.connectTo(this.oracleConnection);
+        for (Vehicle vehicle : vehicles) {
+            oracleVehicleDAO.storeVehicleInfo(vehicle, projectName);
+        }
+    }
+
+    /**
+     * Stores columns of entity correspondent to {@link Project} in the database
+     * @param project instance of {@link Project}
+     * @return
+     * @throws java.sql.SQLException
+     */
+    private String storeProject(Project project) throws SQLException {
+
+        try (CallableStatement storeProjectProcedure = super.oracleConnection.prepareCall("CALL storeProjectProcedure(?,?)")) {
 
             String projectName = project.getName();
             String description = project.getDescription();
-            storeProjectProcedure.setString("name", projectName);
+            storeProjectProcedure.setString("projectName", projectName);
             storeProjectProcedure.setString("description", description);
 
-            RoadNetwork roadNetwork = project.getRoadNetwork();
-            OracleRoadNetworkDAO oracleRoadNetworkDAO = new OracleRoadNetworkDAO();
-            oracleRoadNetworkDAO.connectTo(this.oracleConnection);
-            oracleRoadNetworkDAO.storeRoadNetwork(roadNetwork, projectName);
-
-            List<Vehicle> vehicles = project.getVehicles();
-            OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO();
-            oracleVehicleDAO.connectTo(this.oracleConnection);
-            for (Vehicle vehicle : vehicles) {
-                oracleVehicleDAO.storeVehicleInfo(vehicle, projectName);
-            }
-
             storeProjectProcedure.executeUpdate();
-            return true;
+            return projectName;
         }
-
     }
 
     /**
