@@ -5,13 +5,17 @@
  */
 package lapr.project.ui;
 
+import java.util.ArrayList;
 import lapr.project.model.RoadNetwork.Node;
 import lapr.project.model.Vehicle.Vehicle;
 
 import javax.swing.*;
 import java.util.List;
 import lapr.project.controller.BestPathController;
+import lapr.project.model.Analysis;
 import lapr.project.model.Project;
+import lapr.project.utils.Measurable;
+import lapr.project.utils.Unit;
 
 /**
  *
@@ -26,7 +30,7 @@ public class BestPathComparisonForm extends JFrame {
 
     /**
      * Creates new form BestPathComparisonForm
-     * 
+     *
      * @param project
      */
     public BestPathComparisonForm(Project project) {
@@ -327,12 +331,13 @@ public class BestPathComparisonForm extends JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 17, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -343,7 +348,34 @@ public class BestPathComparisonForm extends JFrame {
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        try {
+            Node startNode = jListNodes1.getSelectedValue();
+            Node endNode = jListNodes2.getSelectedValue();
+
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.valueOf("km"));
+            List<Vehicle> selectedVehiclesList = new ArrayList<>();
+            for (int i = 0; i < selectedVehicles.size(); i++) {
+                selectedVehiclesList.add(selectedVehicles.get(i));
+            }
+            if (startNode == null
+                    || endNode == null) {
+                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes, as well as a vehicle.");
+
+            } else if (startNode.equals(endNode)) {
+                JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
+            } else {
+                List<Analysis> analysisList = new ArrayList<>();
+                for (int j = 0; j < selectedVehiclesList.size(); j++) {
+                    Analysis generatedAnalysis = controller.analyzeFastestPath(startNode, endNode, selectedVehiclesList.get(j), load);
+                    analysisList.add(generatedAnalysis);
+                }
+                //abre a nova ui, recebendo esta a analysisList como parametro e fazendo com que a best path fique invisivel ou seja dispose (a decidir)
+                setVisible(false);
+
+            }
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, "Please insert a valid load value");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
