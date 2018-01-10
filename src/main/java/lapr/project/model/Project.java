@@ -105,15 +105,6 @@ public class Project {
     }
 
     /**
-     * Setter for the list of Vehicles
-     *
-     * @param vehicles
-     */
-    public void setVehicles(List<Vehicle> vehicles) {
-        this.vehicles = vehicles;
-    }
-
-    /**
      * Setter for the project name
      *
      * @param name
@@ -141,7 +132,7 @@ public class Project {
         return new Project(getName() + " (Copy)", getDescription() + " (Copy)", getRoadNetwork(), getVehicles());
     }
     
-    public String addNameIfEquals(List<Project> project, String name) {
+    String addNameIfEquals(List<Project> project, String name) {
         
         for (Project p: project) {
             if (p.getName().equalsIgnoreCase(name)) {
