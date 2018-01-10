@@ -1,11 +1,12 @@
 package lapr.project.controller;
 
-import java.io.File;
-import lapr.project.model.*;
+import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
-import lapr.project.utils.FileParser.XMLImporterRoads;
-import lapr.project.utils.FileParser.XMLImporterVehicles;
+import lapr.project.utils.FileParser.FileParser;
+import lapr.project.utils.FileParser.XMLImporter;
+
+import java.io.File;
 
 /**
  * Class that represents the Controller for the UC2 - Create Project
@@ -13,45 +14,23 @@ import lapr.project.utils.FileParser.XMLImporterVehicles;
 public class CreateProjectController {
 
     private final DataBaseCommunicator dbCom;
-    private static Project project;
     private File roadsFile;
     private File vehiclesFile;
 
     /**
      * Full constructor for the class CreateProjectController
-     * @param dbCom
      */
     public CreateProjectController(DataBaseCommunicator dbCom) {
         this.dbCom = dbCom;
-        project = new Project();
-        this.roadsFile = null;
-        this.vehiclesFile = null;
     }
 
-    /**
-     * Getter of the current instance of project
-     * 
-     * @return The current instance of project
-     */
-    public Project getProject() {
-        return project;
-    }
-
-    /**
-     * Getter of the DataBase Communicator
-     * 
-     * @return dbCom
-     */
-    public DataBaseCommunicator getDbCom() {
-        return dbCom;
-    }
 
     /**
      * Setter for RoadNetwork File
      *
      * @param roads
      */
-    public void setRoads(File roads) {
+    public void setRoadNetworkFile(File roads) {
         this.roadsFile = roads;
     }
 
@@ -60,7 +39,7 @@ public class CreateProjectController {
      *
      * @param vehicles
      */
-    public void setVehicles(File vehicles) {
+    public void setVehiclesFile(File vehicles) {
         this.vehiclesFile = vehicles;
     }
 
@@ -88,14 +67,14 @@ public class CreateProjectController {
      * 
      * @param name Project name
      * @param description Project description
-     * @throws java.lang.Exception
      */
-    public void createProject(String name, String description) throws Exception {
-        XMLImporterRoads roadImporter = new XMLImporterRoads(roadsFile);
-        RoadNetwork roadNetwork = roadImporter.importNetwork(true);
-        project = new Project(name, description, roadNetwork, null);
-        new XMLImporterVehicles().importVehicles(project, vehiclesFile.getAbsolutePath());
+    public Project createProject(String name, String description) throws Exception {
+        FileParser importer = new XMLImporter(roadsFile, vehiclesFile);
+        RoadNetwork roadNetwork = importer.importNetwork(true);
+        Project project = new Project(name, description, roadNetwork, null);
+        importer.importVehicles();
         dbCom.addProject(project);
+        return project;
     }
 
 }
