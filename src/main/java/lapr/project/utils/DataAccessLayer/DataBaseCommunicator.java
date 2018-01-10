@@ -145,6 +145,37 @@ public class DataBaseCommunicator {
     }
 
     /**
+     * Changes project data
+     * Has to be called before calling methods setName and setDescription of {@link Project}
+     * @param project The project to update in the database
+     */
+    public boolean changeProjectData(Project project, String newName, String newDescription) {
+
+        try {
+            //Start Transaction
+            Connection connection = dbAccessor.openConnexion();
+            connection.setAutoCommit(false);
+
+            //Allow Data Access Object behaviour through newly opened connexion
+            if (projectStorage.connectTo(connection)) {
+                if(project.getDescription().equals(newDescription)) {
+                    projectStorage.changeDescription(project, newDescription);
+                }
+                if(project.getName().equals(newName)){
+                    projectStorage.changeProjectName(project, newName);
+                }
+                connection.commit();
+                connection.close();
+                return true;
+            }
+
+        } catch (SQLException e) {
+            attemptFailSafeRecovery(connection, e);
+        }
+        return false;
+    }
+
+    /**
      * Package-private setters for <em>testing purposes</em> only.
      * <br>
      * This implementation relies on the fact that
