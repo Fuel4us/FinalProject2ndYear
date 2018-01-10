@@ -51,6 +51,13 @@ public class Energy {
     }
 
     /**
+     * @return the energy regeneration ratio
+     */
+    public double getEnergyRegenerationRatio() {
+        return energyRegenerationRatio;
+    }
+
+    /**
      * @return final drive ration
      */
     public float getFinalDriveRatio() {
