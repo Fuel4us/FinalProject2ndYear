@@ -605,6 +605,7 @@ public class XMLImporter implements FileParser {
         int minRpm = 0;
         int maxRpm = 0;
         float finalDriveRatio = 0f;
+        double energyRegenerationRatio = 0;
         List<Gears> gearBox = new ArrayList<>();
         List<Throttle> throttles = new ArrayList<>();
 
@@ -632,6 +633,12 @@ public class XMLImporter implements FileParser {
                     finalDriveRatio = Float.parseFloat(energyNode.getTextContent());
                 }
                 /*
+                Energy Regeneration ratio
+                 */
+                else if (energyNode.getNodeName().equalsIgnoreCase("energy_regeneration_ratio")) {
+                    energyRegenerationRatio = Float.parseFloat(energyNode.getTextContent());
+                }
+                /*
                 Gear list
                  */
                 else if (energyNode.getNodeName().equalsIgnoreCase("gear_list")) {
@@ -648,7 +655,7 @@ public class XMLImporter implements FileParser {
             }
 
         }
-        return new Energy(minRpm, maxRpm, finalDriveRatio, gearBox, throttles);
+        return new Energy(minRpm, maxRpm, finalDriveRatio,energyRegenerationRatio, gearBox, throttles);
     }
 
     private List<Gears> addGearList(org.w3c.dom.Node energyNode) {
