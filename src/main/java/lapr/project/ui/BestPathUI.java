@@ -212,6 +212,11 @@ public final class BestPathUI extends JFrame {
 
         jButton3.setText("N12 - Most efficient path in energy saving mode");
         jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 3));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLabelLoad.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         jLabelLoad.setForeground(new java.awt.Color(97, 122, 133));
@@ -348,6 +353,10 @@ public final class BestPathUI extends JFrame {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 */
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * Triggers UI display
      */
