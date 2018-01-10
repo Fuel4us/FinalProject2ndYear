@@ -8,11 +8,13 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 
 
 public class ChangeDataController {
 
     private Project project;
+    private DataBaseCommunicator dbCom;
 
     public ChangeDataController(Project project) {
         this.project = project;
@@ -61,6 +63,10 @@ public class ChangeDataController {
     public void addNewRoads(File roads) throws Exception {
         FileParser importer = new XMLImporter(roads, project.getRoadNetwork());
         importer.importNetwork(false);
+    }
+    
+    public boolean changeProjectData(Project project, String name, String description){
+        return dbCom.changeProjectData(project, name, description);
     }
 
 }
