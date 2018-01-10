@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.4" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
@@ -235,10 +235,10 @@
                     </LineBorder>
                   </Border>
                 </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor" postCode="/**">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor" postCode="*/">
                   <StringArray count="2">
                     <StringItem index="0" value="Node 1"/>
                     <StringItem index="1" value="Node 2"/>
@@ -275,10 +275,10 @@
                     </LineBorder>
                   </Border>
                 </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor" postCode="/**">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor" postCode="*/">
                   <Connection code="null" type="code"/>
                 </Property>
                 <Property name="selectionMode" type="int" value="0"/>
@@ -334,10 +334,10 @@
                     </LineBorder>
                   </Border>
                 </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor" postCode="/**">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor" postCode="*/">
                   <StringArray count="3">
                     <StringItem index="0" value="V1"/>
                     <StringItem index="1" value="V2"/>
@@ -350,7 +350,7 @@
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JList&lt;Vehicle&gt;()"/>
                 <AuxValue name="JavaCodeGenerator_DeclarationPost" type="java.lang.String" value="*/&#xa;private javax.swing.JList&lt;Vehicle&gt; jListVehicles;"/>
                 <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**"/>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="List&lt;Vehicle&gt; vehicleList = controller.getAllVehicles();&#xa;DefaultListModel&lt;Vehicle&gt; vehicleModel = new DefaultListModel&lt;&gt;();&#xa;        for (Vehicle obj : vehicleList) {&#xa;            vehicleModel.addElement(obj);&#xa;        }&#xa;jListVehicles.setModel(vehicleModel);"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="List&lt;Vehicle&gt; vehicleList = controller.getAllVehicles();&#xa;        for (Vehicle obj : vehicleList) {&#xa;            vehicleModel.addElement(obj);&#xa;        }&#xa;jListVehicles.setModel(vehicleModel);"/>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
@@ -439,7 +439,6 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="&#xab;sample number&#xbb;"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="addVehicleButton">
@@ -476,10 +475,10 @@
                     </LineBorder>
                   </Border>
                 </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor" postCode="/**">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+                <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor" postCode="*/">
                   <StringArray count="3">
                     <StringItem index="0" value="V1"/>
                     <StringItem index="1" value="V2"/>
@@ -490,9 +489,9 @@
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JList&lt;Vehicle&gt;()"/>
-                <AuxValue name="JavaCodeGenerator_DeclarationPost" type="java.lang.String" value="*/&#xa;private javax.swing.JList&lt;Vehicle&gt; jListVehicles;"/>
+                <AuxValue name="JavaCodeGenerator_DeclarationPost" type="java.lang.String" value="*/&#xa;private javax.swing.JList&lt;Vehicle&gt; jListVehicles1;"/>
                 <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**"/>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="List&lt;Vehicle&gt; vehicleList = controller.getAllVehicles();&#xa;DefaultListModel&lt;Vehicle&gt; vehicleModel = new DefaultListModel&lt;&gt;();&#xa;        for (Vehicle obj : vehicleList) {&#xa;            vehicleModel.addElement(obj);&#xa;        }&#xa;jListVehicles.setModel(vehicleModel);"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jListVehicles.setModel(selectedVehicles);"/>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
