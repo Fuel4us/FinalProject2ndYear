@@ -33,9 +33,6 @@ public class Segment {
 
     private double minVelocity;
     
-    private final double zero = 0.000000001;
-
-
     /**
      * Forbid default no-arg instantiation
      */
@@ -252,8 +249,8 @@ public class Segment {
         }
 
         // if the vehicle enters the segment with the same speed as the speed allowed
-        if ((initialVelocity.getQuantity() - finalVelocity.getQuantity()) < zero && (initialVelocity.getQuantity() - finalVelocity.getQuantity()) > -zero) { // Initial.getQuantity == Final.getQuantity
-
+//        if ((initialVelocity.getQuantity() - finalVelocity.getQuantity()) < zero && (initialVelocity.getQuantity() - finalVelocity.getQuantity()) > -zero) { // Initial.getQuantity == Final.getQuantity
+        if (Double.compare(initialVelocity.getQuantity(), finalVelocity.getQuantity()) == 0) {
             Measurable[] data = vehicle.determineEnergyExpenditure(this, load, remainingLength.getQuantity(), initialVelocity, energySaving);
             energyExpenditure.setQuantity(energyExpenditure.getQuantity() + data[3].getQuantity());
             gearPosition = (int) data[1].getQuantity();

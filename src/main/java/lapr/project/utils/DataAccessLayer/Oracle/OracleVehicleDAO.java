@@ -89,11 +89,12 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * @return {@link List} of {@link Regime}
      * @throws SQLException
      */
-    private List<Regime> fillRegimeList(int throttleID) throws SQLException {
+    private List<Regime> fillRegimeList(int throttleID, int energyID) throws SQLException {
         List<Regime> regimeList = new LinkedList<>();
 
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getRegimeSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getRegimeSet(?,?)")) {
             callableStatement.setInt(1, throttleID);
+            callableStatement.setInt(2, energyID);
             ResultSet regimeSet = callableStatement.executeQuery();
             while (regimeSet.next()) {
                 Regime regime = new Regime(regimeSet.getInt("torqueLow"), regimeSet.getInt("torqueHigh"), regimeSet.getInt("rpmLow"), regimeSet.getInt("rpmHigh"), regimeSet.getInt("SFC"));
@@ -118,7 +119,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             ResultSet throttleSet = callableStatement.executeQuery();
             while (throttleSet.next()) {
                 int throttleID = throttleSet.getInt("id");
-                List<Regime> regimeList = fillRegimeList(throttleID);
+                List<Regime> regimeList = fillRegimeList(throttleID, energyID);
                 Throttle throttle = new Throttle(throttleID, regimeList);
                 throttleList.add(throttle);
             }
@@ -429,15 +430,15 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         try (CallableStatement storeEnergyFunction = oracleConnection
                 .prepareCall("{? = call STOREENERGYFUNCTION(?,?,?)}")) {
 
-            storeEnergyFunction.registerOutParameter("id", Types.INTEGER);
+            storeEnergyFunction.registerOutParameter(1, Types.INTEGER);
 
-            storeEnergyFunction.setInt("rpmLow", energy.getMinRpm());
-            storeEnergyFunction.setInt("rpmHigh", energy.getMaxRpm());
-            storeEnergyFunction.setFloat("finalDriveRatio", energy.getFinalDriveRatio());
+            storeEnergyFunction.setInt(2, energy.getMinRpm());
+            storeEnergyFunction.setInt(3, energy.getMaxRpm());
+            storeEnergyFunction.setFloat(4, energy.getFinalDriveRatio());
 
             storeEnergyFunction.executeUpdate();
 
-            return storeEnergyFunction.getInt("id");
+            return storeEnergyFunction.getInt(1);
         }
     }
 
@@ -467,7 +468,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
         List<Regime> regimes = throttle.getRegimes();
         for (Regime regime : regimes) {
-            storeRegime(regime, throttle.getId());
+            storeRegime(regime, throttle.getId(), energyID);
         }
     }
 
@@ -491,8 +492,8 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * @param regime instance of {@link Regime}
      * @param throttleID throttle identifier
      */
-    private void storeRegime(Regime regime, int throttleID) throws SQLException {
-        try (CallableStatement storeRegimeProcedure = oracleConnection.prepareCall("CALL storeRegimeProcedure(?,?,?,?,?,?)")) {
+    private void storeRegime(Regime regime, int throttleID, int energyID) throws SQLException {
+        try (CallableStatement storeRegimeProcedure = oracleConnection.prepareCall("CALL storeRegimeProcedure(?,?,?,?,?,?,?)")) {
 
             storeRegimeProcedure.setInt("torqueLow", regime.getTorqueLow());
             storeRegimeProcedure.setInt("torqueHigh", regime.getTorqueHigh());
@@ -500,6 +501,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             storeRegimeProcedure.setInt("rpmHigh", regime.getRpmHigh());
             storeRegimeProcedure.setDouble("SFC", regime.getSFC());
             storeRegimeProcedure.setInt("throttleID", throttleID);
+            storeRegimeProcedure.setInt("energyID", energyID);
 
             storeRegimeProcedure.executeUpdate();
         }
