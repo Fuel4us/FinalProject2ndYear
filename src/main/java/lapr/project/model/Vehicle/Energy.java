@@ -31,7 +31,6 @@ public class Energy {
 
     /**
      * Constructor
-     *
      * @param minRpm minRpm
      * @param maxRpm maxRpm
      * @param finalDriveRatio finalDriveRatio
@@ -46,15 +45,13 @@ public class Energy {
         this.throttles = throttles;
     }
 
-    public Energy(Energy energy) {
-        this(energy.minRpm, energy.maxRpm, energy.finalDriveRatio, energy.gears, energy.throttles);
-    }
-
     /**
-     * @return the energy regeneration ratio
+     * Copies an instance of {@link Energy}.
+     * Can be used to enforce composition over aggregation
+     * @param energy The {@link Energy} to be copied
      */
-    public double getEnergyRegenerationRatio() {
-        return energyRegenerationRatio;
+    public Energy(Energy energy) {
+        this(energy.minRpm, energy.maxRpm, energy.finalDriveRatio, energy.energyRegenerationRatio, energy.gears, energy.throttles);
     }
 
     /**
@@ -79,7 +76,6 @@ public class Energy {
     }
 
     /**
-     *
      * @return minRPM
      */
     public int getMinRpm() {
@@ -87,7 +83,6 @@ public class Energy {
     }
 
     /**
-     *
      * @return maxRMP
      */
     public int getMaxRpm() {
