@@ -369,7 +369,8 @@ public class BestPathComparisonForm extends JFrame {
                     Analysis generatedAnalysis = controller.analyzeFastestPath(startNode, endNode, selectedVehiclesList.get(j), load);
                     analysisList.add(generatedAnalysis);
                 }
-                //abre a nova ui, recebendo esta a analysisList como parametro e fazendo com que a best path fique invisivel ou seja dispose (a decidir)
+                BestPathComparisonResults comparisonResultsUI = new BestPathComparisonResults(analysisList);
+                comparisonResultsUI.setVisible(true);
                 setVisible(false);
 
             }
