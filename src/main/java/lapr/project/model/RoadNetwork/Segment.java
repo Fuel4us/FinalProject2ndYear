@@ -33,9 +33,6 @@ public class Segment {
 
     private double minVelocity;
     
-    private final double zero = 0.000000001;
-
-
     /**
      * Forbid default no-arg instantiation
      */
