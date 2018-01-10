@@ -21,4 +21,41 @@ public interface ProjectDAO extends DataAccessObject {
      * @param project instance of {@link Project}
      */
     boolean storeProject(Project project) throws SQLException;
+
+    /**
+     * Allows to change {@link Project} column "name"
+     * Has to be called before calling setName(newName) of {@link Project}
+     * @param project {@link Project}
+     * @param projectName new Name of {@link Project}
+     * @return true if success
+     * @throws SQLException
+     */
+    boolean changeProjectName(Project project, String projectName) throws SQLException;
+
+    /**
+     * Allows to change {@link Project} column "description"
+     * Has to be called before calling setDescription(newName) of {@link Project}
+     * If name also has to change, has to be called before changeProjectName method
+     * @param project {@link Project}
+     * @param newDescription String identifier of {@link Project}
+     * @return true if success
+     * @throws SQLException
+     */
+    boolean changeDescription(Project project, String newDescription) throws SQLException;
+
+    /**
+     * Allows {@link lapr.project.model.RoadNetwork.RoadNetwork} growth
+     * @param project {@link Project}
+     * @return true if success
+     * @throws SQLException
+     */
+    void addRoads(Project project) throws SQLException;
+
+    /**
+     * Allows to add more instances of {@link lapr.project.model.Vehicle.Vehicle}
+     * @param project {@link Project}
+     * @return true if success
+     * @throws SQLException
+     */
+    void addVehicles(Project project) throws SQLException;
 }
