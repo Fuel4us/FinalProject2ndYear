@@ -26,6 +26,11 @@ public class XMLImporterVehicles implements FileParser {
     private int id = 1;
 
     @Override
+    public RoadNetwork importNetwork(boolean newNetwork) throws Exception {
+        return null;
+    }
+
+    @Override
     public boolean importVehicles(Project project, String filename) {
 
         try {
@@ -33,28 +38,18 @@ public class XMLImporterVehicles implements FileParser {
             //<editor-fold desc="Variable Initialization">
             String name;
             String description;
-
             VehicleType vehicleType = null;
-
             int newTollClass = 0;
-
             MotorType motorTypeValue = null;
-
             Fuel fuel = null;
-
             Measurable mass = null;
             Measurable load = null;
-
+            Measurable frontalArea = null;
+            Measurable wheel = null;
+            float rrc = 0;
             float dragCoefficient = 0;
-            Measurable newFrontalArea = new Measurable(0, Unit.METER_SQUARED);
-            float newRRC = 0;
-            Measurable newWheel = new Measurable(0, Unit.METER);
-
-            List<VelocityLimit> velocityLimits = new ArrayList<>();
-
             Energy energy = null;
-
-            Vehicle vehicle;
+            List<VelocityLimit> velocityLimits = new ArrayList<>();
 
             List<Vehicle> vehicles = new ArrayList<>();
             //</editor-fold>
@@ -120,7 +115,7 @@ public class XMLImporterVehicles implements FileParser {
                              Mass from Measurable
                              */
                             else if (attribute.getNodeName().equalsIgnoreCase("mass")) {
-                                mass = addMass(attribute);
+                                mass = readMeasurable(attribute);
 
                             }
 
@@ -128,7 +123,7 @@ public class XMLImporterVehicles implements FileParser {
                              Load from Measurable
                              */
                             else if (attribute.getNodeName().equalsIgnoreCase("load")) {
-                                load = addLoad(attribute);
+                                load = readMeasurable(attribute);
                             }
 
                             /*
@@ -142,20 +137,22 @@ public class XMLImporterVehicles implements FileParser {
                              Frontal Area
                              */
                             else if (attribute.getNodeName().equalsIgnoreCase("frontal_area")) {
-                                newFrontalArea.setQuantity(Double.parseDouble(attribute.getTextContent()));
+                                double frontalAreaQuantity = Double.parseDouble(attribute.getTextContent());
+                                frontalArea = new Measurable(frontalAreaQuantity,Unit.METER_SQUARED );
                             }
                             /*
                              RollingReleaseCoefficient
                              */
                             else if (attribute.getNodeName().equalsIgnoreCase("rrc")) {
-                                newRRC = Float.parseFloat(attribute.getTextContent());
+                                rrc = Float.parseFloat(attribute.getTextContent());
                             }
 
                             /*
                              Wheel size
                              */
                             else if (attribute.getNodeName().equalsIgnoreCase("wheel_size")) {
-                                newWheel.setQuantity(Double.parseDouble(attribute.getTextContent()));
+                                double wheelSizeQuantity = Double.parseDouble(attribute.getTextContent());
+                                wheel = new Measurable(wheelSizeQuantity, Unit.METER);
                             }
 
                             /*
@@ -180,7 +177,7 @@ public class XMLImporterVehicles implements FileParser {
                 /*
                 Create Vehicle
                  */
-                vehicle = new Vehicle(name, description, vehicleType, newTollClass, motorTypeValue, fuel, mass, load, dragCoefficient, newFrontalArea, newRRC, newWheel, velocityLimits, energy);
+                Vehicle vehicle = new Vehicle(name, description, vehicleType, newTollClass, motorTypeValue, fuel, mass, load, dragCoefficient, frontalArea, rrc, wheel, velocityLimits, energy);
                 vehicles.add(vehicle);
             }
 
@@ -189,11 +186,6 @@ public class XMLImporterVehicles implements FileParser {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public RoadNetwork importNetwork(boolean newNetwork) throws Exception {
-        return null;
     }
 
     private VehicleType addVehicleType(Node attribute) {
@@ -227,30 +219,17 @@ public class XMLImporterVehicles implements FileParser {
         return Fuel.Gasoline;
     }
 
-    private Measurable addMass(Node attribute) {
-        String x = attribute.getTextContent();
-        String[] splitX = x.split(" ");
-        double newMass = Double.parseDouble(splitX[0]);
-        String massUnit = splitX[1];
-        if (massUnit.equalsIgnoreCase("kg")) {
-            return new Measurable(newMass, Unit.KILOGRAM);
-        } else if (massUnit.equalsIgnoreCase("g")) {
-            return new Measurable(newMass, Unit.GRAM);
+    private Measurable readMeasurable(Node attribute) {
+        String line = attribute.getTextContent();
+        String[] unitSplit = line.split(" ");
+        double quantity = Double.parseDouble(unitSplit[0]);
+        String unit = unitSplit[1];
+        if (unit.equalsIgnoreCase("kg")) {
+            return new Measurable(quantity, Unit.KILOGRAM);
+        } else if (unit.equalsIgnoreCase("g")) {
+            return new Measurable(quantity, Unit.GRAM);
         }
-        return new Measurable(newMass, Unit.KILOGRAM);
-    }
-
-    private Measurable addLoad(Node attribute) {
-        String y = attribute.getTextContent();
-        String[] splity = y.split(" ");
-        double newLoad = Double.parseDouble(splity[0]);
-        String loadUnit = splity[1];
-        if (loadUnit.equalsIgnoreCase("kg")) {
-            return new Measurable(newLoad, Unit.KILOGRAM);
-        } else if (loadUnit.equalsIgnoreCase("g")) {
-            return new Measurable(newLoad, Unit.GRAM);
-        }
-        return new Measurable(newLoad, Unit.KILOGRAM);
+        return new Measurable(quantity, Unit.KILOGRAM);
     }
 
     private List<VelocityLimit> readVelocityLimits(Node attribute) {
