@@ -89,11 +89,12 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * @return {@link List} of {@link Regime}
      * @throws SQLException
      */
-    private List<Regime> fillRegimeList(int throttleID) throws SQLException {
+    private List<Regime> fillRegimeList(int throttleID, int energyID) throws SQLException {
         List<Regime> regimeList = new LinkedList<>();
 
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getRegimeSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getRegimeSet(?,?)")) {
             callableStatement.setInt(1, throttleID);
+            callableStatement.setInt(2, energyID);
             ResultSet regimeSet = callableStatement.executeQuery();
             while (regimeSet.next()) {
                 Regime regime = new Regime(regimeSet.getInt("torqueLow"), regimeSet.getInt("torqueHigh"), regimeSet.getInt("rpmLow"), regimeSet.getInt("rpmHigh"), regimeSet.getInt("SFC"));
@@ -118,7 +119,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             ResultSet throttleSet = callableStatement.executeQuery();
             while (throttleSet.next()) {
                 int throttleID = throttleSet.getInt("id");
-                List<Regime> regimeList = fillRegimeList(throttleID);
+                List<Regime> regimeList = fillRegimeList(throttleID, energyID);
                 Throttle throttle = new Throttle(throttleID, regimeList);
                 throttleList.add(throttle);
             }
