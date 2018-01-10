@@ -29,8 +29,6 @@ public class XMLImporterVehicles implements FileParser {
      * Floating point precision
      */
     private final double zero = 0.000000001;
-    
-    private static final String byDefault = "Default";
 
     @Override
     public boolean importVehicles(Project project, String filename) {
@@ -57,7 +55,7 @@ public class XMLImporterVehicles implements FileParser {
             float newRRC = 0;
             Measurable newWheel = new Measurable(0, Unit.METER);
 
-            List<VelocityLimit> newVelocityLimitList = new ArrayList<>();
+            List<VelocityLimit> velocityLimits = new ArrayList<>();
             VelocityLimit newVelocityLimit = new VelocityLimit();
 
             Energy newEnergy = null;
@@ -185,9 +183,7 @@ public class XMLImporterVehicles implements FileParser {
                              VelocityLimitList
                              */
                             else if (attribute.getNodeName().equalsIgnoreCase("velocity_limit_list")) {
-                                velocityLimitList(byDefault,
-                                        newVelocityLimitList, newVelocityLimit,
-                                        attribute);
+                                velocityLimits = readVelocityLimits(newVelocityLimit, attribute);
                             }
 
                             /*
@@ -209,7 +205,7 @@ public class XMLImporterVehicles implements FileParser {
                 /*
                 Create Vehicle
                  */
-                newVehicle = new Vehicle(name, description, vehicleType, newTollClass, motorTypeValue, fuel, mass, load, dragCoefficient, newFrontalArea, newRRC, newWheel, newVelocityLimitList, newEnergy);
+                newVehicle = new Vehicle(name, description, vehicleType, newTollClass, motorTypeValue, fuel, mass, load, dragCoefficient, newFrontalArea, newRRC, newWheel, velocityLimits, newEnergy);
                 vehicles.add(newVehicle);
             }
 
@@ -282,7 +278,11 @@ public class XMLImporterVehicles implements FileParser {
         return new Measurable(newLoad, Unit.KILOGRAM);
     }
 
-    private void velocityLimitList(String newSegmentType, List<VelocityLimit> newVelocityLimitList, VelocityLimit newVelocityLimit, Node attribute) {
+    private List<VelocityLimit> readVelocityLimits(VelocityLimit newVelocityLimit, Node attribute) {
+
+        String segmentType = "";
+
+        List<VelocityLimit> velocityLimits = new ArrayList<>();
 
         NodeList velocityLimitList = attribute.getChildNodes();
         for (int i = 0; i < velocityLimitList.getLength(); i++) {
@@ -293,50 +293,55 @@ public class XMLImporterVehicles implements FileParser {
                 Node velocityLimitNode = velocityLimit.item(j);
 
                 /*
-                Segment Type
+                Read Segment Type
                  */
                 if (velocityLimitNode.getNodeType() == Node.ELEMENT_NODE) {
                     if (velocityLimitNode.getNodeName().equalsIgnoreCase("segment_type")) {
-                        newSegmentType = velocityLimitNode.getTextContent();
+                        segmentType = velocityLimitNode.getTextContent();
                     }
-                    /**
-                     * Velocity Limit
+
+                    /*
+                    Read Limit
                      */
-                    if (velocityLimitNode.getNodeName().equalsIgnoreCase("limit")) {
+                    else if (velocityLimitNode.getNodeName().equalsIgnoreCase("limit")) {
+
                         String string = velocityLimitNode.getTextContent().replaceAll("\\s+", "");
                         String[] stringSplit = string.split(" ");
-                        double newLimit;
-                        Measurable newVelocityLimitValue;
+                        double limit;
+
+                        //Read Unit, if unit is present after the limit quantity
                         if (stringSplit.length == 2) {
-                            newLimit = Double.parseDouble(stringSplit[0]);
+                            limit = Double.parseDouble(stringSplit[0]);
                             String newVelocity = stringSplit[1];
+
                             if (newVelocity.equalsIgnoreCase("km/h")) {
-                                newVelocityLimitValue = new Measurable(newLimit, Unit.KILOMETERS_PER_HOUR);
-                                newVelocityLimit.setSegmentType(newSegmentType);
-                                newVelocityLimit.setLimit(newVelocityLimitValue);
-                                newVelocityLimitList.add(newVelocityLimit);
+                                Measurable newVelocityLimitValue = new Measurable(limit, Unit.KILOMETERS_PER_HOUR);
+                                velocityLimits.add(new VelocityLimit(segmentType, newVelocityLimitValue));
+
                             } else if (newVelocity.equalsIgnoreCase("mp/h")) {
-                                newVelocityLimitValue = new Measurable(newLimit, Unit.MILES_PER_HOUR);
-                                newVelocityLimit.setSegmentType(newSegmentType);
-                                newVelocityLimit.setLimit(newVelocityLimitValue);
-                                newVelocityLimitList.add(newVelocityLimit);
+
+                                Measurable newVelocityLimitValue = new Measurable(limit, Unit.MILES_PER_HOUR);
+                                velocityLimits.add(new VelocityLimit(segmentType, newVelocityLimitValue));
+
                             } else if (newVelocity.equalsIgnoreCase("m/s")) {
-                                newVelocityLimitValue = new Measurable(newLimit, Unit.METERS_PER_SECOND);
-                                newVelocityLimit.setSegmentType(newSegmentType);
-                                newVelocityLimit.setLimit(newVelocityLimitValue);
-                                newVelocityLimitList.add(newVelocityLimit);
+
+                                Measurable newVelocityLimitValue = new Measurable(limit, Unit.METERS_PER_SECOND);
+                                velocityLimits.add(new VelocityLimit(segmentType, newVelocityLimitValue));
+
                             }
+
+                            //Assume limit is expressed in the file in km/h
                         } else if (stringSplit.length == 1) {
-                            newLimit = Double.parseDouble(stringSplit[0]);
-                            newVelocityLimitValue = new Measurable(newLimit, Unit.KILOMETERS_PER_HOUR);
-                            newVelocityLimit.setSegmentType(newSegmentType);
-                            newVelocityLimit.setLimit(newVelocityLimitValue);
-                            newVelocityLimitList.add(newVelocityLimit);
+                            limit = Double.parseDouble(stringSplit[0]);
+
+                            Measurable newVelocityLimitValue = new Measurable(limit, Unit.KILOMETERS_PER_HOUR);
+                            velocityLimits.add(new VelocityLimit(segmentType,newVelocityLimitValue));
                         }
                     }
                 }
             }
         }
+        return velocityLimits;
     }
 
     private Energy addEnergy(int newMinRpm, int newMaxRpm, float newFinalDriveRatio, List<Gears> newGearList,
