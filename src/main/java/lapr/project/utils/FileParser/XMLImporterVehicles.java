@@ -25,11 +25,6 @@ public class XMLImporterVehicles implements FileParser {
 
     private int id = 1;
 
-    /**
-     * Floating point precision
-     */
-    private final double zero = 0.000000001;
-
     @Override
     public boolean importVehicles(Project project, String filename) {
 
@@ -56,27 +51,11 @@ public class XMLImporterVehicles implements FileParser {
             Measurable newWheel = new Measurable(0, Unit.METER);
 
             List<VelocityLimit> velocityLimits = new ArrayList<>();
-            VelocityLimit newVelocityLimit = new VelocityLimit();
 
-            Energy newEnergy = null;
-            int newMinRpm = 0;
-            int newMaxRpm = 0;
-            float newFinalDriveRatio = 0;
-            List<Gears> newGearList = new ArrayList<>();
+            Energy energy = null;
 
-            Regime newRegime = new Regime();
-            int newThrottleId = 0;
-            int newTorqueLow = 0;
-            int newTorqueHigh = 0;
-            int newRpmLow = 0;
-            int newRpmHigh = 0;
-            double newSfc = 0;
+            Vehicle vehicle;
 
-            List<Regime> newRegimeList = new ArrayList<>();
-            List<Throttle> newThrottleList = new ArrayList<>();
-            Vehicle newVehicle;
-
-            // Get vehicleList
             List<Vehicle> vehicles = new ArrayList<>();
             //</editor-fold>
 
@@ -92,8 +71,8 @@ public class XMLImporterVehicles implements FileParser {
 
             // Get vehicle nodes
             for (int temp = 0; temp < vehicleList.getLength(); temp++) {
-                Node vehicle = vehicleList.item(temp);
-                Element nameElement = (Element) vehicle;
+                Node vehicleNode = vehicleList.item(temp);
+                Element nameElement = (Element) vehicleNode;
                 // Name & Description
                 name = addName(vehicles, nameElement.getAttribute("name"));
                 description = nameElement.getAttribute("description");
@@ -101,8 +80,8 @@ public class XMLImporterVehicles implements FileParser {
                 /*
                 Get vehicle attributes
                  */
-                if (vehicle.getNodeType() == Node.ELEMENT_NODE) {
-                    NodeList vehicleAttributes = vehicle.getChildNodes();
+                if (vehicleNode.getNodeType() == Node.ELEMENT_NODE) {
+                    NodeList vehicleAttributes = vehicleNode.getChildNodes();
 
                     for (int i = 0; i < vehicleAttributes.getLength(); i++) {
                         Node attribute = vehicleAttributes.item(i);
@@ -183,18 +162,14 @@ public class XMLImporterVehicles implements FileParser {
                              VelocityLimitList
                              */
                             else if (attribute.getNodeName().equalsIgnoreCase("velocity_limit_list")) {
-                                velocityLimits = readVelocityLimits(newVelocityLimit, attribute);
+                                velocityLimits = readVelocityLimits(attribute);
                             }
 
                             /*
                              Energy
                              */
                             else if (attribute.getNodeName().equalsIgnoreCase("energy")) {
-                                newEnergy = addEnergy(newMinRpm, newMaxRpm, newFinalDriveRatio,
-                                        newGearList,
-                                        newThrottleId, newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh, newSfc,
-                                        newRegimeList,
-                                        newThrottleList, attribute, motorTypeValue);
+                                energy = addEnergy(attribute);
                             }
 
                         }
@@ -205,11 +180,11 @@ public class XMLImporterVehicles implements FileParser {
                 /*
                 Create Vehicle
                  */
-                newVehicle = new Vehicle(name, description, vehicleType, newTollClass, motorTypeValue, fuel, mass, load, dragCoefficient, newFrontalArea, newRRC, newWheel, velocityLimits, newEnergy);
-                vehicles.add(newVehicle);
+                vehicle = new Vehicle(name, description, vehicleType, newTollClass, motorTypeValue, fuel, mass, load, dragCoefficient, newFrontalArea, newRRC, newWheel, velocityLimits, energy);
+                vehicles.add(vehicle);
             }
 
-            project.setVehicles(vehicles);
+            project.addVehicles(vehicles);
         } catch (IOException | NumberFormatException | ParserConfigurationException | DOMException | SAXException e) {
             return false;
         }
@@ -278,7 +253,7 @@ public class XMLImporterVehicles implements FileParser {
         return new Measurable(newLoad, Unit.KILOGRAM);
     }
 
-    private List<VelocityLimit> readVelocityLimits(VelocityLimit newVelocityLimit, Node attribute) {
+    private List<VelocityLimit> readVelocityLimits(Node attribute) {
 
         String segmentType = "";
 
@@ -335,7 +310,7 @@ public class XMLImporterVehicles implements FileParser {
                             limit = Double.parseDouble(stringSplit[0]);
 
                             Measurable newVelocityLimitValue = new Measurable(limit, Unit.KILOMETERS_PER_HOUR);
-                            velocityLimits.add(new VelocityLimit(segmentType,newVelocityLimitValue));
+                            velocityLimits.add(new VelocityLimit(segmentType, newVelocityLimitValue));
                         }
                     }
                 }
@@ -344,61 +319,67 @@ public class XMLImporterVehicles implements FileParser {
         return velocityLimits;
     }
 
-    private Energy addEnergy(int newMinRpm, int newMaxRpm, float newFinalDriveRatio, List<Gears> newGearList,
-                             int newThrottleId, int newTorqueLow, int newTorqueHigh, int newRpmLow, int newRpmHigh, double newSfc,
-                             List<Regime> newRegimeList, List<Throttle> newThrottleList, Node attribute, MotorType motorTypeValue) {
+    private Energy addEnergy(Node attribute) {
+
+        int minRpm = 0;
+        int maxRpm = 0;
+        float finalDriveRatio = 0f;
+        List<Gears> gearBox = new ArrayList<>();
+        List<Throttle> throttles = new ArrayList<>();
+
         NodeList energyList = attribute.getChildNodes();
         for (int j = 0; j < energyList.getLength(); j++) {
             Node energyNode = energyList.item(j);
             if (energyNode.getNodeType() == Node.ELEMENT_NODE) {
-                /**
-                 * Min RPM
+
+                /*
+                Min RPM
                  */
                 if (energyNode.getNodeName().equalsIgnoreCase("min_rpm")) {
-                    newMinRpm = Integer.parseInt(energyNode.getTextContent());
+                    minRpm = Integer.parseInt(energyNode.getTextContent());
                 }
-                /**
-                 * Max RPM
+                /*
+                Max RPM
                  */
-                if (energyNode.getNodeName().equalsIgnoreCase("max_rpm")) {
-                    newMaxRpm = Integer.parseInt(energyNode.getTextContent());
+                else if (energyNode.getNodeName().equalsIgnoreCase("max_rpm")) {
+                    maxRpm = Integer.parseInt(energyNode.getTextContent());
                 }
-                /**
-                 * Final Drive ratio
+                /*
+                Final Drive ratio
                  */
-                if (energyNode.getNodeName().equalsIgnoreCase("final_drive_ratio")) {
-                    newFinalDriveRatio = Float.parseFloat(energyNode.getTextContent());
+                else if (energyNode.getNodeName().equalsIgnoreCase("final_drive_ratio")) {
+                    finalDriveRatio = Float.parseFloat(energyNode.getTextContent());
                 }
-                /**
-                 * Gear list
+                /*
+                Gear list
                  */
-                if (energyNode.getNodeName().equalsIgnoreCase("gear_list")) {
-                    addGearList(energyNode, newGearList);
+                else if (energyNode.getNodeName().equalsIgnoreCase("gear_list")) {
+                    gearBox = addGearList(energyNode);
                 }
-                /**
-                 * Throttle List
+                /*
+                Throttle List
                  */
-                if (energyNode.getNodeName().equalsIgnoreCase("throttle_list")) {
-                    addThrottleList(energyNode, newThrottleId,
-                            newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh,
-                            newSfc, newRegimeList,
-                            newThrottleList, motorTypeValue);
+                else if (energyNode.getNodeName().equalsIgnoreCase("throttle_list")) {
+                    throttles = addThrottleList(energyNode);
                     break;
                 }
 
             }
 
         }
-        return new Energy(newMinRpm, newMaxRpm, newFinalDriveRatio, newGearList, newThrottleList);
+        return new Energy(minRpm, maxRpm, finalDriveRatio, gearBox, throttles);
     }
 
-    private void addGearList(Node energyNode, List<Gears> newGearList) {
+    private List<Gears> addGearList(Node energyNode) {
+
+        List<Gears> gears = new ArrayList<>();
+
         NodeList gearListList = energyNode.getChildNodes();
-        newGearList.clear();
         for (int k = 1; k < gearListList.getLength(); k++) {
             Node gearListNode = gearListList.item(k);
-            /**
-             * ID
+
+            /*
+            ID
              */
             if (gearListNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element gearElement = (Element) gearListNode;
@@ -407,72 +388,96 @@ public class XMLImporterVehicles implements FileParser {
                 NodeList gearList = gearListNode.getChildNodes();
                 for (int l = 1; l < gearList.getLength(); l++) {
                     Node gearNode = gearList.item(l);
-                    /**
-                     * Ratio
+
+                    /*
+                    Ratio
                      */
                     if (gearNode.getNodeType() == Node.ELEMENT_NODE) {
                         if (gearNode.getNodeName().equalsIgnoreCase("ratio")) {
                             float newRatio = Float.parseFloat(gearNode.getTextContent());
                             Gears newGear = new Gears(newGearId, newRatio);
-                            newGearList.add(newGear);
+                            gears.add(newGear);
                         }
                     }
                 }
             }
 
         }
+        return gears;
     }
 
-    private void addThrottleList(Node energyNode, int newThrottleId,
-                                 int newTorqueLow, int newTorqueHigh, int newRpmLow, int newRpmHigh,
-                                 double newSfc, List<Regime> newRegimeList,
-                                 List<Throttle> newThrottleList, MotorType motorTypeValue) {
-        NodeList throttleList = energyNode.getChildNodes();
-        for (int k = 0; k < throttleList.getLength(); k++) {
-            Node throttleNode = throttleList.item(k);
-            if (throttleNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element throttleElement = (Element) throttleNode;
-                newThrottleId = Integer.parseInt(throttleElement.getAttribute("id"));
-                NodeList regimeList = throttleNode.getChildNodes();
-                for (int line = 0; line < regimeList.getLength(); line++) {
-                    Node regimeNode = regimeList.item(line);
-                    NodeList regimeChildList = regimeNode.getChildNodes();
-                    for (int i = 0; i < regimeChildList.getLength(); i++) {
-                        Node regimeChild = regimeChildList.item(i);
-                        if (regimeChild.getNodeName().equalsIgnoreCase("torque_low")) {
-                            newTorqueLow = Integer.parseInt(regimeChild.getTextContent());
-                        }
-                        if (regimeChild.getNodeName().equalsIgnoreCase("torque_high")) {
-                            newTorqueHigh = Integer.parseInt(regimeChild.getTextContent());
-                        }
+    private List<Throttle> addThrottleList(Node energyNode) {
 
-                        if (regimeChild.getNodeName().equalsIgnoreCase("rpm_low")) {
-                            newRpmLow = Integer.parseInt(regimeChild.getTextContent());
-                        }
-                        if (regimeChild.getNodeName().equalsIgnoreCase("rpm_high")) {
-                            newRpmHigh = Integer.parseInt(regimeChild.getTextContent());
-                            if (motorTypeValue.equals(MotorType.NONCOMBUSTION)) {
+        int throttleId, torqueLow = 0, torqueHigh = 0, rpmLow = 0, rpmHigh = 0;
+        List<Throttle> throttles = new ArrayList<>();
+        double sfc = 0;
+
+        NodeList throttleList = energyNode.getChildNodes();
+        for (int i = 0; i < throttleList.getLength(); i++) {
+
+            Node throttleNode = throttleList.item(i);
+            if (throttleNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                Element throttleElement = (Element) throttleNode;
+                throttleId = Integer.parseInt(throttleElement.getAttribute("id"));
+                NodeList regimeList = throttleNode.getChildNodes();
+
+                List<Regime> regimes = new ArrayList<>();
+
+                for (int j = 0; j < regimeList.getLength(); j++) {
+                    Node regimeNode = regimeList.item(j);
+                    NodeList regimeChildList = regimeNode.getChildNodes();
+
+
+                    if (regimeChildList.getLength() != 0) {
+
+                        //Read regime
+                        for (int k = 0; k < regimeChildList.getLength(); k++) {
+                            Node regimeChild = regimeChildList.item(k);
+
+                            if (regimeChild.getNodeName().equalsIgnoreCase("torque_low")) {
+
+                                torqueLow = Integer.parseInt(regimeChild.getTextContent());
+
+                            } else if (regimeChild.getNodeName().equalsIgnoreCase("torque_high")) {
+
+                                torqueHigh = Integer.parseInt(regimeChild.getTextContent());
+
+                            } else if (regimeChild.getNodeName().equalsIgnoreCase("rpm_low")) {
+
+                                rpmLow = Integer.parseInt(regimeChild.getTextContent());
+
+                            } else if (regimeChild.getNodeName().equalsIgnoreCase("rpm_high")) {
+
+                                rpmHigh = Integer.parseInt(regimeChild.getTextContent());
+
+                            } else if (regimeChild.getNodeName().equalsIgnoreCase("SFC")) {
+                                sfc = Double.parseDouble(regimeChild.getTextContent());
                                 break;
                             }
+
                         }
-                        if (regimeChild.getNodeName().equalsIgnoreCase("SFC")) {
-                            newSfc = Double.parseDouble(regimeChild.getTextContent());
-                            break;
+
+                        //Add regime
+                        Regime newRegime;
+                        if (sfc != 0) {
+                            newRegime = new Regime(torqueLow, torqueHigh, rpmLow, rpmHigh, sfc);
+                        } else {
+                            newRegime = new Regime(torqueLow, torqueHigh, rpmLow, rpmHigh);
                         }
+                        regimes.add(newRegime);
                     }
-                    Regime newRegime;
-                    if (newSfc < zero && newSfc > -zero) {
-                        newRegime = new Regime(newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh);
-                    } else {
-                        newRegime = new Regime(newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh, newSfc);
-                    }
-                    newRegimeList.add(newRegime);
 
                 }
+
+                Throttle throttle = new Throttle(throttleId, regimes);
+                throttles.add(throttle);
+
             }
-            Throttle newThrottle = new Throttle(newThrottleId, newRegimeList);
-            newThrottleList.add(newThrottle);
+
         }
+
+        return throttles;
     }
 
     /**
