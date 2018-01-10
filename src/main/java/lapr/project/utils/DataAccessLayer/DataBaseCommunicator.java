@@ -176,6 +176,58 @@ public class DataBaseCommunicator {
     }
 
     /**
+     * Adds vehicles to a project already created in the database
+     * @param project The project to which add more vehicles in the database
+     * @return
+     */
+    public boolean addVehiclesToProject(Project project) {
+
+        try {
+            //Start Transaction
+            Connection connection = dbAccessor.openConnexion();
+            connection.setAutoCommit(false);
+
+            //Allow Data Access Object behaviour through newly opened connexion
+            if (projectStorage.connectTo(connection)) {
+                projectStorage.addVehicles(project);
+                connection.commit();
+                connection.close();
+                return true;
+            }
+
+        } catch (SQLException e) {
+            attemptFailSafeRecovery(connection, e);
+        }
+        return false;
+    }
+
+    /**
+     * Adds new elements to a {@link lapr.project.model.RoadNetwork.RoadNetwork} already created in the database
+     * @param project The project to which add sections and nodes
+     * @return
+     */
+    public boolean addRoadNetworkElementsToProject(Project project) {
+
+        try {
+            //Start Transaction
+            Connection connection = dbAccessor.openConnexion();
+            connection.setAutoCommit(false);
+
+            //Allow Data Access Object behaviour through newly opened connexion
+            if (projectStorage.connectTo(connection)) {
+                projectStorage.addRoads(project);
+                connection.commit();
+                connection.close();
+                return true;
+            }
+
+        } catch (SQLException e) {
+            attemptFailSafeRecovery(connection, e);
+        }
+        return false;
+    }
+
+    /**
      * Package-private setters for <em>testing purposes</em> only.
      * <br>
      * This implementation relies on the fact that
