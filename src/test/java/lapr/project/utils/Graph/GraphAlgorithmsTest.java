@@ -1,6 +1,7 @@
 package lapr.project.utils.Graph;
 
 
+import lapr.project.utils.FaultyInvocationException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -171,7 +172,7 @@ public class GraphAlgorithmsTest {
      * Method : cumulative dijkstra (invoked through non private shortestPath overload)
      */
     @Test
-    public void ensureCumulativeDijkstraOutputsCorrectPathAndPathCost() throws Exception {
+    public void ensureCumulativeDijkstraOutputsCorrectPathAndPathCost() throws FaultyInvocationException {
 
         //<editor-fold desc="Initialization">
         double seed = 2d;
