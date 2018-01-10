@@ -28,7 +28,13 @@ import org.xml.sax.SAXException;
  */
 public class XMLImporterRoads implements FileParser {
 
+    @Override
+    public boolean importVehicles(Project project, String filename) {
+        return false;
+    }
+
     private final File file;
+
     private RoadNetwork roadNetwork;
 
     /**
@@ -91,6 +97,39 @@ public class XMLImporterRoads implements FileParser {
     }
 
     /**
+     * Adds nodes from the file in the RoadNetwork graph
+     * @param doc the document
+     */
+    private void addNodes(Document doc) {
+
+        NodeList nodes = doc.getElementsByTagName("node");
+
+        for (int i = 0; i < nodes.getLength(); i++) {
+
+            org.w3c.dom.Node node = nodes.item(i);
+
+            if (node instanceof Element) {
+
+                Element element = (Element) node;
+
+                lapr.project.model.RoadNetwork.Node roadNetworkNode =
+                        new lapr.project.model.RoadNetwork.Node(element.getAttribute("id"));
+
+                List<lapr.project.model.RoadNetwork.Node> duplicateNodes = roadNetwork.getVertices().stream()
+                        .filter(node1 -> node1.getId().equals(roadNetworkNode.getId()))
+                        .collect(Collectors.toList());
+
+                if (duplicateNodes.isEmpty()) {
+                    roadNetwork.addNode(roadNetworkNode);
+                }
+
+            }
+
+        }
+
+    }
+
+    /**
      * Adds roads from the file in the RoadNetwork graph
      * @param doc the document
      * @return the list of roads imported from the file
@@ -147,39 +186,6 @@ public class XMLImporterRoads implements FileParser {
         }
 
         return roadList;
-
-    }
-
-    /**
-     * Adds nodes from the file in the RoadNetwork graph
-     * @param doc the document
-     */
-    private void addNodes(Document doc) {
-
-        NodeList nodes = doc.getElementsByTagName("node");
-
-        for (int i = 0; i < nodes.getLength(); i++) {
-
-            org.w3c.dom.Node node = nodes.item(i);
-
-            if (node instanceof Element) {
-
-                Element element = (Element) node;
-
-                lapr.project.model.RoadNetwork.Node roadNetworkNode =
-                        new lapr.project.model.RoadNetwork.Node(element.getAttribute("id"));
-
-                List<lapr.project.model.RoadNetwork.Node> duplicateNodes = roadNetwork.getVertices().stream()
-                        .filter(node1 -> node1.getId().equals(roadNetworkNode.getId()))
-                        .collect(Collectors.toList());
-
-                if (duplicateNodes.isEmpty()) {
-                    roadNetwork.addNode(roadNetworkNode);
-                }
-
-            }
-
-        }
 
     }
 
@@ -325,16 +331,6 @@ public class XMLImporterRoads implements FileParser {
         }
 
         return segmentList;
-    }
-
-    @Override
-    public boolean importVehicles(Project object, String filename) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean importNetwork(Project object, String filename) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
