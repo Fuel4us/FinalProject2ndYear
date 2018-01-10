@@ -234,9 +234,9 @@ public class ChangeDataUI extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setDialogTitle("Select your RoadNetwork file");
-        FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter(
+        FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter(
             "xml files (*.xml)", "xml");
-        fileChooser.setFileFilter(xmlfilter);
+        fileChooser.setFileFilter(xmlFilter);
         int returnVal = fileChooser.showOpenDialog(jButtonRoad);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File roads = fileChooser.getSelectedFile();
@@ -244,14 +244,17 @@ public class ChangeDataUI extends javax.swing.JFrame {
                 controller.addNewRoads(roads);
                 JOptionPane.showMessageDialog(null, "Your file has been loaded.");
             } catch (IOException ex) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
                 JOptionPane.showMessageDialog(null, "IOException rose there was a problem with your file");
             } catch (SAXException ex) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
                 JOptionPane.showMessageDialog(null, "SAXException rose there was a problem with your file");
             } catch (ParserConfigurationException ex) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
                 JOptionPane.showMessageDialog(null, "ParserConfigurationException rose there was a problem with your file");
+            } catch (Exception e) {
+                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, e.getMessage());
+                e.printStackTrace();
             }
         }
     }//GEN-LAST:event_jButtonRoadActionPerformed
