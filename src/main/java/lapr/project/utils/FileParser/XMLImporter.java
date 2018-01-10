@@ -20,7 +20,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Handles importation of instances of {@link RoadNetwork} and {@link Vehicle}s by parsing a XML file
+ * Handles importation of instances of {@link RoadNetwork} and {@link Vehicle}s
+ * by parsing a XML file
  */
 public class XMLImporter implements FileParser {
 
@@ -34,6 +35,7 @@ public class XMLImporter implements FileParser {
 
     /**
      * Constructor to update an existing road network
+     *
      * @param roadsFile xml file
      * @param roadNetwork the road network already created
      */
@@ -44,6 +46,7 @@ public class XMLImporter implements FileParser {
 
     /**
      * Constructor to create a new road network and read vehicles
+     *
      * @param roadsFile xmlFile
      * @param vehiclesFile
      */
@@ -52,11 +55,10 @@ public class XMLImporter implements FileParser {
         this.vehiclesFile = vehiclesFile;
     }
 
-
     //RoadNetwork import methods
-
     /**
      * Reads RoadNetwork from file
+     *
      * @param newNetwork true if the road network is to be created as new
      * @return the road network updated
      */
@@ -69,6 +71,7 @@ public class XMLImporter implements FileParser {
 
     /**
      * Creates document in order to complete information in the RoadNetwork
+     *
      * @param newNetwork true if the road network is to be created as new
      */
     private void completeNetworkInformationDOMParsing(boolean newNetwork) throws ParserConfigurationException, IOException, SAXException {
@@ -95,6 +98,7 @@ public class XMLImporter implements FileParser {
 
     /**
      * Adds nodes from the file in the RoadNetwork graph
+     *
      * @param doc the document
      */
     private void addNodes(Document doc) {
@@ -109,8 +113,8 @@ public class XMLImporter implements FileParser {
 
                 Element element = (Element) node;
 
-                lapr.project.model.RoadNetwork.Node roadNetworkNode =
-                        new lapr.project.model.RoadNetwork.Node(element.getAttribute("id"));
+                lapr.project.model.RoadNetwork.Node roadNetworkNode
+                        = new lapr.project.model.RoadNetwork.Node(element.getAttribute("id"));
 
                 List<lapr.project.model.RoadNetwork.Node> duplicateNodes = roadNetwork.getVertices().stream()
                         .filter(node1 -> node1.getId().equals(roadNetworkNode.getId()))
@@ -128,6 +132,7 @@ public class XMLImporter implements FileParser {
 
     /**
      * Adds roads from the file in the RoadNetwork graph
+     *
      * @param doc the document
      * @return the list of roads imported from the file
      */
@@ -188,6 +193,7 @@ public class XMLImporter implements FileParser {
 
     /**
      * Adds sections from the file in the RoadNetwork graph
+     *
      * @param roadList the list of roads
      * @param doc the document
      */
@@ -272,7 +278,7 @@ public class XMLImporter implements FileParser {
                 lapr.project.model.RoadNetwork.Node finalEndingNode = endingNode;
                 List<Section> duplicateSections = roadNetwork.getEdges().stream()
                         .filter(nodeSectionEdge -> nodeSectionEdge.getElement().getBeginningNode().equals(finalBeginningNode)
-                                && nodeSectionEdge.getElement().getEndingNode().equals(finalEndingNode))
+                        && nodeSectionEdge.getElement().getEndingNode().equals(finalEndingNode))
                         .map(Edge::getElement).collect(Collectors.toList());
 
                 if (duplicateSections.isEmpty()) {
@@ -290,6 +296,7 @@ public class XMLImporter implements FileParser {
 
     /**
      * Creates a list with all the segments belonging to that section
+     *
      * @param nodeList the node list of segments
      * @return list of segments
      */
@@ -330,10 +337,7 @@ public class XMLImporter implements FileParser {
         return segmentList;
     }
 
-
-    //Vehicle import methods
-
-
+    // Vehicle import methods
     @Override
     public List<Vehicle> importVehicles() throws ParserConfigurationException, IOException, SAXException {
 
@@ -378,9 +382,9 @@ public class XMLImporter implements FileParser {
             name = addName(vehicles, nameElement.getAttribute("name"));
             description = nameElement.getAttribute("description");
 
-                /*
+            /*
                 Get vehicle attributes
-                 */
+             */
             if (vehicleNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
                 NodeList vehicleAttributes = vehicleNode.getChildNodes();
 
@@ -389,89 +393,57 @@ public class XMLImporter implements FileParser {
 
                     if (attribute.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
 
-                            /*
+                        /*
                              Type of vehicle
-                             */
+                         */
                         if (attribute.getNodeName().equalsIgnoreCase("type")) {
                             vehicleType = addVehicleType(attribute);
-                        }
-
-                            /*
+                        } /*
                              Toll_class
-                             */
-                        else if (attribute.getNodeName().equalsIgnoreCase("toll_class")) {
+                         */ else if (attribute.getNodeName().equalsIgnoreCase("toll_class")) {
                             newTollClass = Integer.parseInt(attribute.getTextContent());
-                        }
-
-                            /*
+                        } /*
                              Motorization type ENUM
-                             */
-                        else if (attribute.getNodeName().equalsIgnoreCase("motorization")) {
+                         */ else if (attribute.getNodeName().equalsIgnoreCase("motorization")) {
                             motorTypeValue = addMotorization(attribute);
-                        }
-
-                            /*
+                        } /*
                              Fuel
-                             */
-                        else if (attribute.getNodeName().equalsIgnoreCase("fuel")) {
+                         */ else if (attribute.getNodeName().equalsIgnoreCase("fuel")) {
                             fuel = addFuel(attribute);
-                        }
-
-                            /*
+                        } /*
                              Mass from Measurable
-                             */
-                        else if (attribute.getNodeName().equalsIgnoreCase("mass")) {
+                         */ else if (attribute.getNodeName().equalsIgnoreCase("mass")) {
                             mass = readMeasurable(attribute);
 
-                        }
-
-                            /*
+                        } /*
                              Load from Measurable
-                             */
-                        else if (attribute.getNodeName().equalsIgnoreCase("load")) {
+                         */ else if (attribute.getNodeName().equalsIgnoreCase("load")) {
                             load = readMeasurable(attribute);
-                        }
-
-                            /*
+                        } /*
                              Drag
-                             */
-                        else if (attribute.getNodeName().equalsIgnoreCase("drag")) {
+                         */ else if (attribute.getNodeName().equalsIgnoreCase("drag")) {
                             dragCoefficient = Float.parseFloat(attribute.getTextContent());
-                        }
-
-                            /*
+                        } /*
                              Frontal Area
-                             */
-                        else if (attribute.getNodeName().equalsIgnoreCase("frontal_area")) {
+                         */ else if (attribute.getNodeName().equalsIgnoreCase("frontal_area")) {
                             double frontalAreaQuantity = Double.parseDouble(attribute.getTextContent());
                             frontalArea = new Measurable(frontalAreaQuantity, Unit.METER_SQUARED);
-                        }
-                            /*
+                        } /*
                              RollingReleaseCoefficient
-                             */
-                        else if (attribute.getNodeName().equalsIgnoreCase("rrc")) {
+                         */ else if (attribute.getNodeName().equalsIgnoreCase("rrc")) {
                             rrc = Float.parseFloat(attribute.getTextContent());
-                        }
-
-                            /*
+                        } /*
                              Wheel size
-                             */
-                        else if (attribute.getNodeName().equalsIgnoreCase("wheel_size")) {
+                         */ else if (attribute.getNodeName().equalsIgnoreCase("wheel_size")) {
                             double wheelSizeQuantity = Double.parseDouble(attribute.getTextContent());
                             wheel = new Measurable(wheelSizeQuantity, Unit.METER);
-                        }
-
-                            /*
+                        } /*
                              VelocityLimitList
-                             */
-                        else if (attribute.getNodeName().equalsIgnoreCase("velocity_limit_list")) {
+                         */ else if (attribute.getNodeName().equalsIgnoreCase("velocity_limit_list")) {
                             velocityLimits = readVelocityLimits(attribute);
-                        }
-
-                            /*
+                        } /*
                              Energy
-                             */
-                        else if (attribute.getNodeName().equalsIgnoreCase("energy")) {
+                         */ else if (attribute.getNodeName().equalsIgnoreCase("energy")) {
                             energy = addEnergy(attribute);
                         }
 
@@ -480,9 +452,9 @@ public class XMLImporter implements FileParser {
 
             }
 
-                /*
+            /*
                 Create Vehicle
-                 */
+             */
             Vehicle vehicle = new Vehicle(name, description, vehicleType, newTollClass, motorTypeValue, fuel, mass, load, dragCoefficient, frontalArea, rrc, wheel, velocityLimits, energy);
             vehicles.add(vehicle);
         }
@@ -554,12 +526,9 @@ public class XMLImporter implements FileParser {
                 if (velocityLimitNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
                     if (velocityLimitNode.getNodeName().equalsIgnoreCase("segment_type")) {
                         segmentType = velocityLimitNode.getTextContent();
-                    }
-
-                    /*
+                    } /*
                     Read Limit
-                     */
-                    else if (velocityLimitNode.getNodeName().equalsIgnoreCase("limit")) {
+                     */ else if (velocityLimitNode.getNodeName().equalsIgnoreCase("limit")) {
 
                         String string = velocityLimitNode.getTextContent().replaceAll("\\s+", "");
                         String[] stringSplit = string.split(" ");
@@ -619,35 +588,25 @@ public class XMLImporter implements FileParser {
                  */
                 if (energyNode.getNodeName().equalsIgnoreCase("min_rpm")) {
                     minRpm = Integer.parseInt(energyNode.getTextContent());
-                }
-                /*
+                } /*
                 Max RPM
-                 */
-                else if (energyNode.getNodeName().equalsIgnoreCase("max_rpm")) {
+                 */ else if (energyNode.getNodeName().equalsIgnoreCase("max_rpm")) {
                     maxRpm = Integer.parseInt(energyNode.getTextContent());
-                }
-                /*
+                } /*
                 Final Drive ratio
-                 */
-                else if (energyNode.getNodeName().equalsIgnoreCase("final_drive_ratio")) {
+                 */ else if (energyNode.getNodeName().equalsIgnoreCase("final_drive_ratio")) {
                     finalDriveRatio = Float.parseFloat(energyNode.getTextContent());
-                }
-                /*
+                } /*
                 Energy Regeneration ratio
-                 */
-                else if (energyNode.getNodeName().equalsIgnoreCase("energy_regeneration_ratio")) {
+                 */ else if (energyNode.getNodeName().equalsIgnoreCase("energy_regeneration_ratio")) {
                     energyRegenerationRatio = Float.parseFloat(energyNode.getTextContent());
-                }
-                /*
+                } /*
                 Gear list
-                 */
-                else if (energyNode.getNodeName().equalsIgnoreCase("gear_list")) {
+                 */ else if (energyNode.getNodeName().equalsIgnoreCase("gear_list")) {
                     gearBox = addGearList(energyNode);
-                }
-                /*
+                } /*
                 Throttle List
-                 */
-                else if (energyNode.getNodeName().equalsIgnoreCase("throttle_list")) {
+                 */ else if (energyNode.getNodeName().equalsIgnoreCase("throttle_list")) {
                     throttles = addThrottleList(energyNode);
                     break;
                 }
@@ -655,7 +614,7 @@ public class XMLImporter implements FileParser {
             }
 
         }
-        return new Energy(minRpm, maxRpm, finalDriveRatio,energyRegenerationRatio, gearBox, throttles);
+        return new Energy(minRpm, maxRpm, finalDriveRatio, energyRegenerationRatio, gearBox, throttles);
     }
 
     private List<Gears> addGearList(org.w3c.dom.Node energyNode) {
@@ -716,7 +675,6 @@ public class XMLImporter implements FileParser {
                     org.w3c.dom.Node regimeNode = regimeList.item(j);
                     NodeList regimeChildList = regimeNode.getChildNodes();
 
-
                     if (regimeChildList.getLength() != 0) {
 
                         //Read regime
@@ -769,7 +727,9 @@ public class XMLImporter implements FileParser {
     }
 
     /**
-     * If we get the name search for that name. save the spot we started. start searching after that
+     * If we get the name search for that name. save the spot we started. start
+     * searching after that
+     *
      * @param list
      * @param name
      * @return
@@ -786,6 +746,5 @@ public class XMLImporter implements FileParser {
         return name;
 
     }
-
 
 }
