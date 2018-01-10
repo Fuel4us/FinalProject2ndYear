@@ -15,6 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -44,10 +45,6 @@ public class XMLImporterVehicles implements FileParser {
 
             Measurable mass = null;
             Measurable load = null;
-            String massUnit = "";
-            String loadUnit = "";
-            double newMass = 0;
-            double newLoad = 0;
 
             float dragCoefficient = 0;
             Measurable newFrontalArea = new Measurable(0, Unit.METER_SQUARED);
@@ -56,17 +53,12 @@ public class XMLImporterVehicles implements FileParser {
 
             List<VelocityLimit> newVelocityLimitList = new ArrayList<>();
             VelocityLimit newVelocityLimit = new VelocityLimit();
-            Measurable newVelocityLimitValue = null;
-            double newLimit = 0;
 
             Energy newEnergy = null;
             int newMinRpm = 0;
             int newMaxRpm = 0;
             float newFinalDriveRatio = 0;
-            Gears newGear = null;
             List<Gears> newGearList = new ArrayList<>();
-            int newGearId = 0;
-            float newRatio = 0;
 
             Regime newRegime = new Regime();
             int newThrottleId = 0;
@@ -77,19 +69,17 @@ public class XMLImporterVehicles implements FileParser {
             double newSfc = 0;
 
             List<Regime> newRegimeList = new ArrayList<>();
-            Throttle newThrottle = null;
             List<Throttle> newThrottleList = new ArrayList<>();
             Vehicle newVehicle;
 
             // Get vehicleList
-            List<Vehicle> set = new ArrayList<>();
+            List<Vehicle> vehicles = new ArrayList<>();
             //</editor-fold>
 
             // Initiate parser
-            File file = new File(filename);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(file);
+            Document doc = dBuilder.parse(new File(filename));
 
             doc.getDocumentElement().normalize();
 
@@ -101,10 +91,11 @@ public class XMLImporterVehicles implements FileParser {
                 Node vehicle = vehicleList.item(temp);
                 Element nameElement = (Element) vehicle;
                 // Name & Description
-                name = addName(set, nameElement.getAttribute("name"));
+                name = addName(vehicles, nameElement.getAttribute("name"));
                 description = nameElement.getAttribute("description");
-                /**
-                 * Get vehicle attributes
+
+                /*
+                Get vehicle attributes
                  */
                 if (vehicle.getNodeType() == Node.ELEMENT_NODE) {
                     NodeList vehicleAttributes = vehicle.getChildNodes();
@@ -114,106 +105,109 @@ public class XMLImporterVehicles implements FileParser {
 
                         if (attribute.getNodeType() == Node.ELEMENT_NODE) {
 
-                            /**
-                             * Type of vehicle
+                            /*
+                             Type of vehicle
                              */
                             if (attribute.getNodeName().equalsIgnoreCase("type")) {
                                 vehicleType = addVehicleType(attribute);
                             }
 
-                            /**
-                             * Toll_class
+                            /*
+                             Toll_class
                              */
-                            if (attribute.getNodeName().equalsIgnoreCase("toll_class")) {
+                            else if (attribute.getNodeName().equalsIgnoreCase("toll_class")) {
                                 newTollClass = Integer.parseInt(attribute.getTextContent());
                             }
 
-                            /**
-                             * Motorization type ENUM
+                            /*
+                             Motorization type ENUM
                              */
-                            if (attribute.getNodeName().equalsIgnoreCase("motorization")) {
-                                motorTypeValue = addMotorization(byDefault, attribute);
+                            else if (attribute.getNodeName().equalsIgnoreCase("motorization")) {
+                                motorTypeValue = addMotorization(attribute);
                             }
 
-                            /**
-                             * Fuel
+                            /*
+                             Fuel
                              */
-                            if (attribute.getNodeName().equalsIgnoreCase("fuel")) {
-                                fuel = addFuel(byDefault, attribute);
+                            else if (attribute.getNodeName().equalsIgnoreCase("fuel")) {
+                                fuel = addFuel(attribute);
                             }
 
-                            /**
-                             * Mass from Measurable
+                            /*
+                             Mass from Measurable
                              */
-                            if (attribute.getNodeName().equalsIgnoreCase("mass")) {
-                                mass = addMass(newMass, massUnit, attribute);
+                            else if (attribute.getNodeName().equalsIgnoreCase("mass")) {
+                                mass = addMass(attribute);
 
                             }
 
-                            /**
-                             * Load from Measurable
+                            /*
+                             Load from Measurable
                              */
-                            if (attribute.getNodeName().equalsIgnoreCase("load")) {
+                            else if (attribute.getNodeName().equalsIgnoreCase("load")) {
                                 load = addLoad(attribute);
                             }
 
-                            /**
-                             * Drag
+                            /*
+                             Drag
                              */
-                            if (attribute.getNodeName().equalsIgnoreCase("drag")) {
+                            else if (attribute.getNodeName().equalsIgnoreCase("drag")) {
                                 dragCoefficient = Float.parseFloat(attribute.getTextContent());
                             }
 
-                            /**
-                             * Frontal Area
+                            /*
+                             Frontal Area
                              */
-                            if (attribute.getNodeName().equalsIgnoreCase("frontal_area")) {
+                            else if (attribute.getNodeName().equalsIgnoreCase("frontal_area")) {
                                 newFrontalArea.setQuantity(Double.parseDouble(attribute.getTextContent()));
                             }
-                            /**
-                             * RollingReleaseCoefficient
+                            /*
+                             RollingReleaseCoefficient
                              */
-                            if (attribute.getNodeName().equalsIgnoreCase("rrc")) {
+                            else if (attribute.getNodeName().equalsIgnoreCase("rrc")) {
                                 newRRC = Float.parseFloat(attribute.getTextContent());
                             }
 
-                            /**
-                             * Wheel size
+                            /*
+                             Wheel size
                              */
-                            if (attribute.getNodeName().equalsIgnoreCase("wheel_size")) {
+                            else if (attribute.getNodeName().equalsIgnoreCase("wheel_size")) {
                                 newWheel.setQuantity(Double.parseDouble(attribute.getTextContent()));
                             }
 
-                            /**
-                             * VelocityLimitList
+                            /*
+                             VelocityLimitList
                              */
-                            if (attribute.getNodeName().equalsIgnoreCase("velocity_limit_list")) {
+                            else if (attribute.getNodeName().equalsIgnoreCase("velocity_limit_list")) {
                                 velocityLimitList(byDefault,
                                         newVelocityLimitList, newVelocityLimit,
                                         attribute);
                             }
-                        }
 
-                        /**
-                         * Energy
-                         */
-                        if (attribute.getNodeName().equalsIgnoreCase("energy")) {
-                            newEnergy = addEnergy(newMinRpm, newMaxRpm, newFinalDriveRatio,
-                                    newGearList,
-                                    newThrottleId, newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh, newSfc,
-                                    newRegimeList,
-                                    newThrottleList, attribute, motorTypeValue);
+                            /*
+                             Energy
+                             */
+                            else if (attribute.getNodeName().equalsIgnoreCase("energy")) {
+                                newEnergy = addEnergy(newMinRpm, newMaxRpm, newFinalDriveRatio,
+                                        newGearList,
+                                        newThrottleId, newTorqueLow, newTorqueHigh, newRpmLow, newRpmHigh, newSfc,
+                                        newRegimeList,
+                                        newThrottleList, attribute, motorTypeValue);
+                            }
+
                         }
                     }
 
                 }
-                /**
-                 * Create Vehicle
+
+                /*
+                Create Vehicle
                  */
                 newVehicle = new Vehicle(name, description, vehicleType, newTollClass, motorTypeValue, fuel, mass, load, dragCoefficient, newFrontalArea, newRRC, newWheel, newVelocityLimitList, newEnergy);
-                set.add(newVehicle);
+                vehicles.add(newVehicle);
             }
-            project.setVehicles(set);
+
+            project.setVehicles(vehicles);
         } catch (IOException | NumberFormatException | ParserConfigurationException | DOMException | SAXException e) {
             return false;
         }
@@ -236,20 +230,18 @@ public class XMLImporterVehicles implements FileParser {
         return VehicleType.Car;
     }
 
-    private MotorType addMotorization(String newMotorization, Node attribute) {
-        newMotorization = attribute.getTextContent();
-        String newMoto = newMotorization;
-        if (newMoto.equalsIgnoreCase("combustion")) {
+    private MotorType addMotorization(Node attribute) {
+        if (attribute.getTextContent().equalsIgnoreCase("combustion")) {
             return Vehicle.MotorType.COMBUSTION;
-        } else if (newMoto.equalsIgnoreCase("electric")) {
+        } else if (attribute.getTextContent().equalsIgnoreCase("electric")) {
             return Vehicle.MotorType.NONCOMBUSTION;
         }
         System.out.println("Mass unit not correct the value is now the default (combustion)");
         return Vehicle.MotorType.COMBUSTION;
     }
 
-    private Fuel addFuel(String newFuel, Node attribute) {
-        newFuel = attribute.getTextContent();
+    private Fuel addFuel(Node attribute) {
+        String newFuel = attribute.getTextContent();
         Fuel[] fuelEnum = Fuel.values();
         for (Fuel fuelType : fuelEnum) {
             if (newFuel.equalsIgnoreCase(fuelType.toString())) {
@@ -260,11 +252,11 @@ public class XMLImporterVehicles implements FileParser {
         return Fuel.Gasoline;
     }
 
-    private Measurable addMass(double newMass, String massUnit, Node attribute) {
+    private Measurable addMass(Node attribute) {
         String x = attribute.getTextContent();
         String[] splitX = x.split(" ");
-        newMass = Double.parseDouble(splitX[0]);
-        massUnit = splitX[1];
+        double newMass = Double.parseDouble(splitX[0]);
+        String massUnit = splitX[1];
         if (massUnit.equalsIgnoreCase("kg")) {
             return new Measurable(newMass, Unit.KILOGRAM);
         } else if (massUnit.equalsIgnoreCase("g")) {
