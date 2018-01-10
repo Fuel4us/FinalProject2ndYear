@@ -704,9 +704,9 @@ public class XMLImporter implements FileParser {
 
                         }
 
-                        //Add regime
+                        // Add regime
                         Regime newRegime;
-                        if (sfc != 0) {
+                        if (Double.compare(sfc, 0) != 0) {
                             newRegime = new Regime(torqueLow, torqueHigh, rpmLow, rpmHigh, sfc);
                         } else {
                             newRegime = new Regime(torqueLow, torqueHigh, rpmLow, rpmHigh);
