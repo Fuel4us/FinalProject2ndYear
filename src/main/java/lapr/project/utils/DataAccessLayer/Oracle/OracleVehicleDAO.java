@@ -372,9 +372,8 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      */
     private void storeVehicle(Vehicle vehicle, String projectName) throws SQLException {
 
-        try (CallableStatement storeVehicleInfoProcedure = oracleConnection.prepareCall("CALL storeVehicleProcedure(?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
+        try (CallableStatement storeVehicleInfoProcedure = oracleConnection.prepareCall("CALL storeVehicleProcedure(?,?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
 
-            storeVehicleInfoProcedure.setString("name", vehicle.getName());
             storeVehicleInfoProcedure.setString("projectName", projectName);
 
             vehicle.storeVehicleInformation(storeVehicleInfoProcedure);

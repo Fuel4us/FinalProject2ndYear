@@ -182,19 +182,19 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
     /**
      * Allows to add more instances of {@link Vehicle}
      * @param project {@link Project}
+     * @param addedVehicles {@link List} of instances of {@link Vehicle} to add to the database, associated to the already stored {@link Project}
      * @return true if success
      * @throws SQLException
      */
     @Override
-    public void addVehicles(Project project) throws SQLException {
+    public void addVehicles(Project project, List<Vehicle> addedVehicles) throws SQLException {
         verifyConnection();
 
             String projectName = project.getName();
 
-            List<Vehicle> vehicles = project.getVehicles();
             OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO();
             oracleVehicleDAO.connectTo(this.oracleConnection);
-            for (Vehicle vehicle : vehicles) {
+            for (Vehicle vehicle : addedVehicles) {
                 oracleVehicleDAO.storeVehicleInfo(vehicle, projectName);
             }
     }
