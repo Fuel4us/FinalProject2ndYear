@@ -71,6 +71,20 @@ public class EnergyExpenditureAccelResults {
     }
 
     /**
+     * Constructor with the parameters energyExpenditure, finalVelocity, timeSpent and tollCosts
+     * @param energyExpenditure the energy expenditure
+     * @param finalVelocity the final velocity of the vehicle
+     * @param timeSpent the time spent
+     * @param tollCosts the toll costs
+     */
+    public EnergyExpenditureAccelResults(Measurable energyExpenditure, Measurable finalVelocity, Measurable timeSpent, Measurable tollCosts) {
+        this.energyExpenditure = energyExpenditure;
+        this.finalVelocity = finalVelocity;
+        this.timeSpent = timeSpent;
+        this.tollCosts = tollCosts;
+    }
+
+    /**
      * @return the energy expenditure
      */
     public Measurable getEnergyExpenditure() {
