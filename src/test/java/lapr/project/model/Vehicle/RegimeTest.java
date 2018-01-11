@@ -25,9 +25,8 @@ public class RegimeTest {
      */
     public RegimeTest() {
         Regime testEmpty = new Regime();
-        double expResult = 0f;
         double result = testEmpty.getSFC();
-        assertEquals(expResult, result, 0.0);
+        assertEquals(0f, result, 0.0);
     }
 
     /**
