@@ -1,17 +1,17 @@
 package lapr.project.model.Vehicle;
 
 public class Regime {
-    
+
     private int torqueLow;
     private int torqueHigh;
     private int rpmLow;
     private int rpmHigh;
     private double SFC;
-    
+
     public Regime() {
     }
 
-    public Regime(int torqueLow,int torqueHigh, int rpmLow, int rpmHigh, double SFC) {
+    public Regime(int torqueLow, int torqueHigh, int rpmLow, int rpmHigh, double SFC) {
         this.torqueLow = torqueLow;
         this.torqueHigh = torqueHigh;
         this.rpmLow = rpmLow;
@@ -29,7 +29,7 @@ public class Regime {
 
     /**
      * Getter method for torqueLow
-     * 
+     *
      * @return torqueLow
      */
     public int getTorqueLow() {
@@ -38,14 +38,12 @@ public class Regime {
 
     /**
      * Getter method for torqueLow
-     * 
+     *
      * @return torqueLow
      */
     public int getTorqueHigh() {
         return torqueHigh;
     }
-
-    
 
     /**
      * @return rpm low
