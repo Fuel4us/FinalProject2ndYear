@@ -171,18 +171,15 @@ public class SectionTest {
                 new Measurable(1.9, Unit.METER_SQUARED), 0.01f, new Measurable(0.6, Unit.METER),
                 velocityLimitListTest, new Energy(900, 5500, 4f, gearsTest, throttlesTest));
 
-        EnergyExpenditureAccelResults expected = new EnergyExpenditureAccelResults(new Measurable(4728.5, Unit.KILOJOULE),
-                new Measurable(100, Unit.KILOMETERS_PER_HOUR), new Measurable(0.0824, Unit.HOUR), new Gears[]{new Gears(5, 0f),
-                new Gears(5, 0f)}, new Measurable(1.275, Unit.EUROS));
+        EnergyExpenditureAccelResults expected = new EnergyExpenditureAccelResults(new Measurable(82600, Unit.KILOJOULE),
+                new Measurable(5.6548668, Unit.KILOMETERS_PER_HOUR), new Measurable(0.09383, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
 
-        EnergyExpenditureAccelResults results = sectionTest.calculateEnergyExpenditureAccel(roadNetworkTest, new Measurable(50, Unit.KILOMETERS_PER_HOUR), vehicleTest,
+        EnergyExpenditureAccelResults results = sectionTest.calculateEnergyExpenditureAccel(roadNetworkTest, new Measurable(5.6548668, Unit.KILOMETERS_PER_HOUR), vehicleTest,
                 new Measurable(500, Unit.KILOGRAM), new Measurable(5, Unit.METERS_PER_SECOND_SQUARED),
-                new Measurable(-2.5, Unit.METERS_PER_SECOND_SQUARED), nodeTest2,false);
+                new Measurable(-2.5, Unit.METERS_PER_SECOND_SQUARED), nodeTest2, false);
 
-        assertEquals(expected.getEnergyExpenditure().getQuantity(), results.getEnergyExpenditure().getQuantity(), 5);
-        assertEquals(expected.getFinalVelocity().getQuantity(), results.getFinalVelocity().getQuantity(), 1);
-        assertEquals(expected.getGearForEachSegment()[0], results.getGearForEachSegment()[0]);
-        assertEquals(expected.getGearForEachSegment()[1], results.getGearForEachSegment()[1]);
+        assertEquals(expected.getEnergyExpenditure().getQuantity(), results.getEnergyExpenditure().getQuantity(), 100);
+        assertEquals(expected.getFinalVelocity().getQuantity(), results.getFinalVelocity().getQuantity(), 0.001);
         assertEquals(expected.getTimeSpent().getQuantity(), results.getTimeSpent().getQuantity(), 0.001);
         assertEquals(expected.getTollCosts().getQuantity(), results.getTollCosts().getQuantity(), 0.01);
 

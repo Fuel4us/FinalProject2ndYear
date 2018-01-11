@@ -13,7 +13,6 @@ import javax.swing.*;
 import java.util.List;
 import lapr.project.controller.BestPathController;
 import lapr.project.model.Analysis;
-import lapr.project.model.Project;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 
@@ -31,10 +30,9 @@ public class BestPathComparisonForm extends JFrame {
     /**
      * Creates new form BestPathComparisonForm
      *
-     * @param project
      */
-    public BestPathComparisonForm(Project project) {
-        controller = new BestPathController(project);
+    public BestPathComparisonForm() {
+        this.controller = new BestPathController(Main.currentProject);
         initComponents();
     }
 
@@ -192,6 +190,11 @@ public class BestPathComparisonForm extends JFrame {
 
         jButton3.setText("N12 - Most efficient path in energy saving mode");
         jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 3));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLabelLoad.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         jLabelLoad.setForeground(new java.awt.Color(97, 122, 133));
@@ -261,25 +264,20 @@ public class BestPathComparisonForm extends JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(66, 66, 66)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(66, 66, 66)
-                                        .addComponent(jLabelNode2))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(66, 66, 66)
-                                        .addComponent(jLabelLoad)))
+                                    .addComponent(jLabelNode2)
+                                    .addComponent(jLabelLoad))
                                 .addGap(87, 87, 87))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(66, 66, 66)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabelLoad2)
-                                    .addComponent(jLabelLoad1)
-                                    .addComponent(jScrollPane2)
-                                    .addComponent(jTextFieldLoad)
-                                    .addComponent(jTextFieldMaxAceleration)
-                                    .addComponent(jTextFieldMaxBraking))))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabelLoad2)
+                                .addComponent(jLabelLoad1)
+                                .addComponent(jScrollPane2)
+                                .addComponent(jTextFieldLoad)
+                                .addComponent(jTextFieldMaxAceleration)
+                                .addComponent(jTextFieldMaxBraking)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -373,9 +371,8 @@ public class BestPathComparisonForm extends JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -386,7 +383,8 @@ public class BestPathComparisonForm extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        // TODO add your handling code here:
+        SelectProjectUI.display();
+        dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -401,7 +399,7 @@ public class BestPathComparisonForm extends JFrame {
             }
             if (startNode == null
                     || endNode == null) {
-                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes, as well as a vehicle.");
+                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes");
 
             } else if (startNode.equals(endNode)) {
                 JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
@@ -411,10 +409,9 @@ public class BestPathComparisonForm extends JFrame {
                     Analysis generatedAnalysis = controller.analyzeFastestPath(startNode, endNode, selectedVehiclesList.get(j), load);
                     analysisList.add(generatedAnalysis);
                 }
-                BestPathComparisonResults comparisonResultsUI = new BestPathComparisonResults(analysisList);
+                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList);
                 comparisonResultsUI.setVisible(true);
                 setVisible(false);
-
             }
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(null, "Please insert a valid load value");
@@ -422,7 +419,38 @@ public class BestPathComparisonForm extends JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        try {
+            Node startNode = jListNodes1.getSelectedValue();
+            Node endNode = jListNodes2.getSelectedValue();
+            Measurable maxAceleration = new Measurable(Double.parseDouble(jTextFieldMaxAceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.valueOf("km"));
+            List<Vehicle> selectedVehiclesList = new ArrayList<>();
+            for (int i = 0; i < selectedVehicles.size(); i++) {
+                selectedVehiclesList.add(selectedVehicles.get(i));
+            }
+            if (startNode == null
+                    || endNode == null
+                    ) {
+                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes, as well as a vehicle.");
+
+            } else if (startNode.equals(endNode)) {
+                JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
+            } else if ((Double.compare(maxAceleration.getQuantity(), 0) == -1) || (Double.compare(maxBraking.getQuantity(), 0) == 1)) {
+                JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAceleration and a negative value for maxBraking");
+            } else {
+                List<Analysis> analysisList = new ArrayList<>();
+                for (int j = 0; j < selectedVehiclesList.size(); j++) {
+                    Analysis generatedAnalysis = controller.analyzeTheoreticalEfficientPath(startNode, endNode, selectedVehiclesList.get(j), maxAceleration, maxBraking, load);
+                    analysisList.add(generatedAnalysis);
+                }
+                BestPathComparisonAllAnalysisUI allAnalysisResults = new BestPathComparisonAllAnalysisUI(analysisList);
+                allAnalysisResults.setVisible(true);
+                setVisible(false);
+            }
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, "Please insert a valid load value");
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void addVehicleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehicleButtonActionPerformed
@@ -434,6 +462,40 @@ public class BestPathComparisonForm extends JFrame {
         vehicleModel.addElement(jListVehicles1.getSelectedValue());
         jListVehicles1.remove(jListVehicles1.getSelectedIndex());
     }//GEN-LAST:event_removeVehicleButtonActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            Node startNode = jListNodes1.getSelectedValue();
+            Node endNode = jListNodes2.getSelectedValue();
+            Measurable maxAceleration = new Measurable(Double.parseDouble(jTextFieldMaxAceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            List<Vehicle> selectedVehiclesList = new ArrayList<>();
+            for (int i = 0; i < selectedVehicles.size(); i++) {
+                selectedVehiclesList.add(selectedVehicles.get(i));
+            }
+            if (startNode == null
+                    || endNode == null
+                    ) {
+                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes, as well as a vehicle.");
+
+            } else if (startNode.equals(endNode)) {
+                JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
+            } else if ((Double.compare(maxAceleration.getQuantity(), 0) == -1) || (Double.compare(maxBraking.getQuantity(), 0) == 1)) {
+                JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAceleration and a negative value for maxBraking");
+            } else {
+                List<Analysis> analysisList = new ArrayList<>();
+                for (int j = 0; j < selectedVehiclesList.size(); j++) {
+                    Analysis generatedAnalysis = controller.analyzeEfficientPathEnergySavingMode(startNode, endNode, selectedVehiclesList.get(j), maxAceleration, maxBraking);
+                    analysisList.add(generatedAnalysis);
+                }
+                BestPathComparisonAllAnalysisUI allAnalysisResults = new BestPathComparisonAllAnalysisUI(analysisList);
+                allAnalysisResults.setVisible(true);
+                setVisible(false);
+            }
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, "Please insert a valid values");
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -508,4 +570,12 @@ public class BestPathComparisonForm extends JFrame {
     private javax.swing.JPanel orangeBorder;
     private javax.swing.JButton removeVehicleButton;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * Triggers UI display
+     */
+    public static void display() {
+        Main.setLook();
+        java.awt.EventQueue.invokeLater(() -> new BestPathComparisonForm().setVisible(true));
+    }
 }

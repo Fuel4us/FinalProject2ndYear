@@ -20,6 +20,7 @@ public final class SelectProjectUI extends javax.swing.JFrame {
     private static final long serialVersionUID = -5188965937946662366L;
     private SelectProjectController selectProjectController;
     private Project project;
+    private boolean verifyProjectWasSelected;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
     private javax.swing.JButton jButtonBack;
@@ -43,6 +44,7 @@ public final class SelectProjectUI extends javax.swing.JFrame {
      */
     private SelectProjectUI() {
         selectProjectController = new SelectProjectController(Main.dbCom);
+        verifyProjectWasSelected = false;
         initComponents();
     }
 
@@ -67,6 +69,7 @@ public final class SelectProjectUI extends javax.swing.JFrame {
         jComboBoxProjects = new javax.swing.JComboBox<Project>();
         jButtonSetActive = new javax.swing.JButton();
         jButtonPopUp = new javax.swing.JButton();
+
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -127,21 +130,13 @@ public final class SelectProjectUI extends javax.swing.JFrame {
         }
         jComboBoxProjects.setModel(projectsModel);
         jComboBoxProjects.setBackground(new java.awt.Color(204, 204, 204));
-        /**
-        jComboBoxProjects.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        */
-        jComboBoxProjects.addActionListener(evt -> jComboBoxProjectsActionPerformed(evt));
 
         jButtonSetActive.setBackground(new java.awt.Color(45, 46, 45));
         jButtonSetActive.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jButtonSetActive.setForeground(new java.awt.Color(45, 46, 45));
         jButtonSetActive.setText("Set active");
         jButtonSetActive.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonSetActive.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSetActiveActionPerformed(evt);
-            }
-        });
+        jButtonSetActive.addActionListener(evt -> jButtonSetActiveActionPerformed(evt));
 
         jButtonPopUp.setBackground(new java.awt.Color(45, 46, 45));
         jButtonPopUp.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
@@ -228,22 +223,28 @@ public final class SelectProjectUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonCompFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCompFormActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonCompFormActionPerformed
-
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
         WelcomeUI.display();
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
-    private void jButtonPathFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPathFormActionPerformed
-        BestPathUI.display();
-        setVisible(false);
-    }//GEN-LAST:event_jButtonPathFormActionPerformed
+    private void jButtonCompFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCompFormActionPerformed
+        if (verifyProjectWasSelected) {
+            BestPathComparisonForm.display();
+            setVisible(false);
+        } else {
+            showOptionPaneRequiredActiveProject();
+        }
+    }//GEN-LAST:event_jButtonCompFormActionPerformed
 
-    private void jComboBoxProjectsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxProjectsActionPerformed
-    }//GEN-LAST:event_jComboBoxProjectsActionPerformed
+    private void jButtonPathFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPathFormActionPerformed
+        if (verifyProjectWasSelected) {
+            BestPathUI.display();
+            setVisible(false);
+        } else {
+            showOptionPaneRequiredActiveProject();
+        }
+    }//GEN-LAST:event_jButtonPathFormActionPerformed
 
     private void jButtonSetActiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetActiveActionPerformed
         if (jComboBoxProjects.getSelectedItem() == null) {
@@ -253,15 +254,20 @@ public final class SelectProjectUI extends javax.swing.JFrame {
                     "Open Project",
                     JOptionPane.INFORMATION_MESSAGE);
         } else {
+            verifyProjectWasSelected = true;
             selectProjectController.setCurrentProject((Project) jComboBoxProjects.getSelectedItem());
-            new PopUp1(project).setVisible(true);
-            dispose();
+            JOptionPane.showMessageDialog(null, project.getName()+" is now your active project.");
         }
 
     }//GEN-LAST:event_jButtonSetActiveActionPerformed
 
     private void jButtonPopUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPopUpActionPerformed
-        // TODO add your handling code here:
+        if (verifyProjectWasSelected) {
+            new PopUp1(project).setVisible(true);
+            dispose();
+        } else {
+            showOptionPaneRequiredActiveProject();
+        }
     }//GEN-LAST:event_jButtonPopUpActionPerformed
 
     /**
@@ -270,6 +276,14 @@ public final class SelectProjectUI extends javax.swing.JFrame {
     public static void display() {
         Main.setLook();
        java.awt.EventQueue.invokeLater(() -> new SelectProjectUI().setVisible(true));
+    }
+
+    private void showOptionPaneRequiredActiveProject(){
+        JOptionPane.showMessageDialog(
+                this,
+                "Set a project as active first!",
+                "Require active project",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
 }

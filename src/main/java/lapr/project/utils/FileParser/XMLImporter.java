@@ -61,7 +61,11 @@ public class XMLImporter implements FileParser {
      *
      * @param newNetwork true if the road network is to be created as new
      * @return the road network updated
+     * @throws java.io.IOException
+     * @throws org.xml.sax.SAXException
+     * @throws javax.xml.parsers.ParserConfigurationException
      */
+    @Override
     public RoadNetwork importNetwork(boolean newNetwork) throws IOException, SAXException, ParserConfigurationException {
 
         completeNetworkInformationDOMParsing(newNetwork);

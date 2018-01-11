@@ -47,11 +47,39 @@ public class EnergyExpenditureAccelResults {
     }
 
     /**
+     * Constructor with the parameters energyExpenditure, finalVelocity and timeSpent
+     * @param energyExpenditure the energy expenditure
+     * @param finalVelocity the final velocity of the vehicle
+     * @param timeSpent the time spent
+     */
+    public EnergyExpenditureAccelResults(Measurable energyExpenditure, Measurable finalVelocity, Measurable timeSpent) {
+        this.energyExpenditure = energyExpenditure;
+        this.finalVelocity = finalVelocity;
+        this.timeSpent = timeSpent;
+        gearForEachSegment = new Gears[]{};
+        tollCosts = new Measurable(0, Unit.EUROS);
+    }
+
+    /**
      * Creates an instance of {@link EnergyExpenditureAccelResults} containing information about travelling time and toll costs.
      * @param timeSpent the time spent in the section
      * @param tollCosts the toll costs for the section
      */
     public EnergyExpenditureAccelResults(Measurable timeSpent, Measurable tollCosts) {
+        this.timeSpent = timeSpent;
+        this.tollCosts = tollCosts;
+    }
+
+    /**
+     * Constructor with the parameters energyExpenditure, finalVelocity, timeSpent and tollCosts
+     * @param energyExpenditure the energy expenditure
+     * @param finalVelocity the final velocity of the vehicle
+     * @param timeSpent the time spent
+     * @param tollCosts the toll costs
+     */
+    public EnergyExpenditureAccelResults(Measurable energyExpenditure, Measurable finalVelocity, Measurable timeSpent, Measurable tollCosts) {
+        this.energyExpenditure = energyExpenditure;
+        this.finalVelocity = finalVelocity;
         this.timeSpent = timeSpent;
         this.tollCosts = tollCosts;
     }

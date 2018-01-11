@@ -7,20 +7,20 @@ package lapr.project.ui;
 
 import lapr.project.model.Analysis;
 
-import java.util.List;
-
 /**
  *
  * @author anily
  */
-public class BestPathComparisonResults extends javax.swing.JFrame {
+public class BestPathComparisonResultsUI extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 2562000671949976456L;
+    private static Analysis analysis;
 
     /**
      * Creates new form NewJFrame
      */
-    BestPathComparisonResults(List<Analysis> analysisList) {
+    BestPathComparisonResultsUI(Analysis analysis) {
+        BestPathComparisonResultsUI.analysis = analysis;
         initComponents();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -55,8 +55,7 @@ public class BestPathComparisonResults extends javax.swing.JFrame {
         jLabelPageTitle = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jButtonBack = new javax.swing.JButton();
-        jButtonGenerateFile = new javax.swing.JButton();
-        jButtonSave = new javax.swing.JButton();
+        jButtonRequestAnalysis = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(45, 46, 45));
@@ -232,25 +231,14 @@ public class BestPathComparisonResults extends javax.swing.JFrame {
             }
         });
 
-        jButtonGenerateFile.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonGenerateFile.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonGenerateFile.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonGenerateFile.setText("Generate file");
-        jButtonGenerateFile.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonGenerateFile.addActionListener(new java.awt.event.ActionListener() {
+        jButtonRequestAnalysis.setBackground(new java.awt.Color(45, 46, 45));
+        jButtonRequestAnalysis.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        jButtonRequestAnalysis.setForeground(new java.awt.Color(45, 46, 45));
+        jButtonRequestAnalysis.setText("Request new analysis");
+        jButtonRequestAnalysis.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        jButtonRequestAnalysis.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonGenerateFileActionPerformed(evt);
-            }
-        });
-
-        jButtonSave.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonSave.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonSave.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonSave.setText("Save results");
-        jButtonSave.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSaveActionPerformed(evt);
+                jButtonRequestAnalysisActionPerformed(evt);
             }
         });
 
@@ -261,20 +249,17 @@ public class BestPathComparisonResults extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(68, 68, 68)
                 .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonGenerateFile, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonRequestAnalysis, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
+                .addGap(100, 100, 100))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonGenerateFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonRequestAnalysis, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36))
         );
 
@@ -314,13 +299,17 @@ public class BestPathComparisonResults extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonBackActionPerformed
 
-    private void jButtonGenerateFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerateFileActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonGenerateFileActionPerformed
+    private void jButtonRequestAnalysisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRequestAnalysisActionPerformed
+        //ToDo
+    }//GEN-LAST:event_jButtonRequestAnalysisActionPerformed
 
-    private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonSaveActionPerformed
+    /**
+     * Triggers UI display
+     */
+    public static void display() {
+        Main.setLook();
+        java.awt.EventQueue.invokeLater(() -> new BestPathComparisonResultsUI(analysis).setVisible(true));
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel algorithmLabel;
@@ -331,8 +320,7 @@ public class BestPathComparisonResults extends javax.swing.JFrame {
     private javax.swing.JTextField energyTextField;
     private javax.swing.JLabel imgLateral;
     private javax.swing.JButton jButtonBack;
-    private javax.swing.JButton jButtonGenerateFile;
-    private javax.swing.JButton jButtonSave;
+    private javax.swing.JButton jButtonRequestAnalysis;
     private javax.swing.JLabel jLabelPageTitle;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

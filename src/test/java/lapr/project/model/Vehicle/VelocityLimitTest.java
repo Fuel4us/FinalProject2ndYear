@@ -16,6 +16,10 @@ public class VelocityLimitTest {
     VelocityLimit instance = new VelocityLimit(test, boas);
     
     public VelocityLimitTest() {
+        VelocityLimit instanceEmpty = new VelocityLimit();
+        String expResult = instanceEmpty.getSegmentType();
+        String result = null;
+        assertEquals(expResult, result);
     }
 
     /**
