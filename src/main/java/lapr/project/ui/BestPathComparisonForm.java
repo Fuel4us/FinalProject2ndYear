@@ -444,8 +444,8 @@ public class BestPathComparisonForm extends JFrame {
                     Analysis generatedAnalysis = controller.analyzeTheoreticalEfficientPath(startNode, endNode, selectedVehiclesList.get(j), maxAceleration, maxBraking, load);
                     analysisList.add(generatedAnalysis);
                 }
-                BestPathComparisonResults comparisonResultsUI = new BestPathComparisonResults(analysisList);
-                comparisonResultsUI.setVisible(true);
+                BestPathComparisonAllAnalysisUI allAnalysisResults = new BestPathComparisonAllAnalysisUI(analysisList);
+                allAnalysisResults.setVisible(true);
                 setVisible(false);
             }
         } catch (IllegalArgumentException ex) {
@@ -488,8 +488,8 @@ public class BestPathComparisonForm extends JFrame {
                     Analysis generatedAnalysis = controller.analyzeEfficientPathEnergySavingMode(startNode, endNode, selectedVehiclesList.get(j), maxAceleration, maxBraking);
                     analysisList.add(generatedAnalysis);
                 }
-                BestPathComparisonResults comparisonResultsUI = new BestPathComparisonResults(analysisList);
-                comparisonResultsUI.setVisible(true);
+                BestPathComparisonAllAnalysisUI allAnalysisResults = new BestPathComparisonAllAnalysisUI(analysisList);
+                allAnalysisResults.setVisible(true);
                 setVisible(false);
             }
         } catch (IllegalArgumentException ex) {
