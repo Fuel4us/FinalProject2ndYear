@@ -2,6 +2,7 @@ package lapr.project.utils.DataAccessLayer;
 
 import lapr.project.model.Analysis;
 import lapr.project.model.Project;
+import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.DataAccessLayer.Abstraction.AnalysisDAO;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.Abstraction.ProjectDAO;
@@ -149,7 +150,7 @@ public class DataBaseCommunicator {
      * Has to be called before calling methods setName and setDescription of {@link Project}
      * @param project The project to update in the database
      */
-    public boolean changeProjectData(Project project, String newName, String newDescription) {
+    public void changeProjectData(Project project, String newName, String newDescription) {
 
         try {
             //Start Transaction
@@ -158,29 +159,28 @@ public class DataBaseCommunicator {
 
             //Allow Data Access Object behaviour through newly opened connexion
             if (projectStorage.connectTo(connection)) {
-                if(project.getDescription().equals(newDescription)) {
+                if(!project.getDescription().equals(newDescription)) {
                     projectStorage.changeDescription(project, newDescription);
                 }
-                if(project.getName().equals(newName)){
+                if(!project.getName().equals(newName)){
                     projectStorage.changeProjectName(project, newName);
                 }
                 connection.commit();
                 connection.close();
-                return true;
             }
 
         } catch (SQLException e) {
             attemptFailSafeRecovery(connection, e);
         }
-        return false;
     }
 
     /**
      * Adds vehicles to a project already created in the database
      * @param project The project to which add more vehicles in the database
+     * @param addedVehicles {@link List} of instances of {@link Vehicle} to add to the database, associated to the already stored {@link Project}
      * @return
      */
-    public boolean addVehiclesToProject(Project project) {
+    public boolean addVehiclesToProject(Project project, List<Vehicle> addedVehicles) {
 
         try {
             //Start Transaction
@@ -189,7 +189,7 @@ public class DataBaseCommunicator {
 
             //Allow Data Access Object behaviour through newly opened connexion
             if (projectStorage.connectTo(connection)) {
-                projectStorage.addVehicles(project);
+                projectStorage.addVehicles(project, addedVehicles);
                 connection.commit();
                 connection.close();
                 return true;
