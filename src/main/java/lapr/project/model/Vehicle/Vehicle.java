@@ -160,15 +160,16 @@ public class Vehicle {
      */
     public Measurable[] determineEnergyExpenditure(Segment segment, Measurable load, double length, Measurable velocity, boolean energySaving, Measurable acceleration) {
 
+        Measurable velocityToBeUsed = new Measurable(velocity.getQuantity(), Unit.KILOMETERS_PER_HOUR);
         int gearPosition = energy.getGears().size() - 1;
         int throttlePosition = 0;
 
-        Measurable[] data = calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, velocity, load, energySaving, acceleration);
+        Measurable[] data = calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, velocityToBeUsed, load, energySaving, acceleration);
 
         Measurable power = calculatePowerGenerated(data[0], data[1]);
 
         double SFC = data[2].getQuantity();
-        double timeSpent = length / data[3].getQuantity();
+        double timeSpent = length / data[3].getQuantity() / Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO;
 
         double fuelQuantity = power.getQuantity() * Physics.KILOMETERS_METERS_CONVERSION_RATIO * SFC * timeSpent;
 
@@ -217,16 +218,17 @@ public class Vehicle {
         double SFC = 0;
 
         for (Regime regime : energy.getThrottles().get(throttlePosition).getRegimes()) {
-
             if (regime.getRpmHigh() >= engineSpeed && regime.getRpmLow() <= engineSpeed) {
                 torque = regime.getTorqueLow();
                 SFC = regime.getSFC();
                 break;
+            } else if (regime.getRpmLow() > engineSpeed) {
+                return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, energySaving, acceleration);
             }
         }
 
         // if engine speed isn't inside the limits of this velocity, we reduce the velocity
-        if (BigDecimal.valueOf(torque).compareTo(BigDecimal.ZERO) == 0) {
+        if (Double.compare(torque, 0) == 0) {
             velocity.setQuantity(velocity.getQuantity() - velocity.getQuantity() * 0.02d);
             gearPosition = energy.getGears().size() - 1;
             throttlePosition = 0;
@@ -250,8 +252,8 @@ public class Vehicle {
 
         double accelerationForce = (mass.getQuantity() + load.getQuantity()) * acceleration.getQuantity();
 
-        // if motor force is lesser than the sum of the rolling resistance, air drag and gravitational force
-        if (accelerationForce < motorForce - rollingResistance - airDrag - gravitationalForce) {
+        // if the sum of the motor force and the acceleration force is lesser than the sum of the rolling resistance, air drag and gravitational force
+        if (accelerationForce + motorForce < rollingResistance + airDrag + gravitationalForce) {
 
             if (energySaving) {
                 return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, energySaving, acceleration);
