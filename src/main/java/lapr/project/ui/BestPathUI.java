@@ -32,6 +32,8 @@ public final class BestPathUI extends JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelAlgorithm1;
     private javax.swing.JLabel jLabelLoad;
+    private javax.swing.JLabel jLabelLoad1;
+    private javax.swing.JLabel jLabelLoad2;
     private javax.swing.JLabel jLabelNode1;
     private javax.swing.JLabel jLabelNode2;
     /**
@@ -51,6 +53,8 @@ public final class BestPathUI extends JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextField jTextFieldLoad;
+    private javax.swing.JTextField jTextFieldMaxAceleration;
+    private javax.swing.JTextField jTextFieldMaxBraking;
     private javax.swing.JPanel orangeBorder;
     // End of variables declaration//GEN-END:variables
 
@@ -94,6 +98,10 @@ public final class BestPathUI extends JFrame {
         jButton3 = new javax.swing.JButton();
         jLabelLoad = new javax.swing.JLabel();
         jTextFieldLoad = new javax.swing.JTextField();
+        jTextFieldMaxAceleration = new javax.swing.JTextField();
+        jLabelLoad1 = new javax.swing.JLabel();
+        jLabelLoad2 = new javax.swing.JLabel();
+        jTextFieldMaxBraking = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -225,6 +233,20 @@ public final class BestPathUI extends JFrame {
         jTextFieldLoad.setBackground(new java.awt.Color(97, 122, 133));
         jTextFieldLoad.setForeground(new java.awt.Color(255, 255, 255));
 
+        jTextFieldMaxAceleration.setBackground(new java.awt.Color(97, 122, 133));
+        jTextFieldMaxAceleration.setForeground(new java.awt.Color(255, 255, 255));
+
+        jLabelLoad1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
+        jLabelLoad1.setForeground(new java.awt.Color(97, 122, 133));
+        jLabelLoad1.setText("MAX ACCELERATION:");
+
+        jLabelLoad2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
+        jLabelLoad2.setForeground(new java.awt.Color(97, 122, 133));
+        jLabelLoad2.setText("MAX BRAKING:");
+
+        jTextFieldMaxBraking.setBackground(new java.awt.Color(97, 122, 133));
+        jTextFieldMaxBraking.setForeground(new java.awt.Color(255, 255, 255));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -242,7 +264,11 @@ public final class BestPathUI extends JFrame {
                             .addComponent(jScrollPane2)
                             .addComponent(jLabelNode2)
                             .addComponent(jLabelLoad)
-                            .addComponent(jTextFieldLoad, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE))
+                            .addComponent(jTextFieldLoad, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                            .addComponent(jTextFieldMaxAceleration, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                            .addComponent(jLabelLoad1)
+                            .addComponent(jLabelLoad2)
+                            .addComponent(jTextFieldMaxBraking, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -264,10 +290,6 @@ public final class BestPathUI extends JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(orangeBorder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(imgLateral)
-                .addGap(0, 1, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
@@ -296,8 +318,22 @@ public final class BestPathUI extends JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextFieldLoad)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59))
+                .addComponent(jLabelLoad1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jTextFieldMaxAceleration, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelLoad2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldMaxBraking, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(43, 43, 43))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(orangeBorder, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(imgLateral, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -308,9 +344,7 @@ public final class BestPathUI extends JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
