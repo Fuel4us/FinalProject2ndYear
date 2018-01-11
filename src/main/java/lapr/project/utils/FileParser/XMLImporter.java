@@ -61,7 +61,11 @@ public class XMLImporter implements FileParser {
      *
      * @param newNetwork true if the road network is to be created as new
      * @return the road network updated
+     * @throws java.io.IOException
+     * @throws org.xml.sax.SAXException
+     * @throws javax.xml.parsers.ParserConfigurationException
      */
+    @Override
     public RoadNetwork importNetwork(boolean newNetwork) throws IOException, SAXException, ParserConfigurationException {
 
         completeNetworkInformationDOMParsing(newNetwork);
@@ -704,9 +708,9 @@ public class XMLImporter implements FileParser {
 
                         }
 
-                        //Add regime
+                        // Add regime
                         Regime newRegime;
-                        if (sfc != 0) {
+                        if (Double.compare(sfc, 0) != 0) {
                             newRegime = new Regime(torqueLow, torqueHigh, rpmLow, rpmHigh, sfc);
                         } else {
                             newRegime = new Regime(torqueLow, torqueHigh, rpmLow, rpmHigh);

@@ -1,6 +1,7 @@
 package lapr.project.utils.DataAccessLayer.Abstraction;
 
 import lapr.project.model.Project;
+import lapr.project.model.Vehicle.Vehicle;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -52,10 +53,11 @@ public interface ProjectDAO extends DataAccessObject {
     void addRoads(Project project) throws SQLException;
 
     /**
-     * Allows to add more instances of {@link lapr.project.model.Vehicle.Vehicle}
+     * Allows to add more instances of {@link Vehicle}
      * @param project {@link Project}
+     * @param addedVehicles {@link List} of instances of {@link Vehicle} to add to the database, associated to the already stored {@link Project}
      * @return true if success
      * @throws SQLException
      */
-    void addVehicles(Project project) throws SQLException;
+    void addVehicles(Project project, List<Vehicle> addedVehicles) throws SQLException;
 }

@@ -1,5 +1,6 @@
 package lapr.project.utils.Graph;
 
+import lapr.project.utils.FaultyInvocationException;
 import lapr.project.utils.GeneralOperator;
 
 import java.util.HashMap;
@@ -188,13 +189,18 @@ public class GraphAlgorithms {
      * @param cumulativeAttributeExtractor Extracts the information of the input to pass on to the next call by invoking a method on the return type of the function
      * This can be the identity function (x -> x) in case return type is the same as the transformed input.
      * @param weightExtractor Extracts the definition of weigth of an edge to be used from the output of the method called by the cumulativeApplier implementation (lambda/anonymous class/method reference)
+     * @throws FaultyInvocationException If the method called by {@code cumulativeApplier} throws an exception,
+     * for instance, through the use of a subclass exception wrapper such as {@link lapr.project.utils.ExceptionalBiFunction},
+     * this exception is thrown, as a means to delegate the logic of catching the exception to the invoker of this path finding algorithm.
+     * The edge on which the called method threw an exception is attached to the {@link FaultyInvocationException} instance,
+     * so that whilst handling it, considerations may  be taken regarding the edge
      * @author Pedro Lopes
      */
     private static <V, E, R, A> void dynamicWeightSPFinder(Graph<V, E> graph, V originVertex, List<V> vertices,
                                                            boolean[] visited, int[] pathKeys, double[] dist,
                                                            BiFunction<Edge<V, E>, A, R> cumulativeApplier,
                                                            ToDoubleFunction<R> weightExtractor, A seed,
-                                                           Function<R, A> cumulativeAttributeExtractor) {
+                                                           Function<R, A> cumulativeAttributeExtractor) throws FaultyInvocationException {
 
         //The keys are the indexes that correspond to
         // the vertices in the arrays visited and dist
@@ -227,8 +233,15 @@ public class GraphAlgorithms {
                     attribute = nextArgument != null ? nextArgument : attribute;
                 }
 
-                //product is the result of application of f(x) where initial x is the seed
-                product = cumulativeApplier.apply(edge, attribute);
+                try {
+                    //product is the result of application of f(x) where initial x is the seed
+                    product = cumulativeApplier.apply(edge, attribute);
+                } catch (Exception e) {
+                    //the edge on which the exception was thrown is attached to the thrown FaultyInvocationException,
+                    //so that whilst handling it, considerations may be taken regarding the edge
+                    //The logic regarding the handling of the thrown exception is not a responsibility of this path finding algorithm
+                    throw new FaultyInvocationException(edge);
+                }
 
                 //the definition of weight is extractable from the product
                 double definedWeight = weightExtractor.applyAsDouble(product);
@@ -301,7 +314,12 @@ public class GraphAlgorithms {
      * @return the weight of the shortestPath if weighted is set to true, 1 otherwise
      */
     public static <V, E> double shortestPath(Graph<V, E> g, V vOrig, V vDest, LinkedList<V> shortPath) {
-        return shortestPath(g, vOrig, vDest, shortPath, null, false, null, null, null, null);
+        try {
+            return shortestPath(g, vOrig, vDest, shortPath, null, false, null, null, null, null);
+        } catch (FaultyInvocationException e) {
+            //This exception is only thrown by dynamicWeightSPFinder (if operateCumulatively is true)
+            return 0;
+        }
     }
 
     /**
@@ -321,7 +339,12 @@ public class GraphAlgorithms {
      * @return the weight of the shortestPath if weighted is set to true, 1 otherwise
      */
     public static <V, E> double shortestPath(Graph<V, E> g, V vOrig, V vDest, LinkedList<V> shortPath, GeneralOperator<Edge<V, E>> edgeOperator) {
-        return shortestPath(g, vOrig, vDest, shortPath, edgeOperator, false, null, null, null, null);
+        try {
+            return shortestPath(g, vOrig, vDest, shortPath, edgeOperator, false, null, null, null, null);
+        } catch (FaultyInvocationException e) {
+            //This exception is only thrown by dynamicWeightSPFinder (if operateCumulatively is true)
+            return 0;
+        }
     }
 
     /**
@@ -380,7 +403,7 @@ public class GraphAlgorithms {
     public static <I, S, E, P> double shortestPath(Graph<I, S> g, I vOrig, I vDest, LinkedList<I> shortPath,
                                                    BiFunction<Edge<I, S>, P, E> cumulativeApplier, P seed,
                                                    ToDoubleFunction<E> weightExtractor,
-                                                   Function<E, P> cumulativeAttributeExtractor) {
+                                                   Function<E, P> cumulativeAttributeExtractor) throws FaultyInvocationException {
 
         return shortestPath(g, vOrig, vDest, shortPath, null, true, cumulativeApplier, weightExtractor, seed, cumulativeAttributeExtractor);
     }
@@ -401,7 +424,7 @@ public class GraphAlgorithms {
                                                     boolean operateCumulatively,
                                                     BiFunction<Edge<V, E>, A, R> cumulativeApplier,
                                                     ToDoubleFunction<R> weightExtractor, A seed,
-                                                    Function<R, A> cumulativeAttributeExtractor) {
+                                                    Function<R, A> cumulativeAttributeExtractor) throws FaultyInvocationException {
 
         if (!g.validVertex(vOrig) || !g.validVertex(vDest)) {
             return 0;

@@ -89,6 +89,14 @@ public class Energy {
         return maxRpm;
     }
 
+    /**
+     *
+     * @return energyRegenerationRatio
+     */
+    public double getEnergyRegenerationRatio() {
+        return energyRegenerationRatio;
+    }
+
     @Override
     public String toString() {
         return "Energy{"

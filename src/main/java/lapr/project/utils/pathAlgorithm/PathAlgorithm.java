@@ -7,14 +7,15 @@ import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.RoadNetwork.Section;
 import lapr.project.model.RoadNetwork.Segment;
 import lapr.project.model.Vehicle.Vehicle;
-import lapr.project.utils.EnergyExpenditureAccelResults;
+import lapr.project.utils.*;
+import lapr.project.utils.Graph.Edge;
+import lapr.project.utils.Graph.Graph;
 import lapr.project.utils.Graph.GraphAlgorithms;
-import lapr.project.utils.Measurable;
-import lapr.project.utils.Unit;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiFunction;
 
 import static lapr.project.utils.Graph.GraphAlgorithms.shortestPath;
 
@@ -166,15 +167,39 @@ public class PathAlgorithm {
         RoadNetwork roadNetwork = project.getRoadNetwork();
 
         Measurable initialVelocity = vehicle.determineInitialVelocity();
-        double totalExpendedEnergy = GraphAlgorithms.shortestPath(roadNetwork, start, end, shortestPath,
-                //cumulative function from which both weight and the next attribute can be inferred
-                (sectionEdge, successiveVelocity) -> sectionEdge.getElement().calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration, maxBraking, end, false),
-                //initial value for successive velocity
-                initialVelocity,
-                //the weigth of the graph is considered to be the expended energy
-                result -> result.getEnergyExpenditure().getQuantity(),
-                //the next value for successiveVelocity becomes the final velocity of the previous section
-                EnergyExpenditureAccelResults::getFinalVelocity);
+
+        double totalExpendedEnergy = 0;
+
+
+        Graph<Node, Section> roadNetworkClone = roadNetwork.clone();
+
+        //If a FaultyInvocationException is thrown, the search will have to be restarted and the faulty section ignored from it
+        boolean pathFound = true;
+        do {
+            try {
+
+                totalExpendedEnergy = GraphAlgorithms.shortestPath(roadNetworkClone, start, end, shortestPath,
+                            //cumulative function from which both weight and the next attribute can be inferred
+                            //throws an Exception if a section proves to be impossible to travel, requiring the path to be recalculated
+                        (ExceptionalBiFunction<Edge<Node, Section>, Measurable, EnergyExpenditureAccelResults>)
+                                (sectionEdge, successiveVelocity) ->
+                                        sectionEdge.getElement().calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration, maxBraking, end, false),
+                            //initial value for successive velocity
+                            initialVelocity,
+                            //the weigth of the graph is considered to be the expended energy
+                            result -> result.getEnergyExpenditure().getQuantity(),
+                            //the next value for successiveVelocity becomes the final velocity of the previous section
+                            EnergyExpenditureAccelResults::getFinalVelocity);
+
+            } catch (FaultyInvocationException e) {
+                //Ignore a section which cannot be travelled
+                Section faultySection = (Section) e.getFaultyObject();
+                //Restart search without this section
+                roadNetworkClone.removeEdge(faultySection.getBeginningNode(), faultySection.getEndingNode());
+                pathFound = false;
+            }
+
+        } while (!pathFound);
 
         List<Section> sections = convertNodesListToSectionsList(shortestPath);
 

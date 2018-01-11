@@ -64,4 +64,13 @@ public class BestPathController {
         return PathAlgorithm.fastestPath(project, startNode, endNode, selectedVehicle, load);
     }
   
-}
+
+    public Analysis analyzeTheoreticalEfficientPath(Node start, Node end, Vehicle selectedVehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load){
+        return PathAlgorithm.theoreticalEfficientPath(project, start, end, selectedVehicle, maxAcceleration, maxBraking, load);
+    }
+          
+    public Analysis analyzeEfficientPathEnergySavingMode(Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking){
+        return PathAlgorithm.efficientPathEnergySavingMode(project, start, end, vehicle, maxAcceleration, maxBraking);
+    }
+    
+          }

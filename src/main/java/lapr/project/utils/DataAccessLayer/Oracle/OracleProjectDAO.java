@@ -6,9 +6,9 @@ import lapr.project.model.RoadNetwork.RoadNetwork;
 import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.Abstraction.ProjectDAO;
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import oracle.jdbc.OracleTypes;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,8 +31,12 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
 
             List<Project> projects = new LinkedList<>();
 
-            try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL fetchAllProjects")) {
-                ResultSet resultSet = callableStatement.executeQuery();
+            try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL fetchAllProjects(?)")) {
+
+                callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
+                callableStatement.executeQuery();
+
+                ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
 
                 Project project;
                 String projectName;
@@ -42,7 +46,10 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
                 RoadNetwork roadNetwork;
 
                 OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO();
+                oracleVehicleDAO.connectTo(this.oracleConnection);
+
                 OracleRoadNetworkDAO oracleRoadNetworkDAO = new OracleRoadNetworkDAO();
+                oracleRoadNetworkDAO.connectTo(this.oracleConnection);
 
                 while (resultSet.next()) {
                     projectName = resultSet.getString("name");
@@ -175,19 +182,19 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
     /**
      * Allows to add more instances of {@link Vehicle}
      * @param project {@link Project}
+     * @param addedVehicles {@link List} of instances of {@link Vehicle} to add to the database, associated to the already stored {@link Project}
      * @return true if success
      * @throws SQLException
      */
     @Override
-    public void addVehicles(Project project) throws SQLException {
+    public void addVehicles(Project project, List<Vehicle> addedVehicles) throws SQLException {
         verifyConnection();
 
             String projectName = project.getName();
 
-            List<Vehicle> vehicles = project.getVehicles();
             OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO();
             oracleVehicleDAO.connectTo(this.oracleConnection);
-            for (Vehicle vehicle : vehicles) {
+            for (Vehicle vehicle : addedVehicles) {
                 oracleVehicleDAO.storeVehicleInfo(vehicle, projectName);
             }
     }
