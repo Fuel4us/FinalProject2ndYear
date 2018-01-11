@@ -60,7 +60,7 @@ public class Main {
         currentProject = new Project(
                 "New Project",
                 "Add a description",
-                new RoadNetwork(true),
+                new RoadNetwork(),
                 new ArrayList<>()
         );
         try {
