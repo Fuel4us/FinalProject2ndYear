@@ -169,8 +169,8 @@ public class Segment {
     }
 
     /**
-     * Calculates the energy expenditure, the time spent, the final velocity and the gear position this segment
-     * given the vehicle, the initial velocity, the load, the max acceleration abd braking and the information
+     * Calculates the energy expenditure, the time spent and the final velocity this segment
+     * given the vehicle, the initial velocity, the load, the max acceleration and braking and the information
      * about this being the last segment of the path or not
      *
      * @param roadNetwork     the road network
@@ -407,5 +407,25 @@ public class Segment {
         storeSegmentProcedure.setDouble("windSpeed", windSpeed);
         storeSegmentProcedure.setDouble("maxVelocity", maxVelocity);
         storeSegmentProcedure.setDouble("minVelocity", minVelocity);
+    }
+
+    /**
+     * Calculates the energy expenditure, the time spent and the final velocity this segment
+     * given the vehicle (with the energy saving mode turned on), the initial velocity, the load, the max
+     * acceleration and braking and the information about this being the last segment of the path or not
+     *
+     * @param roadNetwork     the road network
+     * @param initialVelocity the initial velocity of the vehicle
+     * @param vehicle         the vehicle
+     * @param load            the load the vehicle takes
+     * @param maxAcceleration the max acceleration
+     * @param maxBraking      the max braking
+     * @param lastSegment     true if this is the last segment of the path
+     * @return an instance of the type EnergyExpenditureAccelResults with the information about this algorithm
+     * (energy expenditure, time spent, final velocity and gear position)
+     */
+    public EnergyExpenditureAccelResults calculateEnergyExpenditureAccelEnergySaving(RoadNetwork roadNetwork, Measurable initialVelocity, Vehicle vehicle, Measurable load,
+                                                                                     Measurable maxAcceleration, Measurable maxBraking, boolean lastSegment) {
+        return null;
     }
 }
