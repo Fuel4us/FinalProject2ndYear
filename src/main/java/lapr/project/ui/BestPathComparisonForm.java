@@ -13,7 +13,6 @@ import javax.swing.*;
 import java.util.List;
 import lapr.project.controller.BestPathController;
 import lapr.project.model.Analysis;
-import lapr.project.model.Project;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 
@@ -260,25 +259,20 @@ public class BestPathComparisonForm extends JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(66, 66, 66)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(66, 66, 66)
-                                        .addComponent(jLabelNode2))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(66, 66, 66)
-                                        .addComponent(jLabelLoad)))
+                                    .addComponent(jLabelNode2)
+                                    .addComponent(jLabelLoad))
                                 .addGap(87, 87, 87))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(66, 66, 66)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabelLoad2)
-                                    .addComponent(jLabelLoad1)
-                                    .addComponent(jScrollPane2)
-                                    .addComponent(jTextFieldLoad)
-                                    .addComponent(jTextFieldMaxAceleration)
-                                    .addComponent(jTextFieldMaxBraking))))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabelLoad2)
+                                .addComponent(jLabelLoad1)
+                                .addComponent(jScrollPane2)
+                                .addComponent(jTextFieldLoad)
+                                .addComponent(jTextFieldMaxAceleration)
+                                .addComponent(jTextFieldMaxBraking)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -372,9 +366,8 @@ public class BestPathComparisonForm extends JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -410,7 +403,7 @@ public class BestPathComparisonForm extends JFrame {
                     Analysis generatedAnalysis = controller.analyzeFastestPath(startNode, endNode, selectedVehiclesList.get(j), load);
                     analysisList.add(generatedAnalysis);
                 }
-                BestPathComparisonResults comparisonResultsUI = new BestPathComparisonResults(analysisList);
+                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList);
                 comparisonResultsUI.setVisible(true);
                 setVisible(false);
 
