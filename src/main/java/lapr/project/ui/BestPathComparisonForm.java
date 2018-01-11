@@ -13,7 +13,6 @@ import javax.swing.*;
 import java.util.List;
 import lapr.project.controller.BestPathController;
 import lapr.project.model.Analysis;
-import lapr.project.model.Project;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 
@@ -372,9 +371,8 @@ public class BestPathComparisonForm extends JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -411,7 +409,7 @@ public class BestPathComparisonForm extends JFrame {
                     Analysis generatedAnalysis = controller.analyzeFastestPath(startNode, endNode, selectedVehiclesList.get(j), load);
                     analysisList.add(generatedAnalysis);
                 }
-                BestPathComparisonResults comparisonResultsUI = new BestPathComparisonResults(analysisList);
+                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList);
                 comparisonResultsUI.setVisible(true);
                 setVisible(false);
             }
@@ -446,8 +444,8 @@ public class BestPathComparisonForm extends JFrame {
                     Analysis generatedAnalysis = controller.analyzeTheoreticalEfficientPath(startNode, endNode, selectedVehiclesList.get(j), maxAceleration, maxBraking, load);
                     analysisList.add(generatedAnalysis);
                 }
-                BestPathComparisonResults comparisonResultsUI = new BestPathComparisonResults(analysisList);
-                comparisonResultsUI.setVisible(true);
+                BestPathComparisonAllAnalysisUI allAnalysisResults = new BestPathComparisonAllAnalysisUI(analysisList);
+                allAnalysisResults.setVisible(true);
                 setVisible(false);
             }
         } catch (IllegalArgumentException ex) {
@@ -490,8 +488,8 @@ public class BestPathComparisonForm extends JFrame {
                     Analysis generatedAnalysis = controller.analyzeEfficientPathEnergySavingMode(startNode, endNode, selectedVehiclesList.get(j), maxAceleration, maxBraking);
                     analysisList.add(generatedAnalysis);
                 }
-                BestPathComparisonResults comparisonResultsUI = new BestPathComparisonResults(analysisList);
-                comparisonResultsUI.setVisible(true);
+                BestPathComparisonAllAnalysisUI allAnalysisResults = new BestPathComparisonAllAnalysisUI(analysisList);
+                allAnalysisResults.setVisible(true);
                 setVisible(false);
             }
         } catch (IllegalArgumentException ex) {

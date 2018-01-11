@@ -70,6 +70,7 @@ public final class SelectProjectUI extends javax.swing.JFrame {
         jButtonSetActive = new javax.swing.JButton();
         jButtonPopUp = new javax.swing.JButton();
 
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(45, 46, 45));
@@ -222,19 +223,27 @@ public final class SelectProjectUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonCompFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCompFormActionPerformed
-        BestPathComparisonForm.display();
-        setVisible(false);
-    }//GEN-LAST:event_jButtonCompFormActionPerformed
-
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
         WelcomeUI.display();
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
+    private void jButtonCompFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCompFormActionPerformed
+        if (verifyProjectWasSelected) {
+            BestPathComparisonForm.display();
+            setVisible(false);
+        } else {
+            showOptionPaneRequiredActiveProject();
+        }
+    }//GEN-LAST:event_jButtonCompFormActionPerformed
+
     private void jButtonPathFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPathFormActionPerformed
-        BestPathUI.display();
-        setVisible(false);
+        if (verifyProjectWasSelected) {
+            BestPathUI.display();
+            setVisible(false);
+        } else {
+            showOptionPaneRequiredActiveProject();
+        }
     }//GEN-LAST:event_jButtonPathFormActionPerformed
 
     private void jButtonSetActiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetActiveActionPerformed
@@ -257,11 +266,7 @@ public final class SelectProjectUI extends javax.swing.JFrame {
             new PopUp1(project).setVisible(true);
             dispose();
         } else {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Set a project as active first!",
-                    "Require active project",
-                    JOptionPane.INFORMATION_MESSAGE);
+            showOptionPaneRequiredActiveProject();
         }
     }//GEN-LAST:event_jButtonPopUpActionPerformed
 
@@ -271,6 +276,14 @@ public final class SelectProjectUI extends javax.swing.JFrame {
     public static void display() {
         Main.setLook();
        java.awt.EventQueue.invokeLater(() -> new SelectProjectUI().setVisible(true));
+    }
+
+    private void showOptionPaneRequiredActiveProject(){
+        JOptionPane.showMessageDialog(
+                this,
+                "Set a project as active first!",
+                "Require active project",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
 }
