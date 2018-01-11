@@ -7,13 +7,11 @@ package lapr.project.ui;
 
 import lapr.project.model.Analysis;
 
-import java.util.List;
-
 /**
  *
  * @author anily
  */
-public class BestPathComparisonResults extends javax.swing.JFrame {
+public class BestPathComparisonResultsUI extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 2562000671949976456L;
     private static Analysis analysis;
@@ -21,7 +19,7 @@ public class BestPathComparisonResults extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      */
-    BestPathComparisonResults(Analysis analysis) {
+    BestPathComparisonResultsUI(Analysis analysis) {
         this.analysis = analysis;
         initComponents();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -310,7 +308,7 @@ public class BestPathComparisonResults extends javax.swing.JFrame {
      */
     public static void display() {
         Main.setLook();
-        java.awt.EventQueue.invokeLater(() -> new BestPathComparisonResults(analysis).setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new BestPathComparisonResultsUI(analysis).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
