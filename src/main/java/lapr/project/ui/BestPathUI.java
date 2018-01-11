@@ -356,7 +356,32 @@ public final class BestPathUI extends JFrame {
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButton2ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        try {
+            Node startNode = jListNodes1.getSelectedValue();
+            Node endNode = jListNodes2.getSelectedValue();
+            Measurable maxAceleration = new Measurable(Double.parseDouble(jTextFieldMaxAceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.valueOf("km"));
+            Vehicle selectedVehicle = jListVehicles.getSelectedValue();
+
+            if (startNode == null
+                    || endNode == null
+                    || selectedVehicle == null) {
+                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes, as well as a vehicle.");
+
+            } else if (startNode.equals(endNode)) {
+                JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
+            } else if ((Double.compare(maxAceleration.getQuantity(), 0) == -1) || (Double.compare(maxBraking.getQuantity(), 0) == 1)) {
+                JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAceleration and a negative value for maxBraking");
+            } else {
+                Analysis generatedAnalysis = controller.analyzeTheoreticalEfficientPath(startNode, endNode, selectedVehicle, maxAceleration, maxBraking, load) ;
+                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis);
+                storeNetworkAnalysisUI.setVisible(true);
+                setVisible(false);
+            }
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, "Please insert a valid load value");
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
     private void jButton1ActionPerformed(ActionEvent evt) {
         try {
@@ -382,13 +407,38 @@ public final class BestPathUI extends JFrame {
             JOptionPane.showMessageDialog(null, "Please insert a valid load value");
         }
     }
-/**
+
+    /**
     private void executeAlgorithmN10(ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
     }//GEN-LAST:event_jButton1ActionPerformed
 */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        try {
+            Node startNode = jListNodes1.getSelectedValue();
+            Node endNode = jListNodes2.getSelectedValue();
+            Measurable maxAceleration = new Measurable(Double.parseDouble(jTextFieldMaxAceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Vehicle selectedVehicle = jListVehicles.getSelectedValue();
+
+            if (startNode == null
+                    || endNode == null
+                    || selectedVehicle == null) {
+                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes, as well as a vehicle.");
+
+            } else if (startNode.equals(endNode)) {
+                JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
+            } else if ((Double.compare(maxAceleration.getQuantity(), 0) == -1) || (Double.compare(maxBraking.getQuantity(), 0) == 1)) {
+                JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAceleration and a negative value for maxBraking");
+            } else {
+                Analysis generatedAnalysis = controller.analyzeEfficientPathEnergySavingMode(startNode, endNode, selectedVehicle, maxAceleration, maxBraking);
+                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis);
+                storeNetworkAnalysisUI.setVisible(true);
+                setVisible(false);
+            }
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, "Please insert a valid values");
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
