@@ -218,7 +218,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * @throws SQLException
      */
     private Measurable createVelocityLimit(int velocityLimitID, Unit[] unitEnum) throws SQLException {
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getLimitSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getLimitSet(?,?)")) {
             callableStatement.setInt(1, velocityLimitID);
             ResultSet limitSet = callableStatement.executeQuery();
             return createMeasurable(limitSet, unitEnum);
