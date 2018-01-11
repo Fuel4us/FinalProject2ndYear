@@ -31,10 +31,9 @@ public class BestPathComparisonForm extends JFrame {
     /**
      * Creates new form BestPathComparisonForm
      *
-     * @param project
      */
-    public BestPathComparisonForm(Project project) {
-        controller = new BestPathController(project);
+    public BestPathComparisonForm() {
+        this.controller = new BestPathController(Main.currentProject);
         initComponents();
     }
 
@@ -508,4 +507,12 @@ public class BestPathComparisonForm extends JFrame {
     private javax.swing.JPanel orangeBorder;
     private javax.swing.JButton removeVehicleButton;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * Triggers UI display
+     */
+    public static void display() {
+        Main.setLook();
+        java.awt.EventQueue.invokeLater(() -> new BestPathComparisonForm().setVisible(true));
+    }
 }
