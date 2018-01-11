@@ -71,7 +71,8 @@ public class Analysis implements ExportableHTML, ExportableCSV {
 
     /**
      * Provides the results of an analysis in string form.
-     * Results include
+     * Results include the set of sections used, the energy and time spent
+     * in the travel as well as the total cost
      * @return Such Results as aforementioned
      */
     public String generateReport() {
