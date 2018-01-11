@@ -176,7 +176,7 @@ public class SectionTest {
 
         EnergyExpenditureAccelResults results = sectionTest.calculateEnergyExpenditureAccel(roadNetworkTest, new Measurable(5.6548668, Unit.KILOMETERS_PER_HOUR), vehicleTest,
                 new Measurable(500, Unit.KILOGRAM), new Measurable(5, Unit.METERS_PER_SECOND_SQUARED),
-                new Measurable(-2.5, Unit.METERS_PER_SECOND_SQUARED), nodeTest2,false);
+                new Measurable(-2.5, Unit.METERS_PER_SECOND_SQUARED), nodeTest2);
 
         assertEquals(expected.getEnergyExpenditure().getQuantity(), results.getEnergyExpenditure().getQuantity(), 100);
         assertEquals(expected.getFinalVelocity().getQuantity(), results.getFinalVelocity().getQuantity(), 0.001);

@@ -245,13 +245,12 @@ public class Section extends Edge<String, Direction> {
      * @param maxAcceleration the max acceleration
      * @param maxBraking the max braking
      * @param pathEndingNode the ending node of the path
-     * @param energySaving true if the vehicle is in energy saving mode
      * @return an instance of the class EnergyExpenditureAccelResults containing the energy expenditure, the final velocity,
      * the time spent in this section, an array of instances of the Gears used in each segment and the toll costs for
      * the section
      */
     public EnergyExpenditureAccelResults calculateEnergyExpenditureAccel(RoadNetwork roadNetwork, Measurable initialVelocity, Vehicle vehicle,
-                                                                         Measurable load, Measurable maxAcceleration, Measurable maxBraking, Node pathEndingNode, boolean energySaving) {
+                                                                         Measurable load, Measurable maxAcceleration, Measurable maxBraking, Node pathEndingNode) {
 
         Measurable totalEnergyExpenditure = new Measurable(0, Unit.KILOJOULE);
         Measurable totalTimeSpent = new Measurable(0, Unit.HOUR);
@@ -275,7 +274,7 @@ public class Section extends Edge<String, Direction> {
             }
 
             EnergyExpenditureAccelResults segmentResults =
-                    segment.calculateEnergyExpenditureAccel(roadNetwork, initialVelocity, vehicle, load, maxAcceleration, maxBraking, lastSegment, energySaving);
+                    segment.calculateEnergyExpenditureAccel(roadNetwork, initialVelocity, vehicle, load, maxAcceleration, maxBraking, lastSegment);
 
             // the initial velocity is always being updated
             initialVelocity = segmentResults.getFinalVelocity();

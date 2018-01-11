@@ -153,18 +153,17 @@ public class Vehicle {
      * @param load the vehicle's load
      * @param length the length to be used
      * @param velocity the velocity to be used
-     * @param energySaving true if the vehicle is in energy saving mode
      * @param acceleration the acceleration of the vehicle (0 if the uniform movement is to be preserved)
      * @return the energy expenditure in KJ taking into account the fuel of the vehicle, the gear position used in
      * the segment, the velocity the vehicle used and the energy expenditure using the formula "Power * timeSpent"
      */
-    public Measurable[] determineEnergyExpenditure(Segment segment, Measurable load, double length, Measurable velocity, boolean energySaving, Measurable acceleration) {
+    public Measurable[] determineEnergyExpenditure(Segment segment, Measurable load, double length, Measurable velocity, Measurable acceleration) {
 
         Measurable velocityToBeUsed = new Measurable(velocity.getQuantity(), Unit.KILOMETERS_PER_HOUR);
         int gearPosition = energy.getGears().size() - 1;
         int throttlePosition = 0;
 
-        Measurable[] data = calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, velocityToBeUsed, load, energySaving, acceleration);
+        Measurable[] data = calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, velocityToBeUsed, load, acceleration);
 
         Measurable power = calculatePowerGenerated(data[0], data[1]);
 
@@ -201,14 +200,13 @@ public class Vehicle {
      * @param throttlePosition the throttle position
      * @param velocity the maximum linear velocity
      * @param load the vehicle's load
-     * @param energySaving true if the vehicle is in energy saving mode
      * @param acceleration the acceleration of the vehicle (0 if the uniform movement is to be preserved)
      * @return an array with the engine speed in the first position, the torque
      * in the second position, the SFC in the third position, the velocity
      * in the forth position and the gear position in the fifth position
      */
     private Measurable[] calculateEngineSpeedTorqueSFCVelocity(Segment segment, int gearPosition, int throttlePosition,
-                                                               Measurable velocity, Measurable load, boolean energySaving, Measurable acceleration) {
+                                                               Measurable velocity, Measurable load, Measurable acceleration) {
 
         double engineSpeed
                 = (velocity.getQuantity() * 60 * energy.getFinalDriveRatio() * energy.getGears().get(gearPosition).getRatio())
@@ -223,7 +221,7 @@ public class Vehicle {
                 SFC = regime.getSFC();
                 break;
             } else if (regime.getRpmLow() > engineSpeed) {
-                return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, energySaving, acceleration);
+                return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, acceleration);
             }
         }
 
@@ -232,7 +230,7 @@ public class Vehicle {
             velocity.setQuantity(velocity.getQuantity() - velocity.getQuantity() * 0.02d);
             gearPosition = energy.getGears().size() - 1;
             throttlePosition = 0;
-            return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, velocity, load, energySaving, acceleration);
+            return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, velocity, load, acceleration);
         }
 
         double motorForce = (torque * energy.getFinalDriveRatio() * energy.getGears().get(gearPosition).getRatio())
@@ -255,18 +253,14 @@ public class Vehicle {
         // if the sum of the motor force and the acceleration force is lesser than the sum of the rolling resistance, air drag and gravitational force
         if (accelerationForce + motorForce < rollingResistance + airDrag + gravitationalForce) {
 
-            if (energySaving) {
-                return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, energySaving, acceleration);
-            }
-
             // if the throttle position is not 100%, we increase the throttle position
             if (throttlePosition < 2) {
-                return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, ++throttlePosition, velocity, load, energySaving, acceleration);
+                return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, ++throttlePosition, velocity, load, acceleration);
             }
 
             // if the throttle position is in 100%, we decrease the gear position and start the throttle as 25%
             throttlePosition = 0;
-            return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, energySaving, acceleration);
+            return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, acceleration);
 
         }
 
