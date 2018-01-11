@@ -134,9 +134,10 @@ public class PopUp1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonChangeDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonChangeDataActionPerformed
-        ChangeDataUI epui = new ChangeDataUI(projectPop);
-        this.setVisible(false);
-        epui.setVisible(true);
+        //ToDo Redo this and remove projectPop useless static field
+//        ChangeDataUI epui = new ChangeDataUI(projectPop);
+//        this.setVisible(false);
+//        epui.setVisible(true);
     }//GEN-LAST:event_jButtonChangeDataActionPerformed
 
     private void jButtonSetActiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetActiveActionPerformed
