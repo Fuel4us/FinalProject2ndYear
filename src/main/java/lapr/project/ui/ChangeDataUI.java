@@ -211,8 +211,6 @@ public class ChangeDataUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateActionPerformed
-        controller.setName(jTextFieldName.getText());
-        controller.setDescription(jTextFieldDescription.getText());
         JOptionPane.showMessageDialog(null, "Changes were successfully made in your project.");
         PopUp1 pop = new PopUp1(controller.getProject());
         pop.setVisible(true);
