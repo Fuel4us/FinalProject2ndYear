@@ -23,7 +23,7 @@ public class EnergyTest {
 
     public EnergyTest() {
     }
-
+    
     /**
      * Test of getFinalDriveRatio method, of class Energy.
      */
@@ -72,6 +72,40 @@ public class EnergyTest {
                 + '}';
         String result = instance.toString();
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getMinRpm method, of class Energy.
+     */
+    @Test
+    public void testGetMinRpm() {
+        System.out.println("getMinRpm");
+        int expResult = 20;
+        int result = instance.getMinRpm();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getMaxRpm method, of class Energy.
+     */
+    @Test
+    public void testGetMaxRpm() {
+        System.out.println("getMaxRpm");
+        int expResult = 20;
+        int result = instance.getMaxRpm();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getEnergyRegenerationRatio method, of class Energy.
+     */
+    @Test
+    public void testGetEnergyRegenerationRatio() {
+        System.out.println("getEnergyRegenerationRatio");
+        Energy instance2 = new Energy (20, 20, 5, 5, gears, throttle);
+        double expResult = 5;
+        double result = instance2.getEnergyRegenerationRatio();
+        assertEquals(expResult, result, 0.0);
     }
 
 }

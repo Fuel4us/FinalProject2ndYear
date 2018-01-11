@@ -183,7 +183,7 @@ public class PathAlgorithm {
                             //throws an Exception if a section proves to be impossible to travel, requiring the path to be recalculated
                         (ExceptionalBiFunction<Edge<Node, Section>, Measurable, EnergyExpenditureAccelResults>)
                                 (sectionEdge, successiveVelocity) ->
-                                        sectionEdge.getElement().calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration, maxBraking, end),
+                                        sectionEdge.getElement().calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration, maxBraking, end, false),
                             //initial value for successive velocity
                             initialVelocity,
                             //the weigth of the graph is considered to be the expended energy
@@ -231,7 +231,7 @@ public class PathAlgorithm {
         double tollCosts = 0;
 
         for (Section section : path) {
-            EnergyExpenditureAccelResults results = section.calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration, maxBraking, end);
+            EnergyExpenditureAccelResults results = section.calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration, maxBraking, end, false);
             successiveVelocity = results.getFinalVelocity();
 
             travelTime += results.getTimeSpent().getQuantity();
