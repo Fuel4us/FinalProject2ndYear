@@ -7,20 +7,21 @@ package lapr.project.model.Vehicle;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.BeforeClass;
 
 /**
  *
  * @author goncalo
  */
 public class ThrottleTest {
-    
+
     List<Regime> regime = new ArrayList<>();
     Throttle instance = new Throttle(20, regime);
-    
-    public ThrottleTest() {
-    }
 
     /**
      * Test of getRegimes method, of class Throttle.
@@ -32,5 +33,22 @@ public class ThrottleTest {
         List<Regime> result = instance.getRegimes();
         assertEquals(expResult, result);
     }
-    
+
+    /**
+     * Test of toString method, of class Throttle.
+     */
+    @Test
+    public void testToString() {
+        
+        assertEquals(instance.toString(), "Throttle "+instance.getId());
+    }
+
+    /**
+     * Test of getId method, of class Throttle.
+     */
+    @Test
+    public void testGetId() {
+        assertEquals(instance.getId(), 20);
+    }
+
 }
