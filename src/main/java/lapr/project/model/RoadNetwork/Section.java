@@ -245,17 +245,15 @@ public class Section extends Edge<String, Direction> {
      * @param maxAcceleration the max acceleration
      * @param maxBraking the max braking
      * @param pathEndingNode the ending node of the path
-     * @return an instance of the class EnergyExpenditureAccelResults containing the energy expenditure, the final velocity,
-     * the time spent in this section, an array of instances of the Gears used in each segment and the toll costs for
-     * the section
+     * @return an instance of the class EnergyExpenditureAccelResults containing the energy expenditure, the final velocity and
+     * the time spent in this section
      */
     public EnergyExpenditureAccelResults calculateEnergyExpenditureAccel(RoadNetwork roadNetwork, Measurable initialVelocity, Vehicle vehicle,
-                                                                         Measurable load, Measurable maxAcceleration, Measurable maxBraking, Node pathEndingNode) {
+                                                                         Measurable load, Measurable maxAcceleration, Measurable maxBraking, Node pathEndingNode,
+                                                                         boolean energySaving) {
 
         Measurable totalEnergyExpenditure = new Measurable(0, Unit.KILOJOULE);
         Measurable totalTimeSpent = new Measurable(0, Unit.HOUR);
-
-        Measurable tollCosts = new Measurable(determineTollCosts(vehicle).getQuantity(), Unit.EUROS);
 
         boolean lastSection = false;
         if (endingNode.equals(pathEndingNode)) {
@@ -273,8 +271,12 @@ public class Section extends Edge<String, Direction> {
                 lastSegment = true;
             }
 
-            EnergyExpenditureAccelResults segmentResults =
-                    segment.calculateEnergyExpenditureAccel(roadNetwork, initialVelocity, vehicle, load, maxAcceleration, maxBraking, lastSegment);
+            EnergyExpenditureAccelResults segmentResults;
+            if (!energySaving) {
+                segmentResults = segment.calculateEnergyExpenditureAccel(roadNetwork, initialVelocity, vehicle, load, maxAcceleration, maxBraking, lastSegment);
+            } else {
+                segmentResults = segment.calculateEnergyExpenditureAccelEnergySaving(roadNetwork, initialVelocity, vehicle, load, maxAcceleration, maxBraking, lastSegment);
+            }
 
             // the initial velocity is always being updated
             initialVelocity = segmentResults.getFinalVelocity();
@@ -284,7 +286,8 @@ public class Section extends Edge<String, Direction> {
 
         }
 
-        return new EnergyExpenditureAccelResults(totalEnergyExpenditure, initialVelocity, totalTimeSpent, tollCosts);
+        return new EnergyExpenditureAccelResults(totalEnergyExpenditure, initialVelocity, totalTimeSpent);
 
     }
+
 }
