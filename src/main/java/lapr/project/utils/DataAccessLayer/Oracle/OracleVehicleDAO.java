@@ -76,6 +76,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         int maxLoadID = resultSet.getInt("maxLoadID");
         int frontalAreaID = resultSet.getInt("frontalAreaID");
         int wheelID = resultSet.getInt("wheelSizeID");
+        int vehicleEnergyID = resultSet.getInt("energyID");
 
         Unit[] unitEnum = Unit.values();
         Measurable mass = createMass(name, unitEnum, massID);
@@ -85,7 +86,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
         List<VelocityLimit> velocityLimitList = fillVelocityLimitList(name, unitEnum);
 
-        Energy energy = createEnergy(name);
+        Energy energy = createEnergy(name, vehicleEnergyID);
 
         vehicle = new Vehicle(name, description, vehicleType, vehicleClass, motorization, fuel, mass, load, dragCoefficient, frontalArea, rollingResistanceCoefficient, wheelSize, velocityLimitList, energy);
         return vehicle;
@@ -192,10 +193,11 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
     /**
      * Retrieves and creates {@link Energy} from database
      * @param name identifier of {@link Vehicle}
+     * @param vehicleEnergyID
      * @return {@link Energy}
      * @throws SQLException
      */
-    private Energy createEnergy(String name) throws SQLException {
+    private Energy createEnergy(String name, int vehicleEnergyID) throws SQLException {
         try (CallableStatement callableStatement = oracleConnection
                 .prepareCall("CALL getEnergySet(?,?)")) {
 
@@ -205,7 +207,12 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             callableStatement.execute();
 
             ResultSet energySet = (ResultSet) callableStatement.getObject(2);
-            energySet.next();
+
+            while (energySet.next()) {
+                if (energySet.getInt("id") == vehicleEnergyID) {
+                    break;
+                }
+            }
 
             int energyID = energySet.getInt("energyID");
 
