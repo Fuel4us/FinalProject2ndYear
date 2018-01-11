@@ -25,7 +25,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
     /**
      * Creates a list of instances of {@link Vehicle} from a given project name
-     *
      * @param projectName name of the project
      * @return list of {@link Vehicle}
      * @throws SQLException
@@ -56,7 +55,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
     /**
      * Creates an instance of {@link Vehicle} from a given ResultSet
-     *
      * @param resultSet name of the project
      * @return instance of {@link Vehicle}
      * @throws SQLException
@@ -67,7 +65,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         String description = resultSet.getString("description");
         int vehicleClass = resultSet.getInt("vehicleTollClass");
         float dragCoefficient = resultSet.getFloat("dragCoefficient");
-        float rollingReleaseCoefficient = resultSet.getFloat("rollingReleaseCoefficient");
+        float rollingResistanceCoefficient = resultSet.getFloat("rollingResistanceCoefficient");
 
         VehicleType vehicleType = determineVehicleType(resultSet);
         Vehicle.MotorType motorization = determineMotorType(resultSet);
@@ -83,7 +81,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
         Energy energy = createEnergy(name);
 
-        vehicle = new Vehicle(name, description, vehicleType, vehicleClass, motorization, fuel, mass, load, dragCoefficient, frontalArea, rollingReleaseCoefficient, wheelSize, velocityLimitList, energy);
+        vehicle = new Vehicle(name, description, vehicleType, vehicleClass, motorization, fuel, mass, load, dragCoefficient, frontalArea, rollingResistanceCoefficient, wheelSize, velocityLimitList, energy);
         return vehicle;
     }
 
@@ -284,9 +282,16 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * @throws SQLException
      */
     private Measurable createMass(String name, Unit[] unitEnum) throws SQLException {
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getMassSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection
+                .prepareCall("CALL getMassSet(?,?)")) {
+
             callableStatement.setString(1, name);
-            ResultSet massSet = callableStatement.executeQuery();
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+
+            callableStatement.execute();
+
+            ResultSet massSet = (ResultSet) callableStatement.getObject(2);
+
             return createMeasurable(massSet, unitEnum);
         }
 
