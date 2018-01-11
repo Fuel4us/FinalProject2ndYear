@@ -99,13 +99,19 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
                 .prepareCall("CALL getRegimeSet(?,?,?)")) {
             callableStatement.setInt(1, throttleID);
             callableStatement.setInt(2, energyID);
-            callableStatement.registerOutParameter(3,OracleTypes.CURSOR);
+            callableStatement.registerOutParameter(3, OracleTypes.CURSOR);
 
             callableStatement.execute();
             ResultSet regimeSet = (ResultSet) callableStatement.getObject(3);
             while (regimeSet.next()) {
-                Regime regime = new Regime(regimeSet.getInt("torqueLow"), regimeSet.getInt("torqueHigh"), regimeSet.getInt("rpmLow"), regimeSet.getInt("rpmHigh"), regimeSet.getInt("SFC"));
-                regimeList.add(regime);
+
+                if (regimeSet.getInt("energyID") == energyID
+                        && regimeSet.getInt("throttleID") == throttleID) {
+
+                    Regime regime = new Regime(regimeSet.getInt("torqueLow"), regimeSet.getInt("torqueHigh"), regimeSet.getInt("rpmLow"), regimeSet.getInt("rpmHigh"), regimeSet.getInt("SFC"));
+                    regimeList.add(regime);
+                }
+
             }
         }
 
@@ -123,15 +129,22 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
         try (CallableStatement callableStatement = oracleConnection
                 .prepareCall("CALL getThrottleSet(?,?)")) {
+
             callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
             callableStatement.setInt(1, energyID);
+
             callableStatement.execute();
+
             ResultSet throttleSet = (ResultSet) callableStatement.getObject(2);
             while (throttleSet.next()) {
-                int throttleID = throttleSet.getInt("id");
-                List<Regime> regimeList = fillRegimeList(throttleID, energyID);
-                Throttle throttle = new Throttle(throttleID, regimeList);
-                throttleList.add(throttle);
+
+                if (throttleSet.getInt("energyID") == energyID) {
+                    int throttleID = throttleSet.getInt("id");
+                    List<Regime> regimeList = fillRegimeList(throttleID, energyID);
+                    Throttle throttle = new Throttle(throttleID, regimeList);
+                    throttleList.add(throttle);
+                }
+
             }
         }
 
@@ -149,13 +162,22 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
         try (CallableStatement callableStatement = oracleConnection
                 .prepareCall("CALL getGearSet(?,?)")) {
+
             callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
             callableStatement.setInt(1, energyID);
+
             callableStatement.execute();
+
             ResultSet gearsSet = (ResultSet) callableStatement.getObject(2);
+
+            //Only retrieves gears that correspond to this energy
             while (gearsSet.next()) {
-                Gears gear = new Gears(gearsSet.getInt("id"), gearsSet.getFloat("ratio"));
-                gearList.add(gear);
+
+                if (gearsSet.getInt("energyID") == energyID) {
+                    Gears gear = new Gears(gearsSet.getInt("id"), gearsSet.getFloat("ratio"));
+                    gearList.add(gear);
+                }
+
             }
         }
 
