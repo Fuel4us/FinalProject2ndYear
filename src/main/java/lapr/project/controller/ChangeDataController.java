@@ -18,8 +18,9 @@ public class ChangeDataController {
     private String name;
     private String description;
 
-    public ChangeDataController(Project project) {
+    public ChangeDataController(Project project, DataBaseCommunicator dbCom) {
         this.project = project;
+        this.dbCom = dbCom;
     }
 
     /**
