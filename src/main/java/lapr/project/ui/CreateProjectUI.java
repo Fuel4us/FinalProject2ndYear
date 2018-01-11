@@ -231,13 +231,7 @@ public final class CreateProjectUI extends javax.swing.JFrame {
         } else {
             try {
                 Project project = createProjectController.createProject(jTextFieldName.getText(), jTextFieldDescription.getText());
-                if (project.getRoadNetwork() != null) {
-                    JOptionPane.showMessageDialog(this, "Roads loaded");
-                }
-                if (project.getVehicles() != null) {
-                    JOptionPane.showMessageDialog(this, "Vehicles loaded");
-                }
-
+                JOptionPane.showMessageDialog(this,"Project created.");
             } catch (Exception ex) {
                 Logger.getLogger(CreateProjectUI.class.getName()).log(Level.SEVERE, null, ex);
             }

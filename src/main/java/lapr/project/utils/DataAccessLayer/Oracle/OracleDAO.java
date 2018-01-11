@@ -12,9 +12,9 @@ import java.util.logging.Level;
 
 /**
  * An Oracle Data Access Object
- * This class should be extended by
+ * This class should be extended by Data Access Objects which are implemented in regards to OracleDB specifications
  */
-public class OracleDAO {
+class OracleDAO {
 
     protected Connection oracleConnection;
 
@@ -36,15 +36,12 @@ public class OracleDAO {
     }
 
     /**
-     * Verifies if database is connected
-     * @return true if is connected
+     * Verifies if a Data Access Object is connected
      */
-    boolean verifyConnection() {
+    void verifyConnection() {
         if (!this.isConnected()) {
             DBAccessor.DB_ACCESS_LOG.log(Level.INFO, "No connection found in {0}", this.getClass());
-            return false;
         }
-        return true;
     }
 
     /**
