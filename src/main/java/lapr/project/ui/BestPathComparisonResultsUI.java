@@ -20,7 +20,7 @@ public class BestPathComparisonResultsUI extends javax.swing.JFrame {
      * Creates new form NewJFrame
      */
     BestPathComparisonResultsUI(Analysis analysis) {
-        this.analysis = analysis;
+        BestPathComparisonResultsUI.analysis = analysis;
         initComponents();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
