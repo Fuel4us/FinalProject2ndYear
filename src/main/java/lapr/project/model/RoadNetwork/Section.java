@@ -255,8 +255,6 @@ public class Section extends Edge<String, Direction> {
 
         Measurable totalEnergyExpenditure = new Measurable(0, Unit.KILOJOULE);
         Measurable totalTimeSpent = new Measurable(0, Unit.HOUR);
-        Gears[] gearsForEachSegment = new Gears[segments.size()];
-        int gearsIndex = 0;
 
         Measurable tollCosts = new Measurable(determineTollCosts(vehicle).getQuantity(), Unit.EUROS);
 
@@ -284,12 +282,10 @@ public class Section extends Edge<String, Direction> {
 
             totalEnergyExpenditure.setQuantity(totalEnergyExpenditure.getQuantity() + segmentResults.getEnergyExpenditure().getQuantity());
             totalTimeSpent.setQuantity(totalTimeSpent.getQuantity() + segmentResults.getTimeSpent().getQuantity());
-            gearsForEachSegment[gearsIndex] = segmentResults.getGearForEachSegment()[0];
-            gearsIndex++;
 
         }
 
-        return new EnergyExpenditureAccelResults(totalEnergyExpenditure, initialVelocity, totalTimeSpent, gearsForEachSegment, tollCosts);
+        return new EnergyExpenditureAccelResults(totalEnergyExpenditure, initialVelocity, totalTimeSpent, tollCosts);
 
     }
 }
