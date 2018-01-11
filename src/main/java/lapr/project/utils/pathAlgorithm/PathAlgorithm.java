@@ -46,10 +46,6 @@ public class PathAlgorithm {
      */
     public static Analysis fastestPath(Project project, Node start, Node end, Vehicle vehicle, Measurable load) {
 
-        if (vehicle.getMotorType() != Vehicle.MotorType.COMBUSTION) {
-            throw new IllegalArgumentException("This operation does not support electric vehicles");
-        }
-
         if (!vehicle.hasValidLoad(load)) {
             throw new IllegalArgumentException("The selected vehicle does not support this load");
         }
@@ -71,7 +67,7 @@ public class PathAlgorithm {
             for (Segment segment : section.getSegments()) {
                 Measurable maxLinearVelocity = segment.calculateMaximumVelocityInterval(roadNetwork, vehicle, segment.getLength());
                 expendedEnergy.setQuantity(expendedEnergy.getQuantity() +
-                        vehicle.determineEnergyExpenditure(segment, load, segment.getLength(), maxLinearVelocity, false, new Measurable(0, Unit.METERS_PER_SECOND_SQUARED))[0].getQuantity());
+                        segment.determineEnergyExpenditureUniformMovement(new Measurable(0, Unit.KILOMETERS_PER_HOUR), vehicle, load, segment.getLength(), maxLinearVelocity, false));
             }
             tollCosts.setQuantity(tollCosts.getQuantity() + section.determineTollCosts(vehicle).getQuantity());
         }
