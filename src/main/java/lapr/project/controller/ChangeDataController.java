@@ -15,6 +15,8 @@ public class ChangeDataController {
 
     private Project project;
     private DataBaseCommunicator dbCom;
+    private String name;
+    private String description;
 
     public ChangeDataController(Project project) {
         this.project = project;
@@ -37,22 +39,6 @@ public class ChangeDataController {
     }
 
     /**
-     * Setter for project name
-     * @param name
-     */
-    public void setName(String name) {
-        project.setName(name);
-    }
-
-    /**
-     * Setter for project description
-     * @param description
-     */
-    public void setDescription(String description) {
-        project.setDescription(description);
-    }
-
-    /**
      * Getter for project
      * @return project
      */
@@ -60,13 +46,41 @@ public class ChangeDataController {
         return project;
     }
 
+    /**
+     * Setter of name
+     * @param name project name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Setter of description
+     * @param description project description
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * 
+     * @param roads
+     * @throws Exception
+     */
     public void addNewRoads(File roads) throws Exception {
         FileParser importer = new XMLImporter(roads, project.getRoadNetwork());
         importer.importNetwork(false);
     }
-    
-    public boolean changeProjectData(Project project, String name, String description){
-        return dbCom.changeProjectData(project, name, description);
-    }
 
+    /**
+     *
+     * @param project
+     * @param updatedName
+     * @param updatedDescription
+     */
+    public void changeProjectData(Project project, String updatedName, String updatedDescription){
+        dbCom.changeProjectData(project, updatedName, updatedDescription);
+        project.setName(updatedName);
+        project.setDescription(updatedDescription);
+    }
 }
