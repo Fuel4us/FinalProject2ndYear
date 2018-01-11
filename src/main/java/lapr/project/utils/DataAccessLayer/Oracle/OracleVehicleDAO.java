@@ -9,6 +9,7 @@ import lapr.project.model.Vehicle.*;
 import lapr.project.utils.DataAccessLayer.Abstraction.VehicleDAO;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
+import oracle.jdbc.OracleTypes;
 
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
@@ -21,8 +22,6 @@ import java.util.List;
  * Retrieves instances of Vehicle for a given project
  */
 public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
-
-
 
     /**
      * Creates a list of instances of {@link Vehicle} from a given project name
@@ -38,9 +37,14 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
         List<Vehicle> vehicles = new LinkedList<>();
 
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL fetchVehiclesFromProject(?)")) {
+        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL fetchVehiclesFromProject(?,?)")) {
             callableStatement.setString(1, projectName);
-            ResultSet vehicleSet = callableStatement.executeQuery();
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+
+            callableStatement.execute();
+
+            ResultSet vehicleSet = (ResultSet) callableStatement.getObject(2);
+
             while (vehicleSet.next()) {
                 Vehicle vehicle = retrieveVehicle(vehicleSet);
                 vehicles.add(vehicle);

@@ -8,10 +8,7 @@ import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.Abstraction.ProjectDAO;
 import oracle.jdbc.OracleTypes;
 
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,7 +34,9 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
             try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL fetchAllProjects(?)")) {
 
                 callableStatement.registerOutParameter(1, OracleTypes.CURSOR);
-                ResultSet resultSet = callableStatement.executeQuery();
+                callableStatement.executeQuery();
+
+                ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
 
                 Project project;
                 String projectName;
