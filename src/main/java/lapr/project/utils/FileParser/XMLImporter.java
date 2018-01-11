@@ -457,6 +457,7 @@ public class XMLImporter implements FileParser {
              */
             Vehicle vehicle = new Vehicle(name, description, vehicleType, newTollClass, motorTypeValue, fuel, mass, load, dragCoefficient, frontalArea, rrc, wheel, velocityLimits, energy);
             vehicles.add(vehicle);
+            velocityLimits = new ArrayList<>();
         }
 
         return vehicles;
