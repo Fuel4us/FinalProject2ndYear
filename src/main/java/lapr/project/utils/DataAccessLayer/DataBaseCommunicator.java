@@ -2,7 +2,8 @@ package lapr.project.utils.DataAccessLayer;
 
 import lapr.project.model.Analysis;
 import lapr.project.model.Project;
-import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.model.RoadNetwork;
+import lapr.project.model.Vehicle;
 import lapr.project.utils.DataAccessLayer.Abstraction.AnalysisDAO;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.Abstraction.ProjectDAO;
@@ -202,7 +203,7 @@ public class DataBaseCommunicator {
     }
 
     /**
-     * Adds new elements to a {@link lapr.project.model.RoadNetwork.RoadNetwork} already created in the database
+     * Adds new elements to a {@link RoadNetwork} already created in the database
      * @param project The project to which add sections and nodes
      * @return
      */

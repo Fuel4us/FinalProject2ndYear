@@ -1,8 +1,8 @@
 package lapr.project.controller;
 
 import lapr.project.model.Project;
-import lapr.project.model.RoadNetwork.RoadNetwork;
-import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.model.RoadNetwork;
+import lapr.project.model.Vehicle;
 import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 import lapr.project.utils.FileParser.FileParser;
 import lapr.project.utils.FileParser.XMLImporter;

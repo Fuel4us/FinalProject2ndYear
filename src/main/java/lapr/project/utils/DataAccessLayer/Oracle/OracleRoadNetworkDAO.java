@@ -5,7 +5,7 @@
  */
 package lapr.project.utils.DataAccessLayer.Oracle;
 
-import lapr.project.model.RoadNetwork.*;
+import lapr.project.model.*;
 import lapr.project.utils.DataAccessLayer.Abstraction.RoadNetworkDAO;
 import lapr.project.utils.Graph.Edge;
 import oracle.jdbc.OracleTypes;

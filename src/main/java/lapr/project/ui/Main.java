@@ -1,7 +1,7 @@
 package lapr.project.ui;
 
 import lapr.project.model.Project;
-import lapr.project.model.RoadNetwork.RoadNetwork;
+import lapr.project.model.RoadNetwork;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 import oracle.jdbc.pool.OracleDataSource;

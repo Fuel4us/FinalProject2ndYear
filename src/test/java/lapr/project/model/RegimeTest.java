@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lapr.project.model.Vehicle;
+package lapr.project.model;
 
+import lapr.project.model.Regime;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

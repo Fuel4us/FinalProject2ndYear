@@ -11,9 +11,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import lapr.project.controller.CopyProjectController;
 import lapr.project.model.Project;
-import lapr.project.model.RoadNetwork.RoadNetwork;
+import lapr.project.model.RoadNetwork;
 import static lapr.project.ui.Main.dbCom;
-import static lapr.project.ui.Main.currentProject;
 
 /**
  *

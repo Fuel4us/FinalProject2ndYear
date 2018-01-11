@@ -1,7 +1,6 @@
 package lapr.project.utils.FileParser;
 
-import lapr.project.model.RoadNetwork.*;
-import lapr.project.model.Vehicle.*;
+import lapr.project.model.*;
 import lapr.project.utils.Graph.Edge;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
@@ -117,10 +116,10 @@ public class XMLImporter implements FileParser {
 
                 Element element = (Element) node;
 
-                lapr.project.model.RoadNetwork.Node roadNetworkNode
-                        = new lapr.project.model.RoadNetwork.Node(element.getAttribute("id"));
+                Node roadNetworkNode
+                        = new Node(element.getAttribute("id"));
 
-                List<lapr.project.model.RoadNetwork.Node> duplicateNodes = roadNetwork.getVertices().stream()
+                List<Node> duplicateNodes = roadNetwork.getVertices().stream()
                         .filter(node1 -> node1.getId().equals(roadNetworkNode.getId()))
                         .collect(Collectors.toList());
 
@@ -213,10 +212,10 @@ public class XMLImporter implements FileParser {
 
                 Element element = (Element) node;
 
-                lapr.project.model.RoadNetwork.Node beginningNode = null;
-                lapr.project.model.RoadNetwork.Node endingNode = null;
+                Node beginningNode = null;
+                Node endingNode = null;
 
-                for (lapr.project.model.RoadNetwork.Node roadNetworkNode : roadNetwork.vertices()) {
+                for (Node roadNetworkNode : roadNetwork.vertices()) {
 
                     String nodeId = roadNetworkNode.toString();
 
@@ -278,8 +277,8 @@ public class XMLImporter implements FileParser {
                     continue;
                 }
 
-                lapr.project.model.RoadNetwork.Node finalBeginningNode = beginningNode;
-                lapr.project.model.RoadNetwork.Node finalEndingNode = endingNode;
+                Node finalBeginningNode = beginningNode;
+                Node finalEndingNode = endingNode;
                 List<Section> duplicateSections = roadNetwork.getEdges().stream()
                         .filter(nodeSectionEdge -> nodeSectionEdge.getElement().getBeginningNode().equals(finalBeginningNode)
                         && nodeSectionEdge.getElement().getEndingNode().equals(finalEndingNode))

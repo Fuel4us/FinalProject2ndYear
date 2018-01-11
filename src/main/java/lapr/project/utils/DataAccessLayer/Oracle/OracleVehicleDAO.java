@@ -5,7 +5,7 @@
  */
 package lapr.project.utils.DataAccessLayer.Oracle;
 
-import lapr.project.model.Vehicle.*;
+import lapr.project.model.*;
 import lapr.project.utils.DataAccessLayer.Abstraction.VehicleDAO;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
@@ -431,9 +431,9 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
     }
 
     /**
-     * Creates {@link lapr.project.model.Vehicle.Vehicle.MotorType} from {@link Vehicle} column "motorType"
+     * Creates {@link Vehicle.MotorType} from {@link Vehicle} column "motorType"
      * @param resultSet {@link ResultSet}
-     * @return {@link lapr.project.model.Vehicle.Vehicle.MotorType}
+     * @return {@link Vehicle.MotorType}
      * @throws SQLException
      */
     private Vehicle.MotorType determineMotorType(ResultSet resultSet) throws SQLException {

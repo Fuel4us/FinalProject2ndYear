@@ -1,40 +1,16 @@
-package lapr.project.model.RoadNetwork;
+package lapr.project.model;
 
+import lapr.project.utils.Measurable;
+import lapr.project.utils.Unit;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import lapr.project.model.Vehicle.Energy;
-import lapr.project.model.Vehicle.Fuel;
-import lapr.project.model.Vehicle.Vehicle;
-import lapr.project.model.Vehicle.VehicleType;
-import lapr.project.utils.Measurable;
-import lapr.project.utils.Unit;
-import org.junit.After;
-import org.junit.AfterClass;
 
 import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
 
 public class RoadTest {
-
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
 
     /**
      * Ensures the method equals() returns true:

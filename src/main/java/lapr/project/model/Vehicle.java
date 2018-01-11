@@ -1,8 +1,5 @@
-package lapr.project.model.Vehicle;
+package lapr.project.model;
 
-import java.math.BigDecimal;
-
-import lapr.project.model.RoadNetwork.Segment;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Physics;
 import lapr.project.utils.Unit;

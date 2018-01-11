@@ -1,4 +1,4 @@
-package lapr.project.model.RoadNetwork;
+package lapr.project.model;
 
 /**
  * Indicates circulation direction in a section

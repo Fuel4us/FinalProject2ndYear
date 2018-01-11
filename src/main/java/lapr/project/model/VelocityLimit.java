@@ -1,4 +1,4 @@
-package lapr.project.model.Vehicle;
+package lapr.project.model;
 
 import lapr.project.utils.Measurable;
 public class VelocityLimit {

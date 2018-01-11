@@ -3,11 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lapr.project.model.Vehicle;
+package lapr.project.model;
 
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.*;
+
+import lapr.project.model.Energy;
+import lapr.project.model.Gears;
+import lapr.project.model.Regime;
+import lapr.project.model.Throttle;
 import org.junit.Test;
 
 /**

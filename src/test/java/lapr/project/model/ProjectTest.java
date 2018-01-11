@@ -1,15 +1,11 @@
 package lapr.project.model;
 
-import lapr.project.model.RoadNetwork.RoadNetwork;
-import lapr.project.model.Vehicle.Vehicle;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import lapr.project.model.Vehicle.Energy;
-import lapr.project.model.Vehicle.Fuel;
-import lapr.project.model.Vehicle.VehicleType;
+
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 
