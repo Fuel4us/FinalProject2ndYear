@@ -324,28 +324,28 @@ public class Segment {
 //        return energyExpenditure;
 //    }
 
-//    /**
-//     * Determines the energy expenditure for the uniform movement taking into account the acceleration, the vehicle,
-//     * the load the vehicle has, the distance traveled, the velocity in that uniform movement and if the vehicle has
-//     * the energy saving mode on
-//     * @param acceleration the acceleration
-//     * @param vehicle the vehicle
-//     * @param load the load the vehicle has
-//     * @param length the length
-//     * @param velocity the velocity in that uniform movement
-//     * @param energySaving true if the vehicle is in the energy saving mode
-//     * @return the energy expenditure in KJ
-//     */
-//    private double determineEnergyExpenditureUniformMovement(Measurable acceleration, Vehicle vehicle, Measurable load, double length, Measurable velocity, boolean energySaving) {
-//        if (acceleration.getQuantity() < 0 && vehicle.getMotorType().equals(Vehicle.MotorType.NONCOMBUSTION)) {
-//            return -vehicle.determineEnergyExpenditure(this, load, length, velocity, energySaving, acceleration)[3].getQuantity()
-//                    * vehicle.getEnergy().getEnergyRegenerationRatio();
-//        } else if (acceleration.getQuantity() >= 0 && vehicle.getMotorType().equals(Vehicle.MotorType.NONCOMBUSTION)) {
-//            return vehicle.determineEnergyExpenditure(this, load, length, velocity, energySaving, acceleration)[3].getQuantity();
-//        } else {
-//            return vehicle.determineEnergyExpenditure(this, load, length, velocity, energySaving, acceleration)[0].getQuantity();
-//        }
-//    }
+    /**
+     * Determines the energy expenditure for the uniform movement taking into account the acceleration, the vehicle,
+     * the load the vehicle has, the distance traveled, the velocity in that uniform movement and if the vehicle has
+     * the energy saving mode on
+     * @param acceleration the acceleration
+     * @param vehicle the vehicle
+     * @param load the load the vehicle has
+     * @param length the length
+     * @param velocity the velocity in that uniform movement
+     * @param energySaving true if the vehicle is in the energy saving mode
+     * @return the energy expenditure in KJ
+     */
+    private double determineEnergyExpenditureUniformMovement(Measurable acceleration, Vehicle vehicle, Measurable load, double length, Measurable velocity, boolean energySaving) {
+        if (acceleration.getQuantity() < 0 && vehicle.getMotorType().equals(Vehicle.MotorType.NONCOMBUSTION)) {
+            return -vehicle.determineEnergyExpenditure(this, load, length, velocity, energySaving, acceleration)[3].getQuantity()
+                    * vehicle.getEnergy().getEnergyRegenerationRatio();
+        } else if (acceleration.getQuantity() >= 0 && vehicle.getMotorType().equals(Vehicle.MotorType.NONCOMBUSTION)) {
+            return vehicle.determineEnergyExpenditure(this, load, length, velocity, energySaving, acceleration)[3].getQuantity();
+        } else {
+            return vehicle.determineEnergyExpenditure(this, load, length, velocity, energySaving, acceleration)[0].getQuantity();
+        }
+    }
 
     /**
      * Calculates the velocity reached starting with the velocity given, the acceleration and the length traveled
