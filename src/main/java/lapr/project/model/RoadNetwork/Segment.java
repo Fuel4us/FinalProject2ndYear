@@ -285,44 +285,44 @@ public class Segment {
 //
 //    }
 
-//    /**
-//     * Calculates the energy expenditure when accelerating or braking
-//     *
-//     * @param initialVelocity the initial velocity (the beginning of the acceleration/braking)
-//     * @param finalVelocity   the final velocity to reach in the end of the acceleration/braking
-//     * @param acceleration    the acceleration (positive if accelerating, negative if braking)
-//     * @param vehicle         the vehicle that will travel in these conditions
-//     * @param load            the load the vehicle takes
-//     * @param energySaving    true if the vehicle has the energy saving mode turned on
-//     * @return the energy expenditure in KJ
-//     */
-//    private Measurable calculateEnergyExpenditureWithAcceleration(Measurable initialVelocity, Measurable finalVelocity, Measurable acceleration, Vehicle vehicle,
-//                                                                  Measurable load, boolean energySaving) {
-//
-//        Measurable energyExpenditure = new Measurable(0, Unit.KILOJOULE);
-//        double timeInterval = 1d / Math.abs(acceleration.getQuantity());
-//
-//        boolean velocityExceeded = false;
-//        while (!velocityExceeded) {
-//
-//            if (acceleration.getQuantity() > 0 && initialVelocity.getQuantity() >= finalVelocity.getQuantity()
-//                    || acceleration.getQuantity() < 0 && initialVelocity.getQuantity() <= finalVelocity.getQuantity()) {
-//                initialVelocity.setQuantity(finalVelocity.getQuantity());
-//                velocityExceeded = true;
-//            }
-//
-//            double intervalLength = initialVelocity.getQuantity() * timeInterval + 0.5 * acceleration.getQuantity() * Math.pow(timeInterval, 2);
-//
-//            double intervalEnergyExpenditure = determineEnergyExpenditureUniformMovement(acceleration, vehicle, load, intervalLength, initialVelocity, energySaving);
-//
-//            energyExpenditure.setQuantity(energyExpenditure.getQuantity() + intervalEnergyExpenditure);
-//
-//            initialVelocity.setQuantity(initialVelocity.getQuantity() + acceleration.getQuantity() * timeInterval);
-//
-//        }
-//
-//        return energyExpenditure;
-//    }
+    /**
+     * Calculates the energy expenditure when accelerating or braking
+     *
+     * @param initialVelocity the initial velocity (the beginning of the acceleration/braking)
+     * @param finalVelocity   the final velocity to reach in the end of the acceleration/braking
+     * @param acceleration    the acceleration (positive if accelerating, negative if braking)
+     * @param vehicle         the vehicle that will travel in these conditions
+     * @param load            the load the vehicle takes
+     * @param energySaving    true if the vehicle has the energy saving mode turned on
+     * @return the energy expenditure in KJ
+     */
+    private Measurable calculateEnergyExpenditureWithAcceleration(Measurable initialVelocity, Measurable finalVelocity, Measurable acceleration, Vehicle vehicle,
+                                                                  Measurable load, boolean energySaving) {
+
+        Measurable energyExpenditure = new Measurable(0, Unit.KILOJOULE);
+        double timeInterval = 1d / Math.abs(acceleration.getQuantity());
+
+        boolean velocityExceeded = false;
+        while (!velocityExceeded) {
+
+            if (acceleration.getQuantity() > 0 && initialVelocity.getQuantity() >= finalVelocity.getQuantity()
+                    || acceleration.getQuantity() < 0 && initialVelocity.getQuantity() <= finalVelocity.getQuantity()) {
+                initialVelocity.setQuantity(finalVelocity.getQuantity());
+                velocityExceeded = true;
+            }
+
+            double intervalLength = initialVelocity.getQuantity() * timeInterval + 0.5 * acceleration.getQuantity() * Math.pow(timeInterval, 2);
+
+            double intervalEnergyExpenditure = determineEnergyExpenditureUniformMovement(acceleration, vehicle, load, intervalLength, initialVelocity, energySaving);
+
+            energyExpenditure.setQuantity(energyExpenditure.getQuantity() + intervalEnergyExpenditure);
+
+            initialVelocity.setQuantity(initialVelocity.getQuantity() + acceleration.getQuantity() * timeInterval);
+
+        }
+
+        return energyExpenditure;
+    }
 
     /**
      * Determines the energy expenditure for the uniform movement taking into account the acceleration, the vehicle,
