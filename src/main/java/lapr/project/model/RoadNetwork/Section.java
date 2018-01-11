@@ -255,6 +255,8 @@ public class Section extends Edge<String, Direction> {
         Measurable totalEnergyExpenditure = new Measurable(0, Unit.KILOJOULE);
         Measurable totalTimeSpent = new Measurable(0, Unit.HOUR);
 
+        Measurable tollCosts = determineTollCosts(vehicle);
+
         boolean lastSection = false;
         if (endingNode.equals(pathEndingNode)) {
             lastSection = true;
@@ -286,7 +288,7 @@ public class Section extends Edge<String, Direction> {
 
         }
 
-        return new EnergyExpenditureAccelResults(totalEnergyExpenditure, initialVelocity, totalTimeSpent);
+        return new EnergyExpenditureAccelResults(totalEnergyExpenditure, initialVelocity, totalTimeSpent, tollCosts);
 
     }
 
