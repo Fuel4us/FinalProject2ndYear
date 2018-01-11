@@ -69,7 +69,8 @@ public class GearsTest {
     @Test
     public void testHashCode() {
         
-        int expResult = 1109394679;
+        Gears test = new Gears(10,40);
+        int expResult = test.hashCode();
         int result = instance.hashCode();
         assertEquals(expResult, result);
     }
