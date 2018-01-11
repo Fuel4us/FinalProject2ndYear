@@ -254,7 +254,6 @@ public class ChangeDataUI extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "ParserConfigurationException rose there was a problem with your file");
             } catch (Exception e) {
                 Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, e.getMessage());
-                e.printStackTrace();
             }
         }
     }//GEN-LAST:event_jButtonRoadActionPerformed
