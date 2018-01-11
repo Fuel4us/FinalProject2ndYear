@@ -72,11 +72,16 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         Vehicle.MotorType motorization = determineMotorType(resultSet);
         Fuel fuel = determineFuel(resultSet);
 
+        int massID = resultSet.getInt("massID");
+        int maxLoadID = resultSet.getInt("maxLoadID");
+        int frontalAreaID = resultSet.getInt("frontalAreaID");
+        int wheelID = resultSet.getInt("wheelSizeID");
+
         Unit[] unitEnum = Unit.values();
-        Measurable mass = createMass(name, unitEnum);
-        Measurable load = createLoad(name, unitEnum);
-        Measurable frontalArea = createFrontalArea(name, unitEnum);
-        Measurable wheelSize = createWheelSize(name, unitEnum);
+        Measurable mass = createMass(name, unitEnum, massID);
+        Measurable load = createLoad(name, unitEnum, maxLoadID);
+        Measurable frontalArea = createFrontalArea(name, unitEnum, frontalAreaID);
+        Measurable wheelSize = createWheelSize(name, unitEnum, wheelID);
 
         List<VelocityLimit> velocityLimitList = fillVelocityLimitList(name, unitEnum);
 
@@ -193,15 +198,23 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
     private Energy createEnergy(String name) throws SQLException {
         try (CallableStatement callableStatement = oracleConnection
                 .prepareCall("CALL getEnergySet(?,?)")) {
+
             callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
             callableStatement.setString(1, name);
+
             callableStatement.execute();
+
             ResultSet energySet = (ResultSet) callableStatement.getObject(2);
             energySet.next();
+
             int energyID = energySet.getInt("energyID");
+
             List<Gears> gearList = fillGearList(energyID);
             List<Throttle> throttleList = fillThrottleList(energyID);
-            return new Energy(energySet.getInt("rpmLow"), energySet.getInt("rpmHigh"), energySet.getFloat("finalDriveRatio"), gearList, throttleList);
+
+            return new Energy(energySet.getInt("rpmLow"), energySet.getInt("rpmHigh"),
+                    energySet.getFloat("finalDriveRatio"), energySet.getDouble("energyRegenerationRatio"),
+                    gearList, throttleList);
         }
     }
 
@@ -213,7 +226,6 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * @throws SQLException
      */
     private Measurable createMeasurable(ResultSet resultSet, Unit[] unitEnum) throws SQLException {
-        resultSet.next();
         for (Unit unitType : unitEnum) {
             String unitStr = resultSet.getString("unit");
             if (unitStr.equals(unitType.toString())) {
@@ -241,11 +253,13 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             callableStatement.execute();
             ResultSet velocitySet = (ResultSet) callableStatement.getObject(2);
             while (velocitySet.next()) {
-                int velocityLimitID = velocitySet.getInt("id");
-                String segmentType = velocitySet.getString("segmentType");
-                Measurable limit = createVelocityLimit(velocityLimitID, unitEnum);
-                VelocityLimit velocityLimit = new VelocityLimit(segmentType, limit);
-                velocityLimitList.add(velocityLimit);
+                if (velocitySet.getString("vehicleName").equals(name)) {
+                    int velocityLimitID = velocitySet.getInt("id");
+                    String segmentType = velocitySet.getString("segmentType");
+                    Measurable limit = createVelocityLimit(velocityLimitID, unitEnum);
+                    VelocityLimit velocityLimit = new VelocityLimit(segmentType, limit);
+                    velocityLimitList.add(velocityLimit);
+                }
             }
         }
 
@@ -266,6 +280,13 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
             callableStatement.execute();
             ResultSet limitSet = (ResultSet) callableStatement.getObject(2);
+
+//            while (limitSet.next()) {
+//                if (limitSet.getInt("id") == velocityLimitID) {
+//                    break;
+//                }
+//            }
+            limitSet.next();
             return createMeasurable(limitSet, unitEnum);
         }
     }
@@ -274,16 +295,24 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * Retrieves wheelSize attribute from {@link Vehicle}
      * @param name {@link Vehicle} identifier
      * @param unitEnum {@link Unit} enum
+     * @param wheelID
      * @return {@link Measurable}, wheelSize of {@link Vehicle}
      * @throws SQLException
      */
-    private Measurable createWheelSize(String name, Unit[] unitEnum) throws SQLException {
+    private Measurable createWheelSize(String name, Unit[] unitEnum, int wheelID) throws SQLException {
         try (CallableStatement callableStatement = oracleConnection
                 .prepareCall("CALL getWheelSizeSet(?,?)")) {
             callableStatement.setString(1, name);
             callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
             callableStatement.execute();
             ResultSet wheelSet = (ResultSet) callableStatement.getObject(2);
+
+            while (wheelSet.next()) {
+                if (wheelSet.getInt("id") == wheelID) {
+                    break;
+                }
+            }
+
             return createMeasurable(wheelSet, unitEnum);
         }
     }
@@ -292,16 +321,25 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * Retrieves frontalArea attribute from {@link Vehicle}
      * @param name {@link Vehicle} identifier
      * @param unitEnum {@link Unit} enum
+     * @param frontalAreaID
      * @return {@link Measurable}, frontalArea of {@link Vehicle}
      * @throws SQLException
      */
-    private Measurable createFrontalArea(String name, Unit[] unitEnum) throws SQLException {
+    private Measurable createFrontalArea(String name, Unit[] unitEnum, int frontalAreaID) throws SQLException {
         try (CallableStatement callableStatement = oracleConnection
                 .prepareCall("CALL getFrontalAreaSet(?,?)")) {
             callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
             callableStatement.setString(1, name);
             callableStatement.execute();
             ResultSet areaSet = (ResultSet) callableStatement.getObject(2);
+
+            while (areaSet.next()) {
+                if (areaSet.getInt("id") == frontalAreaID) {
+                    break;
+                }
+            }
+
+
             return createMeasurable(areaSet, unitEnum);
         }
 
@@ -311,10 +349,11 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * Retrieves load attribute from {@link Vehicle}
      * @param name {@link Vehicle} identifier
      * @param unitEnum {@link Unit} enum
+     * @param maxLoadID
      * @return {@link Measurable}, load of {@link Vehicle}
      * @throws SQLException
      */
-    private Measurable createLoad(String name, Unit[] unitEnum) throws SQLException {
+    private Measurable createLoad(String name, Unit[] unitEnum, int maxLoadID) throws SQLException {
         try (CallableStatement callableStatement = oracleConnection
                 .prepareCall("CALL getLoadSet(?,?)")) {
             callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
@@ -323,6 +362,14 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
             callableStatement.execute();
             ResultSet loadSet = (ResultSet) callableStatement.getObject(2);
+
+            while (loadSet.next()) {
+                if (loadSet.getInt("id") == maxLoadID) {
+                    break;
+                }
+            }
+
+
             return createMeasurable(loadSet, unitEnum);
         }
 
@@ -332,10 +379,11 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * Retrieves mass attribute from {@link Vehicle}
      * @param name {@link Vehicle} identifier
      * @param unitEnum {@link Unit} enum
+     * @param massID
      * @return {@link Measurable}, mass of {@link Vehicle}
      * @throws SQLException
      */
-    private Measurable createMass(String name, Unit[] unitEnum) throws SQLException {
+    private Measurable createMass(String name, Unit[] unitEnum, int massID) throws SQLException {
         try (CallableStatement callableStatement = oracleConnection
                 .prepareCall("CALL getMassSet(?,?)")) {
 
@@ -345,6 +393,12 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             callableStatement.execute();
 
             ResultSet massSet = (ResultSet) callableStatement.getObject(2);
+
+            while (massSet.next()) {
+                if (massSet.getInt("id") == massID) {
+                    break;
+                }
+            }
 
             return createMeasurable(massSet, unitEnum);
         }
