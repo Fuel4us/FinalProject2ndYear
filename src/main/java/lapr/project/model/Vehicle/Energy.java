@@ -99,4 +99,11 @@ public class Energy {
                 + ", throttles=" + throttles
                 + '}';
     }
+
+    /**
+     * @return energyRegenerationRatio
+     */
+    public double getEnergyRegenerationRatio() {
+        return energyRegenerationRatio;
+    }
 }
