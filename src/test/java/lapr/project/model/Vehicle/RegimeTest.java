@@ -5,8 +5,12 @@
  */
 package lapr.project.model.Vehicle;
 
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.BeforeClass;
 
 /**
  *
@@ -16,7 +20,14 @@ public class RegimeTest {
     
     Regime instance = new Regime(10,20,30,40,350);
     
+    /**
+     * Test empty constructor
+     */
     public RegimeTest() {
+        Regime testEmpty = new Regime();
+        double expResult = 0f;
+        double result = testEmpty.getSFC();
+        assertEquals(expResult, result, 0.0);
     }
 
     /**
