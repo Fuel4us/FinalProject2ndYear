@@ -431,13 +431,14 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
     private int storeEnergy(Energy energy) throws SQLException {
 
         try (CallableStatement storeEnergyFunction = oracleConnection
-                .prepareCall("{? = call STOREENERGYFUNCTION(?,?,?)}")) {
+                .prepareCall("{? = call STOREENERGYFUNCTION(?,?,?,?)}")) {
 
             storeEnergyFunction.registerOutParameter(1, Types.INTEGER);
 
             storeEnergyFunction.setInt(2, energy.getMinRpm());
             storeEnergyFunction.setInt(3, energy.getMaxRpm());
             storeEnergyFunction.setFloat(4, energy.getFinalDriveRatio());
+            storeEnergyFunction.setDouble(5, energy.getEnergyRegenerationRatio());
 
             storeEnergyFunction.executeUpdate();
 
