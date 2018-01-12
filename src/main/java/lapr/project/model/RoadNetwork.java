@@ -1,4 +1,4 @@
-package lapr.project.model.RoadNetwork;
+package lapr.project.model;
 
 import lapr.project.utils.Graph.Edge;
 import lapr.project.utils.Graph.Graph;
@@ -23,7 +23,7 @@ public class RoadNetwork extends Graph<Node, Section> {
      * @param description the description of the road network
      */
     public RoadNetwork(String id, String description) {
-        super(false);
+        super(true);
         this.id = id;
         this.description = description;
     }
@@ -41,7 +41,7 @@ public class RoadNetwork extends Graph<Node, Section> {
      * Empty constructor
      */
     public RoadNetwork() {
-        super(false);
+        super(true);
     }
 
     /**

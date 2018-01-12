@@ -1,15 +1,4 @@
-package lapr.project.model.RoadNetwork;
-
-import java.io.File;
-import org.antlr.stringtemplate.StringTemplate;
-import org.antlr.stringtemplate.StringTemplateGroup;
-import org.antlr.stringtemplate.language.DefaultTemplateLexer;
-import org.junit.Test;
-
-import java.io.FileWriter;
-import java.io.IOException;
-
-import static org.junit.Assert.*;
+package lapr.project.model;
 
 /**
  * JUnit tests of an instance {@link Segment}

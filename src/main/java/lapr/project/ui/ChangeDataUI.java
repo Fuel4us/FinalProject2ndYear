@@ -6,8 +6,6 @@
 package lapr.project.ui;
 
 import lapr.project.controller.ChangeDataController;
-import lapr.project.model.Project;
-import lapr.project.model.RoadNetwork.RoadNetwork;
 import org.xml.sax.SAXException;
 
 import javax.swing.*;
@@ -15,7 +13,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

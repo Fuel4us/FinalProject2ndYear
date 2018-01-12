@@ -1,8 +1,6 @@
 package lapr.project.utils.DataAccessLayer;
 
-import lapr.project.model.Analysis;
-import lapr.project.model.Project;
-import lapr.project.model.RoadNetwork.*;
+import lapr.project.model.*;
 import lapr.project.utils.DataAccessLayer.Abstraction.AnalysisDAO;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.Measurable;

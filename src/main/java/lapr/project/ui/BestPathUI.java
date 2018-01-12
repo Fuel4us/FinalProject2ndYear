@@ -7,8 +7,8 @@ package lapr.project.ui;
 
 import lapr.project.controller.BestPathController;
 import lapr.project.model.Analysis;
-import lapr.project.model.RoadNetwork.*;
-import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.model.Node;
+import lapr.project.model.Vehicle;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 

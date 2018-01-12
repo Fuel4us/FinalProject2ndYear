@@ -1,8 +1,6 @@
 package lapr.project.model;
 
 import java.util.ArrayList;
-import lapr.project.model.RoadNetwork.*;
-import lapr.project.model.Vehicle.Vehicle;
 import java.util.List;
 
 /**

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lapr.project.model.Vehicle;
+package lapr.project.model;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -16,6 +16,7 @@ public class RegimeTest {
     
     Regime instance = new Regime(10,20,30,40,350);
     Regime instance2 = new Regime(10,20,30,40);
+    
     /**
      * Test empty constructor
      */

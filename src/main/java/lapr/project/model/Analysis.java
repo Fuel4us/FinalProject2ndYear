@@ -1,7 +1,5 @@
 package lapr.project.model;
 
-import lapr.project.model.RoadNetwork.Road;
-import lapr.project.model.RoadNetwork.Section;
 import lapr.project.utils.FileParser.ExportableCSV;
 import lapr.project.utils.FileParser.ExportableHTML;
 import org.antlr.stringtemplate.StringTemplate;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lapr.project.model.Vehicle;
+package lapr.project.model;
 
 import com.google.common.base.Objects;
 import org.junit.Test;

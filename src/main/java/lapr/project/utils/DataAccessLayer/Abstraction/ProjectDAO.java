@@ -1,7 +1,8 @@
 package lapr.project.utils.DataAccessLayer.Abstraction;
 
 import lapr.project.model.Project;
-import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.model.RoadNetwork;
+import lapr.project.model.Vehicle;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -45,7 +46,7 @@ public interface ProjectDAO extends DataAccessObject {
     boolean changeDescription(Project project, String newDescription) throws SQLException;
 
     /**
-     * Allows {@link lapr.project.model.RoadNetwork.RoadNetwork} growth
+     * Allows {@link RoadNetwork} growth
      * @param project {@link Project}
      * @return true if success
      * @throws SQLException

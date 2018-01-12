@@ -1,8 +1,8 @@
 package lapr.project.utils.FileParser;
 
 import lapr.project.model.Project;
-import lapr.project.model.RoadNetwork.RoadNetwork;
-import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.model.RoadNetwork;
+import lapr.project.model.Vehicle;
 
 import java.io.IOException;
 import java.util.List;

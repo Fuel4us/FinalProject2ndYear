@@ -5,7 +5,7 @@
  */
 package lapr.project.utils.DataAccessLayer.Oracle;
 
-import lapr.project.model.RoadNetwork.*;
+import lapr.project.model.*;
 import lapr.project.utils.DataAccessLayer.Abstraction.RoadNetworkDAO;
 import lapr.project.utils.Graph.Edge;
 import oracle.jdbc.OracleTypes;
@@ -45,6 +45,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             callableStatement.execute();
 
             ResultSet networkSet = (ResultSet) callableStatement.getObject(2);
+            networkSet.next();
             return retrieveRoadNetwork(networkSet);
         }
     }
@@ -74,9 +75,12 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      */
     private void addNodesToRoadNetwork(String networkID, RoadNetwork roadNetwork) throws SQLException {
 
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getNodeSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection
+                .prepareCall("CALL getNodeSet(?,?)")) {
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
             callableStatement.setString(1, networkID);
-            ResultSet nodeSet = callableStatement.executeQuery();
+            callableStatement.execute();
+            ResultSet nodeSet = (ResultSet) callableStatement.getObject(2);
             while (nodeSet.next()) {
                 String nodeName;
                 Node node;
@@ -97,7 +101,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
         Direction roadDirection = null;
         Direction[] directionEnum = Direction.values();
         for (Direction direction : directionEnum) {
-            String directionStr = sectionSet.getString("vehicleType");
+            String directionStr = sectionSet.getString("direction");
             if (directionStr.equals(direction.toString())) {
                 roadDirection = direction;
             }
@@ -114,9 +118,15 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     private List<Double> fillRoadTollFareList(String roadID) throws SQLException {
         List<Double> tollFareRoadList = new LinkedList<>();
 
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getRoadTollSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection
+                .prepareCall("CALL getRoadTollSet(?,?)")) {
+
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
             callableStatement.setString(1, roadID);
-            ResultSet roadTollSet = callableStatement.executeQuery();
+
+            callableStatement.execute();
+
+            ResultSet roadTollSet = (ResultSet) callableStatement.getObject(2);
             while (roadTollSet.next()) {
                 tollFare = roadTollSet.getDouble("tollFare");
                 tollFareRoadList.add(tollFare);
@@ -133,10 +143,18 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * @throws SQLException
      */
     private Road createRoad(int sectionID) throws SQLException {
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getRoadSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection
+                .prepareCall("CALL getRoadSet(?,?)")) {
+
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
             callableStatement.setInt(1, sectionID);
-            ResultSet roadSet = callableStatement.executeQuery();
-            String roadID = roadSet.getString("ID");
+
+            callableStatement.execute();
+
+            ResultSet roadSet = (ResultSet) callableStatement.getObject(2);
+            roadSet.next();
+
+            String roadID = roadSet.getString("id");
             String roadName = roadSet.getString("name");
             String typology = roadSet.getString("typology");
 
@@ -154,11 +172,15 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     private Collection<Segment> fetchSectionSegments(int sectionID) throws SQLException {
         Collection<Segment> segments = new ArrayList<>();
 
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getSegmentsSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection
+                .prepareCall("CALL getSegmentsSet(?,?)")) {
+
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
             callableStatement.setInt(1, sectionID);
-            ResultSet segmentSet = callableStatement.executeQuery();
+            callableStatement.execute();
+            ResultSet segmentSet = (ResultSet) callableStatement.getObject(2);
             while (segmentSet.next()) {
-                int index = segmentSet.getInt("index");
+                int index = segmentSet.getInt("id");
                 double initialHeight = segmentSet.getDouble("initialHeight");
                 double finalHeight = segmentSet.getDouble("finalHeight");
                 double length = segmentSet.getDouble("length");
@@ -180,9 +202,15 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      */
     private List<Double> fillSectionTollFareList(int sectionID) throws SQLException {
         List<Double> tollFareSectionList = new LinkedList<>();
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getSectionTollSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection
+                .prepareCall("CALL getSectionTollSet(?,?)")) {
+
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
             callableStatement.setInt(1, sectionID);
-            ResultSet sectionTollSet = callableStatement.executeQuery();
+
+            callableStatement.execute();
+
+            ResultSet sectionTollSet = (ResultSet) callableStatement.getObject(2);
             while (sectionTollSet.next()) {
                 tollFare = sectionTollSet.getDouble("tollFare");
                 tollFareSectionList.add(tollFare);
@@ -200,9 +228,12 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      */
     private void addSectionsToRoadNetwork(String networkID, RoadNetwork roadNetwork) throws SQLException {
 
-        try (CallableStatement callableStatement = oracleConnection.prepareCall("CALL getSectionSet(?)")) {
+        try (CallableStatement callableStatement = oracleConnection
+                .prepareCall("CALL getSectionSet(?,?)")) {
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
             callableStatement.setString(1, networkID);
-            ResultSet sectionSet = callableStatement.executeQuery();
+            callableStatement.execute();
+            ResultSet sectionSet = (ResultSet) callableStatement.getObject(2);
             while (sectionSet.next()) {
                 int sectionId = sectionSet.getInt("ID");
 
@@ -248,7 +279,8 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      */
     private String storeRoadNetworkInfo(RoadNetwork roadNetwork, String projectName) throws SQLException {
 
-        try (CallableStatement storeRoadNetworkInfoProcedure = oracleConnection.prepareCall("CALL storeRoadNetworkInfoProcedure(?,?,?)")) {
+        try (CallableStatement storeRoadNetworkInfoProcedure = oracleConnection
+                .prepareCall("CALL storeRoadNetworkInfoProcedure(?,?,?)")) {
 
             String networkID = roadNetwork.getId();
             String description = roadNetwork.getDescription();
@@ -326,7 +358,8 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * @throws SQLException
      */
     private void storeNode(Node node, String networkID) throws SQLException {
-        try (CallableStatement storeNodeProcedure = oracleConnection.prepareCall("CALL storeNodeProcedure(?,?)")) {
+        try (CallableStatement storeNodeProcedure = oracleConnection
+                .prepareCall("CALL storeNodeProcedure(?,?)")) {
 
             storeNodeProcedure.setString("id", node.getId());
             storeNodeProcedure.setString("networkID", networkID);
@@ -341,7 +374,8 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * @throws SQLException
      */
     private void storeRoad(Road road) throws SQLException {
-        try (CallableStatement storeRoadProcedure = oracleConnection.prepareCall("CALL storeRoadProcedure(?,?,?)")) {
+        try (CallableStatement storeRoadProcedure = oracleConnection
+                .prepareCall("CALL storeRoadProcedure(?,?,?)")) {
 
             storeRoadProcedure.setString("id", road.getId());
             storeRoadProcedure.setString("name", road.getName());
@@ -358,7 +392,8 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * @throws SQLException
      */
     private void storeSection(Section section, String networkID) throws SQLException {
-        try (CallableStatement storeSectionProcedure = oracleConnection.prepareCall("CALL storeSectionProcedure(?,?,?,?,?,?)")) {
+        try (CallableStatement storeSectionProcedure = oracleConnection
+                .prepareCall("CALL storeSectionProcedure(?,?,?,?,?,?)")) {
 
             storeSectionProcedure.setInt("id", section.getID());
             storeSectionProcedure.setString("networkID", networkID);
@@ -378,7 +413,8 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * @throws SQLException
      */
     private void storeTollFareRoad(Double tollFare, String roadID) throws SQLException {
-        try (CallableStatement storeTollFareRoadProcedure = oracleConnection.prepareCall("CALL storeTollFareRoadProcedure(?,?)")) {
+        try (CallableStatement storeTollFareRoadProcedure = oracleConnection
+                .prepareCall("CALL storeTollFareRoadProcedure(?,?)")) {
 
             storeTollFareRoadProcedure.setString("roadID", roadID);
             storeTollFareRoadProcedure.setDouble("tollFare", tollFare);
@@ -394,7 +430,8 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * @throws SQLException
      */
     private void storeTollFareSection(Double tollFare, int sectionID) throws SQLException {
-        try (CallableStatement storeTollFareSectionProcedure = oracleConnection.prepareCall("CALL storeTollFareSectionProcedure(?,?)")) {
+        try (CallableStatement storeTollFareSectionProcedure = oracleConnection
+                .prepareCall("CALL storeTollFareSectionProcedure(?,?)")) {
 
             storeTollFareSectionProcedure.setInt("sectionID", sectionID);
             storeTollFareSectionProcedure.setDouble("tollFare", tollFare);
@@ -410,7 +447,8 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * @throws SQLException
      */
     private void storeSegment(Segment segment, int sectionID) throws SQLException {
-        try (CallableStatement storeSegmentProcedure = oracleConnection.prepareCall("CALL storeSegmentProcedure(?,?,?,?,?,?,?,?,?)")) {
+        try (CallableStatement storeSegmentProcedure = oracleConnection
+                .prepareCall("CALL storeSegmentProcedure(?,?,?,?,?,?,?,?,?)")) {
 
             segment.storeSegmentInformation(storeSegmentProcedure);
             storeSegmentProcedure.setInt("sectionID", sectionID);

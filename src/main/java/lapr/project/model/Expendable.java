@@ -1,4 +1,4 @@
-package lapr.project.model.Vehicle;
+package lapr.project.model;
 
 public interface Expendable {
     
