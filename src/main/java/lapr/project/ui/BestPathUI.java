@@ -371,7 +371,7 @@ public final class BestPathUI extends JFrame {
 
             } else if (startNode.equals(endNode)) {
                 JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
-            } else if ((Double.compare(maxAceleration.getQuantity(), 0) == -1) || (Double.compare(maxBraking.getQuantity(), 0) == 1)) {
+            } else if ((Double.compare(maxAceleration.getQuantity(), 0) < 0) || (Double.compare(maxBraking.getQuantity(), 0) > 0)) {
                 JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAceleration and a negative value for maxBraking");
             } else {
                 Analysis generatedAnalysis = controller.analyzeTheoreticalEfficientPath(startNode, endNode, selectedVehicle, maxAceleration, maxBraking, load) ;
@@ -419,6 +419,7 @@ public final class BestPathUI extends JFrame {
             Node endNode = jListNodes2.getSelectedValue();
             Measurable maxAceleration = new Measurable(Double.parseDouble(jTextFieldMaxAceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
             Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.valueOf("km"));
             Vehicle selectedVehicle = jListVehicles.getSelectedValue();
 
             if (startNode == null
@@ -428,10 +429,10 @@ public final class BestPathUI extends JFrame {
 
             } else if (startNode.equals(endNode)) {
                 JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
-            } else if ((Double.compare(maxAceleration.getQuantity(), 0) == -1) || (Double.compare(maxBraking.getQuantity(), 0) == 1)) {
+            } else if ((Double.compare(maxAceleration.getQuantity(), 0) < 0) || (Double.compare(maxBraking.getQuantity(), 0) > 0)) {
                 JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAceleration and a negative value for maxBraking");
             } else {
-                Analysis generatedAnalysis = controller.analyzeEfficientPathEnergySavingMode(startNode, endNode, selectedVehicle, maxAceleration, maxBraking);
+                Analysis generatedAnalysis = controller.analyzeEfficientPathEnergySavingMode(startNode, endNode, selectedVehicle, maxAceleration, maxBraking, load);
                 StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis);
                 storeNetworkAnalysisUI.setVisible(true);
                 setVisible(false);

@@ -1,5 +1,9 @@
 package lapr.project.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+
 /**
  * JUnit tests of an instance {@link Segment}
  */
@@ -28,6 +32,23 @@ public class SegmentTest {
 //        segment.printDataFromSegment(segmentTemplate, fillFile);
 //
 //    }
+    
+    @Test
+    public void Segment() {
+        Segment emptyTest = new Segment();
+        double result = emptyTest.getMinVelocity();
+        assertEquals(0f, result, 0.0);
+    }
+    
+    /**
+     * Test of getID method, of class Section.
+     */
+    @Test
+    public void testgetMinVelocity() {
+        Segment test = new Segment(0,0.0,0.0,0.0,0.0,0.0,0.0,1.0);
+        double expResult = 1.0;
+        assertTrue(Double.compare(expResult, test.getMinVelocity())==0);
+    }
 
 
 }

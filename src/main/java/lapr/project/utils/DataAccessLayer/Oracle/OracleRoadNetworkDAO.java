@@ -182,15 +182,19 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             callableStatement.execute();
             ResultSet segmentSet = (ResultSet) callableStatement.getObject(3);
             while (segmentSet.next()) {
-                int index = segmentSet.getInt("id");
-                double initialHeight = segmentSet.getDouble("initialHeight");
-                double finalHeight = segmentSet.getDouble("finalHeight");
-                double length = segmentSet.getDouble("length");
-                double windAngle = segmentSet.getDouble("windAngle");
-                double windSpeed = segmentSet.getDouble("windSpeed");
-                double maxVelocity = segmentSet.getDouble("maxVelocity");
-                double minVelocity = segmentSet.getDouble("minVelocity");
-                segments.add(new Segment(index, initialHeight, finalHeight, length, windAngle, windSpeed, maxVelocity, minVelocity));
+
+                if (segmentSet.getInt("sectionID") == sectionID) {
+                    int index = segmentSet.getInt("id");
+                    double initialHeight = segmentSet.getDouble("initialHeight");
+                    double finalHeight = segmentSet.getDouble("finalHeight");
+                    double length = segmentSet.getDouble("length");
+                    double windAngle = segmentSet.getDouble("windAngle");
+                    double windSpeed = segmentSet.getDouble("windSpeed");
+                    double maxVelocity = segmentSet.getDouble("maxVelocity");
+                    double minVelocity = segmentSet.getDouble("minVelocity");
+                    segments.add(new Segment(index, initialHeight, finalHeight, length, windAngle, windSpeed, maxVelocity, minVelocity));
+                }
+
             }
         }
         return segments;
@@ -215,8 +219,12 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
             ResultSet sectionTollSet = (ResultSet) callableStatement.getObject(3);
             while (sectionTollSet.next()) {
-                tollFare = sectionTollSet.getDouble("tollFare");
-                tollFareSectionList.add(tollFare);
+
+                if (sectionTollSet.getInt("sectionID") == sectionID) {
+                    tollFare = sectionTollSet.getDouble("tollFare");
+                    tollFareSectionList.add(tollFare);
+                }
+
             }
         }
 

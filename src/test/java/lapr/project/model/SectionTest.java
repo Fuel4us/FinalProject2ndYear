@@ -1,7 +1,5 @@
 package lapr.project.model;
 
-import java.io.FileWriter;
-import lapr.project.model.*;
 import lapr.project.utils.EnergyExpenditureAccelResults;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
@@ -10,12 +8,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
 
 import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
 
 /**
  * Represents the test class for the Section class
@@ -173,12 +167,12 @@ public class SectionTest {
                 velocityLimitListTest, new Energy(900, 5500, 4f, gearsTest, throttlesTest));
 
         // energy saving -> false
-        EnergyExpenditureAccelResults expected = new EnergyExpenditureAccelResults(new Measurable(82600, Unit.KILOJOULE),
-                new Measurable(5.6548668, Unit.KILOMETERS_PER_HOUR), new Measurable(0.09383, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
+        EnergyExpenditureAccelResults expected = new EnergyExpenditureAccelResults(new Measurable(81538, Unit.KILOJOULE),
+                new Measurable(5.6548668, Unit.KILOMETERS_PER_HOUR), new Measurable(0.10428, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
 
         EnergyExpenditureAccelResults results = sectionTest.calculateEnergyExpenditureAccel(roadNetworkTest, new Measurable(5.6548668, Unit.KILOMETERS_PER_HOUR), vehicleTest,
                 new Measurable(500, Unit.KILOGRAM), new Measurable(5, Unit.METERS_PER_SECOND_SQUARED),
-                new Measurable(-2.5, Unit.METERS_PER_SECOND_SQUARED), nodeTest2, false);
+                new Measurable(-2.5, Unit.METERS_PER_SECOND_SQUARED), nodeTest2, false, false);
 
         assertEquals(expected.getEnergyExpenditure().getQuantity(), results.getEnergyExpenditure().getQuantity(), 500);
         assertEquals(expected.getFinalVelocity().getQuantity(), results.getFinalVelocity().getQuantity(), 0.001);
@@ -186,12 +180,12 @@ public class SectionTest {
         assertEquals(expected.getTollCosts().getQuantity(), results.getTollCosts().getQuantity(), 0.01);
 
         // energy saving -> true
-        expected = new EnergyExpenditureAccelResults(new Measurable(78500, Unit.KILOJOULE),
-                new Measurable(5.6548668, Unit.KILOMETERS_PER_HOUR), new Measurable(0.1598, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
+        expected = new EnergyExpenditureAccelResults(new Measurable(79538, Unit.KILOJOULE),
+                new Measurable(5.6548668, Unit.KILOMETERS_PER_HOUR), new Measurable(0.13736, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
 
         results = sectionTest.calculateEnergyExpenditureAccel(roadNetworkTest, new Measurable(5.6548668, Unit.KILOMETERS_PER_HOUR), vehicleTest,
                 new Measurable(500, Unit.KILOGRAM), new Measurable(5, Unit.METERS_PER_SECOND_SQUARED),
-                new Measurable(-1, Unit.METERS_PER_SECOND_SQUARED), nodeTest2, true);
+                new Measurable(-1, Unit.METERS_PER_SECOND_SQUARED), nodeTest2, true, false);
 
         assertEquals(expected.getEnergyExpenditure().getQuantity(), results.getEnergyExpenditure().getQuantity(), 500);
         assertEquals(expected.getFinalVelocity().getQuantity(), results.getFinalVelocity().getQuantity(), 0.001);
@@ -258,36 +252,6 @@ public class SectionTest {
                 new Road("A01", "A01", "toll highway", tollFaresRoadTest), new ArrayList<>());
         Collection<Segment> result = sectionTest.getSegments();
         assertEquals(segmentsTest, result);
-    }
-
-    /**
-     * Test of getID method, of class Section.
-     */
-    @Test
-    public void testGetID() {
-        System.out.println("getID");
-        RoadNetwork roadNetworkTest = new RoadNetwork();
-
-        Node nodeTest1 = new Node("n01");
-        Node nodeTest2 = new Node("n02");
-
-        roadNetworkTest.addNode(nodeTest1);
-        roadNetworkTest.addNode(nodeTest2);
-
-        Collection<Segment> segmentsTest = new ArrayList<>();
-        segmentsTest.add(new Segment(0, 0, 100, 5, 30, 1.5, 120, 0));
-        segmentsTest.add(new Segment(1, 100, 250, 3.5, -10, 1, 100, 0));
-
-        List<Double> tollFaresRoadTest = new ArrayList<>();
-        tollFaresRoadTest.add(0.15);
-        tollFaresRoadTest.add(0.25);
-        tollFaresRoadTest.add(0.35);
-
-        Section sectionTest = new Section(nodeTest1, nodeTest2, Direction.BIDIRECTIONAL, segmentsTest,
-                new Road("A01", "A01", "toll highway", tollFaresRoadTest), new ArrayList<>());
-        int expResult = 2;
-        int result = sectionTest.getID();
-        assertEquals(expResult, result);
     }
 
     /**

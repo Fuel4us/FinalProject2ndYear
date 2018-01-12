@@ -436,7 +436,7 @@ public class BestPathComparisonForm extends JFrame {
 
             } else if (startNode.equals(endNode)) {
                 JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
-            } else if ((Double.compare(maxAceleration.getQuantity(), 0) == -1) || (Double.compare(maxBraking.getQuantity(), 0) == 1)) {
+            } else if ((Double.compare(maxAceleration.getQuantity(), 0) < 0) || (Double.compare(maxBraking.getQuantity(), 0) > 0)) {
                 JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAceleration and a negative value for maxBraking");
             } else {
                 List<Analysis> analysisList = new ArrayList<>();
@@ -469,6 +469,7 @@ public class BestPathComparisonForm extends JFrame {
             Node endNode = jListNodes2.getSelectedValue();
             Measurable maxAceleration = new Measurable(Double.parseDouble(jTextFieldMaxAceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
             Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.valueOf("km"));
             List<Vehicle> selectedVehiclesList = new ArrayList<>();
             for (int i = 0; i < selectedVehicles.size(); i++) {
                 selectedVehiclesList.add(selectedVehicles.get(i));
@@ -480,12 +481,12 @@ public class BestPathComparisonForm extends JFrame {
 
             } else if (startNode.equals(endNode)) {
                 JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
-            } else if ((Double.compare(maxAceleration.getQuantity(), 0) == -1) || (Double.compare(maxBraking.getQuantity(), 0) == 1)) {
+            } else if ((Double.compare(maxAceleration.getQuantity(), 0) < 0) || (Double.compare(maxBraking.getQuantity(), 0) > 0)) {
                 JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAceleration and a negative value for maxBraking");
             } else {
                 List<Analysis> analysisList = new ArrayList<>();
                 for (int j = 0; j < selectedVehiclesList.size(); j++) {
-                    Analysis generatedAnalysis = controller.analyzeEfficientPathEnergySavingMode(startNode, endNode, selectedVehiclesList.get(j), maxAceleration, maxBraking);
+                    Analysis generatedAnalysis = controller.analyzeEfficientPathEnergySavingMode(startNode, endNode, selectedVehiclesList.get(j), maxAceleration, maxBraking, load);
                     analysisList.add(generatedAnalysis);
                 }
                 BestPathComparisonAllAnalysisUI allAnalysisResults = new BestPathComparisonAllAnalysisUI(analysisList);
