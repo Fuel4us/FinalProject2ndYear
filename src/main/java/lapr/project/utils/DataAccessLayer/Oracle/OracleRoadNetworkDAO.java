@@ -266,7 +266,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
         verifyConnection();
 
         String networkID = storeRoadNetworkInfo(roadNetwork, projectName);
-        storeRoadNetworkGraph(roadNetwork, networkID);
+        storeRoadNetworkGraph(roadNetwork, networkID, projectName);
 
     }
 
@@ -299,14 +299,14 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * @param networkID roadNetwork identifier
      * @throws SQLException
      */
-    void storeRoadNetworkGraph(RoadNetwork roadNetwork, String networkID) throws SQLException {
+    void storeRoadNetworkGraph(RoadNetwork roadNetwork, String networkID, String projectName) throws SQLException {
 
         Iterable<Node> nodes = roadNetwork.vertices();
         for (Node node : nodes) {
-            storeNode(node, networkID);
+            storeNode(node, networkID, projectName);
         }
 
-        storeSections(roadNetwork, networkID);
+        storeSections(roadNetwork, networkID, projectName);
     }
 
     /**
@@ -315,7 +315,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * @param networkID roadNetwork identifier
      * @throws SQLException
      */
-    private void storeSections(RoadNetwork roadNetwork, String networkID) throws SQLException {
+    private void storeSections(RoadNetwork roadNetwork, String networkID, String projectName) throws SQLException {
 
         List<Road> roadsToStore = new LinkedList<>();
 
@@ -337,7 +337,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
                 }
             }
             if (!storedSections.contains(section.getID())) {
-                storeSection(section, networkID);
+                storeSection(section, networkID, projectName);
                 storedSections.add(section.getID());
                 List<Double> tollFareList = section.getTollFare();
                 for (Double tollFare : tollFareList) {
@@ -357,12 +357,13 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * @param networkID {@link RoadNetwork} identifier
      * @throws SQLException
      */
-    private void storeNode(Node node, String networkID) throws SQLException {
+    private void storeNode(Node node, String networkID, String projectName) throws SQLException {
         try (CallableStatement storeNodeProcedure = oracleConnection
-                .prepareCall("CALL storeNodeProcedure(?,?)")) {
+                .prepareCall("CALL storeNodeProcedure(?,?,?)")) {
 
             storeNodeProcedure.setString("id", node.getId());
             storeNodeProcedure.setString("networkID", networkID);
+            storeNodeProcedure.setString("projectName", projectName);
 
             storeNodeProcedure.executeUpdate();
         }
@@ -391,9 +392,9 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
      * @param networkID {@link RoadNetwork} identifier
      * @throws SQLException
      */
-    private void storeSection(Section section, String networkID) throws SQLException {
+    private void storeSection(Section section, String networkID, String projectName) throws SQLException {
         try (CallableStatement storeSectionProcedure = oracleConnection
-                .prepareCall("CALL storeSectionProcedure(?,?,?,?,?,?)")) {
+                .prepareCall("CALL storeSectionProcedure(?,?,?,?,?,?,?)")) {
 
             storeSectionProcedure.setInt("id", section.getID());
             storeSectionProcedure.setString("networkID", networkID);
@@ -401,6 +402,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             storeSectionProcedure.setString("endingNodeID", section.getDestinyVertex().getElement());
             storeSectionProcedure.setString("direction", section.getDirection().toString());
             storeSectionProcedure.setString("owningRoadID", section.getOwningRoad().getId());
+            storeSectionProcedure.setString("projectName", projectName);
 
             storeSectionProcedure.executeUpdate();
         }
