@@ -88,7 +88,6 @@ public class RoadNetwork extends Graph<Node, Section> {
             boolean firstAdded = addDirectedSection(n1, n2, section);
             return addDirectedSection(n2, n1, section)
                     && firstAdded;
-
         } else if (section.getDirection() == Direction.DIRECT) {
             return addDirectedSection(n1, n2, section);
         } else if (section.getDirection() == Direction.REVERSE) {
@@ -98,13 +97,17 @@ public class RoadNetwork extends Graph<Node, Section> {
     }
 
     private boolean addDirectedSection(Node n1, Node n2, Section section) {
-        boolean flag = false;
+
         if (insertEdge(n1, n2, section, section.getWeight())) {
-            n1.addAdjVert(n2.getElement(), section);
-            n2.addAdjVert(n1.getElement(), section);
-            flag = true;
+            if (!n1.getSetAllAdjVerts().contains(n2.getElement())) {
+                n1.addAdjVert(n2.getElement(), section);
+            }
+            if (!n2.getSetAllAdjVerts().contains(n1.getElement())) {
+                n2.addAdjVert(n1.getElement(), section);
+            }
+            return true;
         }
-        return flag;
+        return false;
     }
 
     /**
