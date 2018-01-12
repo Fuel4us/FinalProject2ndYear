@@ -5,24 +5,21 @@
  */
 package lapr.project.model;
 
-import lapr.project.model.*;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
  *
- * @author TOSHIBA
+ * @author TEAM Fonseca
  */
 public class VehicleTest {
     
-    private final Vehicle instance = new Vehicle("Pick_up", "", VehicleType.Car, 0, Vehicle.MotorType.COMBUSTION, Fuel.Diesel, new Measurable(1.0, Unit.KILOGRAM), new Measurable(1.0, Unit.KILOMETERS_PER_HOUR), 1f, new Measurable(1, Unit.METER_SQUARED), 1f, new Measurable(0, Unit.METER), new ArrayList<>(), new Energy(0, 0, 0, new ArrayList<>(), new ArrayList<>()));
+    Vehicle instance = new Vehicle("Pick_up", "", VehicleType.Car, 0, Vehicle.MotorType.COMBUSTION, Fuel.Diesel, new Measurable(1.0, Unit.KILOGRAM), new Measurable(1.0, Unit.KILOMETERS_PER_HOUR), 1f, new Measurable(1, Unit.METER_SQUARED), 1f, new Measurable(0, Unit.METER), new ArrayList<>(), new Energy(0, 0, 0, new ArrayList<>(), new ArrayList<>()));
 
     /**
      * Test of getVehicleClass method, of class Vehicle.
@@ -34,6 +31,14 @@ public class VehicleTest {
         int result = instance.getVehicleClass();
         assertEquals(expResult, result);
         }
+    
+    @Test
+    public void VehicleTest () {
+        Vehicle vehicleTest = new Vehicle();
+        String expResult = null;
+        String result = vehicleTest.getName();
+        assertEquals(expResult, result);
+    }
 
     /**
      * Test of equals method, of class Vehicle.
@@ -105,4 +110,114 @@ public class VehicleTest {
 
     }
 
+    /**
+     * Test of hashCode method, of class Vehicle.
+     */
+    @Test
+    public void testHashCode() {
+        
+        int expResult = instance.getName().hashCode();
+        int result = 1086622553;
+        assertEquals(expResult, result);
+    }
+
+//    /**
+//     * Test of toString method, of class Vehicle.
+//     */
+//    @Test
+//    public void testToString() {
+//        System.out.println("toString");
+//        String expResult = "";
+//        String result = instance.toString();
+//        assertEquals(expResult, result);
+//    }
+
+    /**
+     * Test of getName method, of class Vehicle.
+     */
+    @Test
+    public void testGetName() {
+        System.out.println("getName");
+        String expResult = "Pick_up";
+        String result = instance.getName();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getMotorType method, of class Vehicle.
+     */
+    @Test
+    public void testGetMotorType() {
+        System.out.println("getMotorType");
+        Vehicle.MotorType expResult = Vehicle.MotorType.COMBUSTION;
+        Vehicle.MotorType result = instance.getMotorType();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getMass method, of class Vehicle.
+     */
+    @Test
+    public void testGetMass() {
+        System.out.println("getMass");
+        Measurable expResult = new Measurable (1.0, Unit.KILOGRAM);
+        Measurable result = instance.getMass();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getMaxLoad method, of class Vehicle.
+     */
+    @Test
+    public void testGetMaxLoad() {
+        System.out.println("getMaxLoad");
+        Measurable expResult = new Measurable(1.0, Unit.KILOMETERS_PER_HOUR);
+        Measurable result = instance.getMaxLoad();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getFrontalArea method, of class Vehicle.
+     */
+    @Test
+    public void testGetFrontalArea() {
+        System.out.println("getFrontalArea");
+        Measurable expResult = new Measurable(1, Unit.METER_SQUARED);
+        Measurable result = instance.getFrontalArea();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getWheelSize method, of class Vehicle.
+     */
+    @Test
+    public void testGetWheelSize() {
+        System.out.println("getWheelSize");
+        Measurable expResult = new Measurable(0, Unit.METER);
+        Measurable result = instance.getWheelSize();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getVelocityLimitList method, of class Vehicle.
+     */
+    @Test
+    public void testGetVelocityLimitList() {
+        System.out.println("getVelocityLimitList");
+        List<VelocityLimit> expResult = new ArrayList<>();
+        List<VelocityLimit> result = instance.getVelocityLimitList();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getEnergy method, of class Vehicle.
+     */
+    @Test
+    public void testGetEnergy() {
+        System.out.println("getEnergy");
+        Vehicle vehicleTestEnergy = new Vehicle(); 
+        Energy expResult = null;
+        Energy result = vehicleTestEnergy.getEnergy();
+        assertEquals(expResult, result);
+    }
 }
