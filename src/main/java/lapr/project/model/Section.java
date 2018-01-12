@@ -277,17 +277,19 @@ public class Section extends Edge<String, Direction> {
 
             EnergyExpenditureAccelResults segmentResults;
             if (!energySaving) {
-                segmentResults = segment.calculateEnergyExpenditureAccel(roadNetwork, initialVelocity, vehicle, load,
+                segmentResults = segment.calculateEnergyExpenditureAccel(initialVelocity, vehicle, load,
                         maxAcceleration, maxBraking, finalVelocity, lastSegment, false);
 
             } else {
 
-                segmentResults = segment.calculateEnergyExpenditureAccel(roadNetwork, initialVelocity, vehicle, load,
+                Measurable initialVelocityToBeUsed = new Measurable(initialVelocity.getQuantity(), Unit.KILOMETERS_PER_HOUR);
+
+                segmentResults = segment.calculateEnergyExpenditureAccel(initialVelocityToBeUsed, vehicle, load,
                         maxAcceleration, maxBraking, finalVelocity, lastSegment, true);
 
-                while (finalVelocity.getQuantity() >= segment.getMinVelocity()) {
+                while (finalVelocity.getQuantity() >= vehicle.determineInitialVelocity().getQuantity()) {
 
-                    EnergyExpenditureAccelResults results = segment.calculateEnergyExpenditureAccel(roadNetwork, initialVelocity, vehicle, load,
+                    EnergyExpenditureAccelResults results = segment.calculateEnergyExpenditureAccel(initialVelocityToBeUsed, vehicle, load,
                             maxAcceleration, maxBraking, finalVelocity, lastSegment, true);
 
                     if (results.getEnergyExpenditure().getQuantity() < segmentResults.getEnergyExpenditure().getQuantity()) {

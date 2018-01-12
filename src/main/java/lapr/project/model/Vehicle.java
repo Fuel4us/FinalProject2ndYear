@@ -147,7 +147,7 @@ public class Vehicle {
      * @param acceleration the acceleration of the vehicle (0 if the uniform
      * movement is to be preserved)
      * @param energySaving true if the vehicle has the energy saving mode turned on
-     * * @return the energy expenditure in KJ taking into account the fuel of the
+     * @return the energy expenditure in KJ taking into account the fuel of the
      * vehicle, the gear position used in the segment, the velocity the vehicle
      * used and the energy expenditure using the formula "Power * timeSpent"
      */
@@ -250,6 +250,9 @@ public class Vehicle {
         if (accelerationForce + motorForce < rollingResistance + airDrag + gravitationalForce) {
 
             if (energySaving) {
+                if (gearPosition == 0) {
+                    throw new IllegalArgumentException();
+                }
                 return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, acceleration, energySaving);
             }
 

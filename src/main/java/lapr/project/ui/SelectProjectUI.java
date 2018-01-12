@@ -19,7 +19,6 @@ public final class SelectProjectUI extends javax.swing.JFrame {
     InitializeUIElements initializer = new InitializeUIElements();
     private static final long serialVersionUID = -5188965937946662366L;
     private SelectProjectController selectProjectController;
-    private Project project;
     private boolean verifyProjectWasSelected;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
@@ -42,7 +41,7 @@ public final class SelectProjectUI extends javax.swing.JFrame {
     /**
      * Creates new form SelectProjectUI
      */
-    private SelectProjectUI() {
+    SelectProjectUI() {
         selectProjectController = new SelectProjectController(Main.dbCom);
         verifyProjectWasSelected = false;
         initComponents();
@@ -264,7 +263,7 @@ public final class SelectProjectUI extends javax.swing.JFrame {
 
     private void jButtonPopUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPopUpActionPerformed
         if (verifyProjectWasSelected) {
-            new PopUp1().setVisible(true);
+            new PopUp1(this).setVisible(true);
         } else {
             showOptionPaneRequiredActiveProject();
         }
