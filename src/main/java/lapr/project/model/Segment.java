@@ -47,8 +47,18 @@ public class Segment {
         this.minVelocity = minVelocity;
     }
 
+    /**
+     * @return length of the segment
+     */
     public double getLength() {
         return length;
+    }
+
+    /**
+     * @return minimum velocity of the segment
+     */
+    public double getMinVelocity() {
+        return minVelocity;
     }
 
     /**
@@ -178,16 +188,18 @@ public class Segment {
      * @param load            the load the vehicle takes
      * @param maxAcceleration the max acceleration
      * @param maxBraking      the max braking
+     * @param finalVelocity   the final velocity to be reached
      * @param lastSegment     true if this is the last segment of the path
+     * @param energySaving    true if the vehicle has the energy saving mode on
      * @return an instance of the type EnergyExpenditureAccelResults with the information about this algorithm
      * (energy expenditure, time spent, final velocity and gear position)
      */
     public EnergyExpenditureAccelResults calculateEnergyExpenditureAccel(RoadNetwork roadNetwork, Measurable initialVelocity, Vehicle vehicle,
-                                                                         Measurable load, Measurable maxAcceleration, Measurable maxBraking, boolean lastSegment) {
+                                                                         Measurable load, Measurable maxAcceleration, Measurable maxBraking, Measurable finalVelocity,
+                                                                         boolean lastSegment, boolean energySaving) {
 
         Measurable energyExpenditure = new Measurable(0, Unit.KILOJOULE);
         Measurable timeSpent = new Measurable(0, Unit.HOUR);
-        Measurable finalVelocity = calculateMaximumVelocityInterval(roadNetwork, vehicle, length);
 
         Measurable usedAcceleration;
         if (initialVelocity.getQuantity() < finalVelocity.getQuantity()) {
@@ -197,7 +209,8 @@ public class Segment {
         }
 
         // check if the theoretical final velocity to reach is possible for the car, if not
-        Measurable possibleVelocityToReach = vehicle.determineEnergyExpenditure(this, load, length, usedAcceleration.getQuantity() > 0 ? finalVelocity : initialVelocity, usedAcceleration)[2];
+        Measurable possibleVelocityToReach = vehicle.determineEnergyExpenditure(this, load, length,
+                usedAcceleration.getQuantity() > 0 ? finalVelocity : initialVelocity, usedAcceleration, energySaving)[2];
 
         if (Double.compare(possibleVelocityToReach.getQuantity(), finalVelocity.getQuantity()) != 0) {
             if (possibleVelocityToReach.getQuantity() >= this.minVelocity) {
@@ -223,7 +236,7 @@ public class Segment {
 
                 // moment of braking until the end
                 Measurable brakingFinalVelocity = calculateFinalVelocity(initialVelocity, maxBraking, length);
-                energyExpenditure.setQuantity(calculateEnergyExpenditureWithAcceleration(initialVelocity, brakingFinalVelocity, maxBraking, vehicle, load).getQuantity());
+                energyExpenditure.setQuantity(calculateEnergyExpenditureWithAcceleration(initialVelocity, brakingFinalVelocity, maxBraking, vehicle, load, energySaving).getQuantity());
 
                 return new EnergyExpenditureAccelResults(energyExpenditure, brakingFinalVelocity, distanceAndTimeFinishingPath[1]);
 
@@ -243,19 +256,19 @@ public class Segment {
             }
 
             // moment of acceleration in the beginning
-            energyExpenditure.setQuantity(calculateEnergyExpenditureWithAcceleration(initialVelocity, finalVelocity, usedAcceleration, vehicle, load).getQuantity());
+            energyExpenditure.setQuantity(calculateEnergyExpenditureWithAcceleration(initialVelocity, finalVelocity, usedAcceleration, vehicle, load, energySaving).getQuantity());
             timeSpent.setQuantity(calculateTravelledDistanceAndTimeSpent(finalVelocity, initialVelocity, usedAcceleration)[1].getQuantity());
 
             // moment of braking until the end
             double lengthForFinalBraking = calculateTravelledDistanceAndTimeSpent(finishingPathVelocity, finalVelocity, maxBraking)[0].getQuantity();
             energyExpenditure.setQuantity(energyExpenditure.getQuantity() + calculateEnergyExpenditureWithAcceleration(finalVelocity,
-                    finishingPathVelocity, maxBraking, vehicle, load).getQuantity());
+                    finishingPathVelocity, maxBraking, vehicle, load, energySaving).getQuantity());
             timeSpent.setQuantity(timeSpent.getQuantity() + calculateTravelledDistanceAndTimeSpent(finishingPathVelocity, finalVelocity, maxBraking)[1].getQuantity());
 
             // moment of uniform movement in the remaining length
             double lengthForUniformMovement = length - lengthForInitialAcceleration - lengthForFinalBraking;
             energyExpenditure.setQuantity(energyExpenditure.getQuantity() + determineEnergyExpenditureUniformMovement(new Measurable(0, Unit.METERS_PER_SECOND_SQUARED),
-                    vehicle, load, lengthForUniformMovement, finalVelocity));
+                    vehicle, load, lengthForUniformMovement, finalVelocity, energySaving));
             timeSpent.setQuantity(timeSpent.getQuantity() + (lengthForUniformMovement / finalVelocity.getQuantity()));
 
             return new EnergyExpenditureAccelResults(energyExpenditure, finishingPathVelocity, timeSpent);
@@ -266,12 +279,12 @@ public class Segment {
 
         if (distanceAndTimeEnteringSegment[0].getQuantity() < length) {
 
-            energyExpenditure.setQuantity(calculateEnergyExpenditureWithAcceleration(initialVelocity, finalVelocity, usedAcceleration, vehicle, load).getQuantity());
+            energyExpenditure.setQuantity(calculateEnergyExpenditureWithAcceleration(initialVelocity, finalVelocity, usedAcceleration, vehicle, load, energySaving).getQuantity());
             timeSpent.setQuantity(distanceAndTimeEnteringSegment[1].getQuantity());
 
             double lengthForUniformMovement = length - distanceAndTimeEnteringSegment[0].getQuantity();
             energyExpenditure.setQuantity(energyExpenditure.getQuantity() + determineEnergyExpenditureUniformMovement(
-                    new Measurable(0, Unit.METERS_PER_SECOND_SQUARED), vehicle, load, lengthForUniformMovement, finalVelocity));
+                    new Measurable(0, Unit.METERS_PER_SECOND_SQUARED), vehicle, load, lengthForUniformMovement, finalVelocity, energySaving));
             timeSpent.setQuantity(timeSpent.getQuantity() + (lengthForUniformMovement / finalVelocity.getQuantity()));
 
             return new EnergyExpenditureAccelResults(energyExpenditure, finalVelocity, timeSpent);
@@ -280,7 +293,7 @@ public class Segment {
 
             finalVelocity = calculateFinalVelocity(initialVelocity, usedAcceleration, length);
             distanceAndTimeEnteringSegment = calculateTravelledDistanceAndTimeSpent(finalVelocity, initialVelocity, usedAcceleration);
-            energyExpenditure.setQuantity(calculateEnergyExpenditureWithAcceleration(initialVelocity, finalVelocity, usedAcceleration, vehicle, load).getQuantity());
+            energyExpenditure.setQuantity(calculateEnergyExpenditureWithAcceleration(initialVelocity, finalVelocity, usedAcceleration, vehicle, load, energySaving).getQuantity());
             timeSpent.setQuantity(distanceAndTimeEnteringSegment[1].getQuantity());
 
             return new EnergyExpenditureAccelResults(energyExpenditure, finalVelocity, timeSpent);
@@ -297,10 +310,11 @@ public class Segment {
      * @param acceleration    the acceleration (positive if accelerating, negative if braking)
      * @param vehicle         the vehicle that will travel in these conditions
      * @param load            the load the vehicle takes
+     * @param energySaving    true if the vehicle has the energy saving mode on
      * @return the energy expenditure in KJ
      */
     private Measurable calculateEnergyExpenditureWithAcceleration(Measurable initialVelocity, Measurable finalVelocity, Measurable acceleration, Vehicle vehicle,
-                                                                  Measurable load) {
+                                                                  Measurable load, boolean energySaving) {
 
         Measurable initialVelocityToBeUsed = new Measurable(initialVelocity.getQuantity(), Unit.KILOMETERS_PER_HOUR);
         Measurable energyExpenditure = new Measurable(0, Unit.KILOJOULE);
@@ -319,7 +333,7 @@ public class Segment {
                     + 0.5 * acceleration.getQuantity() * Math.pow(timeInterval, 2);
 
             double intervalEnergyExpenditure = determineEnergyExpenditureUniformMovement(acceleration, vehicle, load,
-                    intervalLength * Physics.KILOMETERS_METERS_CONVERSION_RATIO, initialVelocityToBeUsed);
+                    intervalLength * Physics.KILOMETERS_METERS_CONVERSION_RATIO, initialVelocityToBeUsed, energySaving);
 
             energyExpenditure.setQuantity(energyExpenditure.getQuantity() + intervalEnergyExpenditure);
 
@@ -344,16 +358,17 @@ public class Segment {
      * @param load the load the vehicle has
      * @param length the length
      * @param velocity the velocity in that uniform movement
+     * @param energySaving true if the vehicle has the energy saving mode on
      * @return the energy expenditure in KJ
      */
-    public double determineEnergyExpenditureUniformMovement(Measurable acceleration, Vehicle vehicle, Measurable load, double length, Measurable velocity) {
+    public double determineEnergyExpenditureUniformMovement(Measurable acceleration, Vehicle vehicle, Measurable load, double length, Measurable velocity, boolean energySaving) {
         if (acceleration.getQuantity() < 0 && vehicle.getMotorType().equals(Vehicle.MotorType.NONCOMBUSTION)) {
-            return -vehicle.determineEnergyExpenditure(this, load, length, velocity, acceleration)[3].getQuantity()
+            return -vehicle.determineEnergyExpenditure(this, load, length, velocity, acceleration, energySaving)[3].getQuantity()
                     * vehicle.getEnergy().getEnergyRegenerationRatio();
         } else if (acceleration.getQuantity() >= 0 && vehicle.getMotorType().equals(Vehicle.MotorType.NONCOMBUSTION)) {
-            return vehicle.determineEnergyExpenditure(this, load, length, velocity, acceleration)[3].getQuantity();
+            return vehicle.determineEnergyExpenditure(this, load, length, velocity, acceleration, energySaving)[3].getQuantity();
         } else {
-            return vehicle.determineEnergyExpenditure(this, load, length, velocity, acceleration)[0].getQuantity();
+            return vehicle.determineEnergyExpenditure(this, load, length, velocity, acceleration, energySaving)[0].getQuantity();
         }
     }
 
@@ -390,7 +405,6 @@ public class Segment {
 
     }
 
-
     /**
      * Defines parameters to be used by callable statement
      *
@@ -406,25 +420,5 @@ public class Segment {
         storeSegmentProcedure.setDouble("windSpeed", windSpeed);
         storeSegmentProcedure.setDouble("maxVelocity", maxVelocity);
         storeSegmentProcedure.setDouble("minVelocity", minVelocity);
-    }
-
-    /**
-     * Calculates the energy expenditure, the time spent and the final velocity this segment
-     * given the vehicle (with the energy saving mode turned on), the initial velocity, the load, the max
-     * acceleration and braking and the information about this being the last segment of the path or not
-     *
-     * @param roadNetwork     the road network
-     * @param initialVelocity the initial velocity of the vehicle
-     * @param vehicle         the vehicle
-     * @param load            the load the vehicle takes
-     * @param maxAcceleration the max acceleration
-     * @param maxBraking      the max braking
-     * @param lastSegment     true if this is the last segment of the path
-     * @return an instance of the type EnergyExpenditureAccelResults with the information about this algorithm
-     * (energy expenditure, time spent, final velocity and gear position)
-     */
-    public EnergyExpenditureAccelResults calculateEnergyExpenditureAccelEnergySaving(RoadNetwork roadNetwork, Measurable initialVelocity, Vehicle vehicle, Measurable load,
-                                                                                     Measurable maxAcceleration, Measurable maxBraking, boolean lastSegment) {
-        return null;
     }
 }
