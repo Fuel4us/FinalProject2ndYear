@@ -26,6 +26,7 @@ public class PathAlgorithm {
     private static final String N10_ALGORITHM_NAME = "N10 - Fastest Path";
     private static final String N11_ALGORITHM_NAME = "N11 - Theoretical Most Energy Efficient Path";
     private static final String N12_ALGORITHM_NAME = "N12 - Efficient Path in Energy Saving Mode";
+    private static final String N13_ALGORITHM_NAME = "N13 - Efficient Path with Polynomial Interpolation";
 
     /**
      * <p>
@@ -67,7 +68,8 @@ public class PathAlgorithm {
             for (Segment segment : section.getSegments()) {
                 Measurable maxLinearVelocity = segment.calculateMaximumVelocityInterval(roadNetwork, vehicle, segment.getLength());
                 expendedEnergy.setQuantity(expendedEnergy.getQuantity() +
-                        segment.determineEnergyExpenditureUniformMovement(new Measurable(0, Unit.KILOMETERS_PER_HOUR), vehicle, load, segment.getLength(), maxLinearVelocity, false));
+                        segment.determineEnergyExpenditureUniformMovement(new Measurable(0, Unit.KILOMETERS_PER_HOUR), vehicle, load,
+                                segment.getLength(), maxLinearVelocity, false, false));
             }
             tollCosts.setQuantity(tollCosts.getQuantity() + section.determineTollCosts(vehicle).getQuantity());
         }
@@ -132,7 +134,7 @@ public class PathAlgorithm {
      * @return The Analysis containing the results
      */
     public static Analysis theoreticalEfficientPath(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load) {
-        return efficientPath(project, start, end, vehicle, maxAcceleration, maxBraking, load, false, false);
+        return efficientPath(N11_ALGORITHM_NAME, project, start, end, vehicle, maxAcceleration, maxBraking, load, false, false);
     }
 
     /**
@@ -157,7 +159,7 @@ public class PathAlgorithm {
      * @return The Analysis containing the results
      */
     public static Analysis efficientPathEnergySavingMode(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load) {
-        return efficientPath(project, start, end, vehicle, maxAcceleration, maxBraking, load, true, false);
+        return efficientPath(N12_ALGORITHM_NAME, project, start, end, vehicle, maxAcceleration, maxBraking, load, true, false);
     }
 
     /**
@@ -186,7 +188,7 @@ public class PathAlgorithm {
      */
     public static Analysis efficientPathPolynomialInterpolation(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load,
                                           boolean energySaving) {
-        return efficientPath(project, start, end, vehicle, maxAcceleration, maxBraking, load, energySaving, true);
+        return efficientPath(N13_ALGORITHM_NAME, project, start, end, vehicle, maxAcceleration, maxBraking, load, energySaving, true);
     }
 
     /**
@@ -200,6 +202,7 @@ public class PathAlgorithm {
      * The vehicle will be assumed to be travelling, whenever possible, at the maximum speed allowed on the road or for the vehicle,
      * respecting the acceleration limits when accelerating/breaking and taking into account the wind effect, albeit ignoring traffic.
      * </p>
+     * @param algorithmName the algorithm's name
      * @param project The project to which the analysis belongs
      * @param start The starting node
      * @param end The ending node
@@ -213,7 +216,7 @@ public class PathAlgorithm {
      * @param polynomialInterpolation true if the torque has to be calculated using polynomial interpolation
      * @return The Analysis containing the results
      */
-    private static Analysis efficientPath(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load,
+    private static Analysis efficientPath(String algorithmName, Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load,
                                                     boolean energySaving, boolean polynomialInterpolation) {
 
         if (!vehicle.hasValidLoad(load)) {
@@ -239,7 +242,8 @@ public class PathAlgorithm {
                             //throws an Exception if a section proves to be impossible to travel, requiring the path to be recalculated
                         (ExceptionalBiFunction<Edge<Node, Section>, Measurable, EnergyExpenditureAccelResults>)
                                 (sectionEdge, successiveVelocity) ->
-                                        sectionEdge.getElement().calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration, maxBraking, end, energySaving),
+                                        sectionEdge.getElement().calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration,
+                                                maxBraking, end, energySaving, polynomialInterpolation),
                             //initial value for successive velocity
                             initialVelocity,
                             //the weigth of the graph is considered to be the expended energy
@@ -261,33 +265,41 @@ public class PathAlgorithm {
 
         Measurable expendedEnergy = new Measurable(totalExpendedEnergy, Unit.KILOJOULE);
 
-        EnergyExpenditureAccelResults finalResults = determineAccumulatedResults(roadNetwork, vehicle, load, maxAcceleration, maxBraking, end, initialVelocity, sections);
+        EnergyExpenditureAccelResults finalResults = determineAccumulatedResults(roadNetwork, vehicle, load, maxAcceleration, maxBraking, end, initialVelocity, sections,
+                energySaving, polynomialInterpolation);
 
-        return new Analysis(project, N11_ALGORITHM_NAME, sections, expendedEnergy, finalResults.getTimeSpent(), finalResults.getTollCosts());
+        return new Analysis(project, algorithmName, sections, expendedEnergy, finalResults.getTimeSpent(), finalResults.getTollCosts());
     }
 
     /**
      * Determines the final results corresponding to the travelling of a vehicle in a path.
-     * @param roadNetwork The {@link RoadNetwork} to which the sections of the path belong, and wherein vehicles travel
-     * @param vehicle The selected vehicle to which the analysis applies
-     * The maximum velocity of the vehicle will be assumed if this
-     * velocity is allowed in the speed limit of a segment
-     * @param load the load that the vehicle carries (optional)
+     *
+     * @param roadNetwork     The {@link RoadNetwork} to which the sections of the path belong, and wherein vehicles travel
+     * @param vehicle         The selected vehicle to which the analysis applies
+     *                        The maximum velocity of the vehicle will be assumed if this
+     *                        velocity is allowed in the speed limit of a segment
+     * @param load            the load that the vehicle carries (optional)
      * @param maxAcceleration the maximum acceleration assumed by the vehicle
-     * @param maxBraking the maximum braking assumed by the vehicle
-     * @param end The ending node
+     * @param maxBraking      the maximum braking assumed by the vehicle
+     * @param end             The ending node
      * @param initialVelocity The starting velocity of the vehicle
-     * @param path a {@link List} of instances of {@link Section} wherein the vehicle travels
+     * @param path            a {@link List} of instances of {@link Section} wherein the vehicle travels
+     * @param energySaving    true if the vehicle is in energy saving mode
+     * @param polynomialInterpolation true if the calculation of the torque is to be made by polynomial interpolation
      * @return an instance of {@link EnergyExpenditureAccelResults} containing
      * the final results corresponding to the travelling of a vehicle in a path.
      */
-    private static EnergyExpenditureAccelResults determineAccumulatedResults(RoadNetwork roadNetwork, Vehicle vehicle, Measurable load, Measurable maxAcceleration, Measurable maxBraking, Node end, Measurable initialVelocity, List<Section> path) {
+    private static EnergyExpenditureAccelResults determineAccumulatedResults(RoadNetwork roadNetwork, Vehicle vehicle, Measurable load,
+                                                                             Measurable maxAcceleration, Measurable maxBraking, Node end,
+                                                                             Measurable initialVelocity, List<Section> path, boolean energySaving,
+                                                                             boolean polynomialInterpolation) {
         Measurable successiveVelocity = initialVelocity;
         double travelTime = 0;
         double tollCosts = 0;
 
         for (Section section : path) {
-            EnergyExpenditureAccelResults results = section.calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration, maxBraking, end, false);
+            EnergyExpenditureAccelResults results = section.calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration,
+                    maxBraking, end, energySaving, polynomialInterpolation);
             successiveVelocity = results.getFinalVelocity();
 
             travelTime += results.getTimeSpent().getQuantity();

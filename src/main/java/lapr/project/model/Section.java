@@ -245,12 +245,13 @@ public class Section extends Edge<String, Direction> {
      * @param maxBraking the max braking
      * @param pathEndingNode the ending node of the path
      * @param energySaving true if the vehicle has the energy saving mode on
+     * @param polynomialInterpolation true if the polynomial interpolation is to be used to calculate the torque value
      * @return an instance of the class EnergyExpenditureAccelResults containing the energy expenditure, the final velocity and
      * the time spent in this section
      */
     public EnergyExpenditureAccelResults calculateEnergyExpenditureAccel(RoadNetwork roadNetwork, Measurable initialVelocity, Vehicle vehicle,
                                                                          Measurable load, Measurable maxAcceleration, Measurable maxBraking, Node pathEndingNode,
-                                                                         boolean energySaving) {
+                                                                         boolean energySaving, boolean polynomialInterpolation) {
 
         Measurable totalEnergyExpenditure = new Measurable(0, Unit.KILOJOULE);
         Measurable totalTimeSpent = new Measurable(0, Unit.HOUR);
@@ -278,19 +279,19 @@ public class Section extends Edge<String, Direction> {
             EnergyExpenditureAccelResults segmentResults;
             if (!energySaving) {
                 segmentResults = segment.calculateEnergyExpenditureAccel(initialVelocity, vehicle, load,
-                        maxAcceleration, maxBraking, finalVelocity, lastSegment, false);
+                        maxAcceleration, maxBraking, finalVelocity, lastSegment, false, polynomialInterpolation);
 
             } else {
 
                 Measurable initialVelocityToBeUsed = new Measurable(initialVelocity.getQuantity(), Unit.KILOMETERS_PER_HOUR);
 
                 segmentResults = segment.calculateEnergyExpenditureAccel(initialVelocityToBeUsed, vehicle, load,
-                        maxAcceleration, maxBraking, finalVelocity, lastSegment, true);
+                        maxAcceleration, maxBraking, finalVelocity, lastSegment, true, polynomialInterpolation);
 
                 while (finalVelocity.getQuantity() >= vehicle.determineInitialVelocity().getQuantity()) {
 
                     EnergyExpenditureAccelResults results = segment.calculateEnergyExpenditureAccel(initialVelocityToBeUsed, vehicle, load,
-                            maxAcceleration, maxBraking, finalVelocity, lastSegment, true);
+                            maxAcceleration, maxBraking, finalVelocity, lastSegment, true, polynomialInterpolation);
 
                     if (results.getEnergyExpenditure().getQuantity() < segmentResults.getEnergyExpenditure().getQuantity()) {
 

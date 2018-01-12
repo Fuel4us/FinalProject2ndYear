@@ -11,23 +11,18 @@ public class Physics {
     public static final double KILOMETERS_METERS_CONVERSION_RATIO = 0.001;
 
     /**
-     * Calculates the quadratic formula with the values a, b and c and returns both values stored in an array
-     * @param a the first value
-     * @param b the second value
-     * @param c the third value
-     * @return an array storing the values given by the operation of the quadratic formula
+     * Calculates the correspondent value of the valueX given by parameter using the linear interpolation,
+     * according to the intervals X and Y
+     * @param initialX the initial value of the interval X
+     * @param finalX the final value of the interval X
+     * @param initialY the initial value of the interval Y
+     * @param finalY the final value of the interval Y
+     * @param valueX the value correspondent to the interval X
+     * @return the correspondent value in the interval Y
      */
-    public static double[] calculateQuadraticFormula(double a, double b, double c) {
-        double discriminant = Math.pow(b, 2) - 4 * a * c;
-
-        if (discriminant < 0) {
-            return null;
-        }
-        
-        double value1 = (-b + Math.sqrt(discriminant)) / (2 * a);
-        double value2 = (-b - Math.sqrt(discriminant)) / (2 * a);
-
-        return new double[]{value1, value2};
+    public static double calculateLinearInterpolation(double initialX, double finalX, double initialY, double finalY,
+                                                      double valueX) {
+        return initialY + (finalY - initialY) * (valueX - initialX) / (finalX - initialX);
     }
 
 }

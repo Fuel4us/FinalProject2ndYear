@@ -147,17 +147,19 @@ public class Vehicle {
      * @param acceleration the acceleration of the vehicle (0 if the uniform
      * movement is to be preserved)
      * @param energySaving true if the vehicle has the energy saving mode turned on
+     * @param polynomialInterpolation true if the torque is to be calculated using the polynomial interpolation
      * @return the energy expenditure in KJ taking into account the fuel of the
      * vehicle, the gear position used in the segment, the velocity the vehicle
      * used and the energy expenditure using the formula "Power * timeSpent"
      */
-    Measurable[] determineEnergyExpenditure(Segment segment, Measurable load, double length, Measurable velocity, Measurable acceleration, boolean energySaving) {
+    Measurable[] determineEnergyExpenditure(Segment segment, Measurable load, double length, Measurable velocity, Measurable acceleration, boolean energySaving,
+                                            boolean polynomialInterpolation) {
 
         Measurable velocityToBeUsed = new Measurable(velocity.getQuantity(), Unit.KILOMETERS_PER_HOUR);
         int gearPosition = energy.getGears().size() - 1;
         int throttlePosition = 0;
 
-        Measurable[] data = calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, velocityToBeUsed, load, acceleration, energySaving);
+        Measurable[] data = calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, velocityToBeUsed, load, acceleration, energySaving, polynomialInterpolation);
 
         Measurable power = calculatePowerGenerated(data[0], data[1]);
 
@@ -197,12 +199,13 @@ public class Vehicle {
      * @param acceleration the acceleration of the vehicle (0 if the uniform
      * movement is to be preserved)
      * @param energySaving true if the vehicle has the energy saving mode on
+     * @param polynomialInterpolation true if the torque is to be calculated using the polynomial interpolation
      * @return an array with the engine speed in the first position, the torque
      * in the second position, the SFC in the third position, the velocity in
      * the forth position and the gear position in the fifth position
      */
     private Measurable[] calculateEngineSpeedTorqueSFCVelocity(Segment segment, int gearPosition, int throttlePosition,
-                                                               Measurable velocity, Measurable load, Measurable acceleration, boolean energySaving) {
+                                                               Measurable velocity, Measurable load, Measurable acceleration, boolean energySaving, boolean polynomialInterpolation) {
 
         double engineSpeed
                 = (velocity.getQuantity() * 60 * energy.getFinalDriveRatio() * energy.getGears().get(gearPosition).getRatio())
@@ -213,11 +216,11 @@ public class Vehicle {
 
         for (Regime regime : energy.getThrottles().get(throttlePosition).getRegimes()) {
             if (regime.getRpmHigh() >= engineSpeed && regime.getRpmLow() <= engineSpeed) {
-                torque = regime.getTorqueLow();
+                torque = Physics.calculateLinearInterpolation(regime.getRpmLow(), regime.getRpmHigh(), regime.getTorqueLow(), regime.getTorqueHigh(), engineSpeed);
                 SFC = regime.getSFC();
                 break;
             } else if (regime.getRpmLow() > engineSpeed) {
-                return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, acceleration, energySaving);
+                return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, acceleration, energySaving, polynomialInterpolation);
             }
         }
 
@@ -226,7 +229,7 @@ public class Vehicle {
             velocity.setQuantity(velocity.getQuantity() - velocity.getQuantity() * 0.02d);
             gearPosition = energy.getGears().size() - 1;
             throttlePosition = 0;
-            return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, velocity, load, acceleration, energySaving);
+            return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, throttlePosition, velocity, load, acceleration, energySaving, polynomialInterpolation);
         }
 
         double motorForce = (torque * energy.getFinalDriveRatio() * energy.getGears().get(gearPosition).getRatio())
@@ -253,17 +256,17 @@ public class Vehicle {
                 if (gearPosition == 0) {
                     throw new IllegalArgumentException();
                 }
-                return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, acceleration, energySaving);
+                return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, acceleration, energySaving, polynomialInterpolation);
             }
 
             // if the throttle position is not 100%, we increase the throttle position
             if (throttlePosition < 2) {
-                return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, ++throttlePosition, velocity, load, acceleration, energySaving);
+                return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, ++throttlePosition, velocity, load, acceleration, energySaving, polynomialInterpolation);
             }
 
             // if the throttle position is in 100%, we decrease the gear position and start the throttle as 25%
             throttlePosition = 0;
-            return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, acceleration, energySaving);
+            return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, acceleration, energySaving, polynomialInterpolation);
 
         }
 
