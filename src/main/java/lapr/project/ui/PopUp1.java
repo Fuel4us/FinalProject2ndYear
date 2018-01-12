@@ -21,12 +21,12 @@ import static lapr.project.ui.Main.dbCom;
 public class PopUp1 extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 8060730009198569465L;
-    private static Project projectPop;
+    private static Project project;
     /**
      * Creates new form PopUp1
      */
-    public PopUp1(Project prjct) {
-        projectPop=prjct;
+    private PopUp1() {
+        project = Main.currentProject;
         initComponents();
     }
 
@@ -110,8 +110,8 @@ public class PopUp1 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonChangeDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonChangeDataActionPerformed
-        //ToDo Redo this and remove projectPop useless static field
-//        ChangeDataUI epui = new ChangeDataUI(projectPop);
+        //ToDo Redo this and remove project useless static field
+//        ChangeDataUI epui = new ChangeDataUI(project);
 //        this.setVisible(false);
 //        epui.setVisible(true);
     }//GEN-LAST:event_jButtonChangeDataActionPerformed
@@ -121,17 +121,17 @@ public class PopUp1 extends javax.swing.JFrame {
         CopyProjectController controller = new CopyProjectController(dbCom);
         
         try {
-            if(!controller.cloneProject(projectPop)){
+            if(!controller.cloneProject(project)){
                 JOptionPane.showMessageDialog(
                         this,
                         "It's not possible to copy the actual project!",
                         "Copy Project",
                         JOptionPane.ERROR_MESSAGE);
             } else {
-                dbCom.addProject(projectPop);
+                dbCom.addProject(project);
                 JOptionPane.showMessageDialog(
                         this,
-                        "The actual project, " + projectPop.getName()
+                        "The actual project, " + project.getName()
                                 + ", was cloned and stored successfully!",
                         "Copy Project",
                         JOptionPane.INFORMATION_MESSAGE);
@@ -141,47 +141,13 @@ public class PopUp1 extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonCopyActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PopUp1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PopUp1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PopUp1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PopUp1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new PopUp1(new Project("test", "description", new RoadNetwork(), new ArrayList<>())).setVisible(true);
-            }
-        });
-    }
 
     /**
      * Triggers UI display
      */
     public static void display() {
         Main.setLook();
-        java.awt.EventQueue.invokeLater(() -> new PopUp1(projectPop).setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new PopUp1().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
