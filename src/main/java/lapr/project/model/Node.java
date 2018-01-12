@@ -2,6 +2,8 @@ package lapr.project.model;
 
 import lapr.project.utils.Graph.Vertex;
 
+import java.util.Objects;
+
 /**
  * Represents the nodes that connect sections
  */
@@ -36,4 +38,18 @@ public class Node extends Vertex<String,Direction> {
     public String getId() {
         return id;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Node node = (Node) o;
+        return Objects.equals(id, node.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id);
+    }
+
 }
