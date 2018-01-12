@@ -22,6 +22,7 @@ public class BestPathComparisonResultsUI extends javax.swing.JFrame {
     BestPathComparisonResultsUI(Analysis analysis) {
         BestPathComparisonResultsUI.analysis = analysis;
         initComponents();
+        initInfo(analysis);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setVisible(true);
@@ -98,6 +99,11 @@ public class BestPathComparisonResultsUI extends javax.swing.JFrame {
         sectionsResultTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         sectionsResultTextField.setText("<sample path>");
         sectionsResultTextField.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
+        sectionsResultTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sectionsResultTextFieldActionPerformed(evt);
+            }
+        });
 
         algorithmLabel.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         algorithmLabel.setForeground(new java.awt.Color(97, 122, 133));
@@ -152,7 +158,7 @@ public class BestPathComparisonResultsUI extends javax.swing.JFrame {
                         .addComponent(timeLabel)
                         .addGap(140, 140, 140)
                         .addComponent(costLabel)))
-                .addContainerGap(96, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelVehicleAnalysisLayout.setVerticalGroup(
             jPanelVehicleAnalysisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,9 +219,9 @@ public class BestPathComparisonResultsUI extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addContainerGap()
                 .addComponent(jLabelPageTitle)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(45, 46, 45));
@@ -250,7 +256,7 @@ public class BestPathComparisonResultsUI extends javax.swing.JFrame {
                 .addGap(68, 68, 68)
                 .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonRequestAnalysis, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
+                .addComponent(jButtonRequestAnalysis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(100, 100, 100))
         );
         jPanel3Layout.setVerticalGroup(
@@ -296,12 +302,18 @@ public class BestPathComparisonResultsUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        // TODO add your handling code here:
+        BestPathComparisonAllAnalysisUI.display();
+        dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonRequestAnalysisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRequestAnalysisActionPerformed
-        //ToDo
+        BestPathComparisonForm.display();
+        dispose();
     }//GEN-LAST:event_jButtonRequestAnalysisActionPerformed
+
+    private void sectionsResultTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectionsResultTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sectionsResultTextFieldActionPerformed
 
     /**
      * Triggers UI display
@@ -332,4 +344,20 @@ public class BestPathComparisonResultsUI extends javax.swing.JFrame {
     private javax.swing.JLabel timeLabel;
     private javax.swing.JTextField timeTextField;
     // End of variables declaration//GEN-END:variables
+
+    private void initInfo(Analysis analysis) {
+        this.projectNameTextField.setText(analysis.getRequestingInstance().getName());
+        this.projectNameTextField.setEnabled(false);
+        this.algorithmNameTextField.setText(analysis.getAlgorithmName());
+        this.algorithmNameTextField.setEnabled(false);
+        this.energyTextField.setText(analysis.getExpendedEnergy().getQuantity() + " " + analysis.getExpendedEnergy().getUnit().toString());
+        this.energyTextField.setEnabled(false);
+        this.timeTextField.setText(analysis.getTravelTime().getQuantity() + " " + analysis.getTravelTime().getUnit().toString());
+        this.timeTextField.setEnabled(false);
+        this.costTextField.setText(analysis.getTravelCost().getQuantity() + " " + analysis.getTravelCost().getUnit().toString());
+        this.costTextField.setEnabled(false);
+        this.sectionsResultTextField.setText(analysis.getBestPath().toString());
+        this.sectionsResultTextField.setEnabled(false);
+        
+    }
 }
