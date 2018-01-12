@@ -33,7 +33,7 @@ public class Segment {
     /**
      * Forbid default no-arg instantiation
      */
-    private Segment() {
+    public Segment() {
     }
 
     public Segment(int index, double initialHeight, double finalHeight, double length, double windAngle, double windSpeed, double maxVelocity, double minVelocity) {

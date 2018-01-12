@@ -279,7 +279,7 @@ public class SectionTest {
 
         Section sectionTest = new Section(nodeTest1, nodeTest2, Direction.BIDIRECTIONAL, segmentsTest,
                 new Road("A01", "A01", "toll highway", tollFaresRoadTest), new ArrayList<>());
-        int expResult = 2;
+        int expResult = 17;
         int result = sectionTest.getID();
         assertEquals(expResult, result);
     }

@@ -1,5 +1,6 @@
 package lapr.project.model;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
@@ -31,6 +32,13 @@ public class SegmentTest {
 //        segment.printDataFromSegment(segmentTemplate, fillFile);
 //
 //    }
+    
+    @Test
+    public void Segment() {
+        Segment emptyTest = new Segment();
+        double result = emptyTest.getMinVelocity();
+        assertEquals(0f, result, 0.0);
+    }
     
     /**
      * Test of getID method, of class Section.
