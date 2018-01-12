@@ -46,7 +46,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             ResultSet vehicleSet = (ResultSet) callableStatement.getObject(2);
 
             while (vehicleSet.next()) {
-                Vehicle vehicle = retrieveVehicle(vehicleSet);
+                Vehicle vehicle = retrieveVehicle(vehicleSet, projectName);
                 vehicles.add(vehicle);
             }
         }
@@ -60,7 +60,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * @return instance of {@link Vehicle}
      * @throws SQLException
      */
-    private Vehicle retrieveVehicle(ResultSet resultSet) throws SQLException {
+    private Vehicle retrieveVehicle(ResultSet resultSet, String projectName) throws SQLException {
         Vehicle vehicle;
         String name = resultSet.getString("name");
         String description = resultSet.getString("description");
@@ -84,7 +84,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
         Measurable frontalArea = createFrontalArea(name, unitEnum, frontalAreaID);
         Measurable wheelSize = createWheelSize(name, unitEnum, wheelID);
 
-        List<VelocityLimit> velocityLimitList = fillVelocityLimitList(name, unitEnum);
+        List<VelocityLimit> velocityLimitList = fillVelocityLimitList(name, projectName, unitEnum);
 
         Energy energy = createEnergy(name, vehicleEnergyID);
 
@@ -250,13 +250,14 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * @return {@link List} of {@link VelocityLimit}
      * @throws SQLException
      */
-    private List<VelocityLimit> fillVelocityLimitList(String name, Unit[] unitEnum) throws SQLException {
+    private List<VelocityLimit> fillVelocityLimitList(String name, String projectName, Unit[] unitEnum) throws SQLException {
         List<VelocityLimit> velocityLimitList = new LinkedList<>();
 
         try (CallableStatement callableStatement = oracleConnection
-                .prepareCall("CALL getVelocitySet(?,?)")) {
-            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+                .prepareCall("CALL getVelocitySet(?,?,?)")) {
+            callableStatement.registerOutParameter(3, OracleTypes.CURSOR);
             callableStatement.setString(1, name);
+            callableStatement.setString(2, projectName);
             callableStatement.execute();
             ResultSet velocitySet = (ResultSet) callableStatement.getObject(2);
             while (velocitySet.next()) {
