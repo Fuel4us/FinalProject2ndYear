@@ -69,12 +69,13 @@ public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
         int analysisID = analysis.identify();
 
         try (CallableStatement storeSectionCallable = super.oracleConnection
-                .prepareCall("CALL STORE_ANALYSED_SECTION(?,?)")) {
+                .prepareCall("CALL STORE_ANALYSED_SECTION(?,?,?)")) {
 
             for (Section section : analysis.getBestPath()) {
 
                 storeSectionCallable.setInt(1, analysisID);
                 storeSectionCallable.setInt(2, section.getID());
+//                storeSectionCallable.setString(3, networkID);
 
                 storeSectionCallable.executeUpdate();
 
