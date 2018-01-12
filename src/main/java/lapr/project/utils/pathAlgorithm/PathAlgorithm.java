@@ -26,6 +26,7 @@ public class PathAlgorithm {
     private static final String N10_ALGORITHM_NAME = "N10 - Fastest Path";
     private static final String N11_ALGORITHM_NAME = "N11 - Theoretical Most Energy Efficient Path";
     private static final String N12_ALGORITHM_NAME = "N12 - Efficient Path in Energy Saving Mode";
+    private static final String N13_ALGORITHM_NAME = "N13 - Efficient Path with Polynomial Interpolation";
 
     /**
      * <p>
@@ -132,7 +133,7 @@ public class PathAlgorithm {
      * @return The Analysis containing the results
      */
     public static Analysis theoreticalEfficientPath(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load) {
-        return efficientPath(project, start, end, vehicle, maxAcceleration, maxBraking, load, false, false);
+        return efficientPath(N11_ALGORITHM_NAME, project, start, end, vehicle, maxAcceleration, maxBraking, load, false, false);
     }
 
     /**
@@ -157,7 +158,7 @@ public class PathAlgorithm {
      * @return The Analysis containing the results
      */
     public static Analysis efficientPathEnergySavingMode(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load) {
-        return efficientPath(project, start, end, vehicle, maxAcceleration, maxBraking, load, true, false);
+        return efficientPath(N12_ALGORITHM_NAME, project, start, end, vehicle, maxAcceleration, maxBraking, load, true, false);
     }
 
     /**
@@ -186,7 +187,7 @@ public class PathAlgorithm {
      */
     public static Analysis efficientPathPolynomialInterpolation(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load,
                                           boolean energySaving) {
-        return efficientPath(project, start, end, vehicle, maxAcceleration, maxBraking, load, energySaving, true);
+        return efficientPath(N13_ALGORITHM_NAME, project, start, end, vehicle, maxAcceleration, maxBraking, load, energySaving, true);
     }
 
     /**
@@ -200,6 +201,7 @@ public class PathAlgorithm {
      * The vehicle will be assumed to be travelling, whenever possible, at the maximum speed allowed on the road or for the vehicle,
      * respecting the acceleration limits when accelerating/breaking and taking into account the wind effect, albeit ignoring traffic.
      * </p>
+     * @param algorithmName the algorithm's name
      * @param project The project to which the analysis belongs
      * @param start The starting node
      * @param end The ending node
@@ -213,7 +215,7 @@ public class PathAlgorithm {
      * @param polynomialInterpolation true if the torque has to be calculated using polynomial interpolation
      * @return The Analysis containing the results
      */
-    private static Analysis efficientPath(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load,
+    private static Analysis efficientPath(String algorithmName, Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load,
                                                     boolean energySaving, boolean polynomialInterpolation) {
 
         if (!vehicle.hasValidLoad(load)) {
@@ -263,7 +265,7 @@ public class PathAlgorithm {
 
         EnergyExpenditureAccelResults finalResults = determineAccumulatedResults(roadNetwork, vehicle, load, maxAcceleration, maxBraking, end, initialVelocity, sections);
 
-        return new Analysis(project, N11_ALGORITHM_NAME, sections, expendedEnergy, finalResults.getTimeSpent(), finalResults.getTollCosts());
+        return new Analysis(project, algorithmName, sections, expendedEnergy, finalResults.getTimeSpent(), finalResults.getTollCosts());
     }
 
     /**
