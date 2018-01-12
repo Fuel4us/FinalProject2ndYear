@@ -121,16 +121,16 @@ public class VehicleTest {
         assertEquals(expResult, result);
     }
 
-//    /**
-//     * Test of toString method, of class Vehicle.
-//     */
-//    @Test
-//    public void testToString() {
-//        System.out.println("toString");
-//        String expResult = "";
-//        String result = instance.toString();
-//        assertEquals(expResult, result);
-//    }
+    /**
+     * Test of toString method, of class Vehicle.
+     */
+    @Test
+    public void testToString() {
+        System.out.println("toString");
+        String expResult = "Pick_up - .";
+        String result = instance.toString();
+        assertEquals(expResult, result);
+    }
 
     /**
      * Test of getName method, of class Vehicle.
