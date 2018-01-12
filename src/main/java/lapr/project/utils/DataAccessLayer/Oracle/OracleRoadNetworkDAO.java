@@ -81,7 +81,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             callableStatement.setString(1, networkID);
             callableStatement.setString(2,projectName);
             callableStatement.execute();
-            ResultSet nodeSet = (ResultSet) callableStatement.getObject(2);
+            ResultSet nodeSet = (ResultSet) callableStatement.getObject(3);
             while (nodeSet.next()) {
                 String nodeName;
                 Node node;
@@ -235,7 +235,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             callableStatement.setString(1, networkID);
             callableStatement.setString(2, projectName);
             callableStatement.execute();
-            ResultSet sectionSet = (ResultSet) callableStatement.getObject(2);
+            ResultSet sectionSet = (ResultSet) callableStatement.getObject(3);
             while (sectionSet.next()) {
                 int sectionId = sectionSet.getInt("ID");
 
