@@ -111,31 +111,6 @@ public class PathAlgorithm {
 
     /**
      * <p>
-     * Performs calculation of the most efficient path in energy saving mode between two nodes, given two maximum acceleration values
-     * (both accelerating and braking).
-     * </p>
-     * <br>
-     * <p>
-     * The vehicle will be assumed to be travelling, whenever possible, at the highest suitable gear and 25% throttle,
-     * respecting the road speed limit and taking into account the wind effect, albeit ignoring traffic.
-     * </p>
-     * @param project The project to which the analysis belongs
-     * @param start The starting node
-     * @param end The ending node
-     * @param vehicle The selected vehicle to which the analysis applies
-     * The maximum velocity of the vehicle will be assumed if this
-     * velocity is allowed in the speed limit of a segment
-     * @param maxAcceleration the maximum acceleration assumed by the vehicle
-     * @param maxBraking the maximum braking assumed by the vehicle
-     * @return The Analysis containing the results
-     */
-    public static Analysis efficientPathEnergySavingMode(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking) {
-
-        return new Analysis(project, N12_ALGORITHM_NAME, null, null, null, null);
-    }
-
-    /**
-     * <p>
      * Performs calculation of the theoretical most energy efficient path between two nodes, given two maximum acceleration values
      * (both accelerating and braking).
      * </p>
@@ -157,6 +132,89 @@ public class PathAlgorithm {
      * @return The Analysis containing the results
      */
     public static Analysis theoreticalEfficientPath(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load) {
+        return efficientPath(project, start, end, vehicle, maxAcceleration, maxBraking, load, false, false);
+    }
+
+    /**
+     * <p>
+     * Performs calculation of the most efficient path in energy saving mode between two nodes, given two maximum acceleration values
+     * (both accelerating and braking).
+     * </p>
+     * <br>
+     * <p>
+     * The vehicle will be assumed to be travelling, whenever possible, at the highest suitable gear and 25% throttle,
+     * respecting the road speed limit and taking into account the wind effect, albeit ignoring traffic.
+     * </p>
+     * @param project The project to which the analysis belongs
+     * @param start The starting node
+     * @param end The ending node
+     * @param vehicle The selected vehicle to which the analysis applies
+     * The maximum velocity of the vehicle will be assumed if this
+     * velocity is allowed in the speed limit of a segment
+     * @param maxAcceleration the maximum acceleration assumed by the vehicle
+     * @param maxBraking the maximum braking assumed by the vehicle
+     * @param load the load that the vehicle carries (optional)
+     * @return The Analysis containing the results
+     */
+    public static Analysis efficientPathEnergySavingMode(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load) {
+        return efficientPath(project, start, end, vehicle, maxAcceleration, maxBraking, load, true, false);
+    }
+
+    /**
+     * <p>
+     * Performs calculation of the most energy efficient path between two nodes, given two maximum acceleration values
+     * (both accelerating and braking), either if the vehicle is in energy saving mode or if it is not. The calculation
+     * of the torque value should be made by polynomial interpolation
+     * </p>
+     * <br>
+     * <p>
+     * , the vehicle can be regarded as a particle and wind effect is to be considered, but traffic is to be ignored.
+     * The vehicle will be assumed to be travelling, whenever possible, at the maximum speed allowed on the road or for the vehicle,
+     * respecting the acceleration limits when accelerating/breaking and taking into account the wind effect, albeit ignoring traffic.
+     * </p>
+     * @param project The project to which the analysis belongs
+     * @param start The starting node
+     * @param end The ending node
+     * @param vehicle The selected vehicle to which the analysis applies
+     * The maximum velocity of the vehicle will be assumed if this
+     * velocity is allowed in the speed limit of a segment
+     * @param maxAcceleration the maximum acceleration assumed by the vehicle
+     * @param maxBraking the maximum braking assumed by the vehicle
+     * @param load the load that the vehicle carries (optional)
+     * @param energySaving true if the vehicle has the energy saving mode on
+     * @return The Analysis containing the results
+     */
+    public static Analysis efficientPathPolynomialInterpolation(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load,
+                                          boolean energySaving) {
+        return efficientPath(project, start, end, vehicle, maxAcceleration, maxBraking, load, energySaving, true);
+    }
+
+    /**
+     * <p>
+     * Performs calculation of the most energy efficient path between two nodes, given two maximum acceleration values
+     * (both accelerating and braking).
+     * </p>
+     * <br>
+     * <p>
+     * , the vehicle can be regarded as a particle and wind effect is to be considered, but traffic is to be ignored.
+     * The vehicle will be assumed to be travelling, whenever possible, at the maximum speed allowed on the road or for the vehicle,
+     * respecting the acceleration limits when accelerating/breaking and taking into account the wind effect, albeit ignoring traffic.
+     * </p>
+     * @param project The project to which the analysis belongs
+     * @param start The starting node
+     * @param end The ending node
+     * @param vehicle The selected vehicle to which the analysis applies
+     * The maximum velocity of the vehicle will be assumed if this
+     * velocity is allowed in the speed limit of a segment
+     * @param maxAcceleration the maximum acceleration assumed by the vehicle
+     * @param maxBraking the maximum braking assumed by the vehicle
+     * @param load the load that the vehicle carries (optional)
+     * @param energySaving true if the vehicle has the energy saving mode on
+     * @param polynomialInterpolation true if the torque has to be calculated using polynomial interpolation
+     * @return The Analysis containing the results
+     */
+    private static Analysis efficientPath(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load,
+                                                    boolean energySaving, boolean polynomialInterpolation) {
 
         if (!vehicle.hasValidLoad(load)) {
             throw new IllegalArgumentException("The selected vehicle does not support this load");
@@ -168,7 +226,6 @@ public class PathAlgorithm {
         Measurable initialVelocity = vehicle.determineInitialVelocity();
 
         double totalExpendedEnergy = 0;
-
 
         Graph<Node, Section> roadNetworkClone = roadNetwork.clone();
 
@@ -182,7 +239,7 @@ public class PathAlgorithm {
                             //throws an Exception if a section proves to be impossible to travel, requiring the path to be recalculated
                         (ExceptionalBiFunction<Edge<Node, Section>, Measurable, EnergyExpenditureAccelResults>)
                                 (sectionEdge, successiveVelocity) ->
-                                        sectionEdge.getElement().calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration, maxBraking, end, false),
+                                        sectionEdge.getElement().calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration, maxBraking, end, energySaving),
                             //initial value for successive velocity
                             initialVelocity,
                             //the weigth of the graph is considered to be the expended energy

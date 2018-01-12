@@ -469,6 +469,7 @@ public class BestPathComparisonForm extends JFrame {
             Node endNode = jListNodes2.getSelectedValue();
             Measurable maxAceleration = new Measurable(Double.parseDouble(jTextFieldMaxAceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
             Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.valueOf("km"));
             List<Vehicle> selectedVehiclesList = new ArrayList<>();
             for (int i = 0; i < selectedVehicles.size(); i++) {
                 selectedVehiclesList.add(selectedVehicles.get(i));
@@ -485,7 +486,7 @@ public class BestPathComparisonForm extends JFrame {
             } else {
                 List<Analysis> analysisList = new ArrayList<>();
                 for (int j = 0; j < selectedVehiclesList.size(); j++) {
-                    Analysis generatedAnalysis = controller.analyzeEfficientPathEnergySavingMode(startNode, endNode, selectedVehiclesList.get(j), maxAceleration, maxBraking);
+                    Analysis generatedAnalysis = controller.analyzeEfficientPathEnergySavingMode(startNode, endNode, selectedVehiclesList.get(j), maxAceleration, maxBraking, load);
                     analysisList.add(generatedAnalysis);
                 }
                 BestPathComparisonAllAnalysisUI allAnalysisResults = new BestPathComparisonAllAnalysisUI(analysisList);
