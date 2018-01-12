@@ -1,6 +1,6 @@
 package lapr.project.utils;
 
-import lapr.project.model.Vehicle.Gears;
+import lapr.project.model.Gears;
 
 /**
  * Contains the results of the method calculateEnergyExpenditureAccel of a Section

@@ -1,8 +1,7 @@
 package lapr.project.utils.DataAccessLayer.Abstraction;
 
-import lapr.project.model.RoadNetwork.RoadNetwork;
+import lapr.project.model.RoadNetwork;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**

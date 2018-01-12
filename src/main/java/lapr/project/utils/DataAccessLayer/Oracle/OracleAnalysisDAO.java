@@ -1,14 +1,12 @@
 package lapr.project.utils.DataAccessLayer.Oracle;
 
 import lapr.project.model.Analysis;
-import lapr.project.model.RoadNetwork.Section;
+import lapr.project.model.Section;
 import lapr.project.utils.DataAccessLayer.Abstraction.AnalysisDAO;
-import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.Measurable;
 
 import java.sql.CallableStatement;
 import java.sql.SQLException;
-import java.util.logging.Level;
 
 /**
  * Handles Data Access via OracleDB

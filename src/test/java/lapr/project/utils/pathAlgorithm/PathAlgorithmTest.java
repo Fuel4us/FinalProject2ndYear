@@ -1,9 +1,6 @@
 package lapr.project.utils.pathAlgorithm;
 
-import lapr.project.model.Analysis;
-import lapr.project.model.Project;
-import lapr.project.model.RoadNetwork.*;
-import lapr.project.model.Vehicle.*;
+import lapr.project.model.*;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 import org.junit.Test;

@@ -1,5 +1,6 @@
-package lapr.project.model.Vehicle;
+package lapr.project.model;
 
+import lapr.project.model.VelocityLimit;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 import org.junit.Test;

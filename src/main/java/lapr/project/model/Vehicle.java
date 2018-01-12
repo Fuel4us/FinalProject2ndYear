@@ -1,6 +1,5 @@
-package lapr.project.model.Vehicle;
+package lapr.project.model;
 
-import lapr.project.model.RoadNetwork.Segment;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Physics;
 import lapr.project.utils.Unit;
@@ -24,8 +23,6 @@ public class Vehicle {
 
     private int vehicleClass;
 
-    private Motorization motorization;
-
     private MotorType motorType;
 
     private Fuel fuel;
@@ -40,9 +37,6 @@ public class Vehicle {
 
     private List<VelocityLimit> velocityLimitList;
     private Energy energy;
-
-    public Vehicle() {
-    }
 
     /**
      * Creates a new vehicle
@@ -63,19 +57,13 @@ public class Vehicle {
      * @param velocityLimitList This vehicle's velocity limit list
      * @param energy This vehicle's energy
      */
-    public Vehicle(String name, String description, VehicleType type, int vehicleClass, MotorType motorType, Fuel fuel, Measurable mass, Measurable maxLoad, float dragCoefficient, Measurable frontalArea, float rollingResistanceCoefficient, Measurable wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
+    public Vehicle(String name, String description, VehicleType type, int vehicleClass, MotorType motorType, Fuel fuel, Measurable mass, Measurable maxLoad,
+            float dragCoefficient, Measurable frontalArea, float rollingResistanceCoefficient, Measurable wheelSize, List<VelocityLimit> velocityLimitList, Energy energy) {
         this.name = name;
         this.description = description;
         this.type = type;
         this.vehicleClass = vehicleClass;
         this.motorType = motorType;
-
-        if (motorType == MotorType.COMBUSTION) {
-            motorization = new CombustionMotor();
-        } else if (motorType == MotorType.NONCOMBUSTION) {
-            motorization = new NonCombustionMotor();
-        }
-
         this.fuel = fuel;
         this.mass = mass;
         this.maxLoad = maxLoad;
@@ -88,9 +76,14 @@ public class Vehicle {
     }
 
     /**
+     * Package-private constructor for test purposes
+     */
+    Vehicle() {}
+
+    /**
      * @return vehicle class
      */
-    public int getVehicleClass() {
+    int getVehicleClass() {
         return vehicleClass;
     }
 
@@ -101,7 +94,7 @@ public class Vehicle {
      * @param roadTypology the road's typology
      * @return the max velocity of the vehicle
      */
-    public Measurable retrieveMaxVelocity(String roadTypology) {
+    Measurable retrieveMaxVelocity(String roadTypology) {
 
         if (velocityLimitList.isEmpty()) {
 
@@ -151,12 +144,14 @@ public class Vehicle {
      * @param load the vehicle's load
      * @param length the length to be used
      * @param velocity the velocity to be used
-     * @param acceleration the acceleration of the vehicle (0 if the uniform movement is to be preserved)
+     * @param acceleration the acceleration of the vehicle (0 if the uniform
+     * movement is to be preserved)
      * @param energySaving true if the vehicle has the energy saving mode turned on
-     * @return the energy expenditure in KJ taking into account the fuel of the vehicle, the gear position used in
-     * the segment, the velocity the vehicle used and the energy expenditure using the formula "Power * timeSpent"
+     * * @return the energy expenditure in KJ taking into account the fuel of the
+     * vehicle, the gear position used in the segment, the velocity the vehicle
+     * used and the energy expenditure using the formula "Power * timeSpent"
      */
-    public Measurable[] determineEnergyExpenditure(Segment segment, Measurable load, double length, Measurable velocity, Measurable acceleration, boolean energySaving) {
+    Measurable[] determineEnergyExpenditure(Segment segment, Measurable load, double length, Measurable velocity, Measurable acceleration, boolean energySaving) {
 
         Measurable velocityToBeUsed = new Measurable(velocity.getQuantity(), Unit.KILOMETERS_PER_HOUR);
         int gearPosition = energy.getGears().size() - 1;
@@ -172,7 +167,7 @@ public class Vehicle {
         double fuelQuantity = power.getQuantity() * Physics.KILOMETERS_METERS_CONVERSION_RATIO * SFC * timeSpent;
 
         return new Measurable[]{new Measurable(fuelQuantity * fuel.getSpecificEnergy().getQuantity(), Unit.KILOJOULE), data[4], data[3],
-        new Measurable(power.getQuantity() * timeSpent, Unit.KILOJOULE)};
+            new Measurable(power.getQuantity() * timeSpent, Unit.KILOJOULE)};
     }
 
     /**
@@ -191,19 +186,20 @@ public class Vehicle {
     }
 
     /**
-     * Calculates the engine speed, torque, SFC and velocity for this vehicle in the
-     * segment and maximum linear velocity given by parameter
+     * Calculates the engine speed, torque, SFC and velocity for this vehicle in
+     * the segment and maximum linear velocity given by parameter
      *
      * @param segment the segment
      * @param gearPosition the gear position
      * @param throttlePosition the throttle position
      * @param velocity the maximum linear velocity
      * @param load the vehicle's load
-     * @param acceleration the acceleration of the vehicle (0 if the uniform movement is to be preserved)
+     * @param acceleration the acceleration of the vehicle (0 if the uniform
+     * movement is to be preserved)
      * @param energySaving true if the vehicle has the energy saving mode on
      * @return an array with the engine speed in the first position, the torque
-     * in the second position, the SFC in the third position, the velocity
-     * in the forth position and the gear position in the fifth position
+     * in the second position, the SFC in the third position, the velocity in
+     * the forth position and the gear position in the fifth position
      */
     private Measurable[] calculateEngineSpeedTorqueSFCVelocity(Segment segment, int gearPosition, int throttlePosition,
                                                                Measurable velocity, Measurable load, Measurable acceleration, boolean energySaving) {
@@ -274,6 +270,7 @@ public class Vehicle {
 
     /**
      * Equals for objects of the class Vehicle
+     *
      * @param obj the other object
      * @return true if the objects are equal
      */
@@ -289,14 +286,12 @@ public class Vehicle {
             return false;
         }
         final Vehicle other = (Vehicle) obj;
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.name, other.name);
     }
 
     /**
      * Hash code for instances of the class Vehicle
+     *
      * @return
      */
     @Override
@@ -330,6 +325,7 @@ public class Vehicle {
 
     /**
      * Checks that this vehicle is able to support a given load
+     *
      * @param load an instance of {@link Measurable}
      * @return true if the vehicle is able to support the given load
      */
@@ -391,8 +387,9 @@ public class Vehicle {
     }
 
     /**
-     * Calculates the acceleration force acting in the vehicle depending on the acceleration and
-     * the load the car takes
+     * Calculates the acceleration force acting in the vehicle depending on the
+     * acceleration and the load the car takes
+     *
      * @param load the load the car takes
      * @param acceleration the acceleration used
      * @return the acceleration force in N
@@ -402,18 +399,20 @@ public class Vehicle {
     }
 
     /**
-     * Determines initial velocity of the vehicle, starting in the first gear and lowest throttle
+     * Determines initial velocity of the vehicle, starting in the first gear
+     * and lowest throttle
+     *
      * @return the initial velocity in km/h
      */
     public Measurable determineInitialVelocity() {
-        return new Measurable((2 * Math.PI * (wheelSize.getQuantity() / 2d) * energy.getMinRpm() /
-                (60 * energy.getFinalDriveRatio() * energy.getGears().get(0).getRatio())) *
-                Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO, Unit.KILOMETERS_PER_HOUR);
+        return new Measurable((2 * Math.PI * (wheelSize.getQuantity() / 2d) * energy.getMinRpm()
+                / (60 * energy.getFinalDriveRatio() * energy.getGears().get(0).getRatio()))
+                * Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO, Unit.KILOMETERS_PER_HOUR);
     }
 
     /**
-     * Indicates motor type Assists in the instantiation of the correct
-     * motorization
+     * Indicates motor type.
+     * May assist in the instantiation of the correct motorization
      */
     public enum MotorType {
 

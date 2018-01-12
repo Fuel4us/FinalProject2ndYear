@@ -1,21 +1,15 @@
 package lapr.project.utils.FileParser;
 
-import lapr.project.model.Analysis;
-import lapr.project.model.Project;
-import lapr.project.model.RoadNetwork.*;
-import lapr.project.model.Vehicle.*;
+import lapr.project.model.*;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * JUnit tests of class ExportCSV

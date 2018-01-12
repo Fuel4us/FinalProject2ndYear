@@ -6,8 +6,6 @@
 package lapr.project.ui;
 
 import lapr.project.controller.ChangeDataController;
-import lapr.project.model.Project;
-import lapr.project.model.RoadNetwork.RoadNetwork;
 import org.xml.sax.SAXException;
 
 import javax.swing.*;
@@ -15,7 +13,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -212,13 +209,13 @@ public class ChangeDataUI extends javax.swing.JFrame {
 
     private void jButtonCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateActionPerformed
         JOptionPane.showMessageDialog(null, "Changes were successfully made in your project.");
-        PopUp1 pop = new PopUp1(controller.getProject());
+        PopUp1 pop = new PopUp1();
         pop.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButtonCreateActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        PopUp1 pop = new PopUp1(controller.getProject());
+        PopUp1 pop = new PopUp1();
         pop.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed

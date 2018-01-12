@@ -263,8 +263,7 @@ public final class SelectProjectUI extends javax.swing.JFrame {
 
     private void jButtonPopUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPopUpActionPerformed
         if (verifyProjectWasSelected) {
-            new PopUp1(project).setVisible(true);
-            dispose();
+            new PopUp1().setVisible(true);
         } else {
             showOptionPaneRequiredActiveProject();
         }

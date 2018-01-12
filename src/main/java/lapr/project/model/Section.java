@@ -1,7 +1,5 @@
-package lapr.project.model.RoadNetwork;
+package lapr.project.model;
 
-import lapr.project.model.Vehicle.Gears;
-import lapr.project.model.Vehicle.Vehicle;
 import lapr.project.utils.EnergyExpenditureAccelResults;
 import lapr.project.utils.Graph.Edge;
 import lapr.project.utils.Measurable;

@@ -2,11 +2,11 @@ package lapr.project.utils.pathAlgorithm;
 
 import lapr.project.model.Analysis;
 import lapr.project.model.Project;
-import lapr.project.model.RoadNetwork.Node;
-import lapr.project.model.RoadNetwork.RoadNetwork;
-import lapr.project.model.RoadNetwork.Section;
-import lapr.project.model.RoadNetwork.Segment;
-import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.model.Node;
+import lapr.project.model.RoadNetwork;
+import lapr.project.model.Section;
+import lapr.project.model.Segment;
+import lapr.project.model.Vehicle;
 import lapr.project.utils.*;
 import lapr.project.utils.Graph.Edge;
 import lapr.project.utils.Graph.Graph;
@@ -15,7 +15,6 @@ import lapr.project.utils.Graph.GraphAlgorithms;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.BiFunction;
 
 import static lapr.project.utils.Graph.GraphAlgorithms.shortestPath;
 

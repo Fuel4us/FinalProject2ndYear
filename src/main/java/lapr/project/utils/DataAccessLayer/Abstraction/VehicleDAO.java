@@ -1,8 +1,7 @@
 package lapr.project.utils.DataAccessLayer.Abstraction;
 
-import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.model.Vehicle;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 

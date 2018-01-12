@@ -6,8 +6,8 @@
 package lapr.project.ui;
 
 import java.util.ArrayList;
-import lapr.project.model.RoadNetwork.Node;
-import lapr.project.model.Vehicle.Vehicle;
+import lapr.project.model.Node;
+import lapr.project.model.Vehicle;
 
 import javax.swing.*;
 import java.util.List;
