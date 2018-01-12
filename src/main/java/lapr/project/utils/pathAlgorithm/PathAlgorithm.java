@@ -263,7 +263,7 @@ public class PathAlgorithm {
 
         Measurable expendedEnergy = new Measurable(totalExpendedEnergy, Unit.KILOJOULE);
 
-        EnergyExpenditureAccelResults finalResults = determineAccumulatedResults(roadNetwork, vehicle, load, maxAcceleration, maxBraking, end, initialVelocity, sections);
+        EnergyExpenditureAccelResults finalResults = determineAccumulatedResults(roadNetwork, vehicle, load, maxAcceleration, maxBraking, end, initialVelocity, sections, energySaving);
 
         return new Analysis(project, algorithmName, sections, expendedEnergy, finalResults.getTimeSpent(), finalResults.getTollCosts());
     }
@@ -280,16 +280,19 @@ public class PathAlgorithm {
      * @param end The ending node
      * @param initialVelocity The starting velocity of the vehicle
      * @param path a {@link List} of instances of {@link Section} wherein the vehicle travels
+     * @param energySaving true if the vehicle is in energy saving mode
      * @return an instance of {@link EnergyExpenditureAccelResults} containing
      * the final results corresponding to the travelling of a vehicle in a path.
      */
-    private static EnergyExpenditureAccelResults determineAccumulatedResults(RoadNetwork roadNetwork, Vehicle vehicle, Measurable load, Measurable maxAcceleration, Measurable maxBraking, Node end, Measurable initialVelocity, List<Section> path) {
+    private static EnergyExpenditureAccelResults determineAccumulatedResults(RoadNetwork roadNetwork, Vehicle vehicle, Measurable load,
+                                                                             Measurable maxAcceleration, Measurable maxBraking, Node end,
+                                                                             Measurable initialVelocity, List<Section> path, boolean energySaving) {
         Measurable successiveVelocity = initialVelocity;
         double travelTime = 0;
         double tollCosts = 0;
 
         for (Section section : path) {
-            EnergyExpenditureAccelResults results = section.calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration, maxBraking, end, false);
+            EnergyExpenditureAccelResults results = section.calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration, maxBraking, end, energySaving);
             successiveVelocity = results.getFinalVelocity();
 
             travelTime += results.getTimeSpent().getQuantity();
