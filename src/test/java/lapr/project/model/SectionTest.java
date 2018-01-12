@@ -261,36 +261,6 @@ public class SectionTest {
     }
 
     /**
-     * Test of getID method, of class Section.
-     */
-    @Test
-    public void testGetID() {
-        System.out.println("getID");
-        RoadNetwork roadNetworkTest = new RoadNetwork();
-
-        Node nodeTest1 = new Node("n01");
-        Node nodeTest2 = new Node("n02");
-
-        roadNetworkTest.addNode(nodeTest1);
-        roadNetworkTest.addNode(nodeTest2);
-
-        Collection<Segment> segmentsTest = new ArrayList<>();
-        segmentsTest.add(new Segment(0, 0, 100, 5, 30, 1.5, 120, 0));
-        segmentsTest.add(new Segment(1, 100, 250, 3.5, -10, 1, 100, 0));
-
-        List<Double> tollFaresRoadTest = new ArrayList<>();
-        tollFaresRoadTest.add(0.15);
-        tollFaresRoadTest.add(0.25);
-        tollFaresRoadTest.add(0.35);
-
-        Section sectionTest = new Section(nodeTest1, nodeTest2, Direction.BIDIRECTIONAL, segmentsTest,
-                new Road("A01", "A01", "toll highway", tollFaresRoadTest), new ArrayList<>());
-        int expResult = 2;
-        int result = sectionTest.getID();
-        assertEquals(expResult, result);
-    }
-
-    /**
      * Test of getDirection method, of class Section.
      */
     @Test
