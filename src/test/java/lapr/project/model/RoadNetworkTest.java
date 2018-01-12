@@ -5,6 +5,7 @@
  */
 package lapr.project.model;
 
+import java.util.List;
 import org.junit.*;
 
 import static org.junit.Assert.assertEquals;
@@ -12,28 +13,14 @@ import static org.junit.Assert.assertTrue;
 
 /**
  *
- * @author TOSHIBA
+ * @author Pedro
  */
 public class RoadNetworkTest {
     
     public RoadNetworkTest() {
     }
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
+
 
     /**
      * Test of setId method, of class RoadNetwork.
@@ -70,5 +57,47 @@ public class RoadNetworkTest {
         String result = instance.getId();
         assertEquals(expResult, result);
     }
+
+    /**
+     * Test of getDescription method, of class RoadNetwork.
+     */
+    @Test
+    public void testGetDescription() {
+        System.out.println("getDescription");
+        RoadNetwork instance = new RoadNetwork("id","desc");
+        String expResult = "desc";
+        String result = instance.getDescription();
+        assertEquals(expResult, result);
+    }
+
+
+//    /**
+//     * Test of retrieveAllRoads method, of class RoadNetwork.
+//     */
+//    @Test
+//    public void testRetrieveAllRoads() {
+//        System.out.println("retrieveAllRoads");
+//        RoadNetwork instance = new RoadNetwork();
+//        List<Road> expResult = null;
+//        List<Road> result = instance.retrieveAllRoads();
+//        assertEquals(expResult, result);
+//    }
+
+    /**
+     * Test of equals method, of class RoadNetwork.
+     */
+    @Test
+    public void testEquals() {
+        System.out.println("equals");
+        Object o = null;
+        RoadNetwork instance = new RoadNetwork("id","desc");
+        RoadNetwork instance2 = new RoadNetwork("id","desc");
+        boolean expResult = false;
+        boolean result = instance.equals(o);
+        assertEquals(expResult, result);
+        assertTrue(instance.equals(instance2));
+    }
+
+
     
 }

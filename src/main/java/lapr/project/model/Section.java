@@ -39,6 +39,7 @@ public class Section extends Edge<String, Direction> {
      * @param endingNode This section's ending {@link Node}
      * @param direction This section's {@link Direction}
      * @param segments The {@link Collection} of segments that belong to this section
+     * @param road
      * @param tollFare The {@link List} of toll fares of this section
      */
     public Section(Node beginningNode, Node endingNode, Direction direction, Collection<Segment> segments, Road road, List<Double> tollFare) {
@@ -243,6 +244,7 @@ public class Section extends Edge<String, Direction> {
      * @param maxAcceleration the max acceleration
      * @param maxBraking the max braking
      * @param pathEndingNode the ending node of the path
+     * @param energySaving true if the vehicle has the energy saving mode on
      * @return an instance of the class EnergyExpenditureAccelResults containing the energy expenditure, the final velocity and
      * the time spent in this section
      */
@@ -271,11 +273,33 @@ public class Section extends Edge<String, Direction> {
                 lastSegment = true;
             }
 
+            Measurable finalVelocity = segment.calculateMaximumVelocityInterval(roadNetwork, vehicle, segment.getLength());
+
             EnergyExpenditureAccelResults segmentResults;
             if (!energySaving) {
-                segmentResults = segment.calculateEnergyExpenditureAccel(roadNetwork, initialVelocity, vehicle, load, maxAcceleration, maxBraking, lastSegment);
+                segmentResults = segment.calculateEnergyExpenditureAccel(roadNetwork, initialVelocity, vehicle, load,
+                        maxAcceleration, maxBraking, finalVelocity, lastSegment, false);
+
             } else {
-                segmentResults = segment.calculateEnergyExpenditureAccelEnergySaving(roadNetwork, initialVelocity, vehicle, load, maxAcceleration, maxBraking, lastSegment);
+
+                segmentResults = segment.calculateEnergyExpenditureAccel(roadNetwork, initialVelocity, vehicle, load,
+                        maxAcceleration, maxBraking, finalVelocity, lastSegment, true);
+
+                while (finalVelocity.getQuantity() >= segment.getMinVelocity()) {
+
+                    EnergyExpenditureAccelResults results = segment.calculateEnergyExpenditureAccel(roadNetwork, initialVelocity, vehicle, load,
+                            maxAcceleration, maxBraking, finalVelocity, lastSegment, true);
+
+                    if (results.getEnergyExpenditure().getQuantity() < segmentResults.getEnergyExpenditure().getQuantity()) {
+
+                        segmentResults = results;
+
+                    }
+
+                    finalVelocity.setQuantity(finalVelocity.getQuantity() - finalVelocity.getQuantity() * 0.02);
+
+                }
+
             }
 
             // the initial velocity is always being updated
