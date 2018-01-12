@@ -209,13 +209,13 @@ public class ChangeDataUI extends javax.swing.JFrame {
 
     private void jButtonCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateActionPerformed
         JOptionPane.showMessageDialog(null, "Changes were successfully made in your project.");
-        PopUp1 pop = new PopUp1(controller.getProject());
+        PopUp1 pop = new PopUp1();
         pop.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButtonCreateActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        PopUp1 pop = new PopUp1(controller.getProject());
+        PopUp1 pop = new PopUp1();
         pop.setVisible(true);
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed

@@ -25,7 +25,7 @@ public class PopUp1 extends javax.swing.JFrame {
     /**
      * Creates new form PopUp1
      */
-    private PopUp1() {
+    public PopUp1() {
         project = Main.currentProject;
         initComponents();
     }
