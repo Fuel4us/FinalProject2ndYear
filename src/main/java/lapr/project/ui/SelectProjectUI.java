@@ -19,7 +19,6 @@ public final class SelectProjectUI extends javax.swing.JFrame {
     InitializeUIElements initializer = new InitializeUIElements();
     private static final long serialVersionUID = -5188965937946662366L;
     private SelectProjectController selectProjectController;
-    private Project project;
     private boolean verifyProjectWasSelected;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
