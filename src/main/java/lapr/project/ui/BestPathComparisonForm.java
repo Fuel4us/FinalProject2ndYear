@@ -436,7 +436,7 @@ public class BestPathComparisonForm extends JFrame {
 
             } else if (startNode.equals(endNode)) {
                 JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
-            } else if ((Double.compare(maxAceleration.getQuantity(), 0) == -1) || (Double.compare(maxBraking.getQuantity(), 0) == 1)) {
+            } else if ((Double.compare(maxAceleration.getQuantity(), 0) < 0) || (Double.compare(maxBraking.getQuantity(), 0) > 0)) {
                 JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAceleration and a negative value for maxBraking");
             } else {
                 List<Analysis> analysisList = new ArrayList<>();
@@ -481,7 +481,7 @@ public class BestPathComparisonForm extends JFrame {
 
             } else if (startNode.equals(endNode)) {
                 JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
-            } else if ((Double.compare(maxAceleration.getQuantity(), 0) == -1) || (Double.compare(maxBraking.getQuantity(), 0) == 1)) {
+            } else if ((Double.compare(maxAceleration.getQuantity(), 0) < 0) || (Double.compare(maxBraking.getQuantity(), 0) > 0)) {
                 JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAceleration and a negative value for maxBraking");
             } else {
                 List<Analysis> analysisList = new ArrayList<>();
