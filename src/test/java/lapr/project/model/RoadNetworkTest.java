@@ -97,6 +97,15 @@ public class RoadNetworkTest {
         assertEquals(expResult, result);
         assertTrue(instance.equals(instance2));
     }
+    
+    @Test
+    public void testHashCode() {
+        
+        RoadNetwork instance = new RoadNetwork("id","desc");
+        int expResult = 3243412;
+        int result = instance.hashCode();
+        assertEquals(expResult, result);
+    }
 
 
     
