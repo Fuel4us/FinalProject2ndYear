@@ -9,6 +9,7 @@ import lapr.project.controller.BestPathController;
 import lapr.project.model.Analysis;
 
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -23,6 +24,7 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
     /**
      * Creates new form BestPathComparisonForm
      *
+     * @param analysisList
      */
     public BestPathComparisonAllAnalysisUI(List<Analysis> analysisList) {
         this.controller = new BestPathController(Main.currentProject);
@@ -90,8 +92,21 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
             }
         });
 
+        List<Analysis> analysisListModel = analysisList;
+        DefaultComboBoxModel<Analysis> analysisModel = new DefaultComboBoxModel<>();
+        for (Analysis obj : analysisListModel) {
+            analysisModel.addElement(obj);
+        }
+        jComboBoxAnalysis.setModel(analysisModel);
         jComboBoxAnalysis.setBackground(new java.awt.Color(204, 204, 204));
-        jComboBoxAnalysis.addActionListener(evt -> jComboBoxAnalysisActionPerformed(evt));
+        /**
+        jComboBoxAnalysis.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        */
+        jComboBoxAnalysis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxAnalysisActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(155, 177, 189));
@@ -102,14 +117,22 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
         jButtonGenerateFile.setForeground(new java.awt.Color(45, 46, 45));
         jButtonGenerateFile.setText("Generate file");
         jButtonGenerateFile.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonGenerateFile.addActionListener(evt -> jButtonGenerateFileActionPerformed(evt));
+        jButtonGenerateFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGenerateFileActionPerformed(evt);
+            }
+        });
 
         jButtonSave.setBackground(new java.awt.Color(45, 46, 45));
         jButtonSave.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jButtonSave.setForeground(new java.awt.Color(45, 46, 45));
         jButtonSave.setText("Save results");
         jButtonSave.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonSave.addActionListener(evt -> jButtonSaveActionPerformed(evt));
+        jButtonSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSaveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -123,7 +146,7 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
                 .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButtonViewResults, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
+                    .addComponent(jButtonViewResults, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jComboBoxAnalysis, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -171,7 +194,7 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonViewResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonViewResultsActionPerformed
-        //ToDo
+        BestPathComparisonResultsUI  bestPathComparisonResultsUI = new BestPathComparisonResultsUI((Analysis)jComboBoxAnalysis.getSelectedItem());
     }//GEN-LAST:event_jButtonViewResultsActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed

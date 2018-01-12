@@ -136,4 +136,52 @@ public class ProjectTest {
         assertEquals(expResult, result);
     }
 
+    /**
+     * Test of equals method, of class Project.
+     */
+    @Test
+    public void testEquals() {
+        Project instance = new Project();
+        Project instance2 = new Project();
+        assertEquals(instance,instance2);
+        assertNotEquals(v1,instance);
+    }
+
+    /**
+     * Test of setName method, of class Project.
+     */
+    @Test
+    public void testSetName() {
+        System.out.println("setName");
+        String name = "testProject";
+        Project instance = new Project();
+        instance.setName(name);
+        assertEquals(instance.getName(),name);
+    }
+
+    /**
+     * Test of setDescription method, of class Project.
+     */
+    @Test
+    public void testSetDescription() {
+        System.out.println("setDescription");
+        String description = "description";
+        Project instance = new Project();
+        instance.setDescription(description);
+        assertEquals(instance.getDescription(),description);
+    }
+
+    /**
+     * Test of cloneProject method, of class Project.
+     * @throws java.lang.Exception
+     */
+    @Test
+    public void testCloneProject() throws Exception {
+        System.out.println("cloneProject");
+        Project instance = new Project();
+        Project expResult = new Project(instance.getName()+" (Copy)",instance.getDescription() + " (Copy)",instance.getRoadNetwork(),instance.getVehicles());
+        Project result = instance.cloneProject();
+        assertEquals(expResult, result);
+    }
+
 }
