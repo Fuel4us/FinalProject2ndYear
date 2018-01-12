@@ -479,7 +479,7 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
         List<VelocityLimit> velocityLimitList = vehicle.getVelocityLimitList();
         for (VelocityLimit velocityLimit : velocityLimitList) {
-            storeVelocityLimit(vehicle.getName(), velocityLimit);
+            storeVelocityLimit(vehicle.getName(), velocityLimit, projectName);
         }
 
     }
@@ -515,12 +515,13 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
      * @param name {@link Vehicle} identifier
      * @param velocityLimit {@link VelocityLimit}
      */
-    private void storeVelocityLimit(String name, VelocityLimit velocityLimit) throws SQLException {
+    private void storeVelocityLimit(String name, VelocityLimit velocityLimit, String projectName) throws SQLException {
         try (CallableStatement storeVelocityLimitProcedure = oracleConnection
-                .prepareCall("CALL storeVelocityLimitProcedure(?,?,?)")) {
+                .prepareCall("CALL storeVelocityLimitProcedure(?,?,?,?)")) {
             storeVelocityLimitProcedure.setString("segmentType", velocityLimit.getSegmentType());
             storeVelocityLimitProcedure.setInt("limitID", storeStatisticalInfo(velocityLimit.getLimit()));
             storeVelocityLimitProcedure.setString("vehicleName", name);
+            storeVelocityLimitProcedure.setString("projectName", projectName);
 
             storeVelocityLimitProcedure.executeUpdate();
         }
