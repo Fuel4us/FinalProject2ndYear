@@ -380,7 +380,7 @@ public final class BestPathUI extends JFrame {
                 setVisible(false);
             }
         } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(null, "Please insert a valid load value");
+            JOptionPane.showMessageDialog(null, "Please insert a valid load value to the selected vehicle");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
     private void jButton1ActionPerformed(ActionEvent evt) {
