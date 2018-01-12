@@ -395,4 +395,28 @@ public class SectionTest {
         assertEquals(expResult, result);
         
     }
+    
+    @Test
+    public void testDetermineTollCosts() {
+        Node nodeTest1 = new Node("n01");
+        Node nodeTest2 = new Node("n02");
+        
+        List<Double> tollFaresRoadTest = new ArrayList<>();
+        
+        Collection<Segment> segmentsTest = new ArrayList<>();
+        segmentsTest.add(new Segment(0, 0, 100, 5, 30, 1.5, 120, 0));
+        segmentsTest.add(new Segment(1, 100, 250, 3.5, -10, 1, 100, 0));
+        
+        Section sectionTest = new Section(nodeTest1, nodeTest2, Direction.BIDIRECTIONAL, segmentsTest,
+                new Road("A01", "A01", "gantry toll highway", tollFaresRoadTest), new ArrayList<>());
+        List<VelocityLimit> velocityLimitList = new ArrayList<>();
+        velocityLimitList.add(new VelocityLimit("Highway", new Measurable(110, Unit.KILOMETERS_PER_HOUR)));
+        velocityLimitList.add(new VelocityLimit("Road", new Measurable(80, Unit.KILOMETERS_PER_HOUR)));
+        Vehicle vehicleTest1 = new Vehicle("name1", "description", VehicleType.Car, 1,
+                Vehicle.MotorType.COMBUSTION, Fuel.Diesel, new Measurable(0, Unit.KILOGRAM),
+                new Measurable(0, Unit.KILOGRAM), 0f, new Measurable(0, Unit.METER_SQUARED), 0f,
+                new Measurable(0, Unit.METER), velocityLimitList, new Energy(0, 0, 0f, new ArrayList<>(),
+                new ArrayList<>()));
+        assertEquals(sectionTest.determineTollCosts(vehicleTest1),new Measurable(0.0, Unit.EUROS));
+    }
 }
