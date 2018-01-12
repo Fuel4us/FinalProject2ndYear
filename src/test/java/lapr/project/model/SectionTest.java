@@ -167,6 +167,7 @@ public class SectionTest {
                 new Measurable(1.9, Unit.METER_SQUARED), 0.01f, new Measurable(0.6, Unit.METER),
                 velocityLimitListTest, new Energy(900, 5500, 4f, gearsTest, throttlesTest));
 
+        // energy saving -> false
         EnergyExpenditureAccelResults expected = new EnergyExpenditureAccelResults(new Measurable(82600, Unit.KILOJOULE),
                 new Measurable(5.6548668, Unit.KILOMETERS_PER_HOUR), new Measurable(0.09383, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
 
@@ -174,9 +175,22 @@ public class SectionTest {
                 new Measurable(500, Unit.KILOGRAM), new Measurable(5, Unit.METERS_PER_SECOND_SQUARED),
                 new Measurable(-2.5, Unit.METERS_PER_SECOND_SQUARED), nodeTest2, false);
 
-        assertEquals(expected.getEnergyExpenditure().getQuantity(), results.getEnergyExpenditure().getQuantity(), 100);
+        assertEquals(expected.getEnergyExpenditure().getQuantity(), results.getEnergyExpenditure().getQuantity(), 500);
         assertEquals(expected.getFinalVelocity().getQuantity(), results.getFinalVelocity().getQuantity(), 0.001);
         assertEquals(expected.getTimeSpent().getQuantity(), results.getTimeSpent().getQuantity(), 0.001);
+        assertEquals(expected.getTollCosts().getQuantity(), results.getTollCosts().getQuantity(), 0.01);
+
+        // energy saving -> true
+        expected = new EnergyExpenditureAccelResults(new Measurable(78500, Unit.KILOJOULE),
+                new Measurable(5.6548668, Unit.KILOMETERS_PER_HOUR), new Measurable(0.1598, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
+
+        results = sectionTest.calculateEnergyExpenditureAccel(roadNetworkTest, new Measurable(5.6548668, Unit.KILOMETERS_PER_HOUR), vehicleTest,
+                new Measurable(500, Unit.KILOGRAM), new Measurable(5, Unit.METERS_PER_SECOND_SQUARED),
+                new Measurable(-1, Unit.METERS_PER_SECOND_SQUARED), nodeTest2, true);
+
+        assertEquals(expected.getEnergyExpenditure().getQuantity(), results.getEnergyExpenditure().getQuantity(), 500);
+        assertEquals(expected.getFinalVelocity().getQuantity(), results.getFinalVelocity().getQuantity(), 0.001);
+        assertEquals(expected.getTimeSpent().getQuantity(), results.getTimeSpent().getQuantity(), 0.01);
         assertEquals(expected.getTollCosts().getQuantity(), results.getTollCosts().getQuantity(), 0.01);
 
     }
