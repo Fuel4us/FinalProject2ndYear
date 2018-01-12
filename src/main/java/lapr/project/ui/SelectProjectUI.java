@@ -255,8 +255,9 @@ public final class SelectProjectUI extends javax.swing.JFrame {
                     JOptionPane.INFORMATION_MESSAGE);
         } else {
             verifyProjectWasSelected = true;
-            selectProjectController.setCurrentProject((Project) jComboBoxProjects.getSelectedItem());
-            JOptionPane.showMessageDialog(null, project.getName()+" is now your active project.");
+            Project selectedProject = (Project) jComboBoxProjects.getSelectedItem();
+            selectProjectController.setCurrentProject(selectedProject);
+            JOptionPane.showMessageDialog(null, selectedProject.getName()+" is now your active project.");
         }
 
     }//GEN-LAST:event_jButtonSetActiveActionPerformed
