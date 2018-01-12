@@ -5,7 +5,6 @@
  */
 package lapr.project.model;
 
-import lapr.project.model.Regime;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -17,6 +16,7 @@ public class RegimeTest {
     
     Regime instance = new Regime(10,20,30,40,350);
     Regime instance2 = new Regime(10,20,30,40);
+    
     /**
      * Test empty constructor
      */
