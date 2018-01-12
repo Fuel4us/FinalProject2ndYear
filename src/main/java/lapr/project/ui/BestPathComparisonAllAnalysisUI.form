@@ -54,7 +54,7 @@
                   <Component id="jButtonBack" min="-2" pref="66" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jButtonViewResults" alignment="0" pref="460" max="32767" attributes="0"/>
+                      <Component id="jButtonViewResults" alignment="0" max="32767" attributes="0"/>
                       <Component id="jComboBoxAnalysis" alignment="0" max="32767" attributes="0"/>
                       <Component id="jLabel2" alignment="1" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
@@ -172,7 +172,7 @@
         </Component>
         <Component class="javax.swing.JComboBox" name="jComboBoxAnalysis">
           <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor" postCode="/**">
               <Color blue="cc" green="cc" red="cc" type="rgb"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -188,11 +188,11 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBoxAnalysisActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JComboBox&lt;Project&gt;()"/>
-            <AuxValue name="JavaCodeGenerator_DeclarationPost" type="java.lang.String" value="*/&#xa;private javax.swing.JComboBox&lt;Project&gt; jComboBoxAnalysis;"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JComboBox&lt;Analysis&gt;()"/>
+            <AuxValue name="JavaCodeGenerator_DeclarationPost" type="java.lang.String" value="*/&#xa;private javax.swing.JComboBox&lt;Analysis&gt; jComboBoxAnalysis;"/>
             <AuxValue name="JavaCodeGenerator_DeclarationPre" type="java.lang.String" value="/**"/>
             <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="*/"/>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="List&lt;Project&gt; projectsList = spc.fetchProjectsList();&#xa;DefaultComboBoxModel&lt;Project&gt; projectsModel = new DefaultComboBoxModel&lt;&gt;();&#xa;        for (Project obj : projectsList) {&#xa;            projectsModel.addElement(obj);&#xa;        }&#xa;jComboBoxAnalysis.setModel(projectsModel);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="List&lt;Analysis&gt; analysisListModel = analysisList;&#xa;DefaultComboBoxModel&lt;Analysis&gt; analysisModel = new DefaultComboBoxModel&lt;&gt;();&#xa;        for (Analysis obj : analysisListModel) {&#xa;            analysisModel.addElement(obj);&#xa;        }&#xa;jComboBoxAnalysis.setModel(analysisModel);"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
