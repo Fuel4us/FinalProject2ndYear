@@ -18,7 +18,7 @@ import static org.junit.Assert.assertTrue;
  * @author TEAM Fonseca
  */
 public class VehicleTest {
-    
+
     Vehicle instance = new Vehicle("Pick_up", "", VehicleType.Car, 0, Vehicle.MotorType.COMBUSTION, Fuel.Diesel, new Measurable(1.0, Unit.KILOGRAM), new Measurable(1.0, Unit.KILOMETERS_PER_HOUR), 1f, new Measurable(1, Unit.METER_SQUARED), 1f, new Measurable(0, Unit.METER), new ArrayList<>(), new Energy(0, 0, 0, new ArrayList<>(), new ArrayList<>()));
 
     /**
@@ -30,10 +30,10 @@ public class VehicleTest {
         int expResult = 0;
         int result = instance.getVehicleClass();
         assertEquals(expResult, result);
-        }
-    
+    }
+
     @Test
-    public void VehicleTest () {
+    public void VehicleTest() {
         Vehicle vehicleTest = new Vehicle();
         String expResult = null;
         String result = vehicleTest.getName();
@@ -55,7 +55,8 @@ public class VehicleTest {
     }
 
     /**
-     * Ensures the method determineInitialVelocity calculates correctly the initial velocity of the vehicle
+     * Ensures the method determineInitialVelocity calculates correctly the
+     * initial velocity of the vehicle
      */
     @Test
     public void ensureInitialVelocityIsCorrect() {
@@ -115,9 +116,8 @@ public class VehicleTest {
      */
     @Test
     public void testHashCode() {
-        
-        int expResult = instance.getName().hashCode();
-        int result = 1086622553;
+        int expResult = instance.hashCode();
+        int result = 1086622844;
         assertEquals(expResult, result);
     }
 
@@ -160,7 +160,7 @@ public class VehicleTest {
     @Test
     public void testGetMass() {
         System.out.println("getMass");
-        Measurable expResult = new Measurable (1.0, Unit.KILOGRAM);
+        Measurable expResult = new Measurable(1.0, Unit.KILOGRAM);
         Measurable result = instance.getMass();
         assertEquals(expResult, result);
     }
@@ -215,9 +215,26 @@ public class VehicleTest {
     @Test
     public void testGetEnergy() {
         System.out.println("getEnergy");
-        Vehicle vehicleTestEnergy = new Vehicle(); 
+        Vehicle vehicleTestEnergy = new Vehicle();
         Energy expResult = null;
         Energy result = vehicleTestEnergy.getEnergy();
         assertEquals(expResult, result);
     }
+
+    /**
+     * Test of hasValidLoad, of class Vehicle.
+     */
+    @Test
+    public void testHasValidLoad() {
+        assertTrue(instance.hasValidLoad(new Measurable(0.0, Unit.KILOGRAM)));
+    }
+
+    /**
+     * Test of calculateAccelerationForce, of class Vehicle.
+     */
+    @Test
+    public void testCalculateAccelerationForce() {
+        assertEquals(instance.calculateAccelerationForce(new Measurable(0.0, Unit.KILOGRAM), new Measurable(0.0, Unit.MILES_PER_HOUR)), new Measurable((new Measurable(1.0, Unit.KILOGRAM).getQuantity() + new Measurable(0.0, Unit.KILOGRAM).getQuantity()) * new Measurable(0.0, Unit.MILES_PER_HOUR).getQuantity(), Unit.NEWTON));
+    }
+
 }
