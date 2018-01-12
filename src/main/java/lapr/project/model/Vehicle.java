@@ -24,8 +24,6 @@ public class Vehicle {
 
     private int vehicleClass;
 
-    private Motorization motorization;
-
     private MotorType motorType;
 
     private Fuel fuel;
@@ -67,13 +65,6 @@ public class Vehicle {
         this.type = type;
         this.vehicleClass = vehicleClass;
         this.motorType = motorType;
-
-        if (motorType == MotorType.COMBUSTION) {
-            motorization = new CombustionMotor();
-        } else if (motorType == MotorType.NONCOMBUSTION) {
-            motorization = new NonCombustionMotor();
-        }
-
         this.fuel = fuel;
         this.mass = mass;
         this.maxLoad = maxLoad;
@@ -85,13 +76,15 @@ public class Vehicle {
         this.energy = new Energy(energy);
     }
 
-    public Vehicle() {
-    }
+    /**
+     * Package-private constructor for test purposes
+     */
+    Vehicle() {}
 
     /**
      * @return vehicle class
      */
-    public int getVehicleClass() {
+    int getVehicleClass() {
         return vehicleClass;
     }
 
@@ -102,7 +95,7 @@ public class Vehicle {
      * @param roadTypology the road's typology
      * @return the max velocity of the vehicle
      */
-    public Measurable retrieveMaxVelocity(String roadTypology) {
+    Measurable retrieveMaxVelocity(String roadTypology) {
 
         if (velocityLimitList.isEmpty()) {
 
@@ -158,7 +151,7 @@ public class Vehicle {
      * vehicle, the gear position used in the segment, the velocity the vehicle
      * used and the energy expenditure using the formula "Power * timeSpent"
      */
-    public Measurable[] determineEnergyExpenditure(Segment segment, Measurable load, double length, Measurable velocity, Measurable acceleration) {
+    Measurable[] determineEnergyExpenditure(Segment segment, Measurable load, double length, Measurable velocity, Measurable acceleration) {
 
         Measurable velocityToBeUsed = new Measurable(velocity.getQuantity(), Unit.KILOMETERS_PER_HOUR);
         int gearPosition = energy.getGears().size() - 1;
@@ -413,8 +406,8 @@ public class Vehicle {
     }
 
     /**
-     * Indicates motor type Assists in the instantiation of the correct
-     * motorization
+     * Indicates motor type.
+     * May assist in the instantiation of the correct motorization
      */
     public enum MotorType {
 

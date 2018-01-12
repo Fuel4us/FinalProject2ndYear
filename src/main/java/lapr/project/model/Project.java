@@ -35,38 +35,6 @@ public class Project {
     }
 
     /**
-     * Implementation of the equals for objects of the type Project Only the
-     * name is considered
-     *
-     * @param o other object
-     * @return true if the objects are equal
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Project project = (Project) o;
-
-        return name != null ? name.equals(project.name) : project.name == null;
-    }
-
-    /**
-     * Implementation of the hashCode for objects of the type Project Only the
-     * name is considered
-     *
-     * @return
-     */
-    @Override
-    public int hashCode() {
-        return name != null ? name.hashCode() : 0;
-    }
-
-    /**
      * Getter of the name
      *
      * @return the name of the project
@@ -120,6 +88,43 @@ public class Project {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    /**
+     * Implementation of the equals for objects of the type Project Only the
+     * name is considered
+     *
+     * @param o other object
+     * @return true if the objects are equal
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Project project = (Project) o;
+
+        return name != null ? name.equals(project.name) : project.name == null;
+    }
+
+    /**
+     * Implementation of the hashCode for objects of the type Project Only the
+     * name is considered
+     *
+     * @return
+     */
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
+    }
+
     /**
      * Clone project
      *
@@ -129,7 +134,7 @@ public class Project {
     public Project cloneProject() throws CloneNotSupportedException {
         return new Project(getName() + " (Copy)", getDescription() + " (Copy)", getRoadNetwork(), getVehicles());
     }
-    
+
     String addNameIfEquals(List<Project> project, String name) {
         
         for (Project p: project) {

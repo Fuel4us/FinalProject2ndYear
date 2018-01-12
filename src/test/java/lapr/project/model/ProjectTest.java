@@ -184,4 +184,10 @@ public class ProjectTest {
         assertEquals(expResult, result);
     }
 
+    @Test
+    public void ensureToStringEqualsName() throws Exception {
+        Project project = new Project("sample", "description", null, null);
+        assert project.toString().equals(project.getName());
+    }
+
 }
