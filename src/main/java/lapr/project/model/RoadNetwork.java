@@ -18,7 +18,6 @@ public class RoadNetwork extends Graph<Node, Section> {
 
     /**
      * Full constructor for the class RoadNetwork
-     *
      * @param id the id of the road network
      * @param description the description of the road network
      */
@@ -30,7 +29,6 @@ public class RoadNetwork extends Graph<Node, Section> {
 
     /**
      * Constructor
-     *
      * @param directed if the graph is directed or not
      */
     public RoadNetwork(boolean directed) {
@@ -47,7 +45,6 @@ public class RoadNetwork extends Graph<Node, Section> {
     /**
      * Defines identifier of roadNetwork, obtained during the importation of
      * data from file
-     *
      * @param id identifier of roadNetwork
      */
     public void setId(String id) {
@@ -56,7 +53,6 @@ public class RoadNetwork extends Graph<Node, Section> {
 
     /**
      * Returns the id
-     * 
      * @return id
      */
     public String getId() {
@@ -73,7 +69,6 @@ public class RoadNetwork extends Graph<Node, Section> {
 
     /**
      * Inserts a Node into the graph
-     *
      * @param node the node to be added
      * @return true if the operation succeeds
      */
@@ -82,14 +77,27 @@ public class RoadNetwork extends Graph<Node, Section> {
     }
 
     /**
-     * Inserts a Section into the graph
-     *
+     * Inserts a Section into the graph, taking into account its {@link Direction}
      * @param n1 the first node of the section
      * @param n2 the second node of the section
      * @param section the section to be added
      * @return true if the operation succeeds
      */
     public boolean addSection(Node n1, Node n2, Section section) {
+        if (section.getDirection() == Direction.BIDIRECTIONAL) {
+            boolean firstAdded = addDirectedSection(n1, n2, section);
+            return addDirectedSection(n2, n1, section)
+                    && firstAdded;
+
+        } else if (section.getDirection() == Direction.DIRECT) {
+            return addDirectedSection(n1, n2, section);
+        } else if (section.getDirection() == Direction.REVERSE) {
+            return addDirectedSection(n2, n1, section);
+        }
+        return false;
+    }
+
+    private boolean addDirectedSection(Node n1, Node n2, Section section) {
         boolean flag = false;
         if (insertEdge(n1, n2, section, section.getWeight())) {
             n1.addAdjVert(n2.getElement(), section);
@@ -101,7 +109,6 @@ public class RoadNetwork extends Graph<Node, Section> {
 
     /**
      * Retrieves the list of all roads if the road network
-     *
      * @return a list of instances of the class Road
      */
     public List<Road> retrieveAllRoads() {

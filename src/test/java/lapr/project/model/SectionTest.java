@@ -1,5 +1,6 @@
 package lapr.project.model;
 
+import java.io.FileWriter;
 import lapr.project.model.*;
 import lapr.project.utils.EnergyExpenditureAccelResults;
 import lapr.project.utils.Measurable;
@@ -9,8 +10,12 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.junit.After;
+import org.junit.AfterClass;
 
 import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.BeforeClass;
 
 /**
  * Represents the test class for the Section class
@@ -193,5 +198,215 @@ public class SectionTest {
         assertEquals(expected.getTimeSpent().getQuantity(), results.getTimeSpent().getQuantity(), 0.01);
         assertEquals(expected.getTollCosts().getQuantity(), results.getTollCosts().getQuantity(), 0.01);
 
+    }
+
+
+    /**
+     * Test of getOwningRoad method, of class Section.
+     */
+    @Test
+    public void testGetOwningRoad() {
+        System.out.println("getOwningRoad");
+        RoadNetwork roadNetworkTest = new RoadNetwork();
+
+        Node nodeTest1 = new Node("n01");
+        Node nodeTest2 = new Node("n02");
+
+        roadNetworkTest.addNode(nodeTest1);
+        roadNetworkTest.addNode(nodeTest2);
+
+        Collection<Segment> segmentsTest = new ArrayList<>();
+        segmentsTest.add(new Segment(0, 0, 100, 5, 30, 1.5, 120, 0));
+        segmentsTest.add(new Segment(1, 100, 250, 3.5, -10, 1, 100, 0));
+
+        List<Double> tollFaresRoadTest = new ArrayList<>();
+        tollFaresRoadTest.add(0.15);
+        tollFaresRoadTest.add(0.25);
+        tollFaresRoadTest.add(0.35);
+
+        Section sectionTest = new Section(nodeTest1, nodeTest2, Direction.BIDIRECTIONAL, segmentsTest,
+                new Road("A01", "A01", "toll highway", tollFaresRoadTest), new ArrayList<>());
+        Road expResult = new Road("A01", "A01", "toll highway", tollFaresRoadTest);
+        Road result = sectionTest.getOwningRoad();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getSegments method, of class Section.
+     */
+    @Test
+    public void testGetSegments() {
+        System.out.println("getSegments");
+        RoadNetwork roadNetworkTest = new RoadNetwork();
+
+        Node nodeTest1 = new Node("n01");
+        Node nodeTest2 = new Node("n02");
+
+        roadNetworkTest.addNode(nodeTest1);
+        roadNetworkTest.addNode(nodeTest2);
+
+        Collection<Segment> segmentsTest = new ArrayList<>();
+        segmentsTest.add(new Segment(0, 0, 100, 5, 30, 1.5, 120, 0));
+        segmentsTest.add(new Segment(1, 100, 250, 3.5, -10, 1, 100, 0));
+
+        List<Double> tollFaresRoadTest = new ArrayList<>();
+        tollFaresRoadTest.add(0.15);
+        tollFaresRoadTest.add(0.25);
+        tollFaresRoadTest.add(0.35);
+
+        Section sectionTest = new Section(nodeTest1, nodeTest2, Direction.BIDIRECTIONAL, segmentsTest,
+                new Road("A01", "A01", "toll highway", tollFaresRoadTest), new ArrayList<>());
+        Collection<Segment> result = sectionTest.getSegments();
+        assertEquals(segmentsTest, result);
+    }
+
+    /**
+     * Test of getID method, of class Section.
+     */
+    @Test
+    public void testGetID() {
+        System.out.println("getID");
+        RoadNetwork roadNetworkTest = new RoadNetwork();
+
+        Node nodeTest1 = new Node("n01");
+        Node nodeTest2 = new Node("n02");
+
+        roadNetworkTest.addNode(nodeTest1);
+        roadNetworkTest.addNode(nodeTest2);
+
+        Collection<Segment> segmentsTest = new ArrayList<>();
+        segmentsTest.add(new Segment(0, 0, 100, 5, 30, 1.5, 120, 0));
+        segmentsTest.add(new Segment(1, 100, 250, 3.5, -10, 1, 100, 0));
+
+        List<Double> tollFaresRoadTest = new ArrayList<>();
+        tollFaresRoadTest.add(0.15);
+        tollFaresRoadTest.add(0.25);
+        tollFaresRoadTest.add(0.35);
+
+        Section sectionTest = new Section(nodeTest1, nodeTest2, Direction.BIDIRECTIONAL, segmentsTest,
+                new Road("A01", "A01", "toll highway", tollFaresRoadTest), new ArrayList<>());
+        int expResult = 2;
+        int result = sectionTest.getID();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getDirection method, of class Section.
+     */
+    @Test
+    public void testGetDirection() {
+        System.out.println("getDirection");
+        RoadNetwork roadNetworkTest = new RoadNetwork();
+
+        Node nodeTest1 = new Node("n01");
+        Node nodeTest2 = new Node("n02");
+
+        roadNetworkTest.addNode(nodeTest1);
+        roadNetworkTest.addNode(nodeTest2);
+
+        Collection<Segment> segmentsTest = new ArrayList<>();
+        segmentsTest.add(new Segment(0, 0, 100, 5, 30, 1.5, 120, 0));
+        segmentsTest.add(new Segment(1, 100, 250, 3.5, -10, 1, 100, 0));
+
+        List<Double> tollFaresRoadTest = new ArrayList<>();
+        tollFaresRoadTest.add(0.15);
+        tollFaresRoadTest.add(0.25);
+        tollFaresRoadTest.add(0.35);
+
+        Section sectionTest = new Section(nodeTest1, nodeTest2, Direction.BIDIRECTIONAL, segmentsTest,
+                new Road("A01", "A01", "toll highway", tollFaresRoadTest), new ArrayList<>());
+        Direction expResult = Direction.BIDIRECTIONAL;
+        Direction result = sectionTest.getDirection();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getTollFare method, of class Section.
+     */
+    @Test
+    public void testGetTollFare() {
+        System.out.println("getTollFare");
+        RoadNetwork roadNetworkTest = new RoadNetwork();
+
+        Node nodeTest1 = new Node("n01");
+        Node nodeTest2 = new Node("n02");
+
+        roadNetworkTest.addNode(nodeTest1);
+        roadNetworkTest.addNode(nodeTest2);
+
+        Collection<Segment> segmentsTest = new ArrayList<>();
+        segmentsTest.add(new Segment(0, 0, 100, 5, 30, 1.5, 120, 0));
+        segmentsTest.add(new Segment(1, 100, 250, 3.5, -10, 1, 100, 0));
+
+        List<Double> tollFaresRoadTest = new ArrayList<>();
+        tollFaresRoadTest.add(0.15);
+        tollFaresRoadTest.add(0.25);
+        tollFaresRoadTest.add(0.35);
+
+        Section sectionTest = new Section(nodeTest1, nodeTest2, Direction.BIDIRECTIONAL, segmentsTest,
+                new Road("A01", "A01", "toll highway", tollFaresRoadTest), new ArrayList<>());
+        List<Double> expResult = new ArrayList<>();
+        List<Double> result = sectionTest.getTollFare();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getBeginningNode method, of class Section.
+     */
+    @Test
+    public void testGetBeginningNode() {
+        System.out.println("getBeginningNode");
+        RoadNetwork roadNetworkTest = new RoadNetwork();
+
+        Node nodeTest1 = new Node("n01");
+        Node nodeTest2 = new Node("n02");
+
+        roadNetworkTest.addNode(nodeTest1);
+        roadNetworkTest.addNode(nodeTest2);
+
+        Collection<Segment> segmentsTest = new ArrayList<>();
+        segmentsTest.add(new Segment(0, 0, 100, 5, 30, 1.5, 120, 0));
+        segmentsTest.add(new Segment(1, 100, 250, 3.5, -10, 1, 100, 0));
+
+        List<Double> tollFaresRoadTest = new ArrayList<>();
+        tollFaresRoadTest.add(0.15);
+        tollFaresRoadTest.add(0.25);
+        tollFaresRoadTest.add(0.35);
+
+        Section sectionTest = new Section(nodeTest1, nodeTest2, Direction.BIDIRECTIONAL, segmentsTest,
+                new Road("A01", "A01", "toll highway", tollFaresRoadTest), new ArrayList<>());
+        Node expResult = nodeTest1;
+        Node result = sectionTest.getBeginningNode();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getEndingNode method, of class Section.
+     */
+    @Test
+    public void testGetEndingNode() {
+        System.out.println("getEndingNode");
+        RoadNetwork roadNetworkTest = new RoadNetwork();
+
+        Node nodeTest1 = new Node("n01");
+        Node nodeTest2 = new Node("n02");
+
+        roadNetworkTest.addNode(nodeTest1);
+        roadNetworkTest.addNode(nodeTest2);
+
+        Collection<Segment> segmentsTest = new ArrayList<>();
+        segmentsTest.add(new Segment(0, 0, 100, 5, 30, 1.5, 120, 0));
+        segmentsTest.add(new Segment(1, 100, 250, 3.5, -10, 1, 100, 0));
+
+        List<Double> tollFaresRoadTest = new ArrayList<>();
+        tollFaresRoadTest.add(0.15);
+        tollFaresRoadTest.add(0.25);
+        tollFaresRoadTest.add(0.35);
+
+        Section sectionTest = new Section(nodeTest1, nodeTest2, Direction.BIDIRECTIONAL, segmentsTest,
+                new Road("A01", "A01", "toll highway", tollFaresRoadTest), new ArrayList<>());
+        Node expResult = nodeTest2;
+        Node result = sectionTest.getEndingNode();
+        assertEquals(expResult, result);
     }
 }

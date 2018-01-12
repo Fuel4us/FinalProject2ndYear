@@ -79,22 +79,14 @@ public class ChangeDataUI extends javax.swing.JFrame {
         jButtonCreate.setForeground(new java.awt.Color(45, 46, 45));
         jButtonCreate.setText("Save changes");
         jButtonCreate.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonCreate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCreateActionPerformed(evt);
-            }
-        });
+        jButtonCreate.addActionListener(evt -> jButtonCreateActionPerformed(evt));
 
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
         jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack.setText("«");
         jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBackActionPerformed(evt);
-            }
-        });
+        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
 
         jTextFieldName.setBackground(new java.awt.Color(87, 89, 87));
         jTextFieldName.setForeground(new java.awt.Color(45, 46, 45));
@@ -123,11 +115,7 @@ public class ChangeDataUI extends javax.swing.JFrame {
         jButtonRoad.setForeground(new java.awt.Color(72, 89, 97));
         jButtonRoad.setText("Import new roads configuration file");
         jButtonRoad.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
-        jButtonRoad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRoadActionPerformed(evt);
-            }
-        });
+        jButtonRoad.addActionListener(evt -> jButtonRoadActionPerformed(evt));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -208,15 +196,12 @@ public class ChangeDataUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateActionPerformed
+        controller.changeProjectData(Main.currentProject, jTextFieldName.getText(), jTextFieldDescription.getText());
         JOptionPane.showMessageDialog(null, "Changes were successfully made in your project.");
-        PopUp1 pop = new PopUp1();
-        pop.setVisible(true);
-        dispose();
     }//GEN-LAST:event_jButtonCreateActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        PopUp1 pop = new PopUp1();
-        pop.setVisible(true);
+        SelectProjectUI.display();
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 

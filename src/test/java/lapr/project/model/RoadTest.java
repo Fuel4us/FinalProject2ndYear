@@ -7,8 +7,12 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import org.junit.After;
+import org.junit.AfterClass;
 
 import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.BeforeClass;
 
 public class RoadTest {
 
@@ -162,6 +166,33 @@ public class RoadTest {
         int result = instance.hashCode();
         System.out.println(result);
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getId method, of class Road.
+     */
+    @Test
+    public void testGetId() {
+        System.out.println("getId");
+        Road instance = new Road("id","name","typo");
+        String expResult = "id";
+        String result = instance.getId();
+        assertEquals(expResult, result);
+
+    }
+
+    /**
+     * Test of getTollFare method, of class Road.
+     */
+    @Test
+    public void testGetTollFare() {
+        System.out.println("getTollFare");
+        List<Double> toll =  new ArrayList<>();
+        Road instance = new Road("id", "name", "typo",toll);
+        List<Double> expResult = toll;
+        List<Double> result = instance.getTollFare();
+        assertEquals(expResult, result);
+
     }
 
 }

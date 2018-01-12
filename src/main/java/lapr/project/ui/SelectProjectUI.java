@@ -19,7 +19,6 @@ public final class SelectProjectUI extends javax.swing.JFrame {
     InitializeUIElements initializer = new InitializeUIElements();
     private static final long serialVersionUID = -5188965937946662366L;
     private SelectProjectController selectProjectController;
-    private Project project;
     private boolean verifyProjectWasSelected;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
@@ -42,7 +41,7 @@ public final class SelectProjectUI extends javax.swing.JFrame {
     /**
      * Creates new form SelectProjectUI
      */
-    private SelectProjectUI() {
+    SelectProjectUI() {
         selectProjectController = new SelectProjectController(Main.dbCom);
         verifyProjectWasSelected = false;
         initComponents();
@@ -255,15 +254,16 @@ public final class SelectProjectUI extends javax.swing.JFrame {
                     JOptionPane.INFORMATION_MESSAGE);
         } else {
             verifyProjectWasSelected = true;
-            selectProjectController.setCurrentProject((Project) jComboBoxProjects.getSelectedItem());
-            JOptionPane.showMessageDialog(null, project.getName()+" is now your active project.");
+            Project selectedProject = (Project) jComboBoxProjects.getSelectedItem();
+            selectProjectController.setCurrentProject(selectedProject);
+            JOptionPane.showMessageDialog(null, selectedProject.getName()+" is now your active project.");
         }
 
     }//GEN-LAST:event_jButtonSetActiveActionPerformed
 
     private void jButtonPopUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPopUpActionPerformed
         if (verifyProjectWasSelected) {
-            new PopUp1().setVisible(true);
+            new PopUp1(this).setVisible(true);
         } else {
             showOptionPaneRequiredActiveProject();
         }

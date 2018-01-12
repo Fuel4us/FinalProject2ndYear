@@ -39,6 +39,7 @@ public class Section extends Edge<String, Direction> {
      * @param endingNode This section's ending {@link Node}
      * @param direction This section's {@link Direction}
      * @param segments The {@link Collection} of segments that belong to this section
+     * @param road
      * @param tollFare The {@link List} of toll fares of this section
      */
     public Section(Node beginningNode, Node endingNode, Direction direction, Collection<Segment> segments, Road road, List<Double> tollFare) {
