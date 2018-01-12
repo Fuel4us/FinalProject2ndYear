@@ -255,11 +255,13 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
 
         try (CallableStatement callableStatement = oracleConnection
                 .prepareCall("CALL getVelocitySet(?,?,?)")) {
-            callableStatement.registerOutParameter(3, OracleTypes.CURSOR);
+
             callableStatement.setString(1, name);
             callableStatement.setString(2, projectName);
+            callableStatement.registerOutParameter(3, OracleTypes.CURSOR);
+
             callableStatement.execute();
-            ResultSet velocitySet = (ResultSet) callableStatement.getObject(2);
+            ResultSet velocitySet = (ResultSet) callableStatement.getObject(3);
             while (velocitySet.next()) {
                 if (velocitySet.getString("vehicleName").equals(name)) {
                     int velocityLimitID = velocitySet.getInt("id");
