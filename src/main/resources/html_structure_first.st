@@ -12,6 +12,7 @@
   <li><b>Travel time:</b> $sampleTime$</li>
   <li><b>Energy Consumption:</b> $sampleEnergy$</li>
   <li><b>Toll Cost:</b> $sampleCost$</li>
+  <li><b>Vehicle:</b> $vehicle$</li>
 </ul>
 
 <center><h2>Roads:</h2></center>

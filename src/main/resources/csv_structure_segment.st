@@ -1,1 +1,0 @@
-"$sampleId$","$sampleIniHeight$","$sampleFimHeight$","$sampleLength$","$sampleWindAngle$","$sampleWindSpeed$","$sampleMaxVel$","$sampleMinVel$"

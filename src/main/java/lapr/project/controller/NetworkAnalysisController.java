@@ -1,6 +1,7 @@
 package lapr.project.controller;
 
 import lapr.project.model.Analysis;
+import lapr.project.model.Vehicle;
 import lapr.project.ui.Main;
 import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 import lapr.project.utils.FileParser.ExportHTML;
@@ -17,15 +18,17 @@ public class NetworkAnalysisController {
     private DataBaseCommunicator DBCom;
     private Analysis generatedAnalysis;
     private Exporter exporter;
+    private Vehicle vehicle;
 
     /**
      * Creates a {@link NetworkAnalysisController} with a {@link DataBaseCommunicator} and a generated {@link Analysis}
      * Defaults exporting mode to HTML but can be changed
      */
-    public NetworkAnalysisController(DataBaseCommunicator dbCom, Analysis generatedAnalysis) {
+    public NetworkAnalysisController(DataBaseCommunicator dbCom, Analysis generatedAnalysis, Vehicle vehicle) {
         this.DBCom = dbCom;
         this.generatedAnalysis = generatedAnalysis;
         this.exporter = new ExportHTML(generatedAnalysis);
+        this.vehicle = vehicle;
     }
 
     /**
@@ -37,7 +40,7 @@ public class NetworkAnalysisController {
     }
 
     public void exportData(File output) throws IOException {
-        exporter.exportDataFromAnalysis(output);
+        exporter.exportDataFromAnalysis(output, vehicle);
     }
 
     /**
