@@ -9,7 +9,7 @@ import lapr.project.utils.Unit;
 public enum Fuel {
 
     Diesel(new Measurable(48, Unit.KILOJOULE_PER_GRAM)), Gasoline(new Measurable(44.4, Unit.KILOJOULE_PER_GRAM)),
-    Electric(new Measurable(0, null));
+    Electric(new Measurable(0, Unit.KILOJOULE_PER_GRAM));
 
     private Measurable specificEnergy;
 
