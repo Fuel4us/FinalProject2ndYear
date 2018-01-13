@@ -25,4 +25,21 @@ public class Physics {
         return initialY + (finalY - initialY) * (valueX - initialX) / (finalX - initialX);
     }
 
+    /**
+     * Calculates the correspondent value of the valueX given by parameter using the polynomial interpolation,
+     * according to the intervals X and Y
+     * @param initialX the initial value of the interval X
+     * @param finalX the final value of the interval X
+     * @param initialY the initial value of the interval Y
+     * @param finalY the final value of the interval Y
+     * @param valueX the value correspondent to the interval X
+     * @return the correspondent value in the interval Y
+     */
+    public static double calculatePolynomialInterpolation(double initialX, double finalX, double initialY, double finalY,
+                                                          double valueX) {
+        double x2 = (finalY - initialY) / (finalX - initialX);
+        double x1 = initialY - (initialX * x2);
+        return (x2 * valueX) + x1;
+    }
+
 }

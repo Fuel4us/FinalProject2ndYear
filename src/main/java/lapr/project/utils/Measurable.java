@@ -17,6 +17,9 @@ public class Measurable {
 
     private double quantity;
     private Unit unit;
+    
+    public Measurable(){
+    }
 
     public Measurable(double quantity, Unit unit) {
         this.quantity = quantity;

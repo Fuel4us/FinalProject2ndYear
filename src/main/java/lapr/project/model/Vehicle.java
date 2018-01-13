@@ -212,13 +212,14 @@ public class Vehicle {
 
         for (Regime regime : energy.getThrottles().get(throttlePosition).getRegimes()) {
             if (regime.getRpmHigh() >= engineSpeed && regime.getRpmLow() <= engineSpeed) {
-                torque = Physics.calculateLinearInterpolation(regime.getRpmLow(), regime.getRpmHigh(), regime.getTorqueLow(), regime.getTorqueHigh(), engineSpeed);
+                if (!polynomialInterpolation) {
+                    torque = Physics.calculateLinearInterpolation(regime.getRpmLow(), regime.getRpmHigh(), regime.getTorqueLow(), regime.getTorqueHigh(), engineSpeed);
+                } else {
+                    torque = Physics.calculatePolynomialInterpolation(regime.getRpmLow(), regime.getRpmHigh(), regime.getTorqueLow(), regime.getTorqueHigh(), engineSpeed);
+                }
                 SFC = regime.getSFC();
                 break;
             } else if (regime.getRpmLow() > engineSpeed) {
-                if (gearPosition == 0) {
-                    String ola = "ola";
-                }
                 return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, energySaving, polynomialInterpolation);
             }
         }
