@@ -353,7 +353,7 @@ public final class BestPathUI extends JFrame {
                 JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
             } else {
                 Analysis generatedAnalysis = controller.analyzeFastestPath(startNode, endNode, selectedVehicle, load);
-                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis);
+                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis, selectedVehicle);
                 storeNetworkAnalysisUI.setVisible(true);
                 setVisible(false);
             }
@@ -386,7 +386,7 @@ public final class BestPathUI extends JFrame {
                 JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAcceleration and a negative value for maxBraking");
             } else {
                 Analysis generatedAnalysis = controller.efficientPathPolynomialInterpolationN11Button(startNode, endNode, selectedVehicle, maxAcceleration, maxBraking, load);
-                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis);
+                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis, selectedVehicle);
                 storeNetworkAnalysisUI.setVisible(true);
                 setVisible(false);
             }
@@ -419,7 +419,7 @@ public final class BestPathUI extends JFrame {
                 JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAcceleration and a negative value for maxBraking");
             } else {
                 Analysis generatedAnalysis = controller.efficientPathPolynomialInterpolationN12Button(startNode, endNode, selectedVehicle, maxAcceleration, maxBraking, load);
-                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis);
+                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis, selectedVehicle);
                 storeNetworkAnalysisUI.setVisible(true);
                 setVisible(false);
             }
@@ -451,7 +451,7 @@ public final class BestPathUI extends JFrame {
                 JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAcceleration and a negative value for maxBraking");
             } else {
                 Analysis generatedAnalysis = controller.analyzeEfficientPathEnergySavingMode(startNode, endNode, selectedVehicle, maxAcceleration, maxBraking, load);
-                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis);
+                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis, selectedVehicle);
                 storeNetworkAnalysisUI.setVisible(true);
                 setVisible(false);
             }
@@ -483,7 +483,7 @@ public final class BestPathUI extends JFrame {
                 JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAcceleration and a negative value for maxBraking");
             } else {
                 Analysis generatedAnalysis = controller.analyzeTheoreticalEfficientPath(startNode, endNode, selectedVehicle, maxAcceleration, maxBraking, load) ;
-                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis);
+                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis, selectedVehicle);
                 storeNetworkAnalysisUI.setVisible(true);
                 setVisible(false);
             }

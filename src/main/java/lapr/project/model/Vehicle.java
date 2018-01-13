@@ -259,12 +259,12 @@ public class Vehicle {
 
             // if the throttle position is not 100%, we increase the throttle position
             if (throttlePosition < 2) {
-                return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, ++throttlePosition, velocity, load, true, polynomialInterpolation);
+                return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, ++throttlePosition, velocity, load, false, polynomialInterpolation);
             }
 
             // if the throttle position is in 100%, we decrease the gear position and start the throttle as 25%
             throttlePosition = 0;
-            return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, true, polynomialInterpolation);
+            return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, false, polynomialInterpolation);
 
         }
 

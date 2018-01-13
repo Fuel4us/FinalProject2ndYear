@@ -102,8 +102,8 @@ public class Analysis implements ExportableHTML {
      * @param file FileWriter object
      */
     @Override
-    public void exportDataHTML(StringTemplate stringTemplate1, StringTemplate stringTemplate2, FileWriter file) throws IOException {
-        exportAnalysisData(stringTemplate1, file);
+    public void exportDataHTML(StringTemplate stringTemplate1, StringTemplate stringTemplate2, FileWriter file, Vehicle vehicle) throws IOException {
+        exportAnalysisData(stringTemplate1, file, vehicle);
         printPathRoadsHTML(file);
         file.write(stringTemplate2.toString());
         printPathHTML(file);
@@ -120,18 +120,20 @@ public class Analysis implements ExportableHTML {
      * @param file output {@link java.io.File}
      * @throws IOException
      */
-    private void exportAnalysisData(StringTemplate stringTemplate1, FileWriter file) throws IOException {
+    private void exportAnalysisData(StringTemplate stringTemplate1, FileWriter file, Vehicle vehicle) throws IOException {
         String projectName = requestingInstance.getName();
         String analysisName = algorithmName;
         String travelTimeStr = travelTime.toString();
         String energyConsumption = expendedEnergy.toString();
         String tollCost = travelCost.toString();
+        String vehicleID = vehicle.getName();
 
         stringTemplate1.setAttribute("projectName", projectName);
         stringTemplate1.setAttribute("sampleName", analysisName);
         stringTemplate1.setAttribute("sampleTime", travelTimeStr);
         stringTemplate1.setAttribute("sampleEnergy", energyConsumption);
         stringTemplate1.setAttribute("sampleCost", tollCost);
+        stringTemplate1.setAttribute("vehicle", vehicleID);
 
         file.write(stringTemplate1.toString());
     }
