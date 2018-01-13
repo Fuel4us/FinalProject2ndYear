@@ -5,6 +5,8 @@
  */
 package lapr.project.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import org.junit.*;
 
@@ -13,14 +15,12 @@ import static org.junit.Assert.assertTrue;
 
 /**
  *
- * @author Pedro
+ * @author Team Fonseca
  */
 public class RoadNetworkTest {
     
     public RoadNetworkTest() {
     }
-    
-
 
     /**
      * Test of setId method, of class RoadNetwork.
@@ -70,19 +70,6 @@ public class RoadNetworkTest {
         assertEquals(expResult, result);
     }
 
-
-//    /**
-//     * Test of retrieveAllRoads method, of class RoadNetwork.
-//     */
-//    @Test
-//    public void testRetrieveAllRoads() {
-//        System.out.println("retrieveAllRoads");
-//        RoadNetwork instance = new RoadNetwork();
-//        List<Road> expResult = null;
-//        List<Road> result = instance.retrieveAllRoads();
-//        assertEquals(expResult, result);
-//    }
-
     /**
      * Test of equals method, of class RoadNetwork.
      */
@@ -104,6 +91,40 @@ public class RoadNetworkTest {
         RoadNetwork instance = new RoadNetwork("id","desc");
         int expResult = 3243412;
         int result = instance.hashCode();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of addSection method, of class RoadNetwork.
+     */
+    @Test
+    public void testAddSection() {
+        
+        Collection<Segment> collection = new ArrayList<>();
+        collection.add(new Segment(0, 0, 0, 50, 0, 0, 120, 0));
+        collection.add(new Segment(1, 0, 0, 100, 0, 0, 90, 0));
+        collection.add(new Segment(2, 0, 0, 75, 0, 0, 70, 0));
+        collection.add(new Segment(3, 0, 0, 100, 0, 0, 100, 0));
+        
+        System.out.println("addSection");
+        Node n1 = new Node("n1");
+        Node n2 = new Node("n2");
+        Section section = new Section (n1,n2, Direction.BIDIRECTIONAL, collection, new Road("A01", "A01", "toll highway"), new ArrayList<>());
+        RoadNetwork instance = new RoadNetwork();
+        boolean expResult = true;
+        boolean result = instance.addSection(n1, n2, section);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of retrieveAllRoads method, of class RoadNetwork.
+     */
+    @Test
+    public void testRetrieveAllRoads() {
+        System.out.println("retrieveAllRoads");
+        RoadNetwork instance = new RoadNetwork("Alpha", "Description");
+        List<Road> expResult = new ArrayList<>();
+        List<Road> result = instance.retrieveAllRoads();
         assertEquals(expResult, result);
     }
 
