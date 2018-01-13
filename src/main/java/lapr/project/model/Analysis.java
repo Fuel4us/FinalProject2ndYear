@@ -7,6 +7,7 @@ import lapr.project.utils.Measurable;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -82,9 +83,10 @@ public class Analysis implements ExportableHTML {
         String costHeader = "Total toll costs";
 
         String sectionContext = bestPath.toString();
-        String energyContext = expendedEnergy.toString();
-        String timeContext = travelTime.toString();
-        String costContext = travelCost.toString();
+
+        String energyContext = new DecimalFormat("#.###").format(expendedEnergy.getQuantity()) + expendedEnergy.getUnit();
+        String timeContext = new DecimalFormat("#.###").format(travelTime.getQuantity()) + travelTime.getUnit();
+        String costContext = new DecimalFormat("#.###").format(travelCost.getQuantity()) + travelCost.getUnit();
 
         return String.format("%s:%s%n%n %s:%s%n%n %s:%s%n%n %s:%s%n%n",
                 sectionsHeader, sectionContext,
