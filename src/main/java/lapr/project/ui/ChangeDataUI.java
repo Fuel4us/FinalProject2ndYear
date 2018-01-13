@@ -6,17 +6,11 @@
 package lapr.project.ui;
 
 import lapr.project.controller.ChangeDataController;
-import org.xml.sax.SAXException;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -212,14 +206,14 @@ public class ChangeDataUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonRoadActionPerformed(java.awt.event.ActionEvent evt) throws Exception {//GEN-FIRST:event_jButtonRoadActionPerformed
-        Main.SupportedInputFileTypes selectedExtension = Main.displayExtensionChoiceUI();
+        Main.SupportedInputFileTypes selectedExtension = Main.displayExtensionChoiceUI(this);
         JFileChooser fileChooser = Main.initFileChooserProperties(selectedExtension, "Select your RoadNetwork file");
         loadFile(fileChooser, jButtonRoad, controller::setRoadNetworkFile, selectedExtension);
         controller.addNewRoads();
     }//GEN-LAST:event_jButtonRoadActionPerformed
 
     private void jButtonVehicleActionPerformed(java.awt.event.ActionEvent evt) throws Exception {//GEN-FIRST:event_jButtonVehicleActionPerformed
-        Main.SupportedInputFileTypes selectedExtension = Main.displayExtensionChoiceUI();
+        Main.SupportedInputFileTypes selectedExtension = Main.displayExtensionChoiceUI(this);
         JFileChooser fileChooser = Main.initFileChooserProperties(selectedExtension, "Select your Vehicles file");
         loadFile(fileChooser, jButtonVehicle, controller::setVehiclesFile, selectedExtension);
         controller.addNewVehicles();

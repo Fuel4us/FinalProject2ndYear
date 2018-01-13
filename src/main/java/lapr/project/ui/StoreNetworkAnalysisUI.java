@@ -171,7 +171,7 @@ class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         fileChooser.showSaveDialog(jButtonGenerateFile);
         String fileName = JOptionPane.showInputDialog(jButtonGenerateFile, "Choose the name for this file");
 
-        Main.SupportedOutputFileTypes selectedOutputFormat = displayExtensionChoiceUI();
+        Main.SupportedOutputFileTypes selectedOutputFormat = Main.displayOutputExtensionChoiceUI(this);
         networkAnalysisController.setOutputFormat(selectedOutputFormat);
         fileName = appendFileFormat(fileName, selectedOutputFormat);
 
@@ -195,27 +195,6 @@ class StoreNetworkAnalysisUI extends javax.swing.JFrame {
                 break;
         }
         return fileName;
-    }
-
-    /**
-     * Displays a UI that prompts for the choice of the parsing mode to use to import information
-     * @return the {@code selectedType} - instance of {@link Main.SupportedOutputFileTypes}
-     */
-    private Main.SupportedOutputFileTypes displayExtensionChoiceUI() {
-        Main.SupportedOutputFileTypes selectedType = null;
-        boolean validExtension;
-        do {
-            String selection = JOptionPane.showInputDialog("Choose the desired output file format.\nCurrently supported formats are "
-                    + Arrays.toString(Main.SupportedOutputFileTypes.values()));
-            try {
-                selectedType = Main.SupportedOutputFileTypes.valueOf(selection);
-                validExtension = true;
-            } catch (IllegalArgumentException e) {
-                JOptionPane.showMessageDialog(this, "Please insert a valid value.");
-                validExtension = false;
-            }
-        } while (!validExtension);
-        return selectedType;
     }
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {
