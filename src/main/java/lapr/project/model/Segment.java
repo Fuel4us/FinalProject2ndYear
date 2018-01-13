@@ -218,17 +218,17 @@ public class Segment {
         if (usedAcceleration.getQuantity() < 0) {
             possibleVelocityToReach = vehicle.determineEnergyExpenditure(this, load, length,
                     finalVelocityToBeUsed.getQuantity() > initialVelocityToBeUsed.getQuantity() ? finalVelocityToBeUsed : initialVelocityToBeUsed,
-                    maxBraking, energySaving, polynomialInterpolation)[2];
+                    energySaving, polynomialInterpolation)[2];
         } else if (usedAcceleration.getQuantity() > 0) {
             if (lastSegment) {
 
                 Measurable possibleVelocityToReachAccelerating = vehicle.determineEnergyExpenditure(this, load, length,
                         finalVelocityToBeUsed.getQuantity() > initialVelocityToBeUsed.getQuantity() ? finalVelocityToBeUsed : initialVelocityToBeUsed,
-                        maxAcceleration, energySaving, polynomialInterpolation)[2];
+                        energySaving, polynomialInterpolation)[2];
 
                 Measurable possibleVelocityToReachBraking = vehicle.determineEnergyExpenditure(this, load, length,
                         finalVelocityToBeUsed.getQuantity() > initialVelocityToBeUsed.getQuantity() ? finalVelocityToBeUsed : initialVelocityToBeUsed,
-                        maxBraking, energySaving, polynomialInterpolation)[2];
+                        energySaving, polynomialInterpolation)[2];
 
                 possibleVelocityToReach = possibleVelocityToReachAccelerating.getQuantity() < possibleVelocityToReachBraking.getQuantity() ?
                         possibleVelocityToReachAccelerating : possibleVelocityToReachBraking;
@@ -236,11 +236,11 @@ public class Segment {
             } else {
                 possibleVelocityToReach = vehicle.determineEnergyExpenditure(this, load, length,
                         finalVelocityToBeUsed.getQuantity() > initialVelocityToBeUsed.getQuantity() ? finalVelocityToBeUsed : initialVelocityToBeUsed,
-                        maxAcceleration, energySaving, polynomialInterpolation)[2];
+                        energySaving, polynomialInterpolation)[2];
             }
         } else {
             possibleVelocityToReach = vehicle.determineEnergyExpenditure(this, load, length, finalVelocityToBeUsed,
-                    usedAcceleration, energySaving, polynomialInterpolation)[2];
+                    energySaving, polynomialInterpolation)[2];
         }
 
         if (Double.compare(possibleVelocityToReach.getQuantity(), finalVelocityToBeUsed.getQuantity()) != 0) {
@@ -276,20 +276,25 @@ public class Segment {
 
             distanceAndTimeFinishingPath = calculateTravelledDistanceAndTimeSpent(finishingPathVelocity, finalVelocityToBeUsed, maxBraking);
 
-            Measurable[] distanceAndTimeEnteringSegment = calculateTravelledDistanceAndTimeSpent(finalVelocityToBeUsed, initialVelocityToBeUsed, usedAcceleration);
+            double lengthForInitialAcceleration = 0;
 
-            double lengthForInitialAcceleration = distanceAndTimeEnteringSegment[0].getQuantity();
+            if (Double.compare(usedAcceleration.getQuantity(), 0) != 0) {
+                Measurable[] distanceAndTimeEnteringSegment = calculateTravelledDistanceAndTimeSpent(finalVelocityToBeUsed, initialVelocityToBeUsed, usedAcceleration);
 
-            if (distanceAndTimeEnteringSegment[0].getQuantity() + distanceAndTimeFinishingPath[0].getQuantity() > length) {
+                lengthForInitialAcceleration = distanceAndTimeEnteringSegment[0].getQuantity();
 
-                lengthForInitialAcceleration = length - distanceAndTimeFinishingPath[0].getQuantity();
-                finalVelocityToBeUsed = calculateFinalVelocity(initialVelocityToBeUsed, maxAcceleration, lengthForInitialAcceleration);
+                if (distanceAndTimeEnteringSegment[0].getQuantity() + distanceAndTimeFinishingPath[0].getQuantity() > length) {
 
+                    lengthForInitialAcceleration = length - distanceAndTimeFinishingPath[0].getQuantity();
+                    finalVelocityToBeUsed = calculateFinalVelocity(initialVelocityToBeUsed, maxAcceleration, lengthForInitialAcceleration);
+
+                }
+
+                // moment of acceleration in the beginning
+                energyExpenditure.setQuantity(calculateEnergyExpenditureWithAcceleration(initialVelocityToBeUsed, finalVelocityToBeUsed, usedAcceleration, vehicle, load, energySaving, polynomialInterpolation).getQuantity());
+                timeSpent.setQuantity(calculateTravelledDistanceAndTimeSpent(finalVelocityToBeUsed, initialVelocityToBeUsed, usedAcceleration)[1].getQuantity());
             }
 
-            // moment of acceleration in the beginning
-            energyExpenditure.setQuantity(calculateEnergyExpenditureWithAcceleration(initialVelocityToBeUsed, finalVelocityToBeUsed, usedAcceleration, vehicle, load, energySaving, polynomialInterpolation).getQuantity());
-            timeSpent.setQuantity(calculateTravelledDistanceAndTimeSpent(finalVelocityToBeUsed, initialVelocityToBeUsed, usedAcceleration)[1].getQuantity());
 
             // moment of braking until the end
             double lengthForFinalBraking = calculateTravelledDistanceAndTimeSpent(finishingPathVelocity, finalVelocityToBeUsed, maxBraking)[0].getQuantity();
@@ -408,12 +413,12 @@ public class Segment {
     public double determineEnergyExpenditureUniformMovement(Measurable acceleration, Vehicle vehicle, Measurable load, double length,
                                                             Measurable velocity, boolean energySaving, boolean polynomialInterpolation) {
         if (acceleration.getQuantity() < 0 && vehicle.getMotorType().equals(Vehicle.MotorType.NONCOMBUSTION)) {
-            return -vehicle.determineEnergyExpenditure(this, load, length, velocity, acceleration, energySaving, polynomialInterpolation)[3].getQuantity()
+            return -vehicle.determineEnergyExpenditure(this, load, length, velocity, energySaving, polynomialInterpolation)[3].getQuantity()
                     * vehicle.getEnergy().getEnergyRegenerationRatio();
         } else if (acceleration.getQuantity() >= 0 && vehicle.getMotorType().equals(Vehicle.MotorType.NONCOMBUSTION)) {
-            return vehicle.determineEnergyExpenditure(this, load, length, velocity, acceleration, energySaving, polynomialInterpolation)[3].getQuantity();
+            return vehicle.determineEnergyExpenditure(this, load, length, velocity, energySaving, polynomialInterpolation)[3].getQuantity();
         } else {
-            return vehicle.determineEnergyExpenditure(this, load, length, velocity, acceleration, energySaving, polynomialInterpolation)[0].getQuantity();
+            return vehicle.determineEnergyExpenditure(this, load, length, velocity, energySaving, polynomialInterpolation)[0].getQuantity();
         }
     }
 

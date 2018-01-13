@@ -236,7 +236,7 @@ public class PathAlgorithmTest {
         sectionsExpected.add(sectionTest2);
 
         Analysis expected = new Analysis(projectTest, "N11 - Theoretical Most Energy Efficient Path", sectionsExpected,
-                new Measurable(81438, Unit.KILOJOULE), new Measurable(0.09383, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
+                new Measurable(86287, Unit.KILOJOULE), new Measurable(0.0789763, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
 
         Analysis result = PathAlgorithm.theoreticalEfficientPath(projectTest, nodeTest1, nodeTest3, vehicleTest, new Measurable(5, Unit.METERS_PER_SECOND_SQUARED),
                 new Measurable(-2.5, Unit.METERS_PER_SECOND_SQUARED), new Measurable(500, Unit.KILOGRAM));
@@ -338,7 +338,7 @@ public class PathAlgorithmTest {
         sectionsExpected.add(sectionTest2);
 
         Analysis expected = new Analysis(projectTest, "N12 - Efficient Path in Energy Saving Mode", sectionsExpected,
-                new Measurable(79658, Unit.KILOJOULE), new Measurable(0.13739, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
+                new Measurable(74027, Unit.KILOJOULE), new Measurable(0.112198, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
 
         Analysis result = PathAlgorithm.efficientPathEnergySavingMode(projectTest, nodeTest1, nodeTest3, vehicleTest, new Measurable(5, Unit.METERS_PER_SECOND_SQUARED),
                 new Measurable(-1, Unit.METERS_PER_SECOND_SQUARED), new Measurable(500, Unit.KILOGRAM));

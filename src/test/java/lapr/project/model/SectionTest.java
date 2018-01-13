@@ -167,8 +167,8 @@ public class SectionTest {
                 velocityLimitListTest, new Energy(900, 5500, 4f, gearsTest, throttlesTest));
 
         // energy saving -> false
-        EnergyExpenditureAccelResults expected = new EnergyExpenditureAccelResults(new Measurable(81538, Unit.KILOJOULE),
-                new Measurable(5.6548668, Unit.KILOMETERS_PER_HOUR), new Measurable(0.10428, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
+        EnergyExpenditureAccelResults expected = new EnergyExpenditureAccelResults(new Measurable(86348, Unit.KILOJOULE),
+                new Measurable(5.6548668, Unit.KILOMETERS_PER_HOUR), new Measurable(0.07937246, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
 
         EnergyExpenditureAccelResults results = sectionTest.calculateEnergyExpenditureAccel(roadNetworkTest, new Measurable(5.6548668, Unit.KILOMETERS_PER_HOUR), vehicleTest,
                 new Measurable(500, Unit.KILOGRAM), new Measurable(5, Unit.METERS_PER_SECOND_SQUARED),
@@ -180,8 +180,8 @@ public class SectionTest {
         assertEquals(expected.getTollCosts().getQuantity(), results.getTollCosts().getQuantity(), 0.01);
 
         // energy saving -> true
-        expected = new EnergyExpenditureAccelResults(new Measurable(79538, Unit.KILOJOULE),
-                new Measurable(5.6548668, Unit.KILOMETERS_PER_HOUR), new Measurable(0.13736, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
+        expected = new EnergyExpenditureAccelResults(new Measurable(74204, Unit.KILOJOULE),
+                new Measurable(5.6548668, Unit.KILOMETERS_PER_HOUR), new Measurable(0.11284, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
 
         results = sectionTest.calculateEnergyExpenditureAccel(roadNetworkTest, new Measurable(5.6548668, Unit.KILOMETERS_PER_HOUR), vehicleTest,
                 new Measurable(500, Unit.KILOGRAM), new Measurable(5, Unit.METERS_PER_SECOND_SQUARED),
