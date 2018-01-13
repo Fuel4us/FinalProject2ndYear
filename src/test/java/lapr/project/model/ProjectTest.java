@@ -93,6 +93,12 @@ public class ProjectTest {
         result = Objects.equals(p3, p4);
 
         assertEquals(true, result);
+        
+        // class
+        Class<? extends Project> resultClass = p3.getClass();
+        Class<? extends Project> expResult = p4.getClass();
+        assertEquals(expResult, resultClass);
+        
     }
 
     /**
