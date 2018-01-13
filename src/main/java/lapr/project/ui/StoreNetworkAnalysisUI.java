@@ -7,7 +7,6 @@ package lapr.project.ui;
 
 import lapr.project.controller.NetworkAnalysisController;
 import lapr.project.model.Analysis;
-import lapr.project.model.Project;
 import lapr.project.utils.FileParser.ExportHTML;
 
 import javax.swing.*;
@@ -188,18 +187,14 @@ class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         fileChooser.showSaveDialog(jButtonGenerateFile);
-        String name = JOptionPane.showInputDialog(jButtonGenerateFile, "Choose the name for this file");
+        String fileName = JOptionPane.showInputDialog(jButtonGenerateFile, "Choose the name for this file");
 
         Main.SupportedOutputFileTypes selectedOutputFormat = displayExtensionChoiceUI();
         networkAnalysisController.setOutputFormat(selectedOutputFormat);
-
-        String[] splitFileName = name.split("\\.");
-        if (!splitFileName[splitFileName.length - 1].equals(ExportHTML.HTML_FILE_EXTENSION)) {
-            name += ExportHTML.HTML_FILE_EXTENSION;
-        }
+        fileName = appendFileFormat(fileName, selectedOutputFormat);
 
         String dir = fileChooser.getSelectedFile().getAbsolutePath();
-        File file = new File(dir + System.getProperty("file.separator") + name);
+        File file = new File(dir + System.getProperty("file.separator") + fileName);
 
 
         try {
@@ -207,6 +202,18 @@ class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(StoreNetworkAnalysisUI.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private String appendFileFormat(String fileName, Main.SupportedOutputFileTypes selectedOutputFormat) {
+        switch (selectedOutputFormat) {
+            case HTML:
+                String[] splitFileName = fileName.split("\\.");
+                if (!splitFileName[splitFileName.length - 1].equals(ExportHTML.HTML_FILE_EXTENSION)) {
+                    fileName += ExportHTML.HTML_FILE_EXTENSION;
+                }
+                break;
+        }
+        return fileName;
     }
 
     /**
@@ -223,7 +230,7 @@ class StoreNetworkAnalysisUI extends javax.swing.JFrame {
                 selectedType = Main.SupportedOutputFileTypes.valueOf(selection);
                 validExtension = true;
             } catch (IllegalArgumentException e) {
-                JOptionPane.showMessageDialog(this,"Please insert a valid value.");
+                JOptionPane.showMessageDialog(this, "Please insert a valid value.");
                 validExtension = false;
             }
         } while (!validExtension);
