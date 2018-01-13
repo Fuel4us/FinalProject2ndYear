@@ -11,13 +11,15 @@ import java.util.List;
  */
 public class Project {
 
+    private String id;
     private String name;
     private String description;
     private RoadNetwork roadNetwork;
     private List<Vehicle> vehicles;
     private int idName = 1;
 
-    public Project(String name, String description, RoadNetwork roadNetwork, List<Vehicle> vehicles) {
+    public Project(String id, String name, String description, RoadNetwork roadNetwork, List<Vehicle> vehicles) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.roadNetwork = roadNetwork;
@@ -88,6 +90,14 @@ public class Project {
         this.description = description;
     }
 
+    /**
+     * Getter of project identifier
+     * @return id
+     */
+    public String getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return name;
@@ -132,7 +142,7 @@ public class Project {
      * @throws CloneNotSupportedException
      */
     public Project cloneProject() throws CloneNotSupportedException {
-        return new Project(getName() + " (Copy)", getDescription() + " (Copy)", getRoadNetwork(), getVehicles());
+        return new Project(id + " (Copy)", name + " (Copy)", description + " (Copy)", roadNetwork, vehicles);
     }
 
     String addNameIfEquals(List<Project> project, String name) {

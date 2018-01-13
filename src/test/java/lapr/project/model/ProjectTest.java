@@ -27,8 +27,8 @@ public class ProjectTest {
 
         vehicleList.add(v1);
         vehicleList.add(v2);
-        this.p1 = new Project("Alpha", "Alpha test network", rn, vehicleList);
-        this.p2 = new Project("Alpha", "Beta test network", rn, vehicleList);
+        this.p1 = new Project("Alpha", "Alpha", "Alpha test network", rn, vehicleList);
+        this.p2 = new Project("Alpha", "Alpha", "Beta test network", rn, vehicleList);
     }
 
     /**
@@ -84,10 +84,10 @@ public class ProjectTest {
         assertEquals(true, result);
 
         //objects with both names null
-        Project p3 = new Project(null, "Description 3",
+        Project p3 = new Project(null, null, "Description 3",
                 new RoadNetwork(false), new ArrayList<>());
 
-        Project p4 = new Project(null, "Description 4",
+        Project p4 = new Project(null, null, "Description 4",
                 new RoadNetwork(false), new ArrayList<>());
 
         result = Objects.equals(p3, p4);
@@ -110,10 +110,10 @@ public class ProjectTest {
     @Test
     public void ensureEqualsReturnsFalse() throws Exception {
 
-        Project p3 = new Project(null, "Description 3",
+        Project p3 = new Project(null,null, "Description 3",
                 new RoadNetwork(false), new ArrayList<>());
 
-        Project p4 = new Project("Name 4", "Description 4",
+        Project p4 = new Project("Name4", "Name 4", "Description 4",
                 new RoadNetwork(false), new ArrayList<>());
 
         //object p2 is null
@@ -132,7 +132,7 @@ public class ProjectTest {
     public void testAddNameIfEquals() {
 
         Project p3;
-        p3 = new Project("Alpha", "", null, null);
+        p3 = new Project("Alpha","Alpha", "", null, null);
         List<Project> listProjectTest = new ArrayList<>();
         listProjectTest.add(p3);
 
@@ -185,15 +185,15 @@ public class ProjectTest {
     public void testCloneProject() throws Exception {
         System.out.println("cloneProject");
         Project instance = new Project();
-        Project expResult = new Project(instance.getName()+" (Copy)",instance.getDescription() + " (Copy)",instance.getRoadNetwork(),instance.getVehicles());
+        Project expResult = new Project(instance.getId()+" (Copy)", instance.getName()+" (Copy)",instance.getDescription() + " (Copy)",instance.getRoadNetwork(),instance.getVehicles());
         Project result = instance.cloneProject();
         assertEquals(expResult, result);
     }
 
     @Test
     public void ensureToStringEqualsName() throws Exception {
-        Project project = new Project("sample", "description", null, null);
-        assert project.toString().equals(project.getName());
+        Project project = new Project("sample", "sample", "description", null, null);
+        assert project.toString().equals(project.getId());
     }
 
 }

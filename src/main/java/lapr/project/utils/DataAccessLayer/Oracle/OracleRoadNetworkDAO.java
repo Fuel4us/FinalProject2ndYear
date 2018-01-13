@@ -305,12 +305,27 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
     }
 
     /**
+     * Stores new edges and vertexes of RoadNetwork
+     * @param roadNetwork the {@link RoadNetwork} to store
+     * @param networkID roadNetwork identifier
+     * @throws SQLException
+     */
+    void storeRoadNetworkGraphAddElements(RoadNetwork roadNetwork, List<Node> newNodes, List<Section> newSections, String networkID, String projectName) throws SQLException {
+
+        for (Node node : newNodes) {
+            storeNode(node, networkID, projectName);
+        }
+
+        storeNewSections(roadNetwork, networkID, projectName, newSections);
+    }
+
+    /**
      * Stores edges and vertexes of RoadNetwork
      * @param roadNetwork the {@link RoadNetwork} to store
      * @param networkID roadNetwork identifier
      * @throws SQLException
      */
-    void storeRoadNetworkGraph(RoadNetwork roadNetwork, String networkID, String projectName) throws SQLException {
+    private void storeRoadNetworkGraph(RoadNetwork roadNetwork, String networkID, String projectName) throws SQLException {
 
         Iterable<Node> nodes = roadNetwork.vertices();
         for (Node node : nodes) {
@@ -338,6 +353,42 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
 
         List<Integer> storedSections = new LinkedList<>();
         for (Section section : sections) {
+            Road road = section.getOwningRoad();
+            if (!roadsToStore.contains(road)) {
+                roadsToStore.add(section.getOwningRoad());
+                storeRoad(road);
+                List<Double> tollFareList = road.getTollFare();
+                for (Double tollFare : tollFareList) {
+                    storeTollFareRoad(tollFare, road.getId());
+                }
+            }
+            if (!storedSections.contains(section.getID())) {
+                storeSection(section, networkID, projectName);
+                storedSections.add(section.getID());
+                List<Double> tollFareList = section.getTollFare();
+                for (Double tollFare : tollFareList) {
+                    storeTollFareSection(tollFare, section.getID(), networkID);
+                }
+                Collection<Segment> segments = section.getSegments();
+                for (Segment segment : segments) {
+                    storeSegment(segment, section.getID(), networkID);
+                }
+            }
+        }
+    }
+
+    /**
+     * Stores instances of {@link Section} and respective information
+     * @param roadNetwork the {@link RoadNetwork} to store
+     * @param networkID roadNetwork identifier
+     * @throws SQLException
+     */
+    private void storeNewSections(RoadNetwork roadNetwork, String networkID, String projectName, List<Section> newSections) throws SQLException {
+
+        List<Road> roadsToStore = new LinkedList<>();
+
+        List<Integer> storedSections = new LinkedList<>();
+        for (Section section : newSections) {
             Road road = section.getOwningRoad();
             if (!roadsToStore.contains(road)) {
                 roadsToStore.add(section.getOwningRoad());

@@ -1,16 +1,16 @@
 package lapr.project.controller;
 
-import lapr.project.model.Project;
-import lapr.project.model.RoadNetwork;
-import lapr.project.model.Vehicle;
+import lapr.project.model.*;
 import lapr.project.utils.FileParser.FileParser;
 import lapr.project.utils.FileParser.XMLImporter;
+import lapr.project.utils.Graph.Edge;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 
@@ -19,8 +19,6 @@ public class ChangeDataController {
 
     private Project project;
     private DataBaseCommunicator dbCom;
-    private String name;
-    private String description;
     private File roadsFile;
     private File vehiclesFile;
 
@@ -76,7 +74,7 @@ public class ChangeDataController {
      * @param name project name
      */
     public void setName(String name) {
-        this.name = name;
+        String name1 = name;
     }
 
     /**
@@ -84,7 +82,7 @@ public class ChangeDataController {
      * @param description project description
      */
     public void setDescription(String description) {
-        this.description = description;
+        String description1 = description;
     }
 
     /**
@@ -93,8 +91,10 @@ public class ChangeDataController {
      */
     public void addNewRoads() throws Exception {
         FileParser importer = new XMLImporter(roadsFile, vehiclesFile);
-        importer.importNetwork(true);
-        dbCom.addRoadNetworkElementsToProject(project);
+        RoadNetwork temporaryRoadNetwork = importer.importNetwork(true);
+        List<Node> nodes = temporaryRoadNetwork.getVertices();
+        List<Section> sections = temporaryRoadNetwork.getEdges().stream().map(Edge::getElement).collect(Collectors.toList());
+        dbCom.addRoadNetworkElementsToProject(project, nodes, sections);
     }
 
     /**
@@ -103,8 +103,10 @@ public class ChangeDataController {
      */
     public void addNewVehicles() throws Exception {
         FileParser importer = new XMLImporter(roadsFile, vehiclesFile);
-        List<Vehicle> vehicles = importer.importVehicles();
-        dbCom.addVehiclesToProject(project, vehicles);
+        List<Vehicle> temporaryVehicles = importer.importVehicles();
+        List<Vehicle> projectVehicles = project.getVehicles();
+        projectVehicles.addAll(temporaryVehicles);
+        dbCom.addVehiclesToProject(project, temporaryVehicles);
     }
 
     /**
