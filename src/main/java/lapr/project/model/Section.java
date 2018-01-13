@@ -317,4 +317,12 @@ public class Section extends Edge<String, Direction> {
 
     }
 
+    @Override
+    public String toString() {
+        return "Section{" +
+                "beginningNode=" + beginningNode +
+                ", endingNode=" + endingNode +
+                '}';
+    }
+
 }
