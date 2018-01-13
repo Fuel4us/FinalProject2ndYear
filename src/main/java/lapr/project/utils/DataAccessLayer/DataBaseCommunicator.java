@@ -1,9 +1,6 @@
 package lapr.project.utils.DataAccessLayer;
 
-import lapr.project.model.Analysis;
-import lapr.project.model.Project;
-import lapr.project.model.RoadNetwork;
-import lapr.project.model.Vehicle;
+import lapr.project.model.*;
 import lapr.project.utils.DataAccessLayer.Abstraction.AnalysisDAO;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.Abstraction.ProjectDAO;
@@ -207,7 +204,7 @@ public class DataBaseCommunicator {
      * @param project The project to which add sections and nodes
      * @return
      */
-    public boolean addRoadNetworkElementsToProject(Project project) {
+    public boolean addRoadNetworkElementsToProject(Project project, List<Node> nodes, List<Section> sections) {
 
         try {
             //Start Transaction
@@ -216,7 +213,7 @@ public class DataBaseCommunicator {
 
             //Allow Data Access Object behaviour through newly opened connexion
             if (projectStorage.connectTo(connection)) {
-                projectStorage.addRoads(project);
+                projectStorage.addRoads(project, nodes, sections);
                 connection.commit();
                 connection.close();
                 return true;
