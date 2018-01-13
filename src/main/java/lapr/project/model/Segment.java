@@ -218,17 +218,17 @@ public class Segment {
         if (usedAcceleration.getQuantity() < 0) {
             possibleVelocityToReach = vehicle.determineEnergyExpenditure(this, load, length,
                     finalVelocityToBeUsed.getQuantity() > initialVelocityToBeUsed.getQuantity() ? finalVelocityToBeUsed : initialVelocityToBeUsed,
-                    maxBraking, energySaving, polynomialInterpolation)[2];
+                    energySaving, polynomialInterpolation)[2];
         } else if (usedAcceleration.getQuantity() > 0) {
             if (lastSegment) {
 
                 Measurable possibleVelocityToReachAccelerating = vehicle.determineEnergyExpenditure(this, load, length,
                         finalVelocityToBeUsed.getQuantity() > initialVelocityToBeUsed.getQuantity() ? finalVelocityToBeUsed : initialVelocityToBeUsed,
-                        maxAcceleration, energySaving, polynomialInterpolation)[2];
+                        energySaving, polynomialInterpolation)[2];
 
                 Measurable possibleVelocityToReachBraking = vehicle.determineEnergyExpenditure(this, load, length,
                         finalVelocityToBeUsed.getQuantity() > initialVelocityToBeUsed.getQuantity() ? finalVelocityToBeUsed : initialVelocityToBeUsed,
-                        maxBraking, energySaving, polynomialInterpolation)[2];
+                        energySaving, polynomialInterpolation)[2];
 
                 possibleVelocityToReach = possibleVelocityToReachAccelerating.getQuantity() < possibleVelocityToReachBraking.getQuantity() ?
                         possibleVelocityToReachAccelerating : possibleVelocityToReachBraking;
@@ -236,11 +236,11 @@ public class Segment {
             } else {
                 possibleVelocityToReach = vehicle.determineEnergyExpenditure(this, load, length,
                         finalVelocityToBeUsed.getQuantity() > initialVelocityToBeUsed.getQuantity() ? finalVelocityToBeUsed : initialVelocityToBeUsed,
-                        maxAcceleration, energySaving, polynomialInterpolation)[2];
+                        energySaving, polynomialInterpolation)[2];
             }
         } else {
             possibleVelocityToReach = vehicle.determineEnergyExpenditure(this, load, length, finalVelocityToBeUsed,
-                    usedAcceleration, energySaving, polynomialInterpolation)[2];
+                    energySaving, polynomialInterpolation)[2];
         }
 
         if (Double.compare(possibleVelocityToReach.getQuantity(), finalVelocityToBeUsed.getQuantity()) != 0) {
@@ -408,12 +408,12 @@ public class Segment {
     public double determineEnergyExpenditureUniformMovement(Measurable acceleration, Vehicle vehicle, Measurable load, double length,
                                                             Measurable velocity, boolean energySaving, boolean polynomialInterpolation) {
         if (acceleration.getQuantity() < 0 && vehicle.getMotorType().equals(Vehicle.MotorType.NONCOMBUSTION)) {
-            return -vehicle.determineEnergyExpenditure(this, load, length, velocity, acceleration, energySaving, polynomialInterpolation)[3].getQuantity()
+            return -vehicle.determineEnergyExpenditure(this, load, length, velocity, energySaving, polynomialInterpolation)[3].getQuantity()
                     * vehicle.getEnergy().getEnergyRegenerationRatio();
         } else if (acceleration.getQuantity() >= 0 && vehicle.getMotorType().equals(Vehicle.MotorType.NONCOMBUSTION)) {
-            return vehicle.determineEnergyExpenditure(this, load, length, velocity, acceleration, energySaving, polynomialInterpolation)[3].getQuantity();
+            return vehicle.determineEnergyExpenditure(this, load, length, velocity, energySaving, polynomialInterpolation)[3].getQuantity();
         } else {
-            return vehicle.determineEnergyExpenditure(this, load, length, velocity, acceleration, energySaving, polynomialInterpolation)[0].getQuantity();
+            return vehicle.determineEnergyExpenditure(this, load, length, velocity, energySaving, polynomialInterpolation)[0].getQuantity();
         }
     }
 
