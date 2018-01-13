@@ -29,7 +29,7 @@ public class ExportCSV implements Exporter {
         StringTemplateGroup groupHTML =  new StringTemplateGroup("src\\main\\resources");
         StringTemplate stringTemplateFirst = groupHTML.getInstanceOf(CSV_STRUCTURE_FIRST);
         StringTemplate stringTemplateSecond = groupHTML.getInstanceOf(CSV_STRUCTURE_SECOND);
-        analysis.exportDataCSV(stringTemplateFirst, stringTemplateSecond, fillFile);
+//        analysis.exportDataCSV(stringTemplateFirst, stringTemplateSecond, fillFile);
 
     }
 
