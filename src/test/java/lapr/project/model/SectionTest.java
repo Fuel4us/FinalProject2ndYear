@@ -373,29 +373,7 @@ public class SectionTest {
         Node result = sectionTest.getEndingNode();
         assertEquals(expResult, result);
     }
-    
-    @Test
-    public void testGetId() {
-        
-        Node nodeTest1 = new Node("n01");
-        Node nodeTest2 = new Node("n02");
-        
-        List<Double> tollFaresRoadTest = new ArrayList<>();
-        
-        Collection<Segment> segmentsTest = new ArrayList<>();
-        segmentsTest.add(new Segment(0, 0, 100, 5, 30, 1.5, 120, 0));
-        segmentsTest.add(new Segment(1, 100, 250, 3.5, -10, 1, 100, 0));
-        
-        Section sectionTest = new Section(nodeTest1, nodeTest2, Direction.BIDIRECTIONAL, segmentsTest,
-                new Road("A01", "A01", "toll highway", tollFaresRoadTest), new ArrayList<>());
-        
-        int expResult = 2;
-        int result = sectionTest.getID();
-        
-        assertEquals(expResult, result);
-        
-    }
-    
+       
     @Test
     public void testDetermineTollCosts() {
         Node nodeTest1 = new Node("n01");
