@@ -52,6 +52,7 @@ public final class CreateProjectUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        InitializeUIElements initializer = new InitializeUIElements();
         jPanel1 = new javax.swing.JPanel();
         imgLateral = new javax.swing.JLabel();
         orangeBorder = new javax.swing.JPanel();
@@ -84,56 +85,33 @@ public final class CreateProjectUI extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        initializer.initializeJButton(jButtonCreate, Main.EIGHTEEN_SEGOE_FONT, "Create project", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonCreate.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonCreate.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonCreate.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonCreate.setText("Create project");
-        jButtonCreate.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonCreate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCreateActionPerformed(evt);
-            }
-        });
+        jButtonCreate.addActionListener(evt -> jButtonCreateActionPerformed(evt));
 
+        initializer.initializeJButton(jButtonBack,Main.FORTY_EIGHT_SEGOE_FONT, "«", Main.DARK_GREY, javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 4));
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
-        jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setText("«");
-        jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonBack.addActionListener(evt -> jButtonBackActionPerformed());
 
         jTextFieldName.setBackground(new java.awt.Color(87, 89, 87));
         jTextFieldName.setForeground(new java.awt.Color(45, 46, 45));
         jTextFieldName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
 
-        jLabelPageTitle.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
-        jLabelPageTitle.setForeground(new java.awt.Color(155, 177, 189));
-        jLabelPageTitle.setText("Insert the data of your project");
+        initializer.initializeLabels(jLabelPageTitle, Main.TV_POSTER_FONT, "Insert the data of your project", SwingConstants.CENTER, Main.LIGHT_BLUE);
 
-        jLabelPName.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelPName.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelPName.setText("PROJECT NAME:");
+        initializer.initializeLabels(jLabelPName, Main.TWELVE_SEGOE_FONT, "PROJECT NAME:", SwingConstants.RIGHT, Main.DARK_BLUE);
+        initializer.initializeLabels(jLabelPDesc, Main.TWELVE_SEGOE_FONT, "DESCRIPTION:", SwingConstants.RIGHT, Main.DARK_BLUE);
 
         jTextFieldDescription.setBackground(new java.awt.Color(87, 89, 87));
         jTextFieldDescription.setForeground(new java.awt.Color(45, 46, 45));
         jTextFieldDescription.setHorizontalAlignment(javax.swing.JTextField.LEFT);
 
-        jLabelPDesc.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelPDesc.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelPDesc.setText("DESCRIPTION:");
-
+        initializer.initializeJButton(jButtonRoad, Main.FOURTEEN_SEGOE_FONT, "Import roads configuration file", Color.WHITE, new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
         jButtonRoad.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonRoad.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButtonRoad.setForeground(Color.white);
-        jButtonRoad.setText("Import roads configuration file");
-        jButtonRoad.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
         jButtonRoad.addActionListener(evt -> jButtonRoadActionPerformed());
 
+        initializer.initializeJButton(jButtonVehicle, Main.FOURTEEN_SEGOE_FONT, "Import vehicles configuration file", Color.WHITE, new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
         jButtonVehicle.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonVehicle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButtonVehicle.setForeground(Color.white);
-        jButtonVehicle.setText("Import vehicles configuration file");
-        jButtonVehicle.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
         jButtonVehicle.addActionListener(evt -> jButtonVehicleActionPerformed());
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
