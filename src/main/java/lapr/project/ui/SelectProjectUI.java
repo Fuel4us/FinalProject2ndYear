@@ -116,7 +116,7 @@ public final class SelectProjectUI extends javax.swing.JFrame {
         jComboBoxProjects.setModel(projectsModel);
         jComboBoxProjects.setBackground(new java.awt.Color(204, 204, 204));
 
-        initializer.initializeJButton(jButtonSetActive, Main.EIGHTEEN_SEGOE_FONT, "Sect active", Main.DARK_GREY,
+        initializer.initializeJButton(jButtonSetActive, Main.EIGHTEEN_SEGOE_FONT, "Set active", Main.DARK_GREY,
                 new javax.swing.border.LineBorder(Main.DARK_ORANGE, 4, true));
         jButtonSetActive.setBackground(new java.awt.Color(45, 46, 45));
         jButtonSetActive.addActionListener(this::jButtonSetActiveActionPerformed);

@@ -7,6 +7,7 @@ package lapr.project.ui;
 
 import lapr.project.controller.NetworkAnalysisController;
 import lapr.project.model.Analysis;
+import lapr.project.model.Vehicle;
 import lapr.project.utils.FileParser.ExportHTML;
 
 import javax.swing.*;
@@ -39,7 +40,7 @@ class StoreNetworkAnalysisUI extends javax.swing.JFrame {
     /**
      * Creates new form StoreNetworkAnalysisUI
      */
-    StoreNetworkAnalysisUI(Analysis generatedAnalysis) {
+    StoreNetworkAnalysisUI(Analysis generatedAnalysis, Vehicle vehicle) {
         initComponents();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -47,7 +48,7 @@ class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         analysisResultTextField.setEditable(false);
         analysisResultTextField.setText(generatedAnalysis.generateReport());
-        networkAnalysisController = new NetworkAnalysisController(Main.dbCom, generatedAnalysis);
+        networkAnalysisController = new NetworkAnalysisController(Main.dbCom, generatedAnalysis, vehicle);
     }
 
     @SuppressWarnings("unchecked")
@@ -83,7 +84,7 @@ class StoreNetworkAnalysisUI extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        initializer.initializeJButton(jButtonGenerateFile, Main.EIGHTEEN_SEGOE_FONT, "Generate HTML file", Main.DARK_GREY,
+        initializer.initializeJButton(jButtonGenerateFile, Main.EIGHTEEN_SEGOE_FONT, "Generate file", Main.DARK_GREY,
                 new javax.swing.border.LineBorder(Main.DARK_ORANGE, 4, true));
         jButtonGenerateFile.setBackground(new java.awt.Color(45, 46, 45));
         jButtonGenerateFile.addActionListener(this::jButtonGenerateFileActionPerformed);

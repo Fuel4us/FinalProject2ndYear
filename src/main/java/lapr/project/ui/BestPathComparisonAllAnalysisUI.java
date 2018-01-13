@@ -7,6 +7,7 @@ package lapr.project.ui;
 
 import lapr.project.controller.BestPathComparisonAllAnalysisController;
 import lapr.project.model.Analysis;
+import lapr.project.model.Vehicle;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -23,14 +24,16 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
     private static final long serialVersionUID = -4597792551848402104L;
     private BestPathComparisonAllAnalysisController comparisonController;
     private static List<Analysis> analysisList;
+    private static List<Vehicle> vehiclesList;
 
     /**
      * Creates new form BestPathComparisonForm
      * @param analysisList
      */
-    public BestPathComparisonAllAnalysisUI(List<Analysis> analysisList) {
+    public BestPathComparisonAllAnalysisUI(List<Analysis> analysisList, List<Vehicle> vehiclesList) {
         this.comparisonController = new BestPathComparisonAllAnalysisController(Main.currentProject, Main.dbCom);
         BestPathComparisonAllAnalysisUI.analysisList = analysisList;
+        BestPathComparisonAllAnalysisUI.vehiclesList = vehiclesList;
         initComponents();
     }
 
@@ -196,8 +199,12 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
         int returnVal = fileChooser.showOpenDialog(jButtonGenerateFile);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File outputFile = fileChooser.getSelectedFile();
-            for (Analysis analysis : analysisList) {
-                comparisonController.exportToHtml(outputFile, analysis);
+            for(int i=0; i<analysisList.size(); i++) {
+                for(int j=0; j<vehiclesList.size(); j++) {
+                    if(i==j) {
+                        comparisonController.exportToHtml(outputFile, analysisList.get(i), vehiclesList.get(j));
+                    }
+                }
             }
             JOptionPane.showMessageDialog(null, "Your data was exported.");
         }
@@ -212,7 +219,7 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
      */
     public static void display() {
         Main.setLook();
-        java.awt.EventQueue.invokeLater(() -> new BestPathComparisonAllAnalysisUI(analysisList).setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new BestPathComparisonAllAnalysisUI(analysisList, vehiclesList).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

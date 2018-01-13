@@ -39,10 +39,10 @@ public class BestPathComparisonAllAnalysisController {
      * @param analysis {@link Analysis} whose data is going to be exported
      * @throws IOException
      */
-    public void exportToHtml(File outputFile, Analysis analysis) throws IOException {
+    public void exportToHtml(File outputFile, Analysis analysis, Vehicle vehicle) throws IOException {
         this.outputFile = outputFile;
         ExportHTML exportHTML = new ExportHTML(analysis);
-        exportHTML.exportDataFromAnalysis(outputFile);
+        exportHTML.exportDataFromAnalysis(outputFile, vehicle);
     }
 
     /**

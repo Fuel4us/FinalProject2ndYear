@@ -248,23 +248,23 @@ public class Vehicle {
                 * Math.sin(segmentAngle.getQuantity());
 
         // if the sum of the motor force and the acceleration force is lesser than the sum of the rolling resistance, air drag and gravitational force
-        if ( motorForce < rollingResistance + airDrag + gravitationalForce) {
+        if (motorForce < rollingResistance + airDrag + gravitationalForce) {
 
             if (energySaving) {
                 if (gearPosition == 0) {
                     throw new IllegalArgumentException();
                 }
-                return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, energySaving, polynomialInterpolation);
+                return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, true, polynomialInterpolation);
             }
 
             // if the throttle position is not 100%, we increase the throttle position
             if (throttlePosition < 2) {
-                return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, ++throttlePosition, velocity, load, energySaving, polynomialInterpolation);
+                return calculateEngineSpeedTorqueSFCVelocity(segment, gearPosition, ++throttlePosition, velocity, load, false, polynomialInterpolation);
             }
 
             // if the throttle position is in 100%, we decrease the gear position and start the throttle as 25%
             throttlePosition = 0;
-            return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, energySaving, polynomialInterpolation);
+            return calculateEngineSpeedTorqueSFCVelocity(segment, --gearPosition, throttlePosition, velocity, load, false, polynomialInterpolation);
 
         }
 
@@ -409,9 +409,10 @@ public class Vehicle {
      * @return the initial velocity in km/h
      */
     public Measurable determineInitialVelocity() {
-        return new Measurable((2 * Math.PI * (wheelSize.getQuantity() / 2d) * energy.getMinRpm()
+        double velocity = (2 * Math.PI * (wheelSize.getQuantity() / 2d) * energy.getMinRpm()
                 / (60 * energy.getFinalDriveRatio() * energy.getGears().get(0).getRatio()))
-                * Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO, Unit.KILOMETERS_PER_HOUR);
+                * Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO;
+        return new Measurable(Double.compare(velocity, 0) == 0 ? 1 : velocity, Unit.KILOMETERS_PER_HOUR);
     }
 
     /**

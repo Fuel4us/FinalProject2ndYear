@@ -5,7 +5,6 @@
  */
 package lapr.project.ui;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import lapr.project.model.Node;
@@ -13,6 +12,9 @@ import lapr.project.model.Vehicle;
 
 import javax.swing.*;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import lapr.project.controller.BestPathController;
 import lapr.project.model.Analysis;
 import lapr.project.utils.Measurable;
@@ -77,7 +79,7 @@ public class BestPathComparisonForm extends JFrame {
         jTextFieldLoad = new javax.swing.JTextField();
         addVehicleButton = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jListVehicles1 = new javax.swing.JList<Vehicle>();
+        jListSelectedVehicles = new javax.swing.JList<Vehicle>();
         removeVehicleButton = new javax.swing.JButton();
         jLabelAlgorithm2 = new javax.swing.JLabel();
         jLabelLoad1 = new javax.swing.JLabel();
@@ -167,12 +169,12 @@ public class BestPathComparisonForm extends JFrame {
         addVehicleButton.addActionListener(evt -> addVehicleButtonActionPerformed());
 
         selectedVehiclesModel = new DefaultListModel<>();
-        jListVehicles1.setModel(selectedVehiclesModel);
-        jListVehicles1.setBackground(new java.awt.Color(97, 122, 133));
-        jListVehicles1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
-        jListVehicles1.setForeground(new java.awt.Color(255, 255, 255));
-        jListVehicles1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane5.setViewportView(jListVehicles1);
+        jListSelectedVehicles.setModel(selectedVehiclesModel);
+        jListSelectedVehicles.setBackground(new java.awt.Color(97, 122, 133));
+        jListSelectedVehicles.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
+        jListSelectedVehicles.setForeground(new java.awt.Color(255, 255, 255));
+        jListSelectedVehicles.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane5.setViewportView(jListSelectedVehicles);
 
         removeVehicleButton.setText("remove vehicle");
         removeVehicleButton.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(97, 122, 133), 3, true));
@@ -335,8 +337,11 @@ public class BestPathComparisonForm extends JFrame {
 
             Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
 
-            List<Vehicle> selectedVehiclesList = controller.getAllVehicles();;
-            selectedVehiclesList.forEach(vehicleModel::addElement);
+            List<Vehicle> selectedVehiclesList;
+            ListModel<Vehicle> selectedVehiclesModel = jListSelectedVehicles.getModel();
+            selectedVehiclesList = IntStream.range(0, selectedVehiclesModel.getSize())
+                    .mapToObj(selectedVehiclesModel::getElementAt)
+                    .collect(Collectors.toList());
 
             if (startNode == null
                     || endNode == null) {
@@ -350,7 +355,7 @@ public class BestPathComparisonForm extends JFrame {
                     Analysis generatedAnalysis = controller.analyzeFastestPath(startNode, endNode, aSelectedVehiclesList, load);
                     analysisList.add(generatedAnalysis);
                 }
-                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList);
+                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList, selectedVehiclesList);
                 comparisonResultsUI.setVisible(true);
                 setVisible(false);
             }
@@ -362,18 +367,18 @@ public class BestPathComparisonForm extends JFrame {
     private void executeTheoreticalEfficientPath(ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int option = JOptionPane.showConfirmDialog(null,"Do you intend to use polynomial interpolation? (N13)");
         if (option == JOptionPane.YES_OPTION){
-            realizeN13ButtonN11();
+            executeN13ButtonN11();
         } else if (option == JOptionPane.NO_OPTION) {
-            realizeN11();
+            executeN11();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void executeEfficientPathEnergySavingMode(ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int option = JOptionPane.showConfirmDialog(null,"Do you intend to use polynomial interpolation? (N13)");
         if (option == JOptionPane.YES_OPTION){
-            realizeN13ButtonN12();
+            executeN13ButtonN12();
         } else if (option == JOptionPane.NO_OPTION) {
-            realizeN12();
+            executeN12();
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -383,15 +388,15 @@ public class BestPathComparisonForm extends JFrame {
     }//GEN-LAST:event_addVehicleButtonActionPerformed
 
     private void removeVehicleButtonActionPerformed() {//GEN-FIRST:event_removeVehicleButtonActionPerformed
-        vehicleModel.addElement(jListVehicles1.getSelectedValue());
-        selectedVehiclesModel.remove(jListVehicles1.getSelectedIndex());
+        vehicleModel.addElement(jListSelectedVehicles.getSelectedValue());
+        selectedVehiclesModel.remove(jListSelectedVehicles.getSelectedIndex());
     }//GEN-LAST:event_removeVehicleButtonActionPerformed
 
     /**
      *
      * Creates an analysis according to algorithm of n13
      */
-    private void realizeN13ButtonN11() {
+    private void executeN13ButtonN11() {
         try {
             Node startNode = jListNodes1.getSelectedValue();
             Node endNode = jListNodes2.getSelectedValue();
@@ -399,8 +404,11 @@ public class BestPathComparisonForm extends JFrame {
             Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
             Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
 
-            List<Vehicle> selectedVehiclesList = controller.getAllVehicles();;
-            selectedVehiclesList.forEach(vehicleModel::addElement);
+            List<Vehicle> selectedVehiclesList;
+            ListModel<Vehicle> selectedVehiclesModel = jListSelectedVehicles.getModel();
+            selectedVehiclesList = IntStream.range(0, selectedVehiclesModel.getSize())
+                    .mapToObj(selectedVehiclesModel::getElementAt)
+                    .collect(Collectors.toList());
 
             if (startNode == null
                     || endNode == null) {
@@ -414,7 +422,7 @@ public class BestPathComparisonForm extends JFrame {
                     Analysis generatedAnalysis = controller.efficientPathPolynomialInterpolationN11Button(startNode, endNode, aSelectedVehiclesList, maxAcceleration, maxBraking, load);
                     analysisList.add(generatedAnalysis);
                 }
-                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList);
+                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList, selectedVehiclesList);
                 comparisonResultsUI.setVisible(true);
                 setVisible(false);
             }
@@ -427,7 +435,7 @@ public class BestPathComparisonForm extends JFrame {
      *
      * Creates an analysis according to algorithm of n13
      */
-    private void realizeN13ButtonN12() {
+    private void executeN13ButtonN12() {
         try {
             Node startNode = jListNodes1.getSelectedValue();
             Node endNode = jListNodes2.getSelectedValue();
@@ -435,22 +443,24 @@ public class BestPathComparisonForm extends JFrame {
             Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
             Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
 
-            List<Vehicle> selectedVehiclesList = controller.getAllVehicles();;
-            selectedVehiclesList.forEach(vehicleModel::addElement);
+            List<Vehicle> selectedVehiclesList;
+            ListModel<Vehicle> selectedVehiclesModel = jListSelectedVehicles.getModel();
+            selectedVehiclesList = IntStream.range(0, selectedVehiclesModel.getSize())
+                    .mapToObj(selectedVehiclesModel::getElementAt)
+                    .collect(Collectors.toList());
 
-            if (startNode == null
-                    || endNode == null) {
+            if (startNode == null || endNode == null) {
                 JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes");
 
             } else if (startNode.equals(endNode)) {
                 JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
             } else {
                 List<Analysis> analysisList = new ArrayList<>();
-                for (Vehicle aSelectedVehiclesList : selectedVehiclesList) {
-                    Analysis generatedAnalysis = controller.efficientPathPolynomialInterpolationN12Button(startNode, endNode, aSelectedVehiclesList, maxAcceleration, maxBraking, load);
+                for (Vehicle selectedVehicle : selectedVehiclesList) {
+                    Analysis generatedAnalysis = controller.efficientPathPolynomialInterpolationN12Button(startNode, endNode, selectedVehicle, maxAcceleration, maxBraking, load);
                     analysisList.add(generatedAnalysis);
                 }
-                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList);
+                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList, selectedVehiclesList);
                 comparisonResultsUI.setVisible(true);
                 setVisible(false);
             }
@@ -462,7 +472,7 @@ public class BestPathComparisonForm extends JFrame {
     /**
      * Creates an analysis according to algorithm of n12
      */
-    private void realizeN12() {
+    private void executeN12() {
         try {
             Node startNode = jListNodes1.getSelectedValue();
             Node endNode = jListNodes2.getSelectedValue();
@@ -470,8 +480,11 @@ public class BestPathComparisonForm extends JFrame {
             Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
             Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
 
-            List<Vehicle> selectedVehiclesList = controller.getAllVehicles();;
-            selectedVehiclesList.forEach(vehicleModel::addElement);
+            List<Vehicle> selectedVehiclesList;
+            ListModel<Vehicle> selectedVehiclesModel = jListSelectedVehicles.getModel();
+            selectedVehiclesList = IntStream.range(0, selectedVehiclesModel.getSize())
+                    .mapToObj(selectedVehiclesModel::getElementAt)
+                    .collect(Collectors.toList());
 
             if (startNode == null
                     || endNode == null) {
@@ -485,7 +498,7 @@ public class BestPathComparisonForm extends JFrame {
                     Analysis generatedAnalysis = controller.analyzeEfficientPathEnergySavingMode(startNode, endNode, aSelectedVehiclesList, maxAcceleration, maxBraking, load);
                     analysisList.add(generatedAnalysis);
                 }
-                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList);
+                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList, selectedVehiclesList);
                 comparisonResultsUI.setVisible(true);
                 setVisible(false);
             }
@@ -497,7 +510,7 @@ public class BestPathComparisonForm extends JFrame {
     /**
      * Creates an analysis according to algorithm of n11
      */
-    private void realizeN11() {
+    private void executeN11() {
         try {
             Node startNode = jListNodes1.getSelectedValue();
             Node endNode = jListNodes2.getSelectedValue();
@@ -505,8 +518,11 @@ public class BestPathComparisonForm extends JFrame {
             Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
             Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
 
-            List<Vehicle> selectedVehiclesList = controller.getAllVehicles();;
-            selectedVehiclesList.forEach(vehicleModel::addElement);
+            List<Vehicle> selectedVehiclesList;
+            ListModel<Vehicle> selectedVehiclesModel = jListSelectedVehicles.getModel();
+            selectedVehiclesList = IntStream.range(0, selectedVehiclesModel.getSize())
+                    .mapToObj(selectedVehiclesModel::getElementAt)
+                    .collect(Collectors.toList());
 
             if (startNode == null
                     || endNode == null) {
@@ -520,7 +536,7 @@ public class BestPathComparisonForm extends JFrame {
                     Analysis generatedAnalysis = controller.analyzeTheoreticalEfficientPath(startNode, endNode, aSelectedVehiclesList, maxAcceleration, maxBraking, load);
                     analysisList.add(generatedAnalysis);
                 }
-                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList);
+                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList, selectedVehiclesList);
                 comparisonResultsUI.setVisible(true);
                 setVisible(false);
             }
@@ -588,9 +604,9 @@ public class BestPathComparisonForm extends JFrame {
     */
     private javax.swing.JList<Vehicle> jListVehicles;
     /**
-    private javax.swing.JList<String> jListVehicles1;
+    private javax.swing.JList<String> jListSelectedVehicles;
     */
-    private javax.swing.JList<Vehicle> jListVehicles1;
+    private javax.swing.JList<Vehicle> jListSelectedVehicles;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
