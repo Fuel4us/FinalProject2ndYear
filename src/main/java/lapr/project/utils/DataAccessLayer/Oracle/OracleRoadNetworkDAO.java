@@ -174,7 +174,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
         Collection<Segment> segments = new ArrayList<>();
 
         try (CallableStatement callableStatement = oracleConnection
-                .prepareCall("CALL getSegmentsSet(?,?)")) {
+                .prepareCall("CALL getSegmentsSet(?,?,?)")) {
 
             callableStatement.registerOutParameter(3, OracleTypes.CURSOR);
             callableStatement.setInt(1, sectionID);
@@ -220,11 +220,10 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
             ResultSet sectionTollSet = (ResultSet) callableStatement.getObject(3);
             while (sectionTollSet.next()) {
 
-                if (sectionTollSet.getInt("sectionID") == sectionID) {
+                if (sectionTollSet.getInt("sectionID") == sectionID && sectionTollSet.getString("networkID").equals(networkID)) {
                     tollFare = sectionTollSet.getDouble("tollFare");
                     tollFareSectionList.add(tollFare);
                 }
-
             }
         }
 

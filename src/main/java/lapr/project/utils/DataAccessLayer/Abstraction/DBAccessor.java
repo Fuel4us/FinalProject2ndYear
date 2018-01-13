@@ -2,6 +2,7 @@ package lapr.project.utils.DataAccessLayer.Abstraction;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,9 +27,11 @@ public interface DBAccessor {
 
     /**
      * Logs a SQL Exception
+     *
      * @param e an instance of {@link SQLException}
      */
     static void logSQLException(SQLException e) {
+        DB_ACCESS_LOG.addHandler(new ConsoleHandler());
         DB_ACCESS_LOG.log(Level.WARNING, e.getSQLState());
         DB_ACCESS_LOG.log(Level.WARNING, () -> {
             StringBuilder errorBuffer = new StringBuilder();
