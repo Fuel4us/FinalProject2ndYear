@@ -23,7 +23,7 @@ public interface ExceptionalBiFunction<T, A, R> extends BiFunction<T, A, R> {
         try {
             return applyWithException(t, a);
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 
