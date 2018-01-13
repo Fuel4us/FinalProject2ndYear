@@ -89,11 +89,7 @@ public final class CreateProjectUI extends javax.swing.JFrame {
         jButtonCreate.setForeground(new java.awt.Color(45, 46, 45));
         jButtonCreate.setText("Create project");
         jButtonCreate.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonCreate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCreateActionPerformed(evt);
-            }
-        });
+        jButtonCreate.addActionListener(this::jButtonCreateActionPerformed);
 
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
         jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
@@ -245,17 +241,15 @@ public final class CreateProjectUI extends javax.swing.JFrame {
 
     private void jButtonRoadActionPerformed() {//GEN-FIRST:event_jButtonRoadActionPerformed
         CreateProjectController.SupportedFileTypes selectedExtension = displayExtensionChoiceUI();
-        createProjectController.setExtensionParsingMode(selectedExtension);
         JFileChooser fileChooser = initFileChooserProperties(selectedExtension, "Select your RoadNetwork file");
-        loadFile(fileChooser, jButtonRoad, createProjectController::setRoadNetworkFile);
+        loadFile(fileChooser, jButtonRoad, createProjectController::setRoadNetworkFile, selectedExtension);
     }
 
 
     private void jButtonVehicleActionPerformed() {//GEN-FIRST:event_jButtonVehicleActionPerformed
         CreateProjectController.SupportedFileTypes selectedExtension = displayExtensionChoiceUI();
-        createProjectController.setExtensionParsingMode(selectedExtension);
         JFileChooser fileChooser = initFileChooserProperties(selectedExtension, "Select your Vehicles file");
-        loadFile(fileChooser, jButtonVehicle, createProjectController::setVehiclesFile);
+        loadFile(fileChooser, jButtonVehicle, createProjectController::setVehiclesFile, selectedExtension);
     }
 
     /**
@@ -274,11 +268,12 @@ public final class CreateProjectUI extends javax.swing.JFrame {
     /**
      * Loads a file, executing the action designated by the {@code action} {@link Consumer}
      */
-    private void loadFile(JFileChooser fileChooser, JButton attachedButton, Consumer<File> action) {
+    private void loadFile(JFileChooser fileChooser, JButton attachedButton, Consumer<File> action, CreateProjectController.SupportedFileTypes extension) {
         int returnVal = fileChooser.showOpenDialog(attachedButton);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             action.accept(selectedFile);
+            createProjectController.setExtensionParsingMode(extension);
             JOptionPane.showMessageDialog(null, "Your file has been loaded.");
         }
     }
