@@ -1,12 +1,6 @@
 package lapr.project.utils.pathAlgorithm;
 
-import lapr.project.model.Analysis;
-import lapr.project.model.Project;
-import lapr.project.model.Node;
-import lapr.project.model.RoadNetwork;
-import lapr.project.model.Section;
-import lapr.project.model.Segment;
-import lapr.project.model.Vehicle;
+import lapr.project.model.*;
 import lapr.project.utils.*;
 import lapr.project.utils.Graph.Edge;
 import lapr.project.utils.Graph.Graph;
@@ -15,6 +9,7 @@ import lapr.project.utils.Graph.GraphAlgorithms;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import static lapr.project.utils.Graph.GraphAlgorithms.shortestPath;
 
@@ -58,7 +53,7 @@ public class PathAlgorithm {
         double travelTime = shortestPathLeastTime(roadNetwork, start, end, (LinkedList<Node>) path, vehicle);
 
         //list of sections the vehicle used along the road network
-        List<Section> sections = convertNodesListToSectionsList(path);
+        List<Section> sections = convertNodesListToSectionsList(roadNetwork,path);
 
         // the traveling time is already contained in the travelTime double
 
@@ -84,14 +79,22 @@ public class PathAlgorithm {
      * @param path A {@link List} of instances of {@link Node}
      * @return a {@link List} of instances of {@link Section}
      */
-    private static List<Section> convertNodesListToSectionsList(List<Node> path) {
+    private static List<Section> convertNodesListToSectionsList(Graph<Node, Section> roadNetwork, List<Node> path) {
         List<Section> sections = new ArrayList<>();
         int size = path.size();
         for (int i = 0; i < size; i++) {
             Node node = path.get(i);
+
             if (i + 1 < size) {
-                sections.add((Section) node.getEdge(path.get(i + 1).getElement()));
+                Node nextNode = path.get(i + 1);
+                roadNetwork.getEdges().stream()
+                        .map(Edge::getElement)
+                        .filter(section -> section.getBeginningNode().equals(node) &&
+                                section.getEndingNode().equals(nextNode))
+                        .findFirst()
+                        .ifPresent(sections::add);
             }
+
         }
         return sections;
     }
@@ -187,7 +190,7 @@ public class PathAlgorithm {
      * @return The Analysis containing the results
      */
     public static Analysis efficientPathPolynomialInterpolation(Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load,
-                                          boolean energySaving) {
+                                                                boolean energySaving) {
         return efficientPath(N13_ALGORITHM_NAME, project, start, end, vehicle, maxAcceleration, maxBraking, load, energySaving, true);
     }
 
@@ -217,7 +220,7 @@ public class PathAlgorithm {
      * @return The Analysis containing the results
      */
     private static Analysis efficientPath(String algorithmName, Project project, Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load,
-                                                    boolean energySaving, boolean polynomialInterpolation) {
+                                          boolean energySaving, boolean polynomialInterpolation) {
 
         if (!vehicle.hasValidLoad(load)) {
             throw new IllegalArgumentException("The selected vehicle does not support this load");
@@ -240,23 +243,23 @@ public class PathAlgorithm {
                 pathFound = true;
 
                 totalExpendedEnergy = GraphAlgorithms.shortestPath(roadNetworkClone, start, end, shortestPath,
-                            //cumulative function from which both weight and the next attribute can be inferred
-                            //throws an Exception if a section proves to be impossible to travel, requiring the path to be recalculated
+                        //cumulative function from which both weight and the next attribute can be inferred
+                        //throws an Exception if a section proves to be impossible to travel, requiring the path to be recalculated
                         (ExceptionalBiFunction<Edge<Node, Section>, Measurable, EnergyExpenditureAccelResults>)
                                 (sectionEdge, successiveVelocity) ->
                                         sectionEdge.getElement().calculateEnergyExpenditureAccel(roadNetwork, successiveVelocity, vehicle, load, maxAcceleration,
                                                 maxBraking, end, energySaving, polynomialInterpolation),
-                            //initial value for successive velocity
-                            initialVelocity,
-                            //the weigth of the graph is considered to be the expended energy
-                            result -> result.getEnergyExpenditure().getQuantity(),
-                            //the next value for successiveVelocity becomes the final velocity of the previous section
-                            EnergyExpenditureAccelResults::getFinalVelocity);
+                        //initial value for successive velocity
+                        initialVelocity,
+                        //the weigth of the graph is considered to be the expended energy
+                        result -> result.getEnergyExpenditure().getQuantity(),
+                        //the next value for successiveVelocity becomes the final velocity of the previous section
+                        EnergyExpenditureAccelResults::getFinalVelocity);
 
             } catch (FaultyInvocationException e) {
                 //Ignore a section which cannot be travelled
                 @SuppressWarnings("unchecked")
-                Edge<Node,Section> faultySection = (Edge<Node, Section>) e.getFaultyObject();
+                Edge<Node, Section> faultySection = (Edge<Node, Section>) e.getFaultyObject();
                 //Restart search without this section
                 roadNetworkClone.removeEdge(faultySection.getElement().getBeginningNode(), faultySection.getElement().getEndingNode());
                 pathFound = false;
@@ -269,7 +272,7 @@ public class PathAlgorithm {
 
         } while (!pathFound);
 
-        List<Section> sections = convertNodesListToSectionsList(shortestPath);
+        List<Section> sections = convertNodesListToSectionsList(roadNetworkClone,shortestPath);
 
         Measurable expendedEnergy = new Measurable(totalExpendedEnergy, Unit.KILOJOULE);
 
@@ -281,18 +284,17 @@ public class PathAlgorithm {
 
     /**
      * Determines the final results corresponding to the travelling of a vehicle in a path.
-     *
-     * @param roadNetwork     The {@link RoadNetwork} to which the sections of the path belong, and wherein vehicles travel
-     * @param vehicle         The selected vehicle to which the analysis applies
-     *                        The maximum velocity of the vehicle will be assumed if this
-     *                        velocity is allowed in the speed limit of a segment
-     * @param load            the load that the vehicle carries (optional)
+     * @param roadNetwork The {@link RoadNetwork} to which the sections of the path belong, and wherein vehicles travel
+     * @param vehicle The selected vehicle to which the analysis applies
+     * The maximum velocity of the vehicle will be assumed if this
+     * velocity is allowed in the speed limit of a segment
+     * @param load the load that the vehicle carries (optional)
      * @param maxAcceleration the maximum acceleration assumed by the vehicle
-     * @param maxBraking      the maximum braking assumed by the vehicle
-     * @param end             The ending node
+     * @param maxBraking the maximum braking assumed by the vehicle
+     * @param end The ending node
      * @param initialVelocity The starting velocity of the vehicle
-     * @param path            a {@link List} of instances of {@link Section} wherein the vehicle travels
-     * @param energySaving    true if the vehicle is in energy saving mode
+     * @param path a {@link List} of instances of {@link Section} wherein the vehicle travels
+     * @param energySaving true if the vehicle is in energy saving mode
      * @param polynomialInterpolation true if the calculation of the torque is to be made by polynomial interpolation
      * @return an instance of {@link EnergyExpenditureAccelResults} containing
      * the final results corresponding to the travelling of a vehicle in a path.
