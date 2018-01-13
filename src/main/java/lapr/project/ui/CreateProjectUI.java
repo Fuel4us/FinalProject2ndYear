@@ -1,12 +1,12 @@
 package lapr.project.ui;
 
 import lapr.project.controller.CreateProjectController;
-import lapr.project.model.Project;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,7 +17,6 @@ public final class CreateProjectUI extends javax.swing.JFrame {
 
     private static final long serialVersionUID = -1818083907306250629L;
     private CreateProjectController createProjectController;
-    private Project p;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
@@ -225,13 +224,13 @@ public final class CreateProjectUI extends javax.swing.JFrame {
         } else if (jTextFieldDescription.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Insert a Description for your project");
         } else if (createProjectController.getRoadsFile() == null) {
-            JOptionPane.showMessageDialog(null, "Import a XML File that contains the Roads in your project");
+            JOptionPane.showMessageDialog(null, "Import the File that contains the Roads in your project");
         } else if (createProjectController.getVehiclesFile() == null) {
-            JOptionPane.showMessageDialog(null, "Import a XML File that contains the Vehicles in your project");
+            JOptionPane.showMessageDialog(null, "Import the File that contains the Vehicles in your project");
         } else {
             try {
-                Project project = createProjectController.createProject(jTextFieldName.getText(), jTextFieldDescription.getText());
-                JOptionPane.showMessageDialog(this,"Project created.");
+                createProjectController.createProject(jTextFieldName.getText(), jTextFieldDescription.getText());
+                JOptionPane.showMessageDialog(this, "Project created.");
             } catch (Exception ex) {
                 Logger.getLogger(CreateProjectUI.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -244,12 +243,10 @@ public final class CreateProjectUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBackActionPerformed
 
     private void jButtonRoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRoadActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setDialogTitle("Select your RoadNetwork file");
-        FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter(
-                "xml files (*.xml)", "xml");
-        fileChooser.setFileFilter(xmlFilter);
+
+        CreateProjectController.SupportedFileTypes selectedExtension = displayExtensionChoiceUI();
+        JFileChooser fileChooser = initFileChooserProperties(selectedExtension, "Select your RoadNetwork file");
+//load file consumer
         int returnVal = fileChooser.showOpenDialog(jButtonRoad);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File roads = fileChooser.getSelectedFile();
@@ -258,13 +255,24 @@ public final class CreateProjectUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonRoadActionPerformed
 
-    private void jButtonVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVehicleActionPerformed
+    /**
+     * Initializes a {@link JFileChooser} to open files with a filter defined according to the {@code selectedExtension}
+     * @param selectedExtension an instance of {@link lapr.project.controller.CreateProjectController.SupportedFileTypes}
+     * @return the prepared {@link JFileChooser}
+     */
+    private JFileChooser initFileChooserProperties(CreateProjectController.SupportedFileTypes selectedExtension, String dialogTitle) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setDialogTitle("Select your Vehicles file");
-        FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter(
-                "xml files (*.xml)", "xml");
-        fileChooser.setFileFilter(xmlfilter);
+        fileChooser.setDialogTitle("Select your RoadNetwork file");
+        setFileChooserFilter(fileChooser, selectedExtension);
+        return fileChooser;
+    }
+
+    private void jButtonVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVehicleActionPerformed
+
+        CreateProjectController.SupportedFileTypes selectedExtension = displayExtensionChoiceUI();
+        JFileChooser fileChooser = initFileChooserProperties(selectedExtension, "Select your Vehicles file");
+
         int returnVal = fileChooser.showOpenDialog(jButtonVehicle);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File vehicles = fileChooser.getSelectedFile();
@@ -272,6 +280,41 @@ public final class CreateProjectUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Your file has been loaded.");
         }
     }//GEN-LAST:event_jButtonVehicleActionPerformed
+
+    /**
+     * Defines a filter based off of the {@code selectedExtension}
+     * @param fileChooser The {@link JFileChooser} to which this property is to be set
+     * @param selectedExtension the selected {@link lapr.project.controller.CreateProjectController.SupportedFileTypes}
+     */
+    private void setFileChooserFilter(JFileChooser fileChooser, CreateProjectController.SupportedFileTypes selectedExtension) {
+        switch (selectedExtension) {
+            case XML:
+                FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("xml files (*.xml)", "xml");
+                fileChooser.setFileFilter(xmlFilter);
+                break;
+        }
+
+    }
+
+    /**
+     * Displays a UI that prompts for the choice of the parsing mode to use to import information
+     * @return the {@code selectedType} - instance of {@link lapr.project.controller.CreateProjectController.SupportedFileTypes}
+     */
+    private CreateProjectController.SupportedFileTypes displayExtensionChoiceUI() {
+        CreateProjectController.SupportedFileTypes selectedType = null;
+        boolean validExtension;
+        do {
+            String selection = JOptionPane.showInputDialog("Choose the file format you want to parse.\nCurrently supported formats are "
+                    + Arrays.toString(CreateProjectController.SupportedFileTypes.values()));
+            try {
+                selectedType = CreateProjectController.SupportedFileTypes.valueOf(selection);
+                validExtension = true;
+            } catch (IllegalArgumentException e) {
+                validExtension = false;
+            }
+        } while (!validExtension);
+        return selectedType;
+    }
 
     /**
      * Triggers UI display
