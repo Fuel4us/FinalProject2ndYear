@@ -1,42 +1,100 @@
-//package lapr.project.model;
-//
-//import java.io.FileWriter;
-//import java.util.Collection;
-//import lapr.project.model.RoadNetwork.Section;
-//import lapr.project.utils.Measurable;
-//import org.antlr.stringtemplate.StringTemplate;
-//import org.junit.After;
-//import org.junit.AfterClass;
-//import org.junit.Before;
-//import org.junit.BeforeClass;
-//import org.junit.Test;
-//import static org.junit.Assert.*;
-//
-///**
-// *
-// * @author Gonçalo Fonseca <goncalo7bfc@gmail.com>
-// */
-//public class AnalysisTest {
-//    
-//    public AnalysisTest() {
-//    }
-//    
-//    @BeforeClass
-//    public static void setUpClass() {
-//    }
-//    
-//    @AfterClass
-//    public static void tearDownClass() {
-//    }
-//    
-//    @Before
-//    public void setUp() {
-//    }
-//    
-//    @After
-//    public void tearDown() {
-//    }
-//
+package lapr.project.model;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import lapr.project.utils.Measurable;
+import lapr.project.utils.Unit;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+/**
+ *
+ * @author Gonçalo Fonseca <goncalo7bfc@gmail.com>
+ */
+public class AnalysisTest {
+
+    Project project = new Project("Alpha", "", new RoadNetwork(), new ArrayList<>());
+    String name = "Beta";
+    Collection<Section> path = new ArrayList<>();
+    Measurable energyExp = new Measurable(2500, Unit.KILOJOULE);
+    Measurable travelTime = new Measurable(2, Unit.HOUR);
+    Measurable travelCost = new Measurable(999, Unit.EUROS);
+
+    Analysis instance = new Analysis(project, name, path, energyExp, travelTime, travelCost);
+
+    public AnalysisTest() {
+        Analysis testEmpty = new Analysis();
+        String expResult = null;
+        String result = testEmpty.getAlgorithmName();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getRequestingInstance method, of class Analysis.
+     */
+    @Test
+    public void testGetRequestingInstance() {
+        System.out.println("getRequestingInstance");
+        Project expResult = project;
+        Project result = instance.getRequestingInstance();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getAlgorithmName method, of class Analysis.
+     */
+    @Test
+    public void testGetAlgorithmName() {
+        System.out.println("getAlgorithmName");
+        String expResult = "Beta";
+        String result = instance.getAlgorithmName();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getBestPath method, of class Analysis.
+     */
+    @Test
+    public void testGetBestPath() {
+        System.out.println("getBestPath");
+        Collection<Section> expResult = path;
+        Collection<Section> result = instance.getBestPath();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getExpendedEnergy method, of class Analysis.
+     */
+    @Test
+    public void testGetExpendedEnergy() {
+        System.out.println("getExpendedEnergy");
+        Measurable expResult = energyExp;
+        Measurable result = instance.getExpendedEnergy();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getTravelTime method, of class Analysis.
+     */
+    @Test
+    public void testGetTravelTime() {
+        System.out.println("getTravelTime");
+        Measurable expResult = travelTime;
+        Measurable result = instance.getTravelTime();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getTravelCost method, of class Analysis.
+     */
+    @Test
+    public void testGetTravelCost() {
+        System.out.println("getTravelCost");
+        Measurable expResult = travelCost;
+        Measurable result = instance.getTravelCost();
+        assertEquals(expResult, result);
+    }
+
 //    /**
 //     * Test of issueRequestingEntity method, of class Analysis.
 //     */
@@ -47,7 +105,7 @@
 //        Project expResult = null;
 //        Project result = instance.issueRequestingEntity();
 //        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
+//         TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
 //
@@ -61,7 +119,7 @@
 //        int expResult = 0;
 //        int result = instance.identify();
 //        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
+//         TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
 //
@@ -75,7 +133,7 @@
 //        String expResult = "";
 //        String result = instance.generateReport();
 //        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
+//         TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
 //
@@ -90,7 +148,7 @@
 //        FileWriter file = null;
 //        Analysis instance = null;
 //        instance.exportDataHTML(stringTemplate1, stringTemplate2, file);
-//        // TODO review the generated test code and remove the default call to fail.
+//         TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
 //
@@ -105,92 +163,7 @@
 //        FileWriter file = null;
 //        Analysis instance = null;
 //        instance.exportDataCSV(stringTemplate1, stringTemplate2, file);
-//        // TODO review the generated test code and remove the default call to fail.
+//         TODO review the generated test code and remove the default call to fail.
 //        fail("The test case is a prototype.");
 //    }
-//
-//    /**
-//     * Test of getRequestingInstance method, of class Analysis.
-//     */
-//    @Test
-//    public void testGetRequestingInstance() {
-//        System.out.println("getRequestingInstance");
-//        Analysis instance = null;
-//        Project expResult = null;
-//        Project result = instance.getRequestingInstance();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getAlgorithmName method, of class Analysis.
-//     */
-//    @Test
-//    public void testGetAlgorithmName() {
-//        System.out.println("getAlgorithmName");
-//        Analysis instance = null;
-//        String expResult = "";
-//        String result = instance.getAlgorithmName();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getBestPath method, of class Analysis.
-//     */
-//    @Test
-//    public void testGetBestPath() {
-//        System.out.println("getBestPath");
-//        Analysis instance = null;
-//        Collection<Section> expResult = null;
-//        Collection<Section> result = instance.getBestPath();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getExpendedEnergy method, of class Analysis.
-//     */
-//    @Test
-//    public void testGetExpendedEnergy() {
-//        System.out.println("getExpendedEnergy");
-//        Analysis instance = null;
-//        Measurable expResult = null;
-//        Measurable result = instance.getExpendedEnergy();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getTravelTime method, of class Analysis.
-//     */
-//    @Test
-//    public void testGetTravelTime() {
-//        System.out.println("getTravelTime");
-//        Analysis instance = null;
-//        Measurable expResult = null;
-//        Measurable result = instance.getTravelTime();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getTravelCost method, of class Analysis.
-//     */
-//    @Test
-//    public void testGetTravelCost() {
-//        System.out.println("getTravelCost");
-//        Analysis instance = null;
-//        Measurable expResult = null;
-//        Measurable result = instance.getTravelCost();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//    
-//}
+}
