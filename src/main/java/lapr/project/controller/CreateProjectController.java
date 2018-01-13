@@ -92,7 +92,7 @@ public class CreateProjectController {
      * Sets the parsing mode, so that a specific type of file format can be read
      * @param fileFormat the file format to read
      */
-    void setExtensionParsingMode(SupportedFileTypes fileFormat) {
+    public void setExtensionParsingMode(SupportedFileTypes fileFormat) {
         switch (fileFormat) {
             case XML:
                 importer = new XMLImporter(this.roadsFile, this.vehiclesFile);
