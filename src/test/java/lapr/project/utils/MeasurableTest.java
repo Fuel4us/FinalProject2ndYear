@@ -53,18 +53,6 @@ public class MeasurableTest {
     }
 
     /**
-     * Test of hashCode method, of class Measurable.
-     */
-    @Test
-    public void testHashCode() {
-        System.out.println("hashCode");
-        Measurable instance = new Measurable(50, Unit.KILOJOULE);
-        int expResult = 684309643;
-        int result = instance.hashCode();
-        assertEquals(expResult, result);
-    }
-
-    /**
      * Test of equals method, of class Measurable.
      */
     @Test
