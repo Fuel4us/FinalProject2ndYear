@@ -55,24 +55,12 @@ public class Measurable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Measurable other = (Measurable) obj;
-        if (Double.doubleToLongBits(this.quantity) != Double.doubleToLongBits(other.quantity)) {
-            return false;
-        }
-        if (this.unit != other.unit) {
-            return false;
-        }
-        return true;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Measurable that = (Measurable) o;
+        return Double.compare(that.quantity, quantity) == 0 &&
+                unit == that.unit;
     }
 
     @Override

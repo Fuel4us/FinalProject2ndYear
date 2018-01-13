@@ -58,7 +58,8 @@ public class MeasurableTest {
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
-        int expResult = -398888198;
+        Measurable instance = new Measurable(50, Unit.KILOJOULE);
+        int expResult = 684309643;
         int result = instance.hashCode();
         assertEquals(expResult, result);
     }
