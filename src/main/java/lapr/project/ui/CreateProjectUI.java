@@ -265,7 +265,7 @@ public final class CreateProjectUI extends javax.swing.JFrame {
         FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter(
                 "xml files (*.xml)", "xml");
         fileChooser.setFileFilter(xmlfilter);
-        int returnVal = fileChooser.showOpenDialog(jButtonRoad);
+        int returnVal = fileChooser.showOpenDialog(jButtonVehicle);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File vehicles = fileChooser.getSelectedFile();
             createProjectController.setVehiclesFile(vehicles);
