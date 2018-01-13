@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-;
-
 /**
  * <p>
  * Stores information about expended energy,
@@ -130,8 +128,8 @@ public class Analysis implements ExportableHTML, ExportableCSV {
 
     /**
      * Exports data from analysis excluding path information
-     * @param stringTemplate1
-     * @param file
+     * @param stringTemplate1 header html template
+     * @param file output {@link java.io.File}
      * @throws IOException
      */
     private void exportAnalysisData(StringTemplate stringTemplate1, FileWriter file) throws IOException {
@@ -182,7 +180,7 @@ public class Analysis implements ExportableHTML, ExportableCSV {
     }
 
     /**
-     * ToDo
+     * Creates {@link List} of instances of {@link Road} contained in the best path
      * @return list of instances of {@link Road}
      */
     private List<Road> getPathRoads() {
