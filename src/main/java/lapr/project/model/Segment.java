@@ -276,20 +276,25 @@ public class Segment {
 
             distanceAndTimeFinishingPath = calculateTravelledDistanceAndTimeSpent(finishingPathVelocity, finalVelocityToBeUsed, maxBraking);
 
-            Measurable[] distanceAndTimeEnteringSegment = calculateTravelledDistanceAndTimeSpent(finalVelocityToBeUsed, initialVelocityToBeUsed, usedAcceleration);
+            double lengthForInitialAcceleration = 0;
 
-            double lengthForInitialAcceleration = distanceAndTimeEnteringSegment[0].getQuantity();
+            if (Double.compare(usedAcceleration.getQuantity(), 0) != 0) {
+                Measurable[] distanceAndTimeEnteringSegment = calculateTravelledDistanceAndTimeSpent(finalVelocityToBeUsed, initialVelocityToBeUsed, usedAcceleration);
 
-            if (distanceAndTimeEnteringSegment[0].getQuantity() + distanceAndTimeFinishingPath[0].getQuantity() > length) {
+                lengthForInitialAcceleration = distanceAndTimeEnteringSegment[0].getQuantity();
 
-                lengthForInitialAcceleration = length - distanceAndTimeFinishingPath[0].getQuantity();
-                finalVelocityToBeUsed = calculateFinalVelocity(initialVelocityToBeUsed, maxAcceleration, lengthForInitialAcceleration);
+                if (distanceAndTimeEnteringSegment[0].getQuantity() + distanceAndTimeFinishingPath[0].getQuantity() > length) {
 
+                    lengthForInitialAcceleration = length - distanceAndTimeFinishingPath[0].getQuantity();
+                    finalVelocityToBeUsed = calculateFinalVelocity(initialVelocityToBeUsed, maxAcceleration, lengthForInitialAcceleration);
+
+                }
+
+                // moment of acceleration in the beginning
+                energyExpenditure.setQuantity(calculateEnergyExpenditureWithAcceleration(initialVelocityToBeUsed, finalVelocityToBeUsed, usedAcceleration, vehicle, load, energySaving, polynomialInterpolation).getQuantity());
+                timeSpent.setQuantity(calculateTravelledDistanceAndTimeSpent(finalVelocityToBeUsed, initialVelocityToBeUsed, usedAcceleration)[1].getQuantity());
             }
 
-            // moment of acceleration in the beginning
-            energyExpenditure.setQuantity(calculateEnergyExpenditureWithAcceleration(initialVelocityToBeUsed, finalVelocityToBeUsed, usedAcceleration, vehicle, load, energySaving, polynomialInterpolation).getQuantity());
-            timeSpent.setQuantity(calculateTravelledDistanceAndTimeSpent(finalVelocityToBeUsed, initialVelocityToBeUsed, usedAcceleration)[1].getQuantity());
 
             // moment of braking until the end
             double lengthForFinalBraking = calculateTravelledDistanceAndTimeSpent(finishingPathVelocity, finalVelocityToBeUsed, maxBraking)[0].getQuantity();
