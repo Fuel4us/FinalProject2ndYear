@@ -233,9 +233,11 @@ public class PathAlgorithm {
         Graph<Node, Section> roadNetworkClone = roadNetwork.clone();
 
         //If a FaultyInvocationException is thrown, the search will have to be restarted and the faulty section ignored from it
-        boolean pathFound = true;
+        boolean pathFound;
         do {
             try {
+
+                pathFound = true;
 
                 totalExpendedEnergy = GraphAlgorithms.shortestPath(roadNetworkClone, start, end, shortestPath,
                             //cumulative function from which both weight and the next attribute can be inferred
@@ -253,10 +255,16 @@ public class PathAlgorithm {
 
             } catch (FaultyInvocationException e) {
                 //Ignore a section which cannot be travelled
-                Section faultySection = (Section) e.getFaultyObject();
+                @SuppressWarnings("unchecked")
+                Edge<Node,Section> faultySection = (Edge<Node, Section>) e.getFaultyObject();
                 //Restart search without this section
-                roadNetworkClone.removeEdge(faultySection.getBeginningNode(), faultySection.getEndingNode());
+                roadNetworkClone.removeEdge(faultySection.getElement().getBeginningNode(), faultySection.getElement().getEndingNode());
                 pathFound = false;
+            }
+
+            if (roadNetworkClone.getEdges().isEmpty()) {
+                //No path was found
+                break;
             }
 
         } while (!pathFound);
