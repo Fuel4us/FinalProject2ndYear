@@ -378,72 +378,20 @@ public class BestPathComparisonForm extends JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void executeTheoreticalEfficientPath(ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {
-            Node startNode = jListNodes1.getSelectedValue();
-            Node endNode = jListNodes2.getSelectedValue();
-            Measurable maxAcceleration = new Measurable(Double.parseDouble(jTextFieldMaxAcceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
-            Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
-            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
-            List<Vehicle> selectedVehiclesList = new ArrayList<>();
-            for (int i = 0; i < selectedVehiclesModel.size(); i++) {
-                selectedVehiclesList.add(selectedVehiclesModel.get(i));
-            }
-            if (startNode == null
-                    || endNode == null
-                    ) {
-                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes, as well as a vehicle.");
-
-            } else if (startNode.equals(endNode)) {
-                JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
-            } else if ((Double.compare(maxAcceleration.getQuantity(), 0) < 0) || (Double.compare(maxBraking.getQuantity(), 0) > 0)) {
-                JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAcceleration and a negative value for maxBraking");
-            } else {
-                List<Analysis> analysisList = new ArrayList<>();
-                for (int j = 0; j < selectedVehiclesList.size(); j++) {
-                    Analysis generatedAnalysis = controller.analyzeTheoreticalEfficientPath(startNode, endNode, selectedVehiclesList.get(j), maxAcceleration, maxBraking, load);
-                    analysisList.add(generatedAnalysis);
-                }
-                BestPathComparisonAllAnalysisUI allAnalysisResults = new BestPathComparisonAllAnalysisUI(analysisList);
-                allAnalysisResults.setVisible(true);
-                setVisible(false);
-            }
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(null, "Please insert a valid load value");
+        int option = JOptionPane.showConfirmDialog(null,"Do you intend to use polynomial interpolation? (N13)");
+        if (option == JOptionPane.YES_OPTION){
+            realizeN13ButtonN11();
+        } else if (option == JOptionPane.NO_OPTION) {
+            realizeN11();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void executeEfficientPathEnergySavingMode(ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {
-            Node startNode = jListNodes1.getSelectedValue();
-            Node endNode = jListNodes2.getSelectedValue();
-            Measurable maxAcceleration = new Measurable(Double.parseDouble(jTextFieldMaxAcceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
-            Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
-            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
-            List<Vehicle> selectedVehiclesList = new ArrayList<>();
-            for (int i = 0; i < selectedVehiclesModel.size(); i++) {
-                selectedVehiclesList.add(selectedVehiclesModel.get(i));
-            }
-            if (startNode == null
-                    || endNode == null
-                    ) {
-                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes, as well as a vehicle.");
-
-            } else if (startNode.equals(endNode)) {
-                JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
-            } else if ((Double.compare(maxAcceleration.getQuantity(), 0) < 0) || (Double.compare(maxBraking.getQuantity(), 0) > 0)) {
-                JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAcceleration and a negative value for maxBraking");
-            } else {
-                List<Analysis> analysisList = new ArrayList<>();
-                for (int j = 0; j < selectedVehiclesList.size(); j++) {
-                    Analysis generatedAnalysis = controller.analyzeEfficientPathEnergySavingMode(startNode, endNode, selectedVehiclesList.get(j), maxAcceleration, maxBraking, load);
-                    analysisList.add(generatedAnalysis);
-                }
-                BestPathComparisonAllAnalysisUI allAnalysisResults = new BestPathComparisonAllAnalysisUI(analysisList);
-                allAnalysisResults.setVisible(true);
-                setVisible(false);
-            }
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(null, "Please insert a valid values");
+        int option = JOptionPane.showConfirmDialog(null,"Do you intend to use polynomial interpolation? (N13)");
+        if (option == JOptionPane.YES_OPTION){
+            realizeN13ButtonN12();
+        } else if (option == JOptionPane.NO_OPTION) {
+            realizeN12();
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -456,6 +404,148 @@ public class BestPathComparisonForm extends JFrame {
         vehicleModel.addElement(jListVehicles1.getSelectedValue());
         selectedVehiclesModel.remove(jListVehicles1.getSelectedIndex());
     }//GEN-LAST:event_removeVehicleButtonActionPerformed
+
+    /**
+     *
+     * Creates an analysis according to algorithm of n13
+     */
+    private void realizeN13ButtonN11() {
+        try {
+            Node startNode = jListNodes1.getSelectedValue();
+            Node endNode = jListNodes2.getSelectedValue();
+            Measurable maxAcceleration = new Measurable(Double.parseDouble(jTextFieldMaxAcceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
+
+            List<Vehicle> selectedVehiclesList = controller.getAllVehicles();;
+            selectedVehiclesList.forEach(vehicleModel::addElement);
+
+            if (startNode == null
+                    || endNode == null) {
+                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes");
+
+            } else if (startNode.equals(endNode)) {
+                JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
+            } else {
+                List<Analysis> analysisList = new ArrayList<>();
+                for (Vehicle aSelectedVehiclesList : selectedVehiclesList) {
+                    Analysis generatedAnalysis = controller.efficientPathPolynomialInterpolationN11Button(startNode, endNode, aSelectedVehiclesList, maxAcceleration, maxBraking, load);
+                    analysisList.add(generatedAnalysis);
+                }
+                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList);
+                comparisonResultsUI.setVisible(true);
+                setVisible(false);
+            }
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, "Please insert a valid values");
+        }
+    }
+
+    /**
+     *
+     * Creates an analysis according to algorithm of n13
+     */
+    private void realizeN13ButtonN12() {
+        try {
+            Node startNode = jListNodes1.getSelectedValue();
+            Node endNode = jListNodes2.getSelectedValue();
+            Measurable maxAcceleration = new Measurable(Double.parseDouble(jTextFieldMaxAcceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
+
+            List<Vehicle> selectedVehiclesList = controller.getAllVehicles();;
+            selectedVehiclesList.forEach(vehicleModel::addElement);
+
+            if (startNode == null
+                    || endNode == null) {
+                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes");
+
+            } else if (startNode.equals(endNode)) {
+                JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
+            } else {
+                List<Analysis> analysisList = new ArrayList<>();
+                for (Vehicle aSelectedVehiclesList : selectedVehiclesList) {
+                    Analysis generatedAnalysis = controller.efficientPathPolynomialInterpolationN12Button(startNode, endNode, aSelectedVehiclesList, maxAcceleration, maxBraking, load);
+                    analysisList.add(generatedAnalysis);
+                }
+                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList);
+                comparisonResultsUI.setVisible(true);
+                setVisible(false);
+            }
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, "Please insert a valid values");
+        }
+    }
+
+    /**
+     * Creates an analysis according to algorithm of n12
+     */
+    private void realizeN12() {
+        try {
+            Node startNode = jListNodes1.getSelectedValue();
+            Node endNode = jListNodes2.getSelectedValue();
+            Measurable maxAcceleration = new Measurable(Double.parseDouble(jTextFieldMaxAcceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
+
+            List<Vehicle> selectedVehiclesList = controller.getAllVehicles();;
+            selectedVehiclesList.forEach(vehicleModel::addElement);
+
+            if (startNode == null
+                    || endNode == null) {
+                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes");
+
+            } else if (startNode.equals(endNode)) {
+                JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
+            } else {
+                List<Analysis> analysisList = new ArrayList<>();
+                for (Vehicle aSelectedVehiclesList : selectedVehiclesList) {
+                    Analysis generatedAnalysis = controller.analyzeEfficientPathEnergySavingMode(startNode, endNode, aSelectedVehiclesList, maxAcceleration, maxBraking, load);
+                    analysisList.add(generatedAnalysis);
+                }
+                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList);
+                comparisonResultsUI.setVisible(true);
+                setVisible(false);
+            }
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, "Please insert a valid load value to the selected vehicle");
+        }
+    }
+
+    /**
+     * Creates an analysis according to algorithm of n11
+     */
+    private void realizeN11() {
+        try {
+            Node startNode = jListNodes1.getSelectedValue();
+            Node endNode = jListNodes2.getSelectedValue();
+            Measurable maxAcceleration = new Measurable(Double.parseDouble(jTextFieldMaxAcceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
+
+            List<Vehicle> selectedVehiclesList = controller.getAllVehicles();;
+            selectedVehiclesList.forEach(vehicleModel::addElement);
+
+            if (startNode == null
+                    || endNode == null) {
+                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes");
+
+            } else if (startNode.equals(endNode)) {
+                JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
+            } else {
+                List<Analysis> analysisList = new ArrayList<>();
+                for (Vehicle aSelectedVehiclesList : selectedVehiclesList) {
+                    Analysis generatedAnalysis = controller.analyzeTheoreticalEfficientPath(startNode, endNode, aSelectedVehiclesList, maxAcceleration, maxBraking, load);
+                    analysisList.add(generatedAnalysis);
+                }
+                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList);
+                comparisonResultsUI.setVisible(true);
+                setVisible(false);
+            }
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, "Please insert a valid load value to the selected vehicle");
+        }
+    }
 
     /**
      * @param args the command line arguments
