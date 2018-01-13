@@ -43,7 +43,7 @@ public class Main {
     /**
      * Logger class.
      */
-    private static final Logger LOGGER = Logger.getLogger("MainLog");
+    static final Logger LOGGER = Logger.getLogger("MainLog");
 
     /**
      * Private constructor to hide implicit public one.
