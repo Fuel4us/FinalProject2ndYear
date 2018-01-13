@@ -236,7 +236,7 @@ public class PathAlgorithmTest {
         sectionsExpected.add(sectionTest2);
 
         Analysis expected = new Analysis(projectTest, "N11 - Theoretical Most Energy Efficient Path", sectionsExpected,
-                new Measurable(81438, Unit.KILOJOULE), new Measurable(0.09383, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
+                new Measurable(86287, Unit.KILOJOULE), new Measurable(0.0789763, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
 
         Analysis result = PathAlgorithm.theoreticalEfficientPath(projectTest, nodeTest1, nodeTest3, vehicleTest, new Measurable(5, Unit.METERS_PER_SECOND_SQUARED),
                 new Measurable(-2.5, Unit.METERS_PER_SECOND_SQUARED), new Measurable(500, Unit.KILOGRAM));
@@ -338,10 +338,112 @@ public class PathAlgorithmTest {
         sectionsExpected.add(sectionTest2);
 
         Analysis expected = new Analysis(projectTest, "N12 - Efficient Path in Energy Saving Mode", sectionsExpected,
-                new Measurable(79658, Unit.KILOJOULE), new Measurable(0.13739, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
+                new Measurable(74027, Unit.KILOJOULE), new Measurable(0.112198, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
 
         Analysis result = PathAlgorithm.efficientPathEnergySavingMode(projectTest, nodeTest1, nodeTest3, vehicleTest, new Measurable(5, Unit.METERS_PER_SECOND_SQUARED),
                 new Measurable(-1, Unit.METERS_PER_SECOND_SQUARED), new Measurable(500, Unit.KILOGRAM));
+
+        assertEquals(expected.getAlgorithmName(), result.getAlgorithmName());
+        assertEquals(expected.getRequestingInstance(), result.getRequestingInstance());
+        assertEquals(expected.getBestPath(), result.getBestPath());
+        assertEquals(expected.getExpendedEnergy().getQuantity(), result.getExpendedEnergy().getQuantity(), 500);
+        assertEquals(expected.getTravelTime().getQuantity(), result.getTravelTime().getQuantity(), 0.01);
+        assertEquals(expected.getTravelCost().getQuantity(), result.getTravelCost().getQuantity(), 0.01);
+
+    }
+
+    /**
+     * Ensures the algorithm efficientPathPolynomialInterpolation returns the correct Analysis
+     */
+    @Test
+    public void ensureEfficientPathPolynomialInterpolationReturnsCorrectAnalysis() {
+
+        RoadNetwork roadNetworkTest = new RoadNetwork();
+
+        Node nodeTest1 = new Node("n01");
+        Node nodeTest2 = new Node("n02");
+        Node nodeTest3 = new Node("n03");
+
+        roadNetworkTest.addNode(nodeTest1);
+        roadNetworkTest.addNode(nodeTest2);
+        roadNetworkTest.addNode(nodeTest3);
+
+        Collection<Segment> segmentsTest1 = new ArrayList<>();
+        segmentsTest1.add(new Segment(0, 0, 100, 5, 30, 1.5, 120, 0));
+        Collection<Segment> segmentsTest2 = new ArrayList<>();
+        segmentsTest2.add(new Segment(0, 100, 250, 3.5, -10, 1, 100, 0));
+
+        List<Double> tollFaresRoadTest = new ArrayList<>();
+        tollFaresRoadTest.add(0.15);
+        tollFaresRoadTest.add(0.25);
+        tollFaresRoadTest.add(0.35);
+
+        Section sectionTest1 = new Section(nodeTest1, nodeTest2, Direction.BIDIRECTIONAL, segmentsTest1,
+                new Road("A01", "A01", "toll highway", tollFaresRoadTest), new ArrayList<>());
+
+        Section sectionTest2 = new Section(nodeTest2, nodeTest3, Direction.BIDIRECTIONAL, segmentsTest2,
+                new Road("A01", "A01", "toll highway", tollFaresRoadTest), new ArrayList<>());
+
+        roadNetworkTest.addSection(nodeTest1, nodeTest2, sectionTest1);
+        roadNetworkTest.addSection(nodeTest2, nodeTest3, sectionTest2);
+
+        List<VelocityLimit> velocityLimitListTest = new ArrayList<>();
+        velocityLimitListTest.add(new VelocityLimit("Highway", new Measurable(110, Unit.KILOMETERS_PER_HOUR)));
+        velocityLimitListTest.add(new VelocityLimit("Road", new Measurable(80, Unit.KILOMETERS_PER_HOUR)));
+
+        List<Gears> gearsTest = new ArrayList<>();
+        gearsTest.add(new Gears(1, 4.5f));
+        gearsTest.add(new Gears(2, 3.5f));
+        gearsTest.add(new Gears(3, 2.7f));
+        gearsTest.add(new Gears(4, 1.6f));
+        gearsTest.add(new Gears(5, 1.2f));
+        gearsTest.add(new Gears(6, 0.9f));
+
+        List<Regime> regimes25Test = new ArrayList<>();
+        regimes25Test.add(new Regime(115, 125, 900, 1499, 500));
+        regimes25Test.add(new Regime(125, 120, 1500, 2499, 450));
+        regimes25Test.add(new Regime(120, 105, 2500, 3499, 520));
+        regimes25Test.add(new Regime(105, 90, 3500, 4499, 550));
+        regimes25Test.add(new Regime(90, 80, 4500, 5500, 650));
+
+        List<Regime> regimes50Test = new ArrayList<>();
+        regimes50Test.add(new Regime(185, 195, 900, 1499, 380));
+        regimes50Test.add(new Regime(195, 190, 1500, 2499, 350));
+        regimes50Test.add(new Regime(190, 180, 2500, 3499, 360));
+        regimes50Test.add(new Regime(180, 150, 3500, 4499, 400));
+        regimes50Test.add(new Regime(150, 135, 4500, 5500, 520));
+
+        List<Regime> regimes100Test = new ArrayList<>();
+        regimes100Test.add(new Regime(305, 325, 900, 1499, 380));
+        regimes100Test.add(new Regime(325, 315, 1500, 2499, 350));
+        regimes100Test.add(new Regime(315, 290, 2500, 3499, 360));
+        regimes100Test.add(new Regime(290, 220, 3500, 4499, 400));
+        regimes100Test.add(new Regime(220, 205, 4500, 5500, 520));
+
+        List<Throttle> throttlesTest = new ArrayList<>();
+        throttlesTest.add(new Throttle(25, regimes25Test));
+        throttlesTest.add(new Throttle(50, regimes50Test));
+        throttlesTest.add(new Throttle(100, regimes100Test));
+
+        Vehicle vehicleTest = new Vehicle("Toyota", "Vehicle 1", VehicleType.Car, 1, Vehicle.MotorType.COMBUSTION, Fuel.Diesel,
+                new Measurable(1500, Unit.KILOGRAM), new Measurable(7500, Unit.KILOGRAM), 0.320f,
+                new Measurable(1.9, Unit.METER_SQUARED), 0.01f, new Measurable(0.6, Unit.METER),
+                velocityLimitListTest, new Energy(900, 5500, 4f, gearsTest, throttlesTest));
+
+        List<Vehicle> vehiclesTest = new ArrayList<>();
+        vehiclesTest.add(vehicleTest);
+
+        Project projectTest = new Project("name","name", "description", roadNetworkTest, vehiclesTest);
+
+        List<Section> sectionsExpected = new ArrayList<>();
+        sectionsExpected.add(sectionTest1);
+        sectionsExpected.add(sectionTest2);
+
+        Analysis expected = new Analysis(projectTest, "N13 - Efficient Path with Polynomial Interpolation", sectionsExpected,
+                new Measurable(74027, Unit.KILOJOULE), new Measurable(0.112198, Unit.HOUR), new Measurable(1.275, Unit.EUROS));
+
+        Analysis result = PathAlgorithm.efficientPathPolynomialInterpolation(projectTest, nodeTest1, nodeTest3, vehicleTest, new Measurable(5, Unit.METERS_PER_SECOND_SQUARED),
+                new Measurable(-1, Unit.METERS_PER_SECOND_SQUARED), new Measurable(500, Unit.KILOGRAM), true);
 
         assertEquals(expected.getAlgorithmName(), result.getAlgorithmName());
         assertEquals(expected.getRequestingInstance(), result.getRequestingInstance());

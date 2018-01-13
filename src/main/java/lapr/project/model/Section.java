@@ -273,22 +273,34 @@ public class Section extends Edge<String, Direction> {
 
                 Measurable initialVelocityToBeUsed = new Measurable(initialVelocity.getQuantity(), Unit.KILOMETERS_PER_HOUR);
 
-                segmentResults = segment.calculateEnergyExpenditureAccel(initialVelocityToBeUsed, vehicle, load,
-                        maxAcceleration, maxBraking, finalVelocity, lastSegment, true, polynomialInterpolation);
+                //seed
+                segmentResults = new EnergyExpenditureAccelResults(new Measurable(Double.MAX_VALUE, Unit.KILOJOULE), new Measurable(0, Unit.KILOMETERS_PER_HOUR),
+                        new Measurable(0, Unit.HOUR));
 
+                int exceptionCounter = 0;
+                int iterationsCounter = 0;
                 while (finalVelocity.getQuantity() >= vehicle.determineInitialVelocity().getQuantity()) {
 
-                    EnergyExpenditureAccelResults results = segment.calculateEnergyExpenditureAccel(initialVelocityToBeUsed, vehicle, load,
-                            maxAcceleration, maxBraking, finalVelocity, lastSegment, true, polynomialInterpolation);
+                    try {
 
-                    if (results.getEnergyExpenditure().getQuantity() < segmentResults.getEnergyExpenditure().getQuantity()) {
+                        EnergyExpenditureAccelResults results = segment.calculateEnergyExpenditureAccel(initialVelocityToBeUsed, vehicle, load,
+                                maxAcceleration, maxBraking, finalVelocity, lastSegment, true, polynomialInterpolation);
 
-                        segmentResults = new EnergyExpenditureAccelResults(results);
+                        if (results.getEnergyExpenditure().getQuantity() < segmentResults.getEnergyExpenditure().getQuantity()) {
+                            segmentResults = new EnergyExpenditureAccelResults(results);
+                        }
 
+                    } catch (IllegalArgumentException e) {
+                        exceptionCounter++;
                     }
 
                     finalVelocity.setQuantity(finalVelocity.getQuantity() - finalVelocity.getQuantity() * 0.02);
+                    iterationsCounter++;
 
+                }
+
+                if (iterationsCounter == exceptionCounter) {
+                    throw new IllegalArgumentException();
                 }
 
             }

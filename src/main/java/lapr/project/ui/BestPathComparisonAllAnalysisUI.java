@@ -19,7 +19,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author anily
  */
-public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
+    public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
 
     private static final long serialVersionUID = -4597792551848402104L;
     private BestPathComparisonAllAnalysisController comparisonController;

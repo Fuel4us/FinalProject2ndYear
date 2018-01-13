@@ -3,7 +3,8 @@ package lapr.project.utils;
 import lapr.project.model.Gears;
 
 /**
- * Contains the results of the method calculateEnergyExpenditureAccel of a Section
+ * Contains the results of the method calculateEnergyExpenditureAccel of a
+ * Section
  */
 public class EnergyExpenditureAccelResults {
 
@@ -13,16 +14,21 @@ public class EnergyExpenditureAccelResults {
     private Gears[] gearForEachSegment;
     private Measurable tollCosts;
 
+    public EnergyExpenditureAccelResults() {
+    }
+
     /**
      * Constructor
+     *
      * @param energyExpenditure the energy expenditure in the section
-     * @param finalVelocity the velocity that the vehicle reached at the end of the section
+     * @param finalVelocity the velocity that the vehicle reached at the end of
+     * the section
      * @param timeSpent the time spent in the section
      * @param gearForEachSegment the gear used for each segment
      * @param tollCosts the toll costs for the section
      */
     public EnergyExpenditureAccelResults(Measurable energyExpenditure, Measurable finalVelocity, Measurable timeSpent,
-                                         Gears[] gearForEachSegment, Measurable tollCosts) {
+            Gears[] gearForEachSegment, Measurable tollCosts) {
         this.energyExpenditure = energyExpenditure;
 
         this.finalVelocity = finalVelocity;
@@ -32,9 +38,12 @@ public class EnergyExpenditureAccelResults {
     }
 
     /**
-     * Constructor with the parameters energyExpenditure, finalVelocity, timeSpent and gearForEachSegment
+     * Constructor with the parameters energyExpenditure, finalVelocity,
+     * timeSpent and gearForEachSegment
+     *
      * @param energyExpenditure the energy expenditure in the section
-     * @param finalVelocity the velocity that the vehicle reached at the end of the section
+     * @param finalVelocity the velocity that the vehicle reached at the end of
+     * the section
      * @param timeSpent the time spent in the section
      * @param gearForEachSegment the gear used for each segment
      */
@@ -47,7 +56,9 @@ public class EnergyExpenditureAccelResults {
     }
 
     /**
-     * Constructor with the parameters energyExpenditure, finalVelocity and timeSpent
+     * Constructor with the parameters energyExpenditure, finalVelocity and
+     * timeSpent
+     *
      * @param energyExpenditure the energy expenditure
      * @param finalVelocity the final velocity of the vehicle
      * @param timeSpent the time spent
@@ -61,7 +72,9 @@ public class EnergyExpenditureAccelResults {
     }
 
     /**
-     * Creates an instance of {@link EnergyExpenditureAccelResults} containing information about travelling time and toll costs.
+     * Creates an instance of {@link EnergyExpenditureAccelResults} containing
+     * information about travelling time and toll costs.
+     *
      * @param timeSpent the time spent in the section
      * @param tollCosts the toll costs for the section
      */
@@ -71,7 +84,9 @@ public class EnergyExpenditureAccelResults {
     }
 
     /**
-     * Constructor with the parameters energyExpenditure, finalVelocity, timeSpent and tollCosts
+     * Constructor with the parameters energyExpenditure, finalVelocity,
+     * timeSpent and tollCosts
+     *
      * @param energyExpenditure the energy expenditure
      * @param finalVelocity the final velocity of the vehicle
      * @param timeSpent the time spent
@@ -86,6 +101,7 @@ public class EnergyExpenditureAccelResults {
 
     /**
      * Copy constructor
+     *
      * @param results other instance of the class EnergyExpenditureAccelResults
      */
     public EnergyExpenditureAccelResults(EnergyExpenditureAccelResults results) {
