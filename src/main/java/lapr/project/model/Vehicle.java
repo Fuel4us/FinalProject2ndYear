@@ -208,8 +208,8 @@ public class Vehicle {
                                                                Measurable velocity, Measurable load, Measurable acceleration, boolean energySaving, boolean polynomialInterpolation) {
 
         double engineSpeed
-                = (velocity.getQuantity() * 60 * energy.getFinalDriveRatio() * energy.getGears().get(gearPosition).getRatio())
-                / (2 * Math.PI * (wheelSize.getQuantity() / 2) * Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO);
+                = Math.round((velocity.getQuantity() * 60 * energy.getFinalDriveRatio() * energy.getGears().get(gearPosition).getRatio())
+                / (2 * Math.PI * (wheelSize.getQuantity() / 2) * Physics.KILOMETERS_PER_HOUR_METERS_PER_SECOND_CONVERSION_RATIO));
 
         double torque = 0;
         double SFC = 0;

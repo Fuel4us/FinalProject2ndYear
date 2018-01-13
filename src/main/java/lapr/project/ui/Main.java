@@ -64,11 +64,11 @@ public class Main {
                 new ArrayList<>()
         );
         try {
-            LOGGER.log(Level.INFO, "Initializing connection to database...");
+            LOGGER.log(Level.INFO, "Initializing database connection assets...");
             dbCom = new DataBaseCommunicator(new OracleDataSource());
         } catch (SQLException e) {
             DBAccessor.logSQLException(e);
-            LOGGER.log(Level.SEVERE, "Connection to the database failed, some operations may not be available.");
+            LOGGER.log(Level.SEVERE, "Initialization failed, some operations may not be available.");
         }
     }
 
