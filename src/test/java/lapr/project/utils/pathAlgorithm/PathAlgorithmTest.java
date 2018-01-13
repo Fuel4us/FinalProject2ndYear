@@ -123,7 +123,7 @@ public class PathAlgorithmTest {
         vehiclesTest.add(vehicle1);
         vehiclesTest.add(vehicle2);
 
-        Project projectTest = new Project("project 1", "the project", roadNetworkTest, vehiclesTest);
+        Project projectTest = new Project("project 1","project 1", "the project", roadNetworkTest, vehiclesTest);
 
         List<Section> sectionsExpected = new ArrayList<>();
         sectionsExpected.add(sectionTest1);
@@ -229,7 +229,7 @@ public class PathAlgorithmTest {
         List<Vehicle> vehiclesTest = new ArrayList<>();
         vehiclesTest.add(vehicleTest);
 
-        Project projectTest = new Project("name", "description", roadNetworkTest, vehiclesTest);
+        Project projectTest = new Project("name", "name", "description", roadNetworkTest, vehiclesTest);
 
         List<Section> sectionsExpected = new ArrayList<>();
         sectionsExpected.add(sectionTest1);
@@ -331,7 +331,7 @@ public class PathAlgorithmTest {
         List<Vehicle> vehiclesTest = new ArrayList<>();
         vehiclesTest.add(vehicleTest);
 
-        Project projectTest = new Project("name", "description", roadNetworkTest, vehiclesTest);
+        Project projectTest = new Project("name","name", "description", roadNetworkTest, vehiclesTest);
 
         List<Section> sectionsExpected = new ArrayList<>();
         sectionsExpected.add(sectionTest1);

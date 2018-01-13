@@ -49,7 +49,7 @@ public class BestPathControllerTest {
     @Test
     public void testGetAllVehicles() {
         System.out.println("getAllVehicles");
-        BestPathController instance = new BestPathController(new Project("test"
+        BestPathController instance = new BestPathController(new Project("test","test"
                 , "description", new RoadNetwork(), new ArrayList<>()));
         List<Vehicle> expResult = new ArrayList<>();
         List<Vehicle> result = instance.getAllVehicles();
@@ -62,7 +62,7 @@ public class BestPathControllerTest {
     @Test
     public void testGetAllNodes() {
         System.out.println("getAllNodes");
-        BestPathController instance = new BestPathController(new Project("test"
+        BestPathController instance = new BestPathController(new Project("test","test"
                 , "description", new RoadNetwork(), new ArrayList<>()));
         List<Node> expResult = new ArrayList<>();
         List<Node> result = instance.getAllNodes();

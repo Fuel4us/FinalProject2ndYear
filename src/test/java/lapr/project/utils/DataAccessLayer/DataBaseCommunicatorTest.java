@@ -94,7 +94,7 @@ public class DataBaseCommunicatorTest {
         roadNetworkTest.addSection(nodeTest2, nodeTest3, sectionTest2);
         roadNetworkTest.addSection(nodeTest3, nodeTest4, sectionTest3);
 
-        Project projectTest = new Project("project 1", "the project", roadNetworkTest, new ArrayList<>());
+        Project projectTest = new Project("project 1","project 1", "the project", roadNetworkTest, new ArrayList<>());
 
         List<Section> sectionsExpected = new ArrayList<>();
         sectionsExpected.add(sectionTest1);

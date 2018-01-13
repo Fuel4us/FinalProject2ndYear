@@ -19,7 +19,7 @@ public class XMLImporterTest {
     File filename1 = new File("src/test/resources/TestSet02_Vehicles_v2.xml");
     File filename2 = new File ("src/test/resources/TestSet02_Network_v2.xml")   ;
     XMLImporter obj = new XMLImporter(filename2, filename1);
-    Project object = new Project("test", "description", new RoadNetwork(), new ArrayList<>());
+    Project object = new Project("test","test", "description", new RoadNetwork(), new ArrayList<>());
 
     /**
      * Test of importNetwork method, of class XMLImporter.

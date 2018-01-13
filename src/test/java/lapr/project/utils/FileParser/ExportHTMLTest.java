@@ -66,7 +66,7 @@ public class ExportHTMLTest {
         List<Vehicle> vehicles = new LinkedList<>();
         vehicles.add(vehicleTest1);
 
-        Project project = new Project("name1", "Ola", roadNetworkTest1, vehicles);
+        Project project = new Project("name1","name1", "Ola", roadNetworkTest1, vehicles);
 
         Analysis analysis = new Analysis(project, "N10", bestPath, new Measurable(300, Unit.KILOJOULE), new Measurable(3, Unit.HOUR), new Measurable(50, Unit.EUROS));
 

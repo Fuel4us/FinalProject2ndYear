@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
  */
 public class AnalysisTest {
 
-    Project project = new Project("Alpha", "", new RoadNetwork(), new ArrayList<>());
+    Project project = new Project("Alpha","Alpha", "", new RoadNetwork(), new ArrayList<>());
     String name = "Beta";
     Collection<Section> path = new ArrayList<>();
     Measurable energyExp = new Measurable(2500, Unit.KILOJOULE);
