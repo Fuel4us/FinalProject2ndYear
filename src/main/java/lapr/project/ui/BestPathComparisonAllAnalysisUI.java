@@ -97,7 +97,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
         */
         jComboBoxAnalysis.addActionListener(this::jComboBoxAnalysisActionPerformed);
 
-        initializer.initializeLabels(jLabel2, Main.FORTY_EIGHT_SEGOE_FONT, "Road Network Comparison", SwingConstants.RIGHT, Main.LIGHT_BLUE);
+        initializer.initializeLabels(jLabel2, Main.TV_POSTER_FONT, "Road Network Comparison", SwingConstants.CENTER, Main.LIGHT_BLUE);
 
         initializer.initializeJButton(jButtonGenerateFile, Main.EIGHTEEN_SEGOE_FONT, "Generate file", Main.DARK_GREY,
                 new javax.swing.border.LineBorder(Main.DARK_ORANGE, 4, true));
