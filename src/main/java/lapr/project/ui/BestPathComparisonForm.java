@@ -337,8 +337,11 @@ public class BestPathComparisonForm extends JFrame {
 
             Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
 
-            List<Vehicle> selectedVehiclesList = controller.getAllVehicles();
-            selectedVehiclesList.forEach(vehicleModel::addElement);
+            List<Vehicle> selectedVehiclesList;
+            ListModel<Vehicle> selectedVehiclesModel = jListSelectedVehicles.getModel();
+            selectedVehiclesList = IntStream.range(0, selectedVehiclesModel.getSize())
+                    .mapToObj(selectedVehiclesModel::getElementAt)
+                    .collect(Collectors.toList());
 
             if (startNode == null
                     || endNode == null) {
@@ -401,8 +404,11 @@ public class BestPathComparisonForm extends JFrame {
             Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
             Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
 
-            List<Vehicle> selectedVehiclesList = controller.getAllVehicles();
-            selectedVehiclesList.forEach(selectedVehiclesModel::addElement);
+            List<Vehicle> selectedVehiclesList;
+            ListModel<Vehicle> selectedVehiclesModel = jListSelectedVehicles.getModel();
+            selectedVehiclesList = IntStream.range(0, selectedVehiclesModel.getSize())
+                    .mapToObj(selectedVehiclesModel::getElementAt)
+                    .collect(Collectors.toList());
 
             if (startNode == null
                     || endNode == null) {
@@ -474,8 +480,11 @@ public class BestPathComparisonForm extends JFrame {
             Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
             Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
 
-            List<Vehicle> selectedVehiclesList = controller.getAllVehicles();
-            selectedVehiclesList.forEach(vehicleModel::addElement);
+            List<Vehicle> selectedVehiclesList;
+            ListModel<Vehicle> selectedVehiclesModel = jListSelectedVehicles.getModel();
+            selectedVehiclesList = IntStream.range(0, selectedVehiclesModel.getSize())
+                    .mapToObj(selectedVehiclesModel::getElementAt)
+                    .collect(Collectors.toList());
 
             if (startNode == null
                     || endNode == null) {
@@ -509,8 +518,11 @@ public class BestPathComparisonForm extends JFrame {
             Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
             Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
 
-            List<Vehicle> selectedVehiclesList = controller.getAllVehicles();
-            selectedVehiclesList.forEach(vehicleModel::addElement);
+            List<Vehicle> selectedVehiclesList;
+            ListModel<Vehicle> selectedVehiclesModel = jListSelectedVehicles.getModel();
+            selectedVehiclesList = IntStream.range(0, selectedVehiclesModel.getSize())
+                    .mapToObj(selectedVehiclesModel::getElementAt)
+                    .collect(Collectors.toList());
 
             if (startNode == null
                     || endNode == null) {
