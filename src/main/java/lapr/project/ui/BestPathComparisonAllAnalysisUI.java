@@ -5,11 +5,15 @@
  */
 package lapr.project.ui;
 
+import lapr.project.controller.BestPathComparisonAllAnalysisController;
 import lapr.project.controller.BestPathController;
 import lapr.project.model.Analysis;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -18,7 +22,7 @@ import javax.swing.DefaultComboBoxModel;
 public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
 
     private static final long serialVersionUID = -4597792551848402104L;
-    private BestPathController controller;
+    private BestPathComparisonAllAnalysisController comparisonController;
     private static List<Analysis> analysisList;
 
     /**
@@ -27,7 +31,7 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
      * @param analysisList
      */
     public BestPathComparisonAllAnalysisUI(List<Analysis> analysisList) {
-        this.controller = new BestPathController(Main.currentProject);
+        this.comparisonController = new BestPathComparisonAllAnalysisController(Main.currentProject, Main.dbCom);
         BestPathComparisonAllAnalysisUI.analysisList = analysisList;
         initComponents();
     }
@@ -75,22 +79,14 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
         jButtonViewResults.setForeground(new java.awt.Color(45, 46, 45));
         jButtonViewResults.setText("View detailed results for this analysis");
         jButtonViewResults.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonViewResults.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonViewResultsActionPerformed(evt);
-            }
-        });
+        jButtonViewResults.addActionListener(evt -> jButtonViewResultsActionPerformed(evt));
 
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
         jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack.setText("«");
         jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBackActionPerformed(evt);
-            }
-        });
+        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
 
         List<Analysis> analysisListModel = analysisList;
         DefaultComboBoxModel<Analysis> analysisModel = new DefaultComboBoxModel<>();
@@ -102,11 +98,7 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
         /**
         jComboBoxAnalysis.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         */
-        jComboBoxAnalysis.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxAnalysisActionPerformed(evt);
-            }
-        });
+        jComboBoxAnalysis.addActionListener(evt -> jComboBoxAnalysisActionPerformed(evt));
 
         jLabel2.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(155, 177, 189));
@@ -117,9 +109,11 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
         jButtonGenerateFile.setForeground(new java.awt.Color(45, 46, 45));
         jButtonGenerateFile.setText("Generate file");
         jButtonGenerateFile.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonGenerateFile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonGenerateFile.addActionListener(evt -> {
+            try {
                 jButtonGenerateFileActionPerformed(evt);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
 
@@ -194,11 +188,12 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonViewResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonViewResultsActionPerformed
-        BestPathComparisonResultsUI  bestPathComparisonResultsUI = new BestPathComparisonResultsUI((Analysis)jComboBoxAnalysis.getSelectedItem());
+        BestPathComparisonResultsUI  bestPathComparisonResultsUI =
+                new BestPathComparisonResultsUI((Analysis)jComboBoxAnalysis.getSelectedItem());
     }//GEN-LAST:event_jButtonViewResultsActionPerformed
 
     private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        WelcomeUI.display();
+        BestPathComparisonForm.display();
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
@@ -206,8 +201,21 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxAnalysisActionPerformed
 
-    private void jButtonGenerateFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerateFileActionPerformed
-        // TODO add your handling code here:
+    private void jButtonGenerateFileActionPerformed(java.awt.event.ActionEvent evt) throws IOException {//GEN-FIRST:event_jButtonGenerateFileActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setDialogTitle("Insert the name the file to which you wish to export data");
+        FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter(
+                "html files (*.html)", "html");
+        fileChooser.setFileFilter(xmlfilter);
+        int returnVal = fileChooser.showOpenDialog(jButtonGenerateFile);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File outputFile = fileChooser.getSelectedFile();
+            for (Analysis analysis : analysisList) {
+                comparisonController.exportToHtml(outputFile, analysis);
+            }
+            JOptionPane.showMessageDialog(null, "Your data was exported.");
+        }
     }//GEN-LAST:event_jButtonGenerateFileActionPerformed
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
