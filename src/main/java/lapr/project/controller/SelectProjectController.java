@@ -37,9 +37,7 @@ public class SelectProjectController {
      * @param project The project to set as the current
      */
     public void setCurrentProject(Project project) {
-        if (fetchProjectsList().contains(project)) {
             Main.setCurrentProject(project);
-        }
     }
 
 }

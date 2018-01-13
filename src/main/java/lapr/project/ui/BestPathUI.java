@@ -53,7 +53,7 @@ public final class BestPathUI extends JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextField jTextFieldLoad;
-    private javax.swing.JTextField jTextFieldMaxAceleration;
+    private javax.swing.JTextField jTextFieldMaxAcceleration;
     private javax.swing.JTextField jTextFieldMaxBraking;
     private javax.swing.JPanel orangeBorder;
     // End of variables declaration//GEN-END:variables
@@ -98,7 +98,7 @@ public final class BestPathUI extends JFrame {
         jButton3 = new javax.swing.JButton();
         jLabelLoad = new javax.swing.JLabel();
         jTextFieldLoad = new javax.swing.JTextField();
-        jTextFieldMaxAceleration = new javax.swing.JTextField();
+        jTextFieldMaxAcceleration = new javax.swing.JTextField();
         jLabelLoad1 = new javax.swing.JLabel();
         jLabelLoad2 = new javax.swing.JLabel();
         jTextFieldMaxBraking = new javax.swing.JTextField();
@@ -127,17 +127,12 @@ public final class BestPathUI extends JFrame {
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack.setText("«");
         jButtonBack.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 4));
-        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBackActionPerformed(evt);
-            }
-        });
+        jButtonBack.addActionListener(this::jButtonBackActionPerformed);
 
         List<Node> nodesList2 = controller.getAllNodes();
         DefaultListModel<Node> nodesModel2 = new DefaultListModel<>();
-        for (Node obj : nodesList2) {
-            nodesModel2.addElement(obj);
-        }
+        nodesList2.forEach(nodesModel2::addElement);
+
         jListNodes2.setModel(nodesModel2);
         jListNodes2.setBackground(new java.awt.Color(97, 122, 133));
         jListNodes2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
@@ -154,9 +149,8 @@ public final class BestPathUI extends JFrame {
 
         List<Node> nodesList = controller.getAllNodes();
         DefaultListModel<Node> nodesModel = new DefaultListModel<>();
-        for (Node obj : nodesList) {
-            nodesModel.addElement(obj);
-        }
+        nodesList.forEach(nodesModel::addElement);
+
         jListNodes1.setModel(nodesModel);
         jListNodes1.setBackground(new java.awt.Color(97, 122, 133));
         jListNodes1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
@@ -177,9 +171,8 @@ public final class BestPathUI extends JFrame {
 
         List<Vehicle> vehicleList = controller.getAllVehicles();
         DefaultListModel<Vehicle> vehicleModel = new DefaultListModel<>();
-        for (Vehicle obj : vehicleList) {
-            vehicleModel.addElement(obj);
-        }
+        vehicleList.forEach(vehicleModel::addElement);
+
         jListVehicles.setModel(vehicleModel);
         jListVehicles.setBackground(new java.awt.Color(97, 122, 133));
         jListVehicles.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
@@ -233,8 +226,8 @@ public final class BestPathUI extends JFrame {
         jTextFieldLoad.setBackground(new java.awt.Color(97, 122, 133));
         jTextFieldLoad.setForeground(new java.awt.Color(255, 255, 255));
 
-        jTextFieldMaxAceleration.setBackground(new java.awt.Color(97, 122, 133));
-        jTextFieldMaxAceleration.setForeground(new java.awt.Color(255, 255, 255));
+        jTextFieldMaxAcceleration.setBackground(new java.awt.Color(97, 122, 133));
+        jTextFieldMaxAcceleration.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabelLoad1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         jLabelLoad1.setForeground(new java.awt.Color(97, 122, 133));
@@ -265,7 +258,7 @@ public final class BestPathUI extends JFrame {
                             .addComponent(jLabelNode2)
                             .addComponent(jLabelLoad)
                             .addComponent(jTextFieldLoad, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                            .addComponent(jTextFieldMaxAceleration, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                            .addComponent(jTextFieldMaxAcceleration, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
                             .addComponent(jLabelLoad1)
                             .addComponent(jLabelLoad2)
                             .addComponent(jTextFieldMaxBraking, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE))
@@ -323,7 +316,7 @@ public final class BestPathUI extends JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jTextFieldMaxAceleration, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextFieldMaxAcceleration, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabelLoad2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -359,9 +352,9 @@ public final class BestPathUI extends JFrame {
         try {
             Node startNode = jListNodes1.getSelectedValue();
             Node endNode = jListNodes2.getSelectedValue();
-            Measurable maxAceleration = new Measurable(Double.parseDouble(jTextFieldMaxAceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable maxAcceleration = new Measurable(Double.parseDouble(jTextFieldMaxAcceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
             Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
-            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.valueOf("km"));
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
             Vehicle selectedVehicle = jListVehicles.getSelectedValue();
 
             if (startNode == null
@@ -371,10 +364,10 @@ public final class BestPathUI extends JFrame {
 
             } else if (startNode.equals(endNode)) {
                 JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
-            } else if ((Double.compare(maxAceleration.getQuantity(), 0) < 0) || (Double.compare(maxBraking.getQuantity(), 0) > 0)) {
-                JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAceleration and a negative value for maxBraking");
+            } else if ((Double.compare(maxAcceleration.getQuantity(), 0) < 0) || (Double.compare(maxBraking.getQuantity(), 0) > 0)) {
+                JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAcceleration and a negative value for maxBraking");
             } else {
-                Analysis generatedAnalysis = controller.analyzeTheoreticalEfficientPath(startNode, endNode, selectedVehicle, maxAceleration, maxBraking, load) ;
+                Analysis generatedAnalysis = controller.analyzeTheoreticalEfficientPath(startNode, endNode, selectedVehicle, maxAcceleration, maxBraking, load) ;
                 StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis);
                 storeNetworkAnalysisUI.setVisible(true);
                 setVisible(false);
@@ -388,7 +381,7 @@ public final class BestPathUI extends JFrame {
             Node startNode = jListNodes1.getSelectedValue();
             Node endNode = jListNodes2.getSelectedValue();
 
-            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.valueOf("km"));
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
             Vehicle selectedVehicle = jListVehicles.getSelectedValue();
             if (startNode == null
                     || endNode == null
@@ -417,9 +410,9 @@ public final class BestPathUI extends JFrame {
         try {
             Node startNode = jListNodes1.getSelectedValue();
             Node endNode = jListNodes2.getSelectedValue();
-            Measurable maxAceleration = new Measurable(Double.parseDouble(jTextFieldMaxAceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable maxAcceleration = new Measurable(Double.parseDouble(jTextFieldMaxAcceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
             Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
-            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.valueOf("km"));
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
             Vehicle selectedVehicle = jListVehicles.getSelectedValue();
 
             if (startNode == null
@@ -429,10 +422,10 @@ public final class BestPathUI extends JFrame {
 
             } else if (startNode.equals(endNode)) {
                 JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
-            } else if ((Double.compare(maxAceleration.getQuantity(), 0) < 0) || (Double.compare(maxBraking.getQuantity(), 0) > 0)) {
-                JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAceleration and a negative value for maxBraking");
+            } else if ((Double.compare(maxAcceleration.getQuantity(), 0) < 0) || (Double.compare(maxBraking.getQuantity(), 0) > 0)) {
+                JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAcceleration and a negative value for maxBraking");
             } else {
-                Analysis generatedAnalysis = controller.analyzeEfficientPathEnergySavingMode(startNode, endNode, selectedVehicle, maxAceleration, maxBraking, load);
+                Analysis generatedAnalysis = controller.analyzeEfficientPathEnergySavingMode(startNode, endNode, selectedVehicle, maxAcceleration, maxBraking, load);
                 StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis);
                 storeNetworkAnalysisUI.setVisible(true);
                 setVisible(false);
