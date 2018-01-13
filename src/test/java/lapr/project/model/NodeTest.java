@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author pedro
+ * @author Team Fonseca
  */
 public class NodeTest {
     
