@@ -31,7 +31,7 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
      * @param analysisList
      */
     public BestPathComparisonAllAnalysisUI(List<Analysis> analysisList, List<Vehicle> vehiclesList) {
-        this.comparisonController = new BestPathComparisonAllAnalysisController(Main.currentProject, Main.dbCom);
+        this.comparisonController = new BestPathComparisonAllAnalysisController();
         BestPathComparisonAllAnalysisUI.analysisList = analysisList;
         BestPathComparisonAllAnalysisUI.vehiclesList = vehiclesList;
         initComponents();
@@ -93,10 +93,6 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
         }
         jComboBoxAnalysis.setModel(analysisModel);
         jComboBoxAnalysis.setBackground(new java.awt.Color(204, 204, 204));
-        /**
-         jComboBoxAnalysis.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-         */
-        jComboBoxAnalysis.addActionListener(this::jComboBoxAnalysisActionPerformed);
 
         initializer.initializeLabels(jLabel2, Main.TV_POSTER_FONT, "Road Network Comparison", SwingConstants.CENTER, Main.LIGHT_BLUE);
 
@@ -185,30 +181,42 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
-    private void jComboBoxAnalysisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxAnalysisActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxAnalysisActionPerformed
-
     private void jButtonGenerateFileActionPerformed(java.awt.event.ActionEvent evt) throws IOException {//GEN-FIRST:event_jButtonGenerateFileActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setDialogTitle("Insert the name the file to which you wish to export data");
-        FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter(
-                "html files (*.html)", "html");
-        fileChooser.setFileFilter(xmlfilter);
+
+        Main.SupportedOutputFileTypes selectedOutputFormat = Main.displayOutputExtensionChoiceUI(this);
+
+        selectFilter(fileChooser, selectedOutputFormat);
+
         int returnVal = fileChooser.showOpenDialog(jButtonGenerateFile);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File outputFile = fileChooser.getSelectedFile();
-            for(int i=0; i<analysisList.size(); i++) {
-                for(int j=0; j<vehiclesList.size(); j++) {
-                    if(i==j) {
-                        comparisonController.exportToHtml(outputFile, analysisList.get(i), vehiclesList.get(j));
+            for (int i = 0; i < analysisList.size(); i++) {
+                for (int j = 0; j < vehiclesList.size(); j++) {
+                    if (i == j) {
+                        comparisonController.export(selectedOutputFormat, outputFile, analysisList.get(i), vehiclesList.get(j));
                     }
                 }
             }
             JOptionPane.showMessageDialog(null, "Your data was exported.");
         }
     }//GEN-LAST:event_jButtonGenerateFileActionPerformed
+
+    /**
+     * Chooses the appropriate filter according to the {@code selectedOutputFormat}
+     */
+    private void selectFilter(JFileChooser fileChooser, Main.SupportedOutputFileTypes selectedOutputFormat) {
+        switch (selectedOutputFormat) {
+            case HTML:
+                FileNameExtensionFilter htmlFilter = new FileNameExtensionFilter(
+                        "html files (*.html)", "html");
+                fileChooser.setFileFilter(htmlFilter);
+                break;
+        }
+
+    }
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
         for(Analysis analysis : analysisList) {

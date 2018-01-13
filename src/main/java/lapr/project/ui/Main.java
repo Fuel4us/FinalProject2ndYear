@@ -1,6 +1,5 @@
 package lapr.project.ui;
 
-import lapr.project.controller.CreateProjectController;
 import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
@@ -10,11 +9,9 @@ import oracle.jdbc.pool.OracleDataSource;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -142,7 +139,7 @@ public class Main {
      * Displays a UI that prompts for the choice of the parsing mode to use to import information
      * @return the {@code selectedType} - instance of {@link SupportedInputFileTypes}
      */
-    static SupportedInputFileTypes displayExtensionChoiceUI() {
+    static SupportedInputFileTypes displayExtensionChoiceUI(JFrame parentComponent) {
         SupportedInputFileTypes selectedType = null;
         boolean validExtension;
         do {
@@ -152,11 +149,34 @@ public class Main {
                 selectedType = SupportedInputFileTypes.valueOf(selection);
                 validExtension = true;
             } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(parentComponent, "Please insert a valid value.");
                 validExtension = false;
             }
         } while (!validExtension);
         return selectedType;
     }
+
+    /**
+     * Displays a UI that prompts for the choice of the parsing mode to use to import information
+     * @return the {@code selectedType} - instance of {@link Main.SupportedOutputFileTypes}
+     */
+    static Main.SupportedOutputFileTypes displayOutputExtensionChoiceUI(JFrame parentComponent) {
+        Main.SupportedOutputFileTypes selectedType = null;
+        boolean validExtension;
+        do {
+            String selection = JOptionPane.showInputDialog("Choose the desired output file format.\nCurrently supported formats are "
+                    + Arrays.toString(Main.SupportedOutputFileTypes.values()));
+            try {
+                selectedType = Main.SupportedOutputFileTypes.valueOf(selection);
+                validExtension = true;
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(parentComponent, "Please insert a valid value.");
+                validExtension = false;
+            }
+        } while (!validExtension);
+        return selectedType;
+    }
+
 
     /**
      * Enumerates supported file during input types

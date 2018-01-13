@@ -40,6 +40,7 @@ public class ProjectTest {
     @Test
     public void ensureGettersReturnSuccessfully() throws Exception {
         assertEquals(p1.getName(), "Alpha");
+        assertEquals(p1.getId(),"Alpha");
         assertEquals(p1.getDescription(), "Alpha test network");
         assertEquals(p1.getRoadNetwork(), rn);
         assertEquals(p1.getVehicles(), vehicleList);

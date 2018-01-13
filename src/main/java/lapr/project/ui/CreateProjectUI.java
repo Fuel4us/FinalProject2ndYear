@@ -3,10 +3,8 @@ package lapr.project.ui;
 import lapr.project.controller.CreateProjectController;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
-import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -222,14 +220,14 @@ public final class CreateProjectUI extends javax.swing.JFrame {
     }
 
     private void jButtonRoadActionPerformed() {//GEN-FIRST:event_jButtonRoadActionPerformed
-        Main.SupportedInputFileTypes selectedExtension = Main.displayExtensionChoiceUI();
+        Main.SupportedInputFileTypes selectedExtension = Main.displayExtensionChoiceUI(null);
         JFileChooser fileChooser = Main.initFileChooserProperties(selectedExtension, "Select your RoadNetwork file");
         loadFile(fileChooser, jButtonRoad, createProjectController::setRoadNetworkFile, selectedExtension);
     }
 
 
     private void jButtonVehicleActionPerformed() {//GEN-FIRST:event_jButtonVehicleActionPerformed
-        Main.SupportedInputFileTypes selectedExtension = Main.displayExtensionChoiceUI();
+        Main.SupportedInputFileTypes selectedExtension = Main.displayExtensionChoiceUI(null);
         JFileChooser fileChooser = Main.initFileChooserProperties(selectedExtension, "Select your Vehicles file");
         loadFile(fileChooser, jButtonVehicle, createProjectController::setVehiclesFile, selectedExtension);
     }
