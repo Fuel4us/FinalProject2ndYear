@@ -1,11 +1,14 @@
 package lapr.project.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import lapr.project.model.Analysis;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
 import lapr.project.model.Vehicle;
+import lapr.project.utils.FileParser.ExportHTML;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.pathAlgorithm.PathAlgorithm;
 
@@ -14,6 +17,7 @@ import lapr.project.utils.pathAlgorithm.PathAlgorithm;
 public class BestPathController {
 
     private Project project;
+    private File outputFile;
 
     /**
      * Constructor of the controller class RoadNetworkPathFormController instanciated by
@@ -72,5 +76,17 @@ public class BestPathController {
     public Analysis analyzeEfficientPathEnergySavingMode(Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load){
         return PathAlgorithm.efficientPathEnergySavingMode(project, start, end, vehicle, maxAcceleration, maxBraking, load);
     }
-    
-          }
+
+
+    /**
+     *
+     * @param outputFile {@link File} to which is desired to export an {@link Analysis} data
+     * @param analysis {@link Analysis} whose data is going to be exported
+     * @throws IOException
+     */
+    public void exportToHtml(File outputFile, Analysis analysis) throws IOException {
+        this.outputFile = outputFile;
+        ExportHTML exportHTML = new ExportHTML(analysis);
+        exportHTML.exportDataFromAnalysis(outputFile);
+    }
+}
