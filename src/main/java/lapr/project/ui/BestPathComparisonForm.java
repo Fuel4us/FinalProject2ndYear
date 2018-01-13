@@ -108,7 +108,7 @@ public class BestPathComparisonForm extends JFrame {
 
         initializer.initializeJButton(jButtonBack, Main.FORTY_EIGHT_SEGOE_FONT, "«", Main.DARK_GREY, javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 4));
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed());
+        jButtonBack.addActionListener(this::jButtonBackActionPerformed);
 
         List<Node> nodesList = controller.getAllNodes();
         DefaultListModel<Node> nodesModel2 = new DefaultListModel<>();
