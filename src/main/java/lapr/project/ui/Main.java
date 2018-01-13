@@ -1,14 +1,20 @@
 package lapr.project.ui;
 
+import lapr.project.controller.CreateProjectController;
 import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork;
 import lapr.project.utils.DataAccessLayer.Abstraction.DBAccessor;
 import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 import oracle.jdbc.pool.OracleDataSource;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -103,5 +109,68 @@ public class Main {
     public static void setCurrentProject(Project project) {
         Main.currentProject = project;
     }
+
+    /**
+     * Initializes a {@link JFileChooser} to open files with a filter defined according to the {@code selectedExtension}
+     * @param selectedExtension an instance of {@link SupportedInputFileTypes}
+     * @return the prepared {@link JFileChooser}
+     */
+    static JFileChooser initFileChooserProperties(SupportedInputFileTypes selectedExtension, String dialogTitle) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setDialogTitle(dialogTitle);
+        setFileChooserFilter(fileChooser, selectedExtension);
+        return fileChooser;
+    }
+
+    /**
+     * Defines a filter based off of the {@code selectedExtension}
+     * @param fileChooser The {@link JFileChooser} to which this property is to be set
+     * @param selectedExtension the selected {@link SupportedInputFileTypes}
+     */
+    private static void setFileChooserFilter(JFileChooser fileChooser, SupportedInputFileTypes selectedExtension) {
+        switch (selectedExtension) {
+            case XML:
+                FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("xml files (*.xml)", "xml");
+                fileChooser.setFileFilter(xmlFilter);
+                break;
+        }
+
+    }
+
+    /**
+     * Displays a UI that prompts for the choice of the parsing mode to use to import information
+     * @return the {@code selectedType} - instance of {@link SupportedInputFileTypes}
+     */
+    static SupportedInputFileTypes displayExtensionChoiceUI() {
+        SupportedInputFileTypes selectedType = null;
+        boolean validExtension;
+        do {
+            String selection = JOptionPane.showInputDialog("Choose the file format you want to parse.\nCurrently supported formats are "
+                    + Arrays.toString(SupportedInputFileTypes.values()));
+            try {
+                selectedType = SupportedInputFileTypes.valueOf(selection);
+                validExtension = true;
+            } catch (IllegalArgumentException e) {
+                validExtension = false;
+            }
+        } while (!validExtension);
+        return selectedType;
+    }
+
+    /**
+     * Enumerates supported file during input types
+     */
+    public enum SupportedInputFileTypes {
+        XML
+    }
+
+    /**
+     * Enumerates supported file types
+     */
+    public enum SupportedOutputFileTypes {
+        HTML
+    }
+
 
 }

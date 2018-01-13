@@ -3,6 +3,7 @@ package lapr.project.controller;
 import lapr.project.model.Project;
 import lapr.project.model.RoadNetwork;
 import lapr.project.model.Vehicle;
+import lapr.project.ui.Main;
 import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
 import lapr.project.utils.FileParser.FileParser;
 import lapr.project.utils.FileParser.XMLImporter;
@@ -19,13 +20,6 @@ public class CreateProjectController {
     private File roadsFile;
     private File vehiclesFile;
     private FileParser importer;
-
-    /**
-     * Enumerates supported file types
-     */
-    public enum SupportedFileTypes {
-        XML
-    }
 
     /**
      * Full constructor for the class CreateProjectController
@@ -92,7 +86,7 @@ public class CreateProjectController {
      * Sets the parsing mode, so that a specific type of file format can be read
      * @param fileFormat the file format to read
      */
-    public void setExtensionParsingMode(SupportedFileTypes fileFormat) {
+    public void setExtensionParsingMode( Main.SupportedInputFileTypes fileFormat) {
         switch (fileFormat) {
             case XML:
                 importer = new XMLImporter(this.roadsFile, this.vehiclesFile);

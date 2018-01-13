@@ -11,8 +11,10 @@ import org.xml.sax.SAXException;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.ParserConfigurationException;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,6 +45,7 @@ public class ChangeDataUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        InitializeUIElements initializer = new InitializeUIElements();
         jPanel1 = new javax.swing.JPanel();
         imgLateral = new javax.swing.JLabel();
         orangeBorder = new javax.swing.JPanel();
@@ -75,69 +78,46 @@ public class ChangeDataUI extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        initializer.initializeJButton(jButtonCreate, Main.EIGHTEEN_SEGOE_FONT, "Save changes", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonCreate.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonCreate.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonCreate.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonCreate.setText("Save changes");
-        jButtonCreate.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonCreate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCreateActionPerformed(evt);
-            }
-        });
+        jButtonCreate.addActionListener(evt -> jButtonCreateActionPerformed(evt));
 
+        initializer.initializeJButton(jButtonBack,Main.FORTY_EIGHT_SEGOE_FONT, "«", Main.DARK_GREY, javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 4));
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
-        jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setText("«");
-        jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBackActionPerformed(evt);
-            }
-        });
+        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
 
         jTextFieldName.setBackground(new java.awt.Color(87, 89, 87));
         jTextFieldName.setForeground(new java.awt.Color(45, 46, 45));
         jTextFieldName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         jTextFieldName.setText(controller.getName());
 
-        jLabelPageTitle.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
-        jLabelPageTitle.setForeground(new java.awt.Color(155, 177, 189));
-        jLabelPageTitle.setText("Change Project Properties");
+        initializer.initializeLabels(jLabelPageTitle, Main.TV_POSTER_FONT, "Change Project Properties", SwingConstants.CENTER, Main.LIGHT_BLUE);
 
-        jLabelPName.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelPName.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelPName.setText("PROJECT NAME:");
+        initializer.initializeLabels(jLabelPName, Main.TWELVE_SEGOE_FONT, "PROJECT NAME:", SwingConstants.RIGHT, Main.DARK_BLUE);
+        initializer.initializeLabels(jLabelPDesc, Main.TWELVE_SEGOE_FONT, "DESCRIPTION:", SwingConstants.RIGHT, Main.DARK_BLUE);
 
         jTextFieldDescription.setBackground(new java.awt.Color(87, 89, 87));
         jTextFieldDescription.setForeground(new java.awt.Color(45, 46, 45));
         jTextFieldDescription.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         jTextFieldDescription.setText(controller.getDescription());
 
-        jLabelPDesc.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelPDesc.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelPDesc.setText("DESCRIPTION:");
-
+        initializer.initializeJButton(jButtonRoad, Main.FOURTEEN_SEGOE_FONT, "Import roads configuration file", Color.WHITE, new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
         jButtonRoad.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonRoad.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButtonRoad.setForeground(new java.awt.Color(72, 89, 97));
-        jButtonRoad.setText("Import new roads configuration file");
-        jButtonRoad.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
-        jButtonRoad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonRoad.addActionListener(evt -> {
+            try {
                 jButtonRoadActionPerformed(evt);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
+        initializer.initializeJButton(jButtonVehicle, Main.FOURTEEN_SEGOE_FONT, "Import new vehicles configuration file", Color.WHITE, new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
         jButtonVehicle.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonVehicle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jButtonVehicle.setForeground(new java.awt.Color(72, 89, 97));
-        jButtonVehicle.setText("Import new vehicles configuration file");
-        jButtonVehicle.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
-        jButtonVehicle.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonVehicle.addActionListener(evt -> {
+            try {
                 jButtonVehicleActionPerformed(evt);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
@@ -231,62 +211,18 @@ public class ChangeDataUI extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
-    private void jButtonRoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRoadActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setDialogTitle("Select your RoadNetwork file");
-        FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter(
-                "xml files (*.xml)", "xml");
-        fileChooser.setFileFilter(xmlFilter);
-        int returnVal = fileChooser.showOpenDialog(jButtonRoad);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File roads = fileChooser.getSelectedFile();
-            try {
-                controller.setRoadNetworkFile(roads);
-                controller.addNewRoads();
-                JOptionPane.showMessageDialog(null, "Your file has been loaded.");
-            } catch (IOException ex) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                JOptionPane.showMessageDialog(null, "IOException rose there was a problem with your file");
-            } catch (SAXException ex) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                JOptionPane.showMessageDialog(null, "SAXException rose there was a problem with your file");
-            } catch (ParserConfigurationException ex) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                JOptionPane.showMessageDialog(null, "ParserConfigurationException rose there was a problem with your file");
-            } catch (Exception e) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, e.getMessage());
-            }
-        }
+    private void jButtonRoadActionPerformed(java.awt.event.ActionEvent evt) throws Exception {//GEN-FIRST:event_jButtonRoadActionPerformed
+        Main.SupportedInputFileTypes selectedExtension = Main.displayExtensionChoiceUI();
+        JFileChooser fileChooser = Main.initFileChooserProperties(selectedExtension, "Select your RoadNetwork file");
+        loadFile(fileChooser, jButtonRoad, controller::setRoadNetworkFile, selectedExtension);
+        controller.addNewRoads();
     }//GEN-LAST:event_jButtonRoadActionPerformed
 
-    private void jButtonVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVehicleActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setDialogTitle("Select your Vehicles file");
-        FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter(
-                "xml files (*.xml)", "xml");
-        fileChooser.setFileFilter(xmlFilter);
-        int returnVal = fileChooser.showOpenDialog(jButtonRoad);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File vehicles = fileChooser.getSelectedFile();
-            try {
-                controller.setVehiclesFile(vehicles);
-                controller.addNewVehicles();
-                JOptionPane.showMessageDialog(null, "Your file has been loaded.");
-            } catch (IOException ex) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                JOptionPane.showMessageDialog(null, "IOException rose there was a problem with your file");
-            } catch (SAXException ex) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                JOptionPane.showMessageDialog(null, "SAXException rose there was a problem with your file");
-            } catch (ParserConfigurationException ex) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                JOptionPane.showMessageDialog(null, "ParserConfigurationException rose there was a problem with your file");
-            } catch (Exception e) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, e.getMessage());
-            }
-        }
+    private void jButtonVehicleActionPerformed(java.awt.event.ActionEvent evt) throws Exception {//GEN-FIRST:event_jButtonVehicleActionPerformed
+        Main.SupportedInputFileTypes selectedExtension = Main.displayExtensionChoiceUI();
+        JFileChooser fileChooser = Main.initFileChooserProperties(selectedExtension, "Select your Vehicles file");
+        loadFile(fileChooser, jButtonVehicle, controller::setVehiclesFile, selectedExtension);
+        controller.addNewVehicles();
     }//GEN-LAST:event_jButtonVehicleActionPerformed
 
     /**
@@ -295,6 +231,19 @@ public class ChangeDataUI extends javax.swing.JFrame {
     public static void display() {
         Main.setLook();
         java.awt.EventQueue.invokeLater(() -> new ChangeDataUI().setVisible(true));
+    }
+
+    /**
+     * Loads a file, executing the action designated by the {@code action} {@link Consumer}
+     */
+    private void loadFile(JFileChooser fileChooser, JButton attachedButton, Consumer<File> action, Main.SupportedInputFileTypes extension) {
+        int returnVal = fileChooser.showOpenDialog(attachedButton);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            action.accept(selectedFile);
+            controller.setExtensionParsingMode(extension);
+            JOptionPane.showMessageDialog(null, "Your file has been loaded.");
+        }
     }
 
 

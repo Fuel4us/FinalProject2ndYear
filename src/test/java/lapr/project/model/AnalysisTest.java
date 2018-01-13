@@ -1,5 +1,6 @@
 package lapr.project.model;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import lapr.project.utils.Measurable;
@@ -114,9 +115,9 @@ public class AnalysisTest {
         System.out.println("generateReport");
         String expResult = String.format("%s:%s%n%n %s:%s%n%n %s:%s%n%n %s:%s%n%n",
                 "Travelled sections", path.toString(),
-                "Expended Energy during travel", energyExp.toString(),
-                "Total Travel time", travelTime.toString(),
-                "Total toll costs", travelCost.toString());;
+                "Expended Energy during travel", new DecimalFormat("#.###").format(energyExp.getQuantity()) + energyExp.getUnit(),
+                "Total Travel time", new DecimalFormat("#.###").format(travelTime.getQuantity()) + travelTime.getUnit(),
+                "Total toll costs", new DecimalFormat("#.###").format(travelCost.getQuantity()) + travelCost.getUnit());
         String result = instance.generateReport();
         assertEquals(expResult, result);
     }

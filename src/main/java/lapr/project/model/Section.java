@@ -24,7 +24,7 @@ public class Section extends Edge<String, Direction> {
     /*
     Auto generated ID
      */
-    private final int id;
+    private int id;
     private static int sectionCounter = 0;
 
     /*
@@ -52,6 +52,14 @@ public class Section extends Edge<String, Direction> {
         this.owningRoad = road;
         this.tollFare = tollFare;
         this.id = ++sectionCounter;
+    }
+
+    /**
+     * Setter of id
+     * @param id
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**

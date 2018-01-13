@@ -42,6 +42,7 @@ class PopUp1 extends javax.swing.JFrame {
         jButtonChangeData = new javax.swing.JButton();
         jButtonCopy = new javax.swing.JButton();
         imgLateral1 = new javax.swing.JLabel();
+        InitializeUIElements initializer = new InitializeUIElements();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -49,18 +50,12 @@ class PopUp1 extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(155, 177, 189));
 
+        initializer.initializeJButton(jButtonChangeData, Main.EIGHTEEN_SEGOE_FONT, "Change project data", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonChangeData.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonChangeData.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonChangeData.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonChangeData.setText("Change project data");
-        jButtonChangeData.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonChangeData.addActionListener(evt -> jButtonChangeDataActionPerformed(evt));
 
+        initializer.initializeJButton(jButtonCopy, Main.EIGHTEEN_SEGOE_FONT, "Copy project", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonCopy.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonCopy.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonCopy.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonCopy.setText("Copy project");
-        jButtonCopy.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonCopy.addActionListener(evt -> jButtonCopyActionPerformed(evt));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

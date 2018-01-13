@@ -6,6 +6,7 @@
 package lapr.project.ui;
 
 import lapr.project.controller.BestPathController;
+import lapr.project.controller.CreateProjectController;
 import lapr.project.model.Analysis;
 import lapr.project.model.Node;
 import lapr.project.model.Vehicle;
@@ -14,6 +15,7 @@ import lapr.project.utils.Unit;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -317,34 +319,24 @@ public final class BestPathUI extends JFrame {
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
-    private void jButton2ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {
-            Node startNode = jListNodes1.getSelectedValue();
-            Node endNode = jListNodes2.getSelectedValue();
-            Measurable maxAcceleration = new Measurable(Double.parseDouble(jTextFieldMaxAcceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
-            Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
-            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
-            Vehicle selectedVehicle = jListVehicles.getSelectedValue();
-
-            if (startNode == null
-                    || endNode == null
-                    || selectedVehicle == null) {
-                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes, as well as a vehicle.");
-
-            } else if (startNode.equals(endNode)) {
-                JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
-            } else if ((Double.compare(maxAcceleration.getQuantity(), 0) < 0) || (Double.compare(maxBraking.getQuantity(), 0) > 0)) {
-                JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAcceleration and a negative value for maxBraking");
-            } else {
-                Analysis generatedAnalysis = controller.analyzeTheoreticalEfficientPath(startNode, endNode, selectedVehicle, maxAcceleration, maxBraking, load) ;
-                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis);
-                storeNetworkAnalysisUI.setVisible(true);
-                setVisible(false);
-            }
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(null, "Please insert a valid load value to the selected vehicle");
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int option = JOptionPane.showConfirmDialog(null,"Do you intend to use polynomial interpolation? (N13)");
+        if (option == JOptionPane.YES_OPTION){
+            realizeN13ButtonN12();
+        } else if (option == JOptionPane.NO_OPTION) {
+            realizeN12();
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int option = JOptionPane.showConfirmDialog(null,"Do you intend to use polynomial interpolation? (N13)");
+        if (option == JOptionPane.YES_OPTION){
+            realizeN13ButtonN11();
+        } else if (option == JOptionPane.NO_OPTION) {
+            realizeN11();
+        }
+    }
+
     private void jButton1ActionPerformed(ActionEvent evt) {
         try {
             Node startNode = jListNodes1.getSelectedValue();
@@ -371,11 +363,75 @@ public final class BestPathUI extends JFrame {
     }
 
     /**
-    private void executeAlgorithmN10(ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+     *
+     * Creates an analysis according to algorithm of n13
+     */
+    private void realizeN13ButtonN11() {
+        try {
+            Node startNode = jListNodes1.getSelectedValue();
+            Node endNode = jListNodes2.getSelectedValue();
+            Measurable maxAcceleration = new Measurable(Double.parseDouble(jTextFieldMaxAcceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
+            Vehicle selectedVehicle = jListVehicles.getSelectedValue();
 
-    }//GEN-LAST:event_jButton1ActionPerformed
-*/
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+            if (startNode == null
+                    || endNode == null
+                    || selectedVehicle == null) {
+                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes, as well as a vehicle.");
+
+            } else if (startNode.equals(endNode)) {
+                JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
+            } else if ((Double.compare(maxAcceleration.getQuantity(), 0) < 0) || (Double.compare(maxBraking.getQuantity(), 0) > 0)) {
+                JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAcceleration and a negative value for maxBraking");
+            } else {
+                Analysis generatedAnalysis = controller.efficientPathPolynomialInterpolationN11Button(startNode, endNode, selectedVehicle, maxAcceleration, maxBraking, load);
+                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis);
+                storeNetworkAnalysisUI.setVisible(true);
+                setVisible(false);
+            }
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, "Please insert a valid values");
+        }
+    }
+
+    /**
+     *
+     * Creates an analysis according to algorithm of n13
+     */
+    private void realizeN13ButtonN12() {
+        try {
+            Node startNode = jListNodes1.getSelectedValue();
+            Node endNode = jListNodes2.getSelectedValue();
+            Measurable maxAcceleration = new Measurable(Double.parseDouble(jTextFieldMaxAcceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
+            Vehicle selectedVehicle = jListVehicles.getSelectedValue();
+
+            if (startNode == null
+                    || endNode == null
+                    || selectedVehicle == null) {
+                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes, as well as a vehicle.");
+
+            } else if (startNode.equals(endNode)) {
+                JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
+            } else if ((Double.compare(maxAcceleration.getQuantity(), 0) < 0) || (Double.compare(maxBraking.getQuantity(), 0) > 0)) {
+                JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAcceleration and a negative value for maxBraking");
+            } else {
+                Analysis generatedAnalysis = controller.efficientPathPolynomialInterpolationN12Button(startNode, endNode, selectedVehicle, maxAcceleration, maxBraking, load);
+                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis);
+                storeNetworkAnalysisUI.setVisible(true);
+                setVisible(false);
+            }
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, "Please insert a valid values");
+        }
+    }
+
+    /**
+     * Creates an analysis according to algorithm of n12
+     */
+    private void realizeN12() {
         try {
             Node startNode = jListNodes1.getSelectedValue();
             Node endNode = jListNodes2.getSelectedValue();
@@ -402,7 +458,45 @@ public final class BestPathUI extends JFrame {
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(null, "Please insert a valid values");
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }
+
+    /**
+     * Creates an analysis according to algorithm of n11
+     */
+    private void realizeN11() {
+        try {
+            Node startNode = jListNodes1.getSelectedValue();
+            Node endNode = jListNodes2.getSelectedValue();
+            Measurable maxAcceleration = new Measurable(Double.parseDouble(jTextFieldMaxAcceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
+            Vehicle selectedVehicle = jListVehicles.getSelectedValue();
+
+            if (startNode == null
+                    || endNode == null
+                    || selectedVehicle == null) {
+                JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes, as well as a vehicle.");
+
+            } else if (startNode.equals(endNode)) {
+                JOptionPane.showMessageDialog(null, "Please select different start and end nodes.");
+            } else if ((Double.compare(maxAcceleration.getQuantity(), 0) < 0) || (Double.compare(maxBraking.getQuantity(), 0) > 0)) {
+                JOptionPane.showMessageDialog(null, "Please enter a positive value for maxAcceleration and a negative value for maxBraking");
+            } else {
+                Analysis generatedAnalysis = controller.analyzeTheoreticalEfficientPath(startNode, endNode, selectedVehicle, maxAcceleration, maxBraking, load) ;
+                StoreNetworkAnalysisUI storeNetworkAnalysisUI = new StoreNetworkAnalysisUI(generatedAnalysis);
+                storeNetworkAnalysisUI.setVisible(true);
+                setVisible(false);
+            }
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, "Please insert a valid load value to the selected vehicle");
+        }
+    }
+
+    /**
+    private void executeAlgorithmN10(ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+*/
 
     /**
      * Triggers UI display
