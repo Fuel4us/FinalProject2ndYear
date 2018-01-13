@@ -144,7 +144,7 @@ public class BestPathComparisonForm extends JFrame {
         jScrollPane4.setViewportView(jListVehicles);
 
         initializer.initializeLabels(jLabelAlgorithm1, Main.TWELVE_SEGOE_FONT, "VEHICLES:", SwingConstants.RIGHT, Main.DARK_BLUE);
-        initializer.initializeLabels(jLabel2, Main.FORTY_EIGHT_SEGOE_FONT, "Road Network Comparison Form", SwingConstants.RIGHT, Main.LIGHT_BLUE);
+        initializer.initializeLabels(jLabel2, Main.TV_POSTER_FONT, "Road Network Comparison Form", SwingConstants.CENTER, Main.LIGHT_BLUE);
 
         jButton1.setText("N10 - Fastest Path");
         jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 3));
