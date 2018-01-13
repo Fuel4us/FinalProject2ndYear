@@ -42,7 +42,7 @@ public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
                 .prepareCall("CALL STORE_ANALYSIS(?,?,?,?,?,?)")) {
 
             int analysisID = analysis.identify();
-            String projectName = analysis.issueRequestingEntity().getName();
+            String projectName = analysis.issueRequestingEntity().getId();
             String algorithmName = analysis.getAlgorithmName();
             Measurable expendedEnergy = analysis.getExpendedEnergy();
             Measurable travelTime = analysis.getTravelTime();
@@ -79,7 +79,8 @@ public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
 
                 storeSectionCallable.setInt(1, analysisID);
                 storeSectionCallable.setInt(2, section.getID());
-                storeAnalysedSectionNetworkID(storeSectionCallable, projectName);
+                String networkID = storeAnalysedSectionNetworkID(projectName);
+                storeSectionCallable.setString(3,networkID);
 
                 storeSectionCallable.executeUpdate();
             }
@@ -88,23 +89,27 @@ public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
 
     /**
      * Defines foreign key networkID required by {@link CallableStatement}
-     * @param storeSectionCallable a {@link CallableStatement}
      * @param projectName the {@link lapr.project.model.Project} whose {@link lapr.project.model.RoadNetwork} contains the entity Section analysed
      * @throws SQLException
      */
-    private void storeAnalysedSectionNetworkID(CallableStatement storeSectionCallable, String projectName) throws SQLException {
-        try (CallableStatement retrieveRoadNetwork = super.oracleConnection
-                .prepareCall("CALL STORE_ANALYSED_SECTION(?,?,?)")) {
-            retrieveRoadNetwork.registerOutParameter(2, OracleTypes.CURSOR);
-            retrieveRoadNetwork.setString(1, projectName);
+    private String storeAnalysedSectionNetworkID(String projectName) throws SQLException {
 
-            retrieveRoadNetwork.execute();
+        try (CallableStatement callableStatement = oracleConnection
+                .prepareCall("CALL retrieveRoadNetworkFromProject(?,?)")) {
 
-            ResultSet roadNetworkSet = (ResultSet) retrieveRoadNetwork.getObject(2);
+            callableStatement.setString(1, projectName);
+            callableStatement.registerOutParameter(2, OracleTypes.CURSOR);
+
+            callableStatement.execute();
+
+            ResultSet roadNetworkSet = (ResultSet) callableStatement.getObject(2);
             while (roadNetworkSet.next()) {
-                storeSectionCallable.setString(3,roadNetworkSet.getString("ID"));
+                if(roadNetworkSet.getString("projectName").equals(projectName)) {
+                    return roadNetworkSet.getString("ID");
+                }
             }
         }
+        return null;
     }
 
 }
