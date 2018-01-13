@@ -46,8 +46,10 @@ public class OracleVehicleDAO extends OracleDAO implements VehicleDAO {
             ResultSet vehicleSet = (ResultSet) callableStatement.getObject(2);
 
             while (vehicleSet.next()) {
-                Vehicle vehicle = retrieveVehicle(vehicleSet, projectName);
-                vehicles.add(vehicle);
+                if (vehicleSet.getString("projectName").equals(projectName)) {
+                    Vehicle vehicle = retrieveVehicle(vehicleSet, projectName);
+                    vehicles.add(vehicle);
+                }
             }
         }
 
