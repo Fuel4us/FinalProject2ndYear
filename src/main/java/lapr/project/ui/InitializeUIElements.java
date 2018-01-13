@@ -17,7 +17,7 @@ public class InitializeUIElements {
     }
 
     void initializeJButton(JButton button, Font font, String text, Color color, Border border){
-        button.setBackground(color);
+        button.setForeground(color);
         button.setFont(font);
         button.setText(text);
         button.setBorder(border);
