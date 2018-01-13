@@ -31,7 +31,7 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
      * @param analysisList
      */
     public BestPathComparisonAllAnalysisUI(List<Analysis> analysisList, List<Vehicle> vehiclesList) {
-        this.comparisonController = new BestPathComparisonAllAnalysisController();
+        this.comparisonController = new BestPathComparisonAllAnalysisController(Main.dbCom);
         BestPathComparisonAllAnalysisUI.analysisList = analysisList;
         BestPathComparisonAllAnalysisUI.vehiclesList = vehiclesList;
         initComponents();
