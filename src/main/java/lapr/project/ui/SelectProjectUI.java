@@ -96,11 +96,8 @@ public final class SelectProjectUI extends javax.swing.JFrame {
         jButtonCompForm.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonCompForm.addActionListener(evt -> jButtonCompFormActionPerformed(evt));
 
+        initializer.initializeJButton(jButtonBack,Main.FORTY_EIGHT_SEGOE_FONT, "«", Main.DARK_GREY, javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 4));
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
-        jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setText("«");
-        jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
 
         jButtonPathForm.setBackground(new java.awt.Color(45, 46, 45));
