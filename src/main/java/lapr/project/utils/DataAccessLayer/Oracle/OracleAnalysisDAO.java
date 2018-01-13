@@ -1,11 +1,14 @@
 package lapr.project.utils.DataAccessLayer.Oracle;
 
+import jdk.nashorn.internal.codegen.CompilerConstants;
 import lapr.project.model.Analysis;
 import lapr.project.model.Section;
 import lapr.project.utils.DataAccessLayer.Abstraction.AnalysisDAO;
 import lapr.project.utils.Measurable;
+import oracle.jdbc.OracleTypes;
 
 import java.sql.CallableStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -22,8 +25,8 @@ public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
 
         verifyConnection();
 
-        storePrimitives(analysis);
-        storeAnalysedSections(analysis);
+        String projectName = storePrimitives(analysis);
+        storeAnalysedSections(analysis, projectName);
 
         return true;
 
@@ -33,7 +36,7 @@ public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
      * Stores information that has direct mapping to the database
      * @param analysis the {@link Analysis} to store
      */
-    private void storePrimitives(Analysis analysis) throws SQLException {
+    private String storePrimitives(Analysis analysis) throws SQLException {
 
         try (CallableStatement storeAnalysisProcedure = super.oracleConnection
                 .prepareCall("CALL STORE_ANALYSIS(?,?,?,?,?,?)")) {
@@ -55,6 +58,7 @@ public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
             storeAnalysisProcedure.setInt(6, storeStatisticalInfo(travelCost));
 
             storeAnalysisProcedure.executeUpdate();
+            return projectName;
         }
 
     }
@@ -64,7 +68,7 @@ public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
      * Stores sections pertaining to the {@link Analysis}
      * @param analysis the {@link Analysis} to store
      */
-    private void storeAnalysedSections(Analysis analysis) throws SQLException {
+    private void storeAnalysedSections(Analysis analysis, String projectName) throws SQLException {
 
         int analysisID = analysis.identify();
 
@@ -75,14 +79,32 @@ public class OracleAnalysisDAO extends OracleDAO implements AnalysisDAO {
 
                 storeSectionCallable.setInt(1, analysisID);
                 storeSectionCallable.setInt(2, section.getID());
-//                storeSectionCallable.setString(3, networkID);
+                storeAnalysedSectionNetworkID(storeSectionCallable, projectName);
 
                 storeSectionCallable.executeUpdate();
-
             }
-
         }
+    }
 
+    /**
+     * Defines foreign key networkID required by {@link CallableStatement}
+     * @param storeSectionCallable a {@link CallableStatement}
+     * @param projectName the {@link lapr.project.model.Project} whose {@link lapr.project.model.RoadNetwork} contains the entity Section analysed
+     * @throws SQLException
+     */
+    private void storeAnalysedSectionNetworkID(CallableStatement storeSectionCallable, String projectName) throws SQLException {
+        try (CallableStatement retrieveRoadNetwork = super.oracleConnection
+                .prepareCall("CALL STORE_ANALYSED_SECTION(?,?,?)")) {
+            retrieveRoadNetwork.registerOutParameter(2, OracleTypes.CURSOR);
+            retrieveRoadNetwork.setString(1, projectName);
+
+            retrieveRoadNetwork.execute();
+
+            ResultSet roadNetworkSet = (ResultSet) retrieveRoadNetwork.getObject(2);
+            while (roadNetworkSet.next()) {
+                storeSectionCallable.setString(3,roadNetworkSet.getString("ID"));
+            }
+        }
     }
 
 }
