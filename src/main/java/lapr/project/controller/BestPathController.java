@@ -67,15 +67,59 @@ public class BestPathController {
     public Analysis analyzeFastestPath(Node startNode, Node endNode, Vehicle selectedVehicle, Measurable load){
         return PathAlgorithm.fastestPath(project, startNode, endNode, selectedVehicle, load);
     }
-  
 
+    /**
+     * Method called by the UI that returns the Analysis of N11 algorithm
+     *
+     * @param start
+     * @param end
+     * @param selectedVehicle
+     * @param load
+     * @return Analysis provided by the N11 algorithm
+     */
     public Analysis analyzeTheoreticalEfficientPath(Node start, Node end, Vehicle selectedVehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load){
         return PathAlgorithm.theoreticalEfficientPath(project, start, end, selectedVehicle, maxAcceleration, maxBraking, load);
     }
-          
+
+    /**
+     * Method called by the UI that returns the Analysis of N12 algorithm
+     *
+     * @param start
+     * @param end
+     * @param vehicle
+     * @param load
+     * @return Analysis provided by the N12 algorithm
+     */
     public Analysis analyzeEfficientPathEnergySavingMode(Node start, Node end, Vehicle vehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load){
         return PathAlgorithm.efficientPathEnergySavingMode(project, start, end, vehicle, maxAcceleration, maxBraking, load);
     }
+
+    /**
+     * Method called by the UI that returns the Analysis of N13 algorithm
+     *
+     * @param start
+     * @param end
+     * @param selectedVehicle
+     * @param load
+     * @return Analysis provided by the N13 algorithm
+     */
+    public Analysis efficientPathPolynomialInterpolationN11Button(Node start, Node end, Vehicle selectedVehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load){
+        return PathAlgorithm.efficientPathPolynomialInterpolation(project, start, end, selectedVehicle, maxAcceleration, maxBraking, load, false);
+    }
+
+    /**
+     * Method called by the UI that returns the Analysis of N13 algorithm in energy saving mode
+     *
+     * @param start
+     * @param end
+     * @param selectedVehicle
+     * @param load
+     * @return Analysis provided by the N13 algorithm
+     */
+    public Analysis efficientPathPolynomialInterpolationN12Button(Node start, Node end, Vehicle selectedVehicle, Measurable maxAcceleration, Measurable maxBraking, Measurable load){
+        return PathAlgorithm.efficientPathPolynomialInterpolation(project, start, end, selectedVehicle, maxAcceleration, maxBraking, load, true);
+    }
+
 
 
     /**

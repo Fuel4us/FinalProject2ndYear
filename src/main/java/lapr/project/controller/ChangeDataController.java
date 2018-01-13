@@ -1,6 +1,7 @@
 package lapr.project.controller;
 
 import lapr.project.model.*;
+import lapr.project.ui.Main;
 import lapr.project.utils.FileParser.FileParser;
 import lapr.project.utils.FileParser.XMLImporter;
 import lapr.project.utils.Graph.Edge;
@@ -21,10 +22,12 @@ public class ChangeDataController {
     private DataBaseCommunicator dbCom;
     private File roadsFile;
     private File vehiclesFile;
+    public FileParser importer;
 
     public ChangeDataController(Project project, DataBaseCommunicator dbCom) {
         this.project = project;
         this.dbCom = dbCom;
+        importer = new XMLImporter(this.roadsFile,this.vehiclesFile);
     }
 
     /**
@@ -95,6 +98,18 @@ public class ChangeDataController {
         List<Node> nodes = temporaryRoadNetwork.getVertices();
         List<Section> sections = temporaryRoadNetwork.getEdges().stream().map(Edge::getElement).collect(Collectors.toList());
         dbCom.addRoadNetworkElementsToProject(project, nodes, sections);
+    }
+
+    /**
+     * Sets the parsing mode, so that a specific type of file format can be read
+     * @param fileFormat the file format to read
+     */
+    public void setExtensionParsingMode( Main.SupportedInputFileTypes fileFormat) {
+        switch (fileFormat) {
+            case XML:
+                importer = new XMLImporter(this.roadsFile, this.vehiclesFile);
+                break;
+        }
     }
 
     /**
