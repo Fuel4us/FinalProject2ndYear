@@ -2,6 +2,7 @@ package lapr.project.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 import org.junit.Test;
@@ -105,20 +106,21 @@ public class AnalysisTest {
         Project result = instance.issueRequestingEntity();
         assertEquals(expResult, result);
     }
-//
-//    /**
-//     * Test of generateReport method, of class Analysis.
-//     */
-//    @Test
-//    public void testGenerateReport() {
-//        System.out.println("generateReport");
-//        Analysis instance = null;
-//        String expResult = "";
-//        String result = instance.generateReport();
-//        assertEquals(expResult, result);
-//         TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+
+    /**
+     * Test of generateReport method, of class Analysis.
+     */
+    @Test
+    public void testGenerateReport() {
+        System.out.println("generateReport");
+        String expResult = String.format("%s:%s%n%n %s:%s%n%n %s:%s%n%n %s:%s%n%n",
+                "Travelled sections", path.toString(),
+                "Expended Energy during travel", energyExp.toString(),
+                "Total Travel time", travelTime.toString(),
+                "Total toll costs", travelCost.toString());;
+        String result = instance.generateReport();
+        assertEquals(expResult, result);
+    }
 //
 //    /**
 //     * Test of exportDataHTML method, of class Analysis.
