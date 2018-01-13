@@ -1,12 +1,13 @@
 package lapr.project.ui;
 
 import lapr.project.controller.CreateProjectController;
-import lapr.project.model.Project;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
+import java.util.Arrays;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,7 +18,6 @@ public final class CreateProjectUI extends javax.swing.JFrame {
 
     private static final long serialVersionUID = -1818083907306250629L;
     private CreateProjectController createProjectController;
-    private Project p;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel imgLateral;
@@ -100,7 +100,7 @@ public final class CreateProjectUI extends javax.swing.JFrame {
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack.setText("«");
         jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
+        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed());
 
         jTextFieldName.setBackground(new java.awt.Color(87, 89, 87));
         jTextFieldName.setForeground(new java.awt.Color(45, 46, 45));
@@ -127,14 +127,14 @@ public final class CreateProjectUI extends javax.swing.JFrame {
         jButtonRoad.setForeground(Color.white);
         jButtonRoad.setText("Import roads configuration file");
         jButtonRoad.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
-        jButtonRoad.addActionListener(evt -> jButtonRoadActionPerformed(evt));
+        jButtonRoad.addActionListener(evt -> jButtonRoadActionPerformed());
 
         jButtonVehicle.setBackground(new java.awt.Color(45, 46, 45));
         jButtonVehicle.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jButtonVehicle.setForeground(Color.white);
         jButtonVehicle.setText("Import vehicles configuration file");
         jButtonVehicle.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
-        jButtonVehicle.addActionListener(evt -> jButtonVehicleActionPerformed(evt));
+        jButtonVehicle.addActionListener(evt -> jButtonVehicleActionPerformed());
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -225,53 +225,98 @@ public final class CreateProjectUI extends javax.swing.JFrame {
         } else if (jTextFieldDescription.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Insert a Description for your project");
         } else if (createProjectController.getRoadsFile() == null) {
-            JOptionPane.showMessageDialog(null, "Import a XML File that contains the Roads in your project");
+            JOptionPane.showMessageDialog(null, "Import the File that contains the Roads in your project");
         } else if (createProjectController.getVehiclesFile() == null) {
-            JOptionPane.showMessageDialog(null, "Import a XML File that contains the Vehicles in your project");
+            JOptionPane.showMessageDialog(null, "Import the File that contains the Vehicles in your project");
         } else {
             try {
-                Project project = createProjectController.createProject(jTextFieldName.getText(), jTextFieldDescription.getText());
-                JOptionPane.showMessageDialog(this,"Project created.");
+                createProjectController.createProject(jTextFieldName.getText(), jTextFieldDescription.getText());
+                JOptionPane.showMessageDialog(this, "Project created.");
             } catch (Exception ex) {
                 Logger.getLogger(CreateProjectUI.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_jButtonCreateActionPerformed
 
-    private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
+    private void jButtonBackActionPerformed() {//GEN-FIRST:event_jButtonBackActionPerformed
         WelcomeUI.display();
         dispose();
-    }//GEN-LAST:event_jButtonBackActionPerformed
+    }
 
-    private void jButtonRoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRoadActionPerformed
+    private void jButtonRoadActionPerformed() {//GEN-FIRST:event_jButtonRoadActionPerformed
+        CreateProjectController.SupportedFileTypes selectedExtension = displayExtensionChoiceUI();
+        createProjectController.setExtensionParsingMode(selectedExtension);
+        JFileChooser fileChooser = initFileChooserProperties(selectedExtension, "Select your RoadNetwork file");
+        loadFile(fileChooser, jButtonRoad, createProjectController::setRoadNetworkFile);
+    }
+
+
+    private void jButtonVehicleActionPerformed() {//GEN-FIRST:event_jButtonVehicleActionPerformed
+        CreateProjectController.SupportedFileTypes selectedExtension = displayExtensionChoiceUI();
+        createProjectController.setExtensionParsingMode(selectedExtension);
+        JFileChooser fileChooser = initFileChooserProperties(selectedExtension, "Select your Vehicles file");
+        loadFile(fileChooser, jButtonVehicle, createProjectController::setVehiclesFile);
+    }
+
+    /**
+     * Initializes a {@link JFileChooser} to open files with a filter defined according to the {@code selectedExtension}
+     * @param selectedExtension an instance of {@link lapr.project.controller.CreateProjectController.SupportedFileTypes}
+     * @return the prepared {@link JFileChooser}
+     */
+    private JFileChooser initFileChooserProperties(CreateProjectController.SupportedFileTypes selectedExtension, String dialogTitle) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setDialogTitle("Select your RoadNetwork file");
-        FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter(
-                "xml files (*.xml)", "xml");
-        fileChooser.setFileFilter(xmlFilter);
-        int returnVal = fileChooser.showOpenDialog(jButtonRoad);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File roads = fileChooser.getSelectedFile();
-            createProjectController.setRoadNetworkFile(roads);
-            JOptionPane.showMessageDialog(null, "Your file has been loaded.");
-        }
-    }//GEN-LAST:event_jButtonRoadActionPerformed
+        fileChooser.setDialogTitle(dialogTitle);
+        setFileChooserFilter(fileChooser, selectedExtension);
+        return fileChooser;
+    }
 
-    private void jButtonVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVehicleActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setDialogTitle("Select your Vehicles file");
-        FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter(
-                "xml files (*.xml)", "xml");
-        fileChooser.setFileFilter(xmlfilter);
-        int returnVal = fileChooser.showOpenDialog(jButtonVehicle);
+    /**
+     * Loads a file, executing the action designated by the {@code action} {@link Consumer}
+     */
+    private void loadFile(JFileChooser fileChooser, JButton attachedButton, Consumer<File> action) {
+        int returnVal = fileChooser.showOpenDialog(attachedButton);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File vehicles = fileChooser.getSelectedFile();
-            createProjectController.setVehiclesFile(vehicles);
+            File selectedFile = fileChooser.getSelectedFile();
+            action.accept(selectedFile);
             JOptionPane.showMessageDialog(null, "Your file has been loaded.");
         }
-    }//GEN-LAST:event_jButtonVehicleActionPerformed
+    }
+
+    /**
+     * Defines a filter based off of the {@code selectedExtension}
+     * @param fileChooser The {@link JFileChooser} to which this property is to be set
+     * @param selectedExtension the selected {@link lapr.project.controller.CreateProjectController.SupportedFileTypes}
+     */
+    private void setFileChooserFilter(JFileChooser fileChooser, CreateProjectController.SupportedFileTypes selectedExtension) {
+        switch (selectedExtension) {
+            case XML:
+                FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("xml files (*.xml)", "xml");
+                fileChooser.setFileFilter(xmlFilter);
+                break;
+        }
+
+    }
+
+    /**
+     * Displays a UI that prompts for the choice of the parsing mode to use to import information
+     * @return the {@code selectedType} - instance of {@link lapr.project.controller.CreateProjectController.SupportedFileTypes}
+     */
+    private CreateProjectController.SupportedFileTypes displayExtensionChoiceUI() {
+        CreateProjectController.SupportedFileTypes selectedType = null;
+        boolean validExtension;
+        do {
+            String selection = JOptionPane.showInputDialog("Choose the file format you want to parse.\nCurrently supported formats are "
+                    + Arrays.toString(CreateProjectController.SupportedFileTypes.values()));
+            try {
+                selectedType = CreateProjectController.SupportedFileTypes.valueOf(selection);
+                validExtension = true;
+            } catch (IllegalArgumentException e) {
+                validExtension = false;
+            }
+        } while (!validExtension);
+        return selectedType;
+    }
 
     /**
      * Triggers UI display

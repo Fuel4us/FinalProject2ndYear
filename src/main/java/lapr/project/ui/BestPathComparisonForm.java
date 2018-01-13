@@ -31,8 +31,13 @@ public class BestPathComparisonForm extends JFrame {
      * Creates new form BestPathComparisonForm
      *
      */
-    public BestPathComparisonForm() {
+    private BestPathComparisonForm() {
+        super("Best Path");
         this.controller = new BestPathController(Main.currentProject);
+        initComponents();
+        setResizable(false);
+        setVisible(true);
+        setLocationRelativeTo(null);
         initComponents();
     }
 
@@ -73,7 +78,7 @@ public class BestPathComparisonForm extends JFrame {
         jTextFieldMaxAceleration = new javax.swing.JTextField();
         jLabelLoad2 = new javax.swing.JLabel();
         jTextFieldMaxBraking = new javax.swing.JTextField();
-
+        vehicleModel = new DefaultListModel<>();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(45, 46, 45));
@@ -113,13 +118,6 @@ public class BestPathComparisonForm extends JFrame {
         jListNodes2.setBackground(new java.awt.Color(97, 122, 133));
         jListNodes2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListNodes2.setForeground(new java.awt.Color(255, 255, 255));
-        /**
-        jListNodes2.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Node 1", "Node 2" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        */
         jListNodes2.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(jListNodes2);
 
@@ -132,9 +130,6 @@ public class BestPathComparisonForm extends JFrame {
         jListNodes1.setBackground(new java.awt.Color(97, 122, 133));
         jListNodes1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListNodes1.setForeground(new java.awt.Color(255, 255, 255));
-        /**
-        jListNodes1.setModel(null);
-        */
         jListNodes1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(jListNodes1);
 
@@ -147,20 +142,13 @@ public class BestPathComparisonForm extends JFrame {
         jLabelNode2.setText("DESTINY NODE:");
 
         List<Vehicle> vehicleList = controller.getAllVehicles();
-        for (Vehicle obj : vehicleList) {
-            vehicleModel.addElement(obj);
-        }
+        DefaultListModel<Vehicle> vehicleModel = new DefaultListModel<>();
+        vehicleList.forEach(vehicleModel::addElement);
+
         jListVehicles.setModel(vehicleModel);
         jListVehicles.setBackground(new java.awt.Color(97, 122, 133));
         jListVehicles.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListVehicles.setForeground(new java.awt.Color(255, 255, 255));
-        /**
-        jListVehicles.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "V1", "V2", "V3" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        */
         jListVehicles.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane4.setViewportView(jListVehicles);
 
@@ -205,33 +193,19 @@ public class BestPathComparisonForm extends JFrame {
 
         addVehicleButton.setText("add vehicle");
         addVehicleButton.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(97, 122, 133), 3, true));
-        addVehicleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addVehicleButtonActionPerformed(evt);
-            }
-        });
+        addVehicleButton.addActionListener(evt -> addVehicleButtonActionPerformed(evt));
 
-        jListVehicles.setModel(selectedVehicles);
+        selectedVehicles = new DefaultListModel<>();
+        jListVehicles1.setModel(selectedVehicles);
         jListVehicles1.setBackground(new java.awt.Color(97, 122, 133));
         jListVehicles1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
         jListVehicles1.setForeground(new java.awt.Color(255, 255, 255));
-        /**
-        jListVehicles1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "V1", "V2", "V3" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        */
         jListVehicles1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane5.setViewportView(jListVehicles1);
 
         removeVehicleButton.setText("remove vehicle");
         removeVehicleButton.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(97, 122, 133), 3, true));
-        removeVehicleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                removeVehicleButtonActionPerformed(evt);
-            }
-        });
+        removeVehicleButton.addActionListener(evt -> removeVehicleButtonActionPerformed(evt));
 
         jLabelAlgorithm2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         jLabelAlgorithm2.setForeground(new java.awt.Color(97, 122, 133));
@@ -392,11 +366,11 @@ public class BestPathComparisonForm extends JFrame {
             Node startNode = jListNodes1.getSelectedValue();
             Node endNode = jListNodes2.getSelectedValue();
 
-            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.valueOf("km"));
-            List<Vehicle> selectedVehiclesList = new ArrayList<>();
-            for (int i = 0; i < selectedVehicles.size(); i++) {
-                selectedVehiclesList.add(selectedVehicles.get(i));
-            }
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
+
+            List<Vehicle> selectedVehiclesList = controller.getAllVehicles();;
+            selectedVehiclesList.forEach(vehicleModel::addElement);
+
             if (startNode == null
                     || endNode == null) {
                 JOptionPane.showMessageDialog(null, "You must first select starting and ending nodes");
@@ -424,7 +398,7 @@ public class BestPathComparisonForm extends JFrame {
             Node endNode = jListNodes2.getSelectedValue();
             Measurable maxAceleration = new Measurable(Double.parseDouble(jTextFieldMaxAceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
             Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
-            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.valueOf("km"));
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
             List<Vehicle> selectedVehiclesList = new ArrayList<>();
             for (int i = 0; i < selectedVehicles.size(); i++) {
                 selectedVehiclesList.add(selectedVehicles.get(i));
@@ -469,7 +443,7 @@ public class BestPathComparisonForm extends JFrame {
             Node endNode = jListNodes2.getSelectedValue();
             Measurable maxAceleration = new Measurable(Double.parseDouble(jTextFieldMaxAceleration.getText()), Unit.METERS_PER_SECOND_SQUARED);
             Measurable maxBraking = new Measurable(Double.parseDouble(jTextFieldMaxBraking.getText()), Unit.METERS_PER_SECOND_SQUARED);
-            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.valueOf("km"));
+            Measurable load = new Measurable(Integer.parseInt(jTextFieldLoad.getText()), Unit.KILOGRAM);
             List<Vehicle> selectedVehiclesList = new ArrayList<>();
             for (int i = 0; i < selectedVehicles.size(); i++) {
                 selectedVehiclesList.add(selectedVehicles.get(i));

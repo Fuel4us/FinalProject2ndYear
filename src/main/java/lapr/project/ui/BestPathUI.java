@@ -79,6 +79,7 @@ public final class BestPathUI extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        InitializeUIElements initializer = new InitializeUIElements();
         jPanel1 = new javax.swing.JPanel();
         imgLateral = new javax.swing.JLabel();
         orangeBorder = new javax.swing.JPanel();
@@ -122,11 +123,8 @@ public final class BestPathUI extends JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        initializer.initializeJButton(jButtonBack,Main.FORTY_EIGHT_SEGOE_FONT, "«", Main.LIGHT_BLUE, javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 4));
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
-        jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setText("«");
-        jButtonBack.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 4));
         jButtonBack.addActionListener(this::jButtonBackActionPerformed);
 
         List<Node> nodesList2 = controller.getAllNodes();
@@ -161,13 +159,8 @@ public final class BestPathUI extends JFrame {
         jListNodes1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(jListNodes1);
 
-        jLabelNode1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelNode1.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelNode1.setText("ORIGIN NODE:");
-
-        jLabelNode2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelNode2.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelNode2.setText("DESTINY NODE:");
+        initializer.initializeLabels(jLabelNode1, Main.TWELVE_SEGOE_FONT, "ORIGIN NODE:", SwingConstants.RIGHT, Main.LIGHT_BLUE);
+        initializer.initializeLabels(jLabelNode2, Main.TWELVE_SEGOE_FONT, "DESTINY NODE:", SwingConstants.RIGHT, Main.LIGHT_BLUE);
 
         List<Vehicle> vehicleList = controller.getAllVehicles();
         DefaultListModel<Vehicle> vehicleModel = new DefaultListModel<>();
@@ -187,55 +180,31 @@ public final class BestPathUI extends JFrame {
         jListVehicles.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane4.setViewportView(jListVehicles);
 
-        jLabelAlgorithm1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelAlgorithm1.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelAlgorithm1.setText("VEHICLES:");
+        initializer.initializeLabels(jLabelAlgorithm1, Main.TWELVE_SEGOE_FONT, "VEHICLES:", SwingConstants.RIGHT, Main.LIGHT_BLUE);
 
-        jLabel2.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(155, 177, 189));
-        jLabel2.setText("Road Network Path Form");
+        initializer.initializeLabels(jLabel2, Main.TV_POSTER_FONT, "Road Network Path Form", SwingConstants.CENTER, Main.LIGHT_BLUE);
 
         jButton1.setText("N10 - Fastest Path");
         jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 3));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        jButton1.addActionListener(evt -> jButton1ActionPerformed(evt));
 
         jButton2.setText("N11 -  Theoretical most energy efficient path");
         jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 3));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+        jButton2.addActionListener(evt -> jButton2ActionPerformed(evt));
 
         jButton3.setText("N12 - Most efficient path in energy saving mode");
         jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 3));
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
+        jButton3.addActionListener(evt -> jButton3ActionPerformed(evt));
 
-        jLabelLoad.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelLoad.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelLoad.setText("LOAD:");
+        initializer.initializeLabels(jLabelLoad, Main.TWELVE_SEGOE_FONT, "LOAD:", SwingConstants.RIGHT, Main.LIGHT_BLUE);
+        initializer.initializeLabels(jLabelLoad1, Main.TWELVE_SEGOE_FONT, "MAX ACCELERATION:", SwingConstants.RIGHT, Main.LIGHT_BLUE);
+        initializer.initializeLabels(jLabelLoad2, Main.TWELVE_SEGOE_FONT, "MAX BRAKING:", SwingConstants.RIGHT, Main.LIGHT_BLUE);
 
         jTextFieldLoad.setBackground(new java.awt.Color(97, 122, 133));
         jTextFieldLoad.setForeground(new java.awt.Color(255, 255, 255));
 
         jTextFieldMaxAcceleration.setBackground(new java.awt.Color(97, 122, 133));
         jTextFieldMaxAcceleration.setForeground(new java.awt.Color(255, 255, 255));
-
-        jLabelLoad1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelLoad1.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelLoad1.setText("MAX ACCELERATION:");
-
-        jLabelLoad2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelLoad2.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelLoad2.setText("MAX BRAKING:");
 
         jTextFieldMaxBraking.setBackground(new java.awt.Color(97, 122, 133));
         jTextFieldMaxBraking.setForeground(new java.awt.Color(255, 255, 255));
