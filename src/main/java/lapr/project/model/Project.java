@@ -147,9 +147,12 @@ public class Project {
 
     String addNameIfEquals(List<Project> project, String name) {
         
+        StringBuilder bld = new StringBuilder();
+        
         for (Project p: project) {
             if (p.getName().equalsIgnoreCase(name)) {
-                name += idName;
+                bld.append(idName);
+                name += bld.toString();
                 idName++;
             }
         }

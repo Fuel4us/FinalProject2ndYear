@@ -10,16 +10,13 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author pedro
+ * @author Team Fonseca
  */
 public class NodeTest {
     
     public NodeTest() {
     }
     
-    
-   
-
     /**
      * Test of toString method, of class Node.
      */
@@ -41,6 +38,31 @@ public class NodeTest {
         Node instance = new Node("id");
         String expResult = "id";
         String result = instance.getId();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of equals method, of class Node.
+     */
+    @Test
+    public void testEquals() {
+        System.out.println("equals");
+        Object o = new Node("Beta");
+        Node instance = new Node("Alpha");
+        boolean expResult = false;
+        boolean result = instance.equals(o);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of hashCode method, of class Node.
+     */
+    @Test
+    public void testHashCode() {
+        System.out.println("hashCode");
+        Node instance = new Node("Alpha");
+        int expResult = 2027433794;
+        int result = instance.hashCode();
         assertEquals(expResult, result);
     }
     
