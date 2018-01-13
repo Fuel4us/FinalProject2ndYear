@@ -83,7 +83,7 @@ class StoreNetworkAnalysisUI extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        initializer.initializeJButton(jButtonGenerateFile, Main.EIGHTEEN_SEGOE_FONT, "Generate HTML file", Main.DARK_GREY,
+        initializer.initializeJButton(jButtonGenerateFile, Main.EIGHTEEN_SEGOE_FONT, "Generate file", Main.DARK_GREY,
                 new javax.swing.border.LineBorder(Main.DARK_ORANGE, 4, true));
         jButtonGenerateFile.setBackground(new java.awt.Color(45, 46, 45));
         jButtonGenerateFile.addActionListener(this::jButtonGenerateFileActionPerformed);
