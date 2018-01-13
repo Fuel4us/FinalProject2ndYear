@@ -1,9 +1,7 @@
 package lapr.project.utils.DataAccessLayer.Oracle;
 
 
-import lapr.project.model.Project;
-import lapr.project.model.RoadNetwork;
-import lapr.project.model.Vehicle;
+import lapr.project.model.*;
 import lapr.project.utils.DataAccessLayer.Abstraction.ProjectDAO;
 import oracle.jdbc.OracleTypes;
 
@@ -37,6 +35,7 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
                 ResultSet resultSet = (ResultSet) callableStatement.getObject(1);
 
                 Project project;
+                String projectID;
                 String projectName;
                 String projectDescription;
 
@@ -50,12 +49,13 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
                 oracleRoadNetworkDAO.connectTo(this.oracleConnection);
 
                 while (resultSet.next()) {
+                    projectID = resultSet.getString("ID");
                     projectName = resultSet.getString("name");
                     projectDescription = resultSet.getString("description");
-                    vehicles = oracleVehicleDAO.retrieveVehicles(projectName);
-                    roadNetwork = oracleRoadNetworkDAO.retrieveRoadNetwork(projectName);
+                    vehicles = oracleVehicleDAO.retrieveVehicles(projectID);
+                    roadNetwork = oracleRoadNetworkDAO.retrieveRoadNetwork(projectID);
 
-                    project = new Project(projectName, projectDescription, roadNetwork, vehicles);
+                    project = new Project(projectID, projectName, projectDescription, roadNetwork, vehicles);
                     projects.add(project);
                 }
 
@@ -77,18 +77,18 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
     public void storeProjectInformation(Project project) throws SQLException {
         verifyConnection();
 
-        String projectName = storeProject(project);
+        String projectID = storeProject(project);
 
         RoadNetwork roadNetwork = project.getRoadNetwork();
         OracleRoadNetworkDAO oracleRoadNetworkDAO = new OracleRoadNetworkDAO();
         oracleRoadNetworkDAO.connectTo(this.oracleConnection);
-        oracleRoadNetworkDAO.storeRoadNetwork(roadNetwork, projectName);
+        oracleRoadNetworkDAO.storeRoadNetwork(roadNetwork, projectID);
 
         List<Vehicle> vehicles = project.getVehicles();
         OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO();
         oracleVehicleDAO.connectTo(this.oracleConnection);
         for (Vehicle vehicle : vehicles) {
-            oracleVehicleDAO.storeVehicleInfo(vehicle, projectName);
+            oracleVehicleDAO.storeVehicleInfo(vehicle, projectID);
         }
     }
 
@@ -100,15 +100,17 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
      */
     private String storeProject(Project project) throws SQLException {
 
-        try (CallableStatement storeProjectProcedure = super.oracleConnection.prepareCall("CALL storeProjectProcedure(?,?)")) {
+        try (CallableStatement storeProjectProcedure = super.oracleConnection.prepareCall("CALL storeProjectProcedure(?,?,?)")) {
 
+            String projectID = project.getId();
             String projectName = project.getName();
             String description = project.getDescription();
+            storeProjectProcedure.setString("ID", projectID);
             storeProjectProcedure.setString("projectName", projectName);
             storeProjectProcedure.setString("description", description);
 
             storeProjectProcedure.executeUpdate();
-            return projectName;
+            return projectID;
         }
     }
 
@@ -151,7 +153,7 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
 
         try (CallableStatement changeDescriptionProcedure = super.oracleConnection.prepareCall("CALL changeDescriptionProcedure(?,?)")) {
 
-            String originalName = project.getName();
+            String originalName = project.getId();
             changeDescriptionProcedure.setString("originalName", originalName);
             changeDescriptionProcedure.setString("newDescription", newDescription);
 
@@ -164,17 +166,19 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
     /**
      * Allows {@link RoadNetwork} growth
      * @param project {@link Project}
+     * @param nodes instances of {@link Node}
+     * @param sections instances of {@link Section}
      * @return true if success
      * @throws SQLException
      */
     @Override
-    public void addRoads(Project project) throws SQLException {
+    public void addRoads(Project project, List<Node> nodes, List<Section> sections) throws SQLException {
         verifyConnection();
 
             RoadNetwork roadNetwork = project.getRoadNetwork();
             OracleRoadNetworkDAO oracleRoadNetworkDAO = new OracleRoadNetworkDAO();
             oracleRoadNetworkDAO.connectTo(this.oracleConnection);
-            oracleRoadNetworkDAO.storeRoadNetworkGraph(roadNetwork, roadNetwork.getId(), project.getName());
+            oracleRoadNetworkDAO.storeRoadNetworkGraphAddElements(roadNetwork, nodes, sections, roadNetwork.getId(), project.getId());
     }
 
     /**
@@ -188,12 +192,12 @@ public class OracleProjectDAO extends OracleDAO implements ProjectDAO {
     public void addVehicles(Project project, List<Vehicle> addedVehicles) throws SQLException {
         verifyConnection();
 
-            String projectName = project.getName();
+            String projectID = project.getId();
 
             OracleVehicleDAO oracleVehicleDAO = new OracleVehicleDAO();
             oracleVehicleDAO.connectTo(this.oracleConnection);
             for (Vehicle vehicle : addedVehicles) {
-                oracleVehicleDAO.storeVehicleInfo(vehicle, projectName);
+                oracleVehicleDAO.storeVehicleInfo(vehicle, projectID);
             }
     }
 
