@@ -192,7 +192,7 @@ public class BestPathComparisonResultsUI extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(45, 46, 45));
 
-        initializer.initializeLabels(jLabelPageTitle, Main.FORTY_EIGHT_SEGOE_FONT, "Best Path Comparison Form", SwingConstants.RIGHT, Main.LIGHT_BLUE);
+        initializer.initializeLabels(jLabelPageTitle, Main.TV_POSTER_FONT, "Best Path Comparison Form", SwingConstants.CENTER, Main.LIGHT_BLUE);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
