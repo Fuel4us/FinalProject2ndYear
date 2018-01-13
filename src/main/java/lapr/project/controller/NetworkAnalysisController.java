@@ -1,27 +1,31 @@
 package lapr.project.controller;
 
+import lapr.project.model.Analysis;
+import lapr.project.ui.Main;
+import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
+import lapr.project.utils.FileParser.ExportHTML;
+import lapr.project.utils.FileParser.Exporter;
+
 import java.io.File;
 import java.io.IOException;
-import lapr.project.model.Analysis;
-import lapr.project.utils.DataAccessLayer.DataBaseCommunicator;
-import lapr.project.model.Project;
-import lapr.project.utils.FileParser.ExportHTML;
 
 /**
  * Connects UI events to Model classes
  */
 public class NetworkAnalysisController {
 
-    private Project project;
     private DataBaseCommunicator DBCom;
     private Analysis generatedAnalysis;
-    private ExportHTML exp;
+    private Exporter exporter;
 
-    public NetworkAnalysisController(Project project, DataBaseCommunicator DBCom, Analysis generatedAnalysis) {
-        this.project = project;
-        this.DBCom = DBCom;
+    /**
+     * Creates a {@link NetworkAnalysisController} with a {@link DataBaseCommunicator} and a generated {@link Analysis}
+     * Defaults exporting mode to HTML but can be changed
+     */
+    public NetworkAnalysisController(DataBaseCommunicator dbCom, Analysis generatedAnalysis) {
+        this.DBCom = dbCom;
         this.generatedAnalysis = generatedAnalysis;
-        this.exp = new ExportHTML(generatedAnalysis);
+        this.exporter = new ExportHTML(generatedAnalysis);
     }
 
     /**
@@ -31,9 +35,10 @@ public class NetworkAnalysisController {
     public boolean storeGeneratedNetworkAnalysis() {
         return DBCom.storeNetworkAnalysis(generatedAnalysis);
     }
-    
-    public void exportData(File output) throws IOException{
-        exp.exportDataFromAnalysis(output);
+
+    public void exportData(File output) throws IOException {
+        exporter.exportDataFromAnalysis(output);
     }
-    
+
+
 }
