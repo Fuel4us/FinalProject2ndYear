@@ -54,7 +54,7 @@ class PopUp1 extends javax.swing.JFrame {
         jButtonChangeData.setBackground(new java.awt.Color(45, 46, 45));
         jButtonChangeData.addActionListener(evt -> jButtonChangeDataActionPerformed(evt));
 
-        initializer.initializeJButton(jButtonChangeData, Main.EIGHTEEN_SEGOE_FONT, "Copy project", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
+        initializer.initializeJButton(jButtonCopy, Main.EIGHTEEN_SEGOE_FONT, "Copy project", Main.DARK_GREY, new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonCopy.setBackground(new java.awt.Color(45, 46, 45));
         jButtonCopy.addActionListener(evt -> jButtonCopyActionPerformed(evt));
 

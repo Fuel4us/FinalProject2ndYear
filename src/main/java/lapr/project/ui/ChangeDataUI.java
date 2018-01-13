@@ -14,6 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -102,11 +103,23 @@ public class ChangeDataUI extends javax.swing.JFrame {
 
         initializer.initializeJButton(jButtonRoad, Main.FOURTEEN_SEGOE_FONT, "Import roads configuration file", Color.WHITE, new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
         jButtonRoad.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonRoad.addActionListener(evt -> jButtonRoadActionPerformed(evt));
+        jButtonRoad.addActionListener(evt -> {
+            try {
+                jButtonRoadActionPerformed(evt);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
         initializer.initializeJButton(jButtonVehicle, Main.FOURTEEN_SEGOE_FONT, "Import new vehicles configuration file", Color.WHITE, new javax.swing.border.LineBorder(new java.awt.Color(155, 177, 189), 2, true));
         jButtonVehicle.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonVehicle.addActionListener(evt -> jButtonVehicleActionPerformed(evt));
+        jButtonVehicle.addActionListener(evt -> {
+            try {
+                jButtonVehicleActionPerformed(evt);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -198,62 +211,18 @@ public class ChangeDataUI extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButtonBackActionPerformed
 
-    private void jButtonRoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRoadActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setDialogTitle("Select your RoadNetwork file");
-        FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter(
-                "xml files (*.xml)", "xml");
-        fileChooser.setFileFilter(xmlFilter);
-        int returnVal = fileChooser.showOpenDialog(jButtonRoad);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File roads = fileChooser.getSelectedFile();
-            try {
-                controller.setRoadNetworkFile(roads);
-                controller.addNewRoads();
-                JOptionPane.showMessageDialog(null, "Your file has been loaded.");
-            } catch (IOException ex) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                JOptionPane.showMessageDialog(null, "IOException rose there was a problem with your file");
-            } catch (SAXException ex) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                JOptionPane.showMessageDialog(null, "SAXException rose there was a problem with your file");
-            } catch (ParserConfigurationException ex) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                JOptionPane.showMessageDialog(null, "ParserConfigurationException rose there was a problem with your file");
-            } catch (Exception e) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, e.getMessage());
-            }
-        }
+    private void jButtonRoadActionPerformed(java.awt.event.ActionEvent evt) throws Exception {//GEN-FIRST:event_jButtonRoadActionPerformed
+        Main.SupportedInputFileTypes selectedExtension = Main.displayExtensionChoiceUI();
+        JFileChooser fileChooser = Main.initFileChooserProperties(selectedExtension, "Select your RoadNetwork file");
+        loadFile(fileChooser, jButtonRoad, controller::setRoadNetworkFile, selectedExtension);
+        controller.addNewRoads();
     }//GEN-LAST:event_jButtonRoadActionPerformed
 
-    private void jButtonVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVehicleActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setDialogTitle("Select your Vehicles file");
-        FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter(
-                "xml files (*.xml)", "xml");
-        fileChooser.setFileFilter(xmlFilter);
-        int returnVal = fileChooser.showOpenDialog(jButtonRoad);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File vehicles = fileChooser.getSelectedFile();
-            try {
-                controller.setVehiclesFile(vehicles);
-                controller.addNewVehicles();
-                JOptionPane.showMessageDialog(null, "Your file has been loaded.");
-            } catch (IOException ex) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                JOptionPane.showMessageDialog(null, "IOException rose there was a problem with your file");
-            } catch (SAXException ex) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                JOptionPane.showMessageDialog(null, "SAXException rose there was a problem with your file");
-            } catch (ParserConfigurationException ex) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                JOptionPane.showMessageDialog(null, "ParserConfigurationException rose there was a problem with your file");
-            } catch (Exception e) {
-                Logger.getLogger(ChangeDataUI.class.getName()).log(Level.SEVERE, e.getMessage());
-            }
-        }
+    private void jButtonVehicleActionPerformed(java.awt.event.ActionEvent evt) throws Exception {//GEN-FIRST:event_jButtonVehicleActionPerformed
+        Main.SupportedInputFileTypes selectedExtension = Main.displayExtensionChoiceUI();
+        JFileChooser fileChooser = Main.initFileChooserProperties(selectedExtension, "Select your Vehicles file");
+        loadFile(fileChooser, jButtonVehicle, controller::setVehiclesFile, selectedExtension);
+        controller.addNewVehicles();
     }//GEN-LAST:event_jButtonVehicleActionPerformed
 
     /**
@@ -262,6 +231,19 @@ public class ChangeDataUI extends javax.swing.JFrame {
     public static void display() {
         Main.setLook();
         java.awt.EventQueue.invokeLater(() -> new ChangeDataUI().setVisible(true));
+    }
+
+    /**
+     * Loads a file, executing the action designated by the {@code action} {@link Consumer}
+     */
+    private void loadFile(JFileChooser fileChooser, JButton attachedButton, Consumer<File> action, Main.SupportedInputFileTypes extension) {
+        int returnVal = fileChooser.showOpenDialog(attachedButton);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            action.accept(selectedFile);
+            controller.setExtensionParsingMode(extension);
+            JOptionPane.showMessageDialog(null, "Your file has been loaded.");
+        }
     }
 
 

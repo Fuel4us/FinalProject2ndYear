@@ -222,35 +222,22 @@ public final class CreateProjectUI extends javax.swing.JFrame {
     }
 
     private void jButtonRoadActionPerformed() {//GEN-FIRST:event_jButtonRoadActionPerformed
-        CreateProjectController.SupportedFileTypes selectedExtension = displayExtensionChoiceUI();
-        JFileChooser fileChooser = initFileChooserProperties(selectedExtension, "Select your RoadNetwork file");
+        Main.SupportedInputFileTypes selectedExtension = Main.displayExtensionChoiceUI();
+        JFileChooser fileChooser = Main.initFileChooserProperties(selectedExtension, "Select your RoadNetwork file");
         loadFile(fileChooser, jButtonRoad, createProjectController::setRoadNetworkFile, selectedExtension);
     }
 
 
     private void jButtonVehicleActionPerformed() {//GEN-FIRST:event_jButtonVehicleActionPerformed
-        CreateProjectController.SupportedFileTypes selectedExtension = displayExtensionChoiceUI();
-        JFileChooser fileChooser = initFileChooserProperties(selectedExtension, "Select your Vehicles file");
+        Main.SupportedInputFileTypes selectedExtension = Main.displayExtensionChoiceUI();
+        JFileChooser fileChooser = Main.initFileChooserProperties(selectedExtension, "Select your Vehicles file");
         loadFile(fileChooser, jButtonVehicle, createProjectController::setVehiclesFile, selectedExtension);
-    }
-
-    /**
-     * Initializes a {@link JFileChooser} to open files with a filter defined according to the {@code selectedExtension}
-     * @param selectedExtension an instance of {@link lapr.project.controller.CreateProjectController.SupportedFileTypes}
-     * @return the prepared {@link JFileChooser}
-     */
-    private JFileChooser initFileChooserProperties(CreateProjectController.SupportedFileTypes selectedExtension, String dialogTitle) {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setDialogTitle(dialogTitle);
-        setFileChooserFilter(fileChooser, selectedExtension);
-        return fileChooser;
     }
 
     /**
      * Loads a file, executing the action designated by the {@code action} {@link Consumer}
      */
-    private void loadFile(JFileChooser fileChooser, JButton attachedButton, Consumer<File> action, CreateProjectController.SupportedFileTypes extension) {
+    private void loadFile(JFileChooser fileChooser, JButton attachedButton, Consumer<File> action, Main.SupportedInputFileTypes extension) {
         int returnVal = fileChooser.showOpenDialog(attachedButton);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
@@ -258,41 +245,6 @@ public final class CreateProjectUI extends javax.swing.JFrame {
             createProjectController.setExtensionParsingMode(extension);
             JOptionPane.showMessageDialog(null, "Your file has been loaded.");
         }
-    }
-
-    /**
-     * Defines a filter based off of the {@code selectedExtension}
-     * @param fileChooser The {@link JFileChooser} to which this property is to be set
-     * @param selectedExtension the selected {@link lapr.project.controller.CreateProjectController.SupportedFileTypes}
-     */
-    private void setFileChooserFilter(JFileChooser fileChooser, CreateProjectController.SupportedFileTypes selectedExtension) {
-        switch (selectedExtension) {
-            case XML:
-                FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("xml files (*.xml)", "xml");
-                fileChooser.setFileFilter(xmlFilter);
-                break;
-        }
-
-    }
-
-    /**
-     * Displays a UI that prompts for the choice of the parsing mode to use to import information
-     * @return the {@code selectedType} - instance of {@link lapr.project.controller.CreateProjectController.SupportedFileTypes}
-     */
-    private CreateProjectController.SupportedFileTypes displayExtensionChoiceUI() {
-        CreateProjectController.SupportedFileTypes selectedType = null;
-        boolean validExtension;
-        do {
-            String selection = JOptionPane.showInputDialog("Choose the file format you want to parse.\nCurrently supported formats are "
-                    + Arrays.toString(CreateProjectController.SupportedFileTypes.values()));
-            try {
-                selectedType = CreateProjectController.SupportedFileTypes.valueOf(selection);
-                validExtension = true;
-            } catch (IllegalArgumentException e) {
-                validExtension = false;
-            }
-        } while (!validExtension);
-        return selectedType;
     }
 
     /**
