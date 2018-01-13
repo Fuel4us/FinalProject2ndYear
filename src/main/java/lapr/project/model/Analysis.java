@@ -1,6 +1,6 @@
 package lapr.project.model;
 
-import lapr.project.utils.FileParser.ExportableCSV;
+
 import lapr.project.utils.FileParser.ExportableHTML;
 import org.antlr.stringtemplate.StringTemplate;
 import lapr.project.utils.Measurable;
@@ -19,7 +19,7 @@ import java.util.List;
  * travel time and travel cost for a vehicle in a list of sections.
  * </p>
  */
-public class Analysis implements ExportableHTML, ExportableCSV {
+public class Analysis implements ExportableHTML {
 
     private int id;
     private Project requestingInstance;
@@ -112,22 +112,8 @@ public class Analysis implements ExportableHTML, ExportableCSV {
         file.close();
     }
 
-    /**
-     * Exports data from analysis to an csv file according to given templates
-     * @param stringTemplate1 instance of {@link StringTemplate}
-     * @param stringTemplate2 instance of {@link StringTemplate}
-     * @param file FileWriter object
-     */
-    @Override
-    public void exportDataCSV(StringTemplate stringTemplate1, StringTemplate stringTemplate2, FileWriter file) throws IOException {
-        exportAnalysisData(stringTemplate1, file);
-        printPathRoadsCSV(file);
-        file.write(stringTemplate2.toString());
-        printPathCSV(file);
 
-        file.close();
-    }
-
+    
     /**
      * Exports data from analysis excluding path information
      * @param stringTemplate1
@@ -162,24 +148,6 @@ public class Analysis implements ExportableHTML, ExportableCSV {
         file.write("</center>");
     }
 
-    /**
-     * Exports roads in csv that compose the best path
-     */
-    private void printPathRoadsCSV(FileWriter file) throws IOException {
-        List<Road> roads = getPathRoads();
-        file.write("\n");
-        file.write("Roads:,");
-        int i = roads.size();
-        for (Road road : roads) {
-            if (i > 1) {
-                file.write(road.getName() + ",");
-            } else {
-                file.write(road.getName());
-            }
-            i--;
-        }
-        file.write("\n");
-    }
 
     /**
      * ToDo
@@ -205,14 +173,6 @@ public class Analysis implements ExportableHTML, ExportableCSV {
         }
     }
 
-    /**
-     * Exports to a csv file the segment information for each section that composes the best path
-     */
-    private void printPathCSV(FileWriter file) throws IOException {
-        for (Section section : bestPath) {
-            section.printSegmentsFromSectionCSV(file);
-        }
-    }
 
     /**
      * @return the RequestingInstance
