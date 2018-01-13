@@ -35,12 +35,13 @@ public class Section extends Edge<String, Direction> {
 
     /**
      * Creates a Section with a beginning and ending node, direction and collection of segments
+     *
      * @param beginningNode This section's beginning {@link Node}
-     * @param endingNode This section's ending {@link Node}
-     * @param direction This section's {@link Direction}
-     * @param segments The {@link Collection} of segments that belong to this section
+     * @param endingNode    This section's ending {@link Node}
+     * @param direction     This section's {@link Direction}
+     * @param segments      The {@link Collection} of segments that belong to this section
      * @param road
-     * @param tollFare The {@link List} of toll fares of this section
+     * @param tollFare      The {@link List} of toll fares of this section
      */
     public Section(Node beginningNode, Node endingNode, Direction direction, Collection<Segment> segments, Road road, List<Double> tollFare) {
         super(direction, calculateTotalLength(segments), beginningNode, endingNode);
@@ -55,6 +56,7 @@ public class Section extends Edge<String, Direction> {
 
     /**
      * Calculates the toll costs for this section, depending on the correspondent Road
+     *
      * @param vehicle the vehicle
      * @return the toll costs
      */
@@ -94,6 +96,7 @@ public class Section extends Edge<String, Direction> {
 
     /**
      * Retrieves the road's typology
+     *
      * @return the road's typology
      */
     public String retrieveRoadTypology() {
@@ -102,6 +105,7 @@ public class Section extends Edge<String, Direction> {
 
     /**
      * Checks if the list of segments contains the segment given as a parameter
+     *
      * @param segment the segment to be considered
      * @return true if the segment is in the list of segments
      */
@@ -113,8 +117,9 @@ public class Section extends Edge<String, Direction> {
      * Calculates the total minimum time interval spent for the whole section,
      * taking into account the velocity limit in each segment, its length and
      * the velocity limit of the vehicle in the typology of the segment
+     *
      * @param roadNetwork the road network of the current project
-     * @param vehicle the vehicle
+     * @param vehicle     the vehicle
      * @return the total minimum time interval
      */
     public double calculateTotalMinimumTimeInterval(RoadNetwork roadNetwork, Vehicle vehicle) {
@@ -133,6 +138,7 @@ public class Section extends Edge<String, Direction> {
 
     /**
      * Determines the weight of the edge, equating weight with the sum of the length of each segment
+     *
      * @param segments The instances of Segment that belong to this Section
      * @return the total weight of this Section
      */
@@ -166,6 +172,7 @@ public class Section extends Edge<String, Direction> {
 
     /**
      * Prints data from a given segment filling the information missing in a given HTML file template
+     *
      * @param segment the segment
      */
     private void printDataFromSegmentHTML(Segment segment, FileWriter file) throws IOException {
@@ -176,6 +183,7 @@ public class Section extends Edge<String, Direction> {
 
     /**
      * Prints data from a given segment filling the information missing in a given CSV file template
+     *
      * @param segment the segment
      */
     private void printDataFromSegmentCSV(Segment segment, FileWriter file) throws IOException {
@@ -206,7 +214,6 @@ public class Section extends Edge<String, Direction> {
     }
 
     /**
-     *
      * @return direction
      */
     public Direction getDirection() {
@@ -237,14 +244,15 @@ public class Section extends Edge<String, Direction> {
     /**
      * Calculates the energy expenditure of a vehicle, considering the max acceleration and braking, its load and
      * its initial velocity in this section
-     * @param roadNetwork the road network
-     * @param initialVelocity the initial velocity
-     * @param vehicle the vehicle
-     * @param load the load the vehicle takes
-     * @param maxAcceleration the max acceleration
-     * @param maxBraking the max braking
-     * @param pathEndingNode the ending node of the path
-     * @param energySaving true if the vehicle has the energy saving mode on
+     *
+     * @param roadNetwork             the road network
+     * @param initialVelocity         the initial velocity
+     * @param vehicle                 the vehicle
+     * @param load                    the load the vehicle takes
+     * @param maxAcceleration         the max acceleration
+     * @param maxBraking              the max braking
+     * @param pathEndingNode          the ending node of the path
+     * @param energySaving            true if the vehicle has the energy saving mode on
      * @param polynomialInterpolation true if the polynomial interpolation is to be used to calculate the torque value
      * @return an instance of the class EnergyExpenditureAccelResults containing the energy expenditure, the final velocity and
      * the time spent in this section
@@ -295,7 +303,7 @@ public class Section extends Edge<String, Direction> {
 
                     if (results.getEnergyExpenditure().getQuantity() < segmentResults.getEnergyExpenditure().getQuantity()) {
 
-                        segmentResults = results;
+                        segmentResults = new EnergyExpenditureAccelResults(results);
 
                     }
 

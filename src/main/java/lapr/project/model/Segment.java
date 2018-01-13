@@ -206,8 +206,10 @@ public class Segment {
         Measurable usedAcceleration;
         if (initialVelocityToBeUsed.getQuantity() < finalVelocityToBeUsed.getQuantity()) {
             usedAcceleration = maxAcceleration;
-        } else {
+        } else if (initialVelocityToBeUsed.getQuantity() > finalVelocityToBeUsed.getQuantity()) {
             usedAcceleration = maxBraking;
+        } else {
+            usedAcceleration = new Measurable(0, Unit.METERS_PER_SECOND_SQUARED);
         }
 
         // check if the theoretical final velocity to reach is possible for the car, if not, the final velocity is the
@@ -217,7 +219,7 @@ public class Segment {
             possibleVelocityToReach = vehicle.determineEnergyExpenditure(this, load, length,
                     finalVelocityToBeUsed.getQuantity() > initialVelocityToBeUsed.getQuantity() ? finalVelocityToBeUsed : initialVelocityToBeUsed,
                     maxBraking, energySaving, polynomialInterpolation)[2];
-        } else {
+        } else if (usedAcceleration.getQuantity() > 0) {
             if (lastSegment) {
 
                 Measurable possibleVelocityToReachAccelerating = vehicle.determineEnergyExpenditure(this, load, length,
@@ -236,6 +238,9 @@ public class Segment {
                         finalVelocityToBeUsed.getQuantity() > initialVelocityToBeUsed.getQuantity() ? finalVelocityToBeUsed : initialVelocityToBeUsed,
                         maxAcceleration, energySaving, polynomialInterpolation)[2];
             }
+        } else {
+            possibleVelocityToReach = vehicle.determineEnergyExpenditure(this, load, length, finalVelocityToBeUsed,
+                    usedAcceleration, energySaving, polynomialInterpolation)[2];
         }
 
         if (Double.compare(possibleVelocityToReach.getQuantity(), finalVelocityToBeUsed.getQuantity()) != 0) {
@@ -299,6 +304,16 @@ public class Segment {
             timeSpent.setQuantity(timeSpent.getQuantity() + (lengthForUniformMovement / finalVelocityToBeUsed.getQuantity()));
 
             return new EnergyExpenditureAccelResults(energyExpenditure, finishingPathVelocity, timeSpent);
+
+        }
+
+        if (Double.compare(usedAcceleration.getQuantity(), 0) == 0) {
+
+            energyExpenditure.setQuantity(determineEnergyExpenditureUniformMovement(new Measurable(0, Unit.METERS_PER_SECOND_SQUARED),
+                    vehicle, load, length, finalVelocityToBeUsed, energySaving, polynomialInterpolation));
+            timeSpent.setQuantity(length / finalVelocityToBeUsed.getQuantity());
+
+            return new EnergyExpenditureAccelResults(energyExpenditure, finalVelocityToBeUsed, timeSpent);
 
         }
 

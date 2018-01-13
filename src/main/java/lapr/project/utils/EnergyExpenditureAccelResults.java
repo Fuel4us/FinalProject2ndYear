@@ -85,6 +85,17 @@ public class EnergyExpenditureAccelResults {
     }
 
     /**
+     * Copy constructor
+     * @param results other instance of the class EnergyExpenditureAccelResults
+     */
+    public EnergyExpenditureAccelResults(EnergyExpenditureAccelResults results) {
+        this.energyExpenditure = results.energyExpenditure;
+        this.finalVelocity = results.finalVelocity;
+        this.timeSpent = results.timeSpent;
+        this.tollCosts = results.tollCosts;
+    }
+
+    /**
      * @return the energy expenditure
      */
     public Measurable getEnergyExpenditure() {
