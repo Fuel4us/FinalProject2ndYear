@@ -30,6 +30,9 @@ public class Analysis implements ExportableHTML, ExportableCSV {
     private Measurable travelCost;
 
     private static int analysisCounter = 0;
+    
+    public Analysis() {
+    }
 
     /**
      * Creates an analysis with id, requesting instance, algorithm name, best path, expended energy,
