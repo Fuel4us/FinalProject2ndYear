@@ -104,9 +104,9 @@ public final class SelectProjectUI extends javax.swing.JFrame {
         jButtonPathForm.setBackground(new java.awt.Color(45, 46, 45));
         jButtonPathForm.addActionListener(this::jButtonPathFormActionPerformed);
 
-        initializer.initializeLabels(jLabel2, Main.FORTY_EIGHT_SEGOE_FONT, "Select", SwingConstants.RIGHT, Main.LIGHT_BLUE);
-        initializer.initializeLabels(jLabel3, Main.FORTY_EIGHT_SEGOE_FONT, "a", SwingConstants.RIGHT, Main.LIGHT_BLUE);
-        initializer.initializeLabels(jLabel4, Main.FORTY_EIGHT_SEGOE_FONT, "project", SwingConstants.RIGHT, Main.LIGHT_BLUE);
+        initializer.initializeLabels(jLabel2, Main.TV_POSTER_FONT, "Select", SwingConstants.CENTER, Main.LIGHT_BLUE);
+        initializer.initializeLabels(jLabel3, Main.FORTY_EIGHT_SEGOE_FONT, "a", SwingConstants.CENTER, Main.LIGHT_BLUE);
+        initializer.initializeLabels(jLabel4, Main.FORTY_EIGHT_SEGOE_FONT, "project", SwingConstants.CENTER, Main.LIGHT_BLUE);
 
         List<Project> projectsList = selectProjectController.fetchProjectsList();
         DefaultComboBoxModel<Project> projectsModel = new DefaultComboBoxModel<>();
