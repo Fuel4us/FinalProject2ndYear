@@ -5,6 +5,7 @@
  */
 package lapr.project.ui;
 
+import java.awt.*;
 import java.util.ArrayList;
 import lapr.project.model.Node;
 import lapr.project.model.Vehicle;
@@ -84,6 +85,7 @@ public class BestPathComparisonForm extends JFrame {
         jLabelLoad2 = new javax.swing.JLabel();
         jTextFieldMaxBraking = new javax.swing.JTextField();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        InitializeUIElements initializer = new InitializeUIElements();
 
         jPanel1.setBackground(new java.awt.Color(45, 46, 45));
 
@@ -102,16 +104,9 @@ public class BestPathComparisonForm extends JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        initializer.initializeJButton(jButtonBack, Main.FORTY_EIGHT_SEGOE_FONT, "«", Main.DARK_GREY, javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 4));
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
-        jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setText("«");
-        jButtonBack.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 4));
-        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBackActionPerformed();
-            }
-        });
+        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed());
 
         List<Node> nodesList2 = controller.getAllNodes();
         DefaultListModel<Node> nodesModel2 = new DefaultListModel<>();
@@ -137,13 +132,9 @@ public class BestPathComparisonForm extends JFrame {
         jListNodes1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(jListNodes1);
 
-        jLabelNode1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelNode1.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelNode1.setText("ORIGIN NODE:");
+        initializer.initializeLabels(jLabelNode1, Main.TWELVE_SEGOE_FONT, "ORIGIN NODE:", SwingConstants.RIGHT, Main.DARK_BLUE);
 
-        jLabelNode2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelNode2.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelNode2.setText("DESTINY NODE:");
+        initializer.initializeLabels(jLabelNode2, Main.TWELVE_SEGOE_FONT, "DESTINY NODE:", SwingConstants.RIGHT, Main.DARK_BLUE);
 
         jListVehicles.setModel(vehicleModel);
         jListVehicles.setBackground(new java.awt.Color(97, 122, 133));
@@ -152,13 +143,8 @@ public class BestPathComparisonForm extends JFrame {
         jListVehicles.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane4.setViewportView(jListVehicles);
 
-        jLabelAlgorithm1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelAlgorithm1.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelAlgorithm1.setText("VEHICLES:");
-
-        jLabel2.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(155, 177, 189));
-        jLabel2.setText("Road Network Comparison Form");
+        initializer.initializeLabels(jLabelAlgorithm1, Main.TWELVE_SEGOE_FONT, "VEHICLES:", SwingConstants.RIGHT, Main.DARK_BLUE);
+        initializer.initializeLabels(jLabel2, Main.FORTY_EIGHT_SEGOE_FONT, "Road Network Comparison Form", SwingConstants.RIGHT, Main.LIGHT_BLUE);
 
         jButton1.setText("N10 - Fastest Path");
         jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 3));
@@ -172,9 +158,7 @@ public class BestPathComparisonForm extends JFrame {
         jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 3));
         jButton3.addActionListener(this::jButton3ActionPerformed);
 
-        jLabelLoad.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelLoad.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelLoad.setText("LOAD:");
+        initializer.initializeLabels(jLabelLoad, Main.TWELVE_SEGOE_FONT, "LOAD:", SwingConstants.RIGHT, Main.DARK_BLUE);
 
         jTextFieldLoad.setBackground(new java.awt.Color(97, 122, 133));
         jTextFieldLoad.setForeground(new java.awt.Color(255, 255, 255));
@@ -195,20 +179,14 @@ public class BestPathComparisonForm extends JFrame {
         removeVehicleButton.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(97, 122, 133), 3, true));
         removeVehicleButton.addActionListener(evt -> removeVehicleButtonActionPerformed());
 
-        jLabelAlgorithm2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelAlgorithm2.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelAlgorithm2.setText("SELECTED VEHICLES:");
+        initializer.initializeLabels(jLabelAlgorithm2, Main.TWELVE_SEGOE_FONT, "SELECTED VEHICLES:", SwingConstants.RIGHT, Main.DARK_BLUE);
 
-        jLabelLoad1.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelLoad1.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelLoad1.setText("MAX ACCELERATION:");
+        initializer.initializeLabels(jLabelLoad1, Main.TWELVE_SEGOE_FONT, "MAX ACCELERATION:", SwingConstants.RIGHT, Main.DARK_BLUE);
 
         jTextFieldMaxAcceleration.setBackground(new java.awt.Color(97, 122, 133));
         jTextFieldMaxAcceleration.setForeground(new java.awt.Color(255, 255, 255));
 
-        jLabelLoad2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        jLabelLoad2.setForeground(new java.awt.Color(97, 122, 133));
-        jLabelLoad2.setText("MAX BRAKING:");
+        initializer.initializeLabels(jLabelLoad2, Main.TWELVE_SEGOE_FONT, "MAX BRAKING:", SwingConstants.RIGHT, Main.DARK_BLUE);
 
         jTextFieldMaxBraking.setBackground(new java.awt.Color(97, 122, 133));
         jTextFieldMaxBraking.setForeground(new java.awt.Color(255, 255, 255));
