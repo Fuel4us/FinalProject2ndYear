@@ -18,12 +18,22 @@ public class CreateProjectController {
     private final DataBaseCommunicator dbCom;
     private File roadsFile;
     private File vehiclesFile;
+    private FileParser importer;
+
+    /**
+     * Enumerates supported file types
+     */
+    public enum SupportedFileTypes {
+        XML
+    }
 
     /**
      * Full constructor for the class CreateProjectController
+     * File parsing method defaults to XML but can be changed
      */
     public CreateProjectController(DataBaseCommunicator dbCom) {
         this.dbCom = dbCom;
+        importer = new XMLImporter(this.roadsFile,this.vehiclesFile);
     }
 
 
@@ -71,12 +81,23 @@ public class CreateProjectController {
      * @param description Project description
      */
     public Project createProject(String name, String description) throws Exception {
-        FileParser importer = new XMLImporter(roadsFile, vehiclesFile);
         RoadNetwork roadNetwork = importer.importNetwork(true);
         List<Vehicle> vehicles = importer.importVehicles();
         Project project = new Project(name, name, description, roadNetwork, vehicles);
         dbCom.addProject(project);
         return project;
+    }
+
+    /**
+     * Sets the parsing mode, so that a specific type of file format can be read
+     * @param fileFormat the file format to read
+     */
+    void setExtensionParsingMode(SupportedFileTypes fileFormat) {
+        switch (fileFormat) {
+            case XML:
+                importer = new XMLImporter(this.roadsFile, this.vehiclesFile);
+                break;
+        }
     }
 
 }
