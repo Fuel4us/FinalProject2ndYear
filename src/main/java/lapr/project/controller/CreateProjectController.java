@@ -74,7 +74,7 @@ public class CreateProjectController {
         FileParser importer = new XMLImporter(roadsFile, vehiclesFile);
         RoadNetwork roadNetwork = importer.importNetwork(true);
         List<Vehicle> vehicles = importer.importVehicles();
-        Project project = new Project(name, description, roadNetwork, vehicles);
+        Project project = new Project(name, name, description, roadNetwork, vehicles);
         dbCom.addProject(project);
         return project;
     }

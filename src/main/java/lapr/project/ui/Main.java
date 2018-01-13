@@ -58,7 +58,7 @@ public class Main {
      */
     private static void initStatic() {
         currentProject = new Project(
-                "New Project",
+                "New Project","New Project",
                 "Add a description",
                 new RoadNetwork(),
                 new ArrayList<>()
