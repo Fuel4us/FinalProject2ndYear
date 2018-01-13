@@ -40,5 +40,16 @@ public class NetworkAnalysisController {
         exporter.exportDataFromAnalysis(output);
     }
 
+    /**
+     * Sets the output mode, so that a specific type of file format can be exported
+     * @param fileFormat the file format to which to export
+     */
+    public void setOutputFormat(Main.SupportedOutputFileTypes fileFormat) {
+        switch (fileFormat) {
+            case HTML:
+                exporter = new ExportHTML(this.generatedAnalysis);
+                break;
+        }
+    }
 
 }
