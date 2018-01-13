@@ -153,22 +153,13 @@ public class Section extends Edge<String, Direction> {
     /**
      * Prints data of each segment included in the section, according to a certain html file
      */
-    public void printSegmentsFromSectionHTML(FileWriter file) throws IOException {
+    void printSegmentsFromSectionHTML(FileWriter file) throws IOException {
         for (Segment segment : segments) {
             file.write("\n");
             printDataFromSegmentHTML(segment, file);
         }
     }
 
-    /**
-     * Prints data of each segment included in the section, according to a certain csv file
-     */
-    public void printSegmentsFromSectionCSV(FileWriter file) throws IOException {
-        for (Segment segment : segments) {
-            file.write("\n");
-            printDataFromSegmentCSV(segment, file);
-        }
-    }
 
     /**
      * Prints data from a given segment filling the information missing in a given HTML file template
@@ -178,17 +169,6 @@ public class Section extends Edge<String, Direction> {
     private void printDataFromSegmentHTML(Segment segment, FileWriter file) throws IOException {
         StringTemplateGroup groupSegment = new StringTemplateGroup("src\\main\\resources");
         StringTemplate segmentTemplate = groupSegment.getInstanceOf(HTML_STRUCTURE_SEGMENT);
-        segment.printDataFromSegment(segmentTemplate, file);
-    }
-
-    /**
-     * Prints data from a given segment filling the information missing in a given CSV file template
-     *
-     * @param segment the segment
-     */
-    private void printDataFromSegmentCSV(Segment segment, FileWriter file) throws IOException {
-        StringTemplateGroup groupSegment = new StringTemplateGroup("src\\main\\resources");
-        StringTemplate segmentTemplate = groupSegment.getInstanceOf(CSV_STRUCTURE_SEGMENT);
         segment.printDataFromSegment(segmentTemplate, file);
     }
 
