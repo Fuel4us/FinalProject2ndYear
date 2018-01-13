@@ -51,10 +51,7 @@ public class Measurable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 19 * hash + (int) (Double.doubleToLongBits(this.quantity) ^ (Double.doubleToLongBits(this.quantity) >>> 32));
-        hash = 19 * hash + Objects.hashCode(this.unit);
-        return hash;
+        return Objects.hash(quantity, unit);
     }
 
     @Override

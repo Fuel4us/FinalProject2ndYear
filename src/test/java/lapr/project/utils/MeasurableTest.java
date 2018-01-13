@@ -58,7 +58,7 @@ public class MeasurableTest {
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
-        int expResult = -287766480;
+        int expResult = -398888198;
         int result = instance.hashCode();
         assertEquals(expResult, result);
     }
