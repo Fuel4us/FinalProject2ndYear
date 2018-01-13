@@ -211,7 +211,13 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonGenerateFileActionPerformed
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
-        // TODO add your handling code here:
+        for(Analysis analysis : analysisList) {
+            if (comparisonController.storeGeneratedNetworkAnalysis(analysis)) {
+                JOptionPane.showMessageDialog(null, "Analysis saved successfully");
+            } else {
+                JOptionPane.showMessageDialog(null, "There was an error storing the analysis, please check your internet connection and try again later.");
+            }
+        }
     }//GEN-LAST:event_jButtonSaveActionPerformed
 
     /**

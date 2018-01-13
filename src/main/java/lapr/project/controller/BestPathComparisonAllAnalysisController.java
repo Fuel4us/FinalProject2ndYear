@@ -34,6 +34,14 @@ public class BestPathComparisonAllAnalysisController {
     }
 
     /**
+     * Stores generated network analysis to current project
+     * @return true if storing was successful
+     */
+    public boolean storeGeneratedNetworkAnalysis(Analysis generatedAnalysis) {
+        return dbCom.storeNetworkAnalysis(generatedAnalysis);
+    }
+
+    /**
      *
      * @param outputFile {@link File} to which is desired to export an {@link Analysis} data
      * @param analysis {@link Analysis} whose data is going to be exported
