@@ -7,12 +7,12 @@ package lapr.project.ui;
 
 import lapr.project.controller.NetworkAnalysisController;
 import lapr.project.model.Analysis;
-import lapr.project.model.Project;
 import lapr.project.utils.FileParser.ExportHTML;
 
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,7 +47,7 @@ class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         analysisResultTextField.setEditable(false);
         analysisResultTextField.setText(generatedAnalysis.generateReport());
-        networkAnalysisController = new NetworkAnalysisController(Main.currentProject, Main.dbCom, generatedAnalysis);
+        networkAnalysisController = new NetworkAnalysisController(Main.dbCom, generatedAnalysis);
     }
 
     @SuppressWarnings("unchecked")
@@ -168,26 +168,59 @@ class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         fileChooser.showSaveDialog(jButtonGenerateFile);
-        String name = JOptionPane.showInputDialog(jButtonGenerateFile, "Choose the name for this file");
+        String fileName = JOptionPane.showInputDialog(jButtonGenerateFile, "Choose the name for this file");
 
-        String[] splitFileName = name.split("\\.");
-        if (!splitFileName[splitFileName.length - 1].equals(ExportHTML.HTML_FILE_EXTENSION)) {
-            name += ExportHTML.HTML_FILE_EXTENSION;
-        }
+        Main.SupportedOutputFileTypes selectedOutputFormat = displayExtensionChoiceUI();
+        networkAnalysisController.setOutputFormat(selectedOutputFormat);
+        fileName = appendFileFormat(fileName, selectedOutputFormat);
 
         String dir = fileChooser.getSelectedFile().getAbsolutePath();
-        File file = new File(dir + System.getProperty("file.separator") + name);
+        File file = new File(dir + System.getProperty("file.separator") + fileName);
+
         try {
             networkAnalysisController.exportData(file);
         } catch (IOException ex) {
             Logger.getLogger(StoreNetworkAnalysisUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButtonGenerateFileActionPerformed
+    }
 
-    private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
+    private String appendFileFormat(String fileName, Main.SupportedOutputFileTypes selectedOutputFormat) {
+        switch (selectedOutputFormat) {
+            case HTML:
+                String[] splitFileName = fileName.split("\\.");
+                if (!splitFileName[splitFileName.length - 1].equals(ExportHTML.HTML_FILE_EXTENSION)) {
+                    fileName += ExportHTML.HTML_FILE_EXTENSION;
+                }
+                break;
+        }
+        return fileName;
+    }
+
+    /**
+     * Displays a UI that prompts for the choice of the parsing mode to use to import information
+     * @return the {@code selectedType} - instance of {@link Main.SupportedOutputFileTypes}
+     */
+    private Main.SupportedOutputFileTypes displayExtensionChoiceUI() {
+        Main.SupportedOutputFileTypes selectedType = null;
+        boolean validExtension;
+        do {
+            String selection = JOptionPane.showInputDialog("Choose the desired output file format.\nCurrently supported formats are "
+                    + Arrays.toString(Main.SupportedOutputFileTypes.values()));
+            try {
+                selectedType = Main.SupportedOutputFileTypes.valueOf(selection);
+                validExtension = true;
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(this, "Please insert a valid value.");
+                validExtension = false;
+            }
+        } while (!validExtension);
+        return selectedType;
+    }
+
+    private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {
         BestPathUI.display();
         dispose();
-    }//GEN-LAST:event_jButtonBackActionPerformed
+    }
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {
         if (networkAnalysisController.storeGeneratedNetworkAnalysis()) {
