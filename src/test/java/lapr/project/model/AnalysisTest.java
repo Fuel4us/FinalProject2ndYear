@@ -95,33 +95,27 @@ public class AnalysisTest {
         assertEquals(expResult, result);
     }
 
-//    /**
-//     * Test of issueRequestingEntity method, of class Analysis.
-//     */
-//    @Test
-//    public void testIssueRequestingEntity() {
-//        System.out.println("issueRequestingEntity");
-//        Analysis instance = null;
-//        Project expResult = null;
-//        Project result = instance.issueRequestingEntity();
-//        assertEquals(expResult, result);
-//         TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of identify method, of class Analysis.
-//     */
-//    @Test
-//    public void testIdentify() {
-//        System.out.println("identify");
-//        Analysis instance = null;
-//        int expResult = 0;
-//        int result = instance.identify();
-//        assertEquals(expResult, result);
-//         TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+    /**
+     * Test of issueRequestingEntity method, of class Analysis.
+     */
+    @Test
+    public void testIssueRequestingEntity() {
+        System.out.println("issueRequestingEntity");
+        Project expResult = project;
+        Project result = instance.issueRequestingEntity();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of identify method, of class Analysis.
+     */
+    @Test
+    public void testIdentify() {
+        System.out.println("identify");
+        int expResult = 16;
+        int result = instance.identify();
+        assertEquals(expResult, result);
+    }
 //
 //    /**
 //     * Test of generateReport method, of class Analysis.
