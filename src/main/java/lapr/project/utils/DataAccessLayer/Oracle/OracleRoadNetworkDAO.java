@@ -260,6 +260,7 @@ public class OracleRoadNetworkDAO extends OracleDAO implements RoadNetworkDAO {
                 List<Double> tollFareSectionList = fillSectionTollFareList(sectionId, networkID);
 
                 Section section = new Section(beginningNode, endingNode, roadDirection, segments, road, tollFareSectionList);
+                section.setId(sectionId);
                 roadNetwork.addSection(beginningNode, endingNode, section);
             }
         }
