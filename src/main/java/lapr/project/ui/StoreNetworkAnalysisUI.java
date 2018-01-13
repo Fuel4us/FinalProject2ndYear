@@ -62,6 +62,7 @@ class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         analysisResultTextField = new javax.swing.JTextField();
         jLabelTitle = new javax.swing.JLabel();
         jButtonSave = new javax.swing.JButton();
+        InitializeUIElements initializer = new InitializeUIElements();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,18 +83,14 @@ class StoreNetworkAnalysisUI extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        initializer.initializeJButton(jButtonGenerateFile, Main.EIGHTEEN_SEGOE_FONT, "Generate HTML file", Main.DARK_GREY,
+                new javax.swing.border.LineBorder(Main.DARK_ORANGE, 4, true));
         jButtonGenerateFile.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonGenerateFile.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonGenerateFile.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonGenerateFile.setText("Generate file");
-        jButtonGenerateFile.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonGenerateFile.addActionListener(this::jButtonGenerateFileActionPerformed);
 
+        initializer.initializeJButton(jButtonBack, Main.FORTY_EIGHT_SEGOE_FONT, "«", Main.DARK_GREY,
+                new javax.swing.border.LineBorder(Main.DARK_ORANGE, 4, true));
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
-        jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setText("«");
-        jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonBack.addActionListener(this::jButtonBackActionPerformed);
 
         analysisResultTextField.setBackground(new java.awt.Color(97, 122, 133));
@@ -102,15 +99,11 @@ class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         analysisResultTextField.setText("<sample path>");
         analysisResultTextField.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(155, 177, 189), 2));
 
-        jLabelTitle.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
-        jLabelTitle.setForeground(new java.awt.Color(155, 177, 189));
-        jLabelTitle.setText("Network analysis result");
+        initializer.initializeLabels(jLabelTitle, Main.TV_POSTER_FONT, "Network analysis result", SwingConstants.CENTER, Main.LIGHT_BLUE);
 
+        initializer.initializeJButton(jButtonSave, Main.EIGHTEEN_SEGOE_FONT, "Save results", Main.DARK_GREY,
+                new javax.swing.border.LineBorder(Main.DARK_ORANGE, 4, true));
         jButtonSave.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonSave.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonSave.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonSave.setText("Save results");
-        jButtonSave.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonSave.addActionListener(this::jButtonSaveActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

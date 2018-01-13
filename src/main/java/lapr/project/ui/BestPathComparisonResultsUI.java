@@ -7,6 +7,8 @@ package lapr.project.ui;
 
 import lapr.project.model.Analysis;
 
+import javax.swing.*;
+
 /**
  *
  * @author anily
@@ -38,6 +40,7 @@ public class BestPathComparisonResultsUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        InitializeUIElements initializer = new InitializeUIElements();
         jPanelVehicleAnalysis = new javax.swing.JPanel();
         projectNameTextField = new javax.swing.JTextField();
         algorithmNameTextField = new javax.swing.JTextField();
@@ -105,25 +108,11 @@ public class BestPathComparisonResultsUI extends javax.swing.JFrame {
             }
         });
 
-        algorithmLabel.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        algorithmLabel.setForeground(new java.awt.Color(97, 122, 133));
-        algorithmLabel.setText("ANALYSIS ALGORITHM:");
-
-        timeLabel.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        timeLabel.setForeground(new java.awt.Color(97, 122, 133));
-        timeLabel.setText("TRAVEL TIME:");
-
-        projectNameLabel.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        projectNameLabel.setForeground(new java.awt.Color(97, 122, 133));
-        projectNameLabel.setText("PROJECT NAME:");
-
-        energyLabel.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        energyLabel.setForeground(new java.awt.Color(97, 122, 133));
-        energyLabel.setText("EXPENDED ENERGY:");
-
-        costLabel.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
-        costLabel.setForeground(new java.awt.Color(97, 122, 133));
-        costLabel.setText("COST:");
+        initializer.initializeLabels(algorithmLabel, Main.TWELVE_SEGOE_FONT, "ANALYSIS ALGORITHM:", SwingConstants.RIGHT, Main.DARK_BLUE);
+        initializer.initializeLabels(timeLabel, Main.TWELVE_SEGOE_FONT, "TRAVEL TIME:", SwingConstants.RIGHT, Main.DARK_BLUE);
+        initializer.initializeLabels(projectNameLabel, Main.TWELVE_SEGOE_FONT, "PROJECT NAME:", SwingConstants.RIGHT, Main.DARK_BLUE);
+        initializer.initializeLabels(energyLabel, Main.TWELVE_SEGOE_FONT, "EXPENDED ENERGY:", SwingConstants.RIGHT, Main.DARK_BLUE);
+        initializer.initializeLabels(costLabel, Main.TWELVE_SEGOE_FONT, "COST:", SwingConstants.RIGHT, Main.DARK_BLUE);
 
         javax.swing.GroupLayout jPanelVehicleAnalysisLayout = new javax.swing.GroupLayout(jPanelVehicleAnalysis);
         jPanelVehicleAnalysis.setLayout(jPanelVehicleAnalysisLayout);
@@ -203,9 +192,7 @@ public class BestPathComparisonResultsUI extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(45, 46, 45));
 
-        jLabelPageTitle.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
-        jLabelPageTitle.setForeground(new java.awt.Color(155, 177, 189));
-        jLabelPageTitle.setText("Best Path Comparison Form");
+        initializer.initializeLabels(jLabelPageTitle, Main.TV_POSTER_FONT, "Best Path Comparison Form", SwingConstants.CENTER, Main.LIGHT_BLUE);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -226,27 +213,15 @@ public class BestPathComparisonResultsUI extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(45, 46, 45));
 
+        initializer.initializeJButton(jButtonBack, Main.FORTY_EIGHT_SEGOE_FONT, "«", Main.DARK_GREY,
+                new javax.swing.border.LineBorder(Main.DARK_ORANGE, 4, true));
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
-        jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setText("«");
-        jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBackActionPerformed(evt);
-            }
-        });
+        jButtonBack.addActionListener(this::jButtonBackActionPerformed);
 
+        initializer.initializeJButton(jButtonRequestAnalysis, Main.EIGHTEEN_SEGOE_FONT, "Request new analysis", Main.DARK_GREY,
+                new javax.swing.border.LineBorder(Main.DARK_ORANGE, 4, true));
         jButtonRequestAnalysis.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonRequestAnalysis.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonRequestAnalysis.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonRequestAnalysis.setText("Request new analysis");
-        jButtonRequestAnalysis.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonRequestAnalysis.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRequestAnalysisActionPerformed(evt);
-            }
-        });
+        jButtonRequestAnalysis.addActionListener(this::jButtonRequestAnalysisActionPerformed);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);

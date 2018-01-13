@@ -52,6 +52,7 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jButtonGenerateFile = new javax.swing.JButton();
         jButtonSave = new javax.swing.JButton();
+        InitializeUIElements initializer = new InitializeUIElements();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,19 +73,15 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        initializer.initializeJButton(jButtonViewResults, Main.EIGHTEEN_SEGOE_FONT, "View detailed results for this analysis", Main.DARK_GREY,
+                new javax.swing.border.LineBorder(Main.DARK_ORANGE, 4, true));
         jButtonViewResults.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonViewResults.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonViewResults.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonViewResults.setText("View detailed results for this analysis");
-        jButtonViewResults.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonViewResults.addActionListener(evt -> jButtonViewResultsActionPerformed(evt));
+        jButtonViewResults.addActionListener(this::jButtonViewResultsActionPerformed);
 
+        initializer.initializeJButton(jButtonBack, Main.FORTY_EIGHT_SEGOE_FONT, "«", Main.DARK_GREY,
+                new javax.swing.border.LineBorder(Main.DARK_ORANGE, 4, true));
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
-        jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonBack.setText("«");
-        jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
+        jButtonBack.addActionListener(this::jButtonBackActionPerformed);
 
         List<Analysis> analysisListModel = analysisList;
         DefaultComboBoxModel<Analysis> analysisModel = new DefaultComboBoxModel<>();
@@ -98,15 +95,11 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
          */
         jComboBoxAnalysis.addActionListener(this::jComboBoxAnalysisActionPerformed);
 
-        jLabel2.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(155, 177, 189));
-        jLabel2.setText("Road Network Comparison");
+        initializer.initializeLabels(jLabel2, Main.TV_POSTER_FONT, "Road Network Comparison", SwingConstants.CENTER, Main.LIGHT_BLUE);
 
+        initializer.initializeJButton(jButtonGenerateFile, Main.EIGHTEEN_SEGOE_FONT, "Generate file", Main.DARK_GREY,
+                new javax.swing.border.LineBorder(Main.DARK_ORANGE, 4, true));
         jButtonGenerateFile.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonGenerateFile.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonGenerateFile.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonGenerateFile.setText("Generate file");
-        jButtonGenerateFile.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
         jButtonGenerateFile.addActionListener(evt -> {
             try {
                 jButtonGenerateFileActionPerformed(evt);
@@ -115,16 +108,10 @@ public class BestPathComparisonAllAnalysisUI extends javax.swing.JFrame {
             }
         });
 
+        initializer.initializeJButton(jButtonSave, Main.EIGHTEEN_SEGOE_FONT, "Save results", Main.DARK_GREY,
+                new javax.swing.border.LineBorder(Main.DARK_ORANGE, 4, true));
         jButtonSave.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonSave.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonSave.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonSave.setText("Save results");
-        jButtonSave.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSaveActionPerformed(evt);
-            }
-        });
+        jButtonSave.addActionListener(this::jButtonSaveActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
