@@ -85,24 +85,16 @@ class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         jButtonGenerateFile.setBackground(new java.awt.Color(45, 46, 45));
         jButtonGenerateFile.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jButtonGenerateFile.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonGenerateFile.setText("Generate HTML file");
+        jButtonGenerateFile.setText("Generate file");
         jButtonGenerateFile.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonGenerateFile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonGenerateFileActionPerformed(evt);
-            }
-        });
+        jButtonGenerateFile.addActionListener(this::jButtonGenerateFileActionPerformed);
 
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
         jButtonBack.setFont(new java.awt.Font("Segoe UI Semibold", 0, 48)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(45, 46, 45));
         jButtonBack.setText("«");
         jButtonBack.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonBackActionPerformed(evt);
-            }
-        });
+        jButtonBack.addActionListener(this::jButtonBackActionPerformed);
 
         analysisResultTextField.setBackground(new java.awt.Color(97, 122, 133));
         analysisResultTextField.setForeground(new java.awt.Color(204, 204, 204));
@@ -119,11 +111,7 @@ class StoreNetworkAnalysisUI extends javax.swing.JFrame {
         jButtonSave.setForeground(new java.awt.Color(45, 46, 45));
         jButtonSave.setText("Save results");
         jButtonSave.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSaveActionPerformed(evt);
-            }
-        });
+        jButtonSave.addActionListener(this::jButtonSaveActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -195,7 +183,6 @@ class StoreNetworkAnalysisUI extends javax.swing.JFrame {
 
         String dir = fileChooser.getSelectedFile().getAbsolutePath();
         File file = new File(dir + System.getProperty("file.separator") + fileName);
-
 
         try {
             networkAnalysisController.exportData(file);
