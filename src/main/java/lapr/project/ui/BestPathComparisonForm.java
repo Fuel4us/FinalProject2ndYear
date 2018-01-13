@@ -350,7 +350,7 @@ public class BestPathComparisonForm extends JFrame {
                     Analysis generatedAnalysis = controller.analyzeFastestPath(startNode, endNode, aSelectedVehiclesList, load);
                     analysisList.add(generatedAnalysis);
                 }
-                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList);
+                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList, selectedVehiclesList);
                 comparisonResultsUI.setVisible(true);
                 setVisible(false);
             }
@@ -414,7 +414,7 @@ public class BestPathComparisonForm extends JFrame {
                     Analysis generatedAnalysis = controller.efficientPathPolynomialInterpolationN11Button(startNode, endNode, aSelectedVehiclesList, maxAcceleration, maxBraking, load);
                     analysisList.add(generatedAnalysis);
                 }
-                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList);
+                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList, selectedVehiclesList);
                 comparisonResultsUI.setVisible(true);
                 setVisible(false);
             }
@@ -450,7 +450,7 @@ public class BestPathComparisonForm extends JFrame {
                     Analysis generatedAnalysis = controller.efficientPathPolynomialInterpolationN12Button(startNode, endNode, aSelectedVehiclesList, maxAcceleration, maxBraking, load);
                     analysisList.add(generatedAnalysis);
                 }
-                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList);
+                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList, selectedVehiclesList);
                 comparisonResultsUI.setVisible(true);
                 setVisible(false);
             }
@@ -485,7 +485,7 @@ public class BestPathComparisonForm extends JFrame {
                     Analysis generatedAnalysis = controller.analyzeEfficientPathEnergySavingMode(startNode, endNode, aSelectedVehiclesList, maxAcceleration, maxBraking, load);
                     analysisList.add(generatedAnalysis);
                 }
-                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList);
+                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList, selectedVehiclesList);
                 comparisonResultsUI.setVisible(true);
                 setVisible(false);
             }
@@ -520,7 +520,7 @@ public class BestPathComparisonForm extends JFrame {
                     Analysis generatedAnalysis = controller.analyzeTheoreticalEfficientPath(startNode, endNode, aSelectedVehiclesList, maxAcceleration, maxBraking, load);
                     analysisList.add(generatedAnalysis);
                 }
-                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList);
+                BestPathComparisonAllAnalysisUI comparisonResultsUI = new BestPathComparisonAllAnalysisUI(analysisList, selectedVehiclesList);
                 comparisonResultsUI.setVisible(true);
                 setVisible(false);
             }
