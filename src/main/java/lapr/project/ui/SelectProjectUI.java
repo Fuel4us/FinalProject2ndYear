@@ -56,6 +56,7 @@ public final class SelectProjectUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        InitializeUIElements initializer = new InitializeUIElements();
         jPanel1 = new javax.swing.JPanel();
         imgLateral = new javax.swing.JLabel();
         orangeBorder = new javax.swing.JPanel();
@@ -89,35 +90,23 @@ public final class SelectProjectUI extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        initializer.initializeJButton(jButtonCompForm, Main.EIGHTEEN_SEGOE_FONT, "Road Network Comparison Form", Main.DARK_GREY,
+                new javax.swing.border.LineBorder(Main.DARK_ORANGE, 4, true));
         jButtonCompForm.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonCompForm.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonCompForm.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonCompForm.setText("Road Network Comparison Form");
-        jButtonCompForm.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonCompForm.addActionListener(evt -> jButtonCompFormActionPerformed(evt));
+        jButtonCompForm.addActionListener(this::jButtonCompFormActionPerformed);
 
         initializer.initializeJButton(jButtonBack,Main.FORTY_EIGHT_SEGOE_FONT, "«", Main.DARK_GREY, javax.swing.BorderFactory.createLineBorder(new java.awt.Color(250, 152, 60), 4));
         jButtonBack.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonBack.addActionListener(evt -> jButtonBackActionPerformed(evt));
+        jButtonBack.addActionListener(this::jButtonBackActionPerformed);
 
+        initializer.initializeJButton(jButtonPathForm, Main.EIGHTEEN_SEGOE_FONT, "Road Network Path Form", Main.DARK_GREY,
+                new javax.swing.border.LineBorder(Main.DARK_ORANGE, 4, true));
         jButtonPathForm.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonPathForm.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonPathForm.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonPathForm.setText("Road Network Path Form");
-        jButtonPathForm.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonPathForm.addActionListener(evt -> jButtonPathFormActionPerformed(evt));
+        jButtonPathForm.addActionListener(this::jButtonPathFormActionPerformed);
 
-        jLabel2.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(155, 177, 189));
-        jLabel2.setText("Select");
-
-        jLabel3.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(155, 177, 189));
-        jLabel3.setText("a");
-
-        jLabel4.setFont(new java.awt.Font("SF Movie Poster", 0, 48)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(155, 177, 189));
-        jLabel4.setText("project");
+        initializer.initializeLabels(jLabel2, Main.FORTY_EIGHT_SEGOE_FONT, "Select", SwingConstants.RIGHT, Main.LIGHT_BLUE);
+        initializer.initializeLabels(jLabel3, Main.FORTY_EIGHT_SEGOE_FONT, "a", SwingConstants.RIGHT, Main.LIGHT_BLUE);
+        initializer.initializeLabels(jLabel4, Main.FORTY_EIGHT_SEGOE_FONT, "project", SwingConstants.RIGHT, Main.LIGHT_BLUE);
 
         List<Project> projectsList = selectProjectController.fetchProjectsList();
         DefaultComboBoxModel<Project> projectsModel = new DefaultComboBoxModel<>();
@@ -127,19 +116,15 @@ public final class SelectProjectUI extends javax.swing.JFrame {
         jComboBoxProjects.setModel(projectsModel);
         jComboBoxProjects.setBackground(new java.awt.Color(204, 204, 204));
 
+        initializer.initializeJButton(jButtonSetActive, Main.EIGHTEEN_SEGOE_FONT, "Sect active", Main.DARK_GREY,
+                new javax.swing.border.LineBorder(Main.DARK_ORANGE, 4, true));
         jButtonSetActive.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonSetActive.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonSetActive.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonSetActive.setText("Set active");
-        jButtonSetActive.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonSetActive.addActionListener(evt -> jButtonSetActiveActionPerformed(evt));
+        jButtonSetActive.addActionListener(this::jButtonSetActiveActionPerformed);
 
+        initializer.initializeJButton(jButtonPopUp, Main.EIGHTEEN_SEGOE_FONT, "Other functionalities", Main.DARK_GREY,
+                new javax.swing.border.LineBorder(Main.DARK_ORANGE, 4, true));
         jButtonPopUp.setBackground(new java.awt.Color(45, 46, 45));
-        jButtonPopUp.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButtonPopUp.setForeground(new java.awt.Color(45, 46, 45));
-        jButtonPopUp.setText("Other functionalities");
-        jButtonPopUp.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 152, 60), 4, true));
-        jButtonPopUp.addActionListener(evt -> jButtonPopUpActionPerformed(evt));
+        jButtonPopUp.addActionListener(this::jButtonPopUpActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
