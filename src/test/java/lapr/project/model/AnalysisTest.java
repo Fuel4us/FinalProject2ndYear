@@ -2,7 +2,6 @@ package lapr.project.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import lapr.project.utils.Measurable;
 import lapr.project.utils.Unit;
 import org.junit.Test;
