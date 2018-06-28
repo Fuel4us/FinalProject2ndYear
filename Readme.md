@@ -1,6 +1,8 @@
 # README #
 
-This is the repository template used for student repositories in LAPR Projets.
+# Authors
+
+All work here belongs to ISEP and It's respective commiters and they should be credited if you use it.
 
 #Java source files
 
